@@ -1,6 +1,6 @@
-# 🔧 SwissKnifeApp - Çok Amaçlı Araç Kutusu
+# 🔧 Türk Çakısı - Çok Amaçlı Araç Kutusu
 
-SwissKnifeApp, günlük işlerinizi kolaylaştırmak için tasarlanmış, modern ve kullanıcı dostu bir masaüstü uygulamasıdır. WPF (.NET 8) ile geliştirilmiş bu uygulama, çeşitli araçları tek bir çatı altında toplar.
+Türk Çakısı, günlük işlerinizi kolaylaştırmak için tasarlanmış, modern ve kullanıcı dostu bir masaüstü uygulamasıdır. WPF (.NET 8) ile geliştirilmiş bu uygulama, çeşitli araçları tek bir çatı altında toplar.
 
 ## 📋 İçindekiler
 - [Özellikler](#-özellikler)
