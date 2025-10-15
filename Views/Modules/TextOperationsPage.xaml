@@ -1,0 +1,141 @@
+﻿<UserControl x:Class="SwissKnifeApp.Views.Modules.TextOperationsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	         xmlns:lucide="clr-namespace:LucideIcons;assembly=LucideIcons"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="900"
+             Background="White">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Metin İşlemleri"
+                   FontSize="22"
+                   FontWeight="Bold"
+                   Foreground="SteelBlue"
+                   Margin="0,0,0,20"/>
+        <TextBox x:Name="txtInput"
+                 Grid.Row="1"
+                 AcceptsReturn="True"
+                 TextWrapping="Wrap"
+                 VerticalScrollBarVisibility="Auto"
+                 FontSize="16"
+                 BorderBrush="#BDC3C7"
+                 BorderThickness="1"
+                 Padding="10"
+                 Background="#FBFCFC"
+                 Foreground="#2C3E50"/>
+
+        <WrapPanel Grid.Row="2"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   ItemWidth="220"
+                   ItemHeight="80"
+                   Margin="0,10,0,0">
+            <!-- Büyük Harf Dönüştür -->
+            <Button Margin="10" Padding="10" Width="220" Height="80" Click="Uppercase_Click" Style="{StaticResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <lucide:Icon LucideIcon="CaseUpper" Width="28" Height="28" Margin="0,0,10,0"/>
+                    <TextBlock Text="Büyük Harf Dönüştür" VerticalAlignment="Center" FontSize="14"/>
+                </StackPanel>
+            </Button>
+            <!-- Küçük Harf Dönüştür -->
+            <Button Margin="10" Padding="10" Width="220" Height="80" Click="Lowercase_Click" Style="{StaticResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <lucide:Icon LucideIcon="CaseLower" Width="28" Height="28" Margin="0,0,10,0"/>
+                    <TextBlock Text="Küçük Harf Dönüştür" VerticalAlignment="Center" FontSize="14"/>
+                </StackPanel>
+            </Button>
+            <!-- Karakter Say -->
+            <Button Margin="10" Padding="10" Width="220" Height="80" Click="CountChars_Click" Style="{StaticResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <lucide:Icon LucideIcon="Hash" Width="28" Height="28" Margin="0,0,10,0"/>
+                    <TextBlock Text="Karakter Say" VerticalAlignment="Center" FontSize="14"/>
+                </StackPanel>
+            </Button>
+            <!-- Kelime Say -->
+            <Button Margin="10" Padding="10" Width="220" Height="80" Click="CountWords_Click" Style="{StaticResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <lucide:Icon LucideIcon="List" Width="28" Height="28" Margin="0,0,10,0"/>
+                    <TextBlock Text="Kelime Say" VerticalAlignment="Center" FontSize="14"/>
+                </StackPanel>
+            </Button>
+            <!-- Cümle/Paragraf Say -->
+            <Button Margin="10" Padding="10" Width="220" Height="80" Click="CountSentencesParagraphs_Click" Style="{StaticResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <lucide:Icon LucideIcon="AlignLeft" Width="28" Height="28" Margin="0,0,10,0"/>
+                    <TextBlock Text="Cümle/Paragraf Say" VerticalAlignment="Center" FontSize="14"/>
+                </StackPanel>
+            </Button>
+            <!-- Baş Harfleri Büyük Yap -->
+            <Button Margin="10" Padding="10" Width="220" Height="80" Click="TitleCase_Click" Style="{StaticResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <lucide:Icon LucideIcon="Type" Width="28" Height="28" Margin="0,0,10,0"/>
+                    <TextBlock Text="Baş Harfleri Büyük Yap" VerticalAlignment="Center" FontSize="14"/>
+                </StackPanel>
+            </Button>
+            <!-- Metni Ters Çevir (karakter) -->
+            <Button Margin="10" Padding="10" Width="220" Height="80" Click="ReverseText_Click" Style="{StaticResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <lucide:Icon LucideIcon="RefreshCw" Width="28" Height="28" Margin="0,0,10,0"/>
+                    <TextBlock Text="Metni Ters Çevir (Karakter)" VerticalAlignment="Center" FontSize="14"/>
+                </StackPanel>
+            </Button>
+            <!-- Metni Ters Çevir (kelime) -->
+            <Button Margin="10" Padding="10" Width="220" Height="80" Click="ReverseWords_Click" Style="{StaticResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <lucide:Icon LucideIcon="RefreshCcw" Width="28" Height="28" Margin="0,0,10,0"/>
+                    <TextBlock Text="Metni Ters Çevir (Kelime)" VerticalAlignment="Center" FontSize="14"/>
+                </StackPanel>
+            </Button>
+            <!-- Boşluk Temizle -->
+            <Button Margin="10" Padding="10" Width="220" Height="80" Click="TrimSpaces_Click" Style="{StaticResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <lucide:Icon LucideIcon="Eraser" Width="28" Height="28" Margin="0,0,10,0"/>
+                    <TextBlock Text="Boşlukları Temizle" VerticalAlignment="Center" FontSize="14"/>
+                </StackPanel>
+            </Button>
+            <!-- Metni Kopyala -->
+            <Button Margin="10" Padding="10" Width="220" Height="80" Click="CopyText_Click" Style="{StaticResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <lucide:Icon LucideIcon="Clipboard" Width="28" Height="28" Margin="0,0,10,0"/>
+                    <TextBlock Text="Metni Kopyala" VerticalAlignment="Center" FontSize="14"/>
+                </StackPanel>
+            </Button>
+            <!-- Base64 Şifrele -->
+            <Button Margin="10" Padding="10" Width="220" Height="80" Click="EncodeBase64_Click" Style="{StaticResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <lucide:Icon LucideIcon="Lock" Width="28" Height="28" Margin="0,0,10,0"/>
+                    <TextBlock Text="Base64 Şifrele" VerticalAlignment="Center" FontSize="14"/>
+                </StackPanel>
+            </Button>
+            <!-- Base64 Çöz -->
+            <Button Margin="10" Padding="10" Width="220" Height="80" Click="DecodeBase64_Click" Style="{StaticResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <lucide:Icon LucideIcon="LockOpen" Width="28" Height="28" Margin="0,0,10,0"/>
+                    <TextBlock Text="Base64 Çöz" VerticalAlignment="Center" FontSize="14"/>
+                </StackPanel>
+            </Button>
+            <!-- Lorem Ipsum Üretici -->
+            <Button Margin="10" Padding="10" Width="220" Height="80" Click="GenerateLoremIpsum_Click" Style="{StaticResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <lucide:Icon LucideIcon="FileText" Width="28" Height="28" Margin="0,0,10,0"/>
+                    <TextBlock Text="Lorem Ipsum Üret" VerticalAlignment="Center" FontSize="14"/>
+                </StackPanel>
+            </Button>
+            <!-- Temizle -->
+            <Button Margin="10" Padding="10" Width="220" Height="80" Click="Clear_Click" Style="{StaticResource AccentButtonStyle}">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <lucide:Icon LucideIcon="Delete" Width="28" Height="28" Margin="0,0,10,0"/>
+                    <TextBlock Text="Temizle" VerticalAlignment="Center" FontSize="14"/>
+                </StackPanel>
+            </Button>
+        </WrapPanel>
+    </Grid>
+</UserControl>

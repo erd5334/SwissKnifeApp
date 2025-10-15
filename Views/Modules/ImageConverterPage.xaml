@@ -1,0 +1,95 @@
+﻿<Page x:Class="SwissKnifeApp.Views.Modules.ImageConverterPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SwissKnifeApp.Views.Modules"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ImageConverterPage">
+
+  <Grid Margin="24" AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <!-- Üst Panel: Seçim ve Ayarlar -->
+  <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Top" Margin="0,0,0,16">
+      <Button x:Name="btnSelectImages" Content="📂 Görselleri Seç" Width="120" Margin="0,0,8,0" Click="BtnSelectImages_Click"/>
+      <ComboBox x:Name="cmbFormat" Width="80" Margin="0,0,8,0" SelectedIndex="0">
+        <ComboBoxItem Content="JPG"/>
+        <ComboBoxItem Content="PNG"/>
+        <ComboBoxItem Content="BMP"/>
+        <ComboBoxItem Content="GIF"/>
+        <ComboBoxItem Content="WEBP"/>
+        <ComboBoxItem Content="ICO"/>
+        <ComboBoxItem Content="SVG"/>
+      </ComboBox>
+      <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+        <TextBlock Text="Kalite:" Margin="0,0,4,0" VerticalAlignment="Center"/>
+  <Slider x:Name="sliderQuality" Minimum="0" Maximum="100" Value="90" Width="80" TickFrequency="10" IsSnapToTickEnabled="True"/>
+        <TextBlock x:Name="txtQualityValue" Text="90" Margin="4,0,0,0" VerticalAlignment="Center"/>
+      </StackPanel>
+      <!-- Yeniden boyutlandırma -->
+      <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+        <TextBlock Text="Boyut:" Margin="8,0,4,0"/>
+  <TextBox x:Name="txtWidth" Width="50" Text="800" TextChanged="OnSettingsChanged"/>
+        <TextBlock Text="x" Margin="4,0"/>
+  <TextBox x:Name="txtHeight" Width="50" Text="600" TextChanged="OnSettingsChanged"/>
+  <CheckBox x:Name="chkKeepAspect" Content="Oran Koru" Margin="8,0,0,0" IsChecked="True" Checked="OnSettingsChanged" Unchecked="OnSettingsChanged"/>
+        <TextBlock Text="%" Margin="8,0,4,0"/>
+  <TextBox x:Name="txtScalePercent" Width="50" Text="100" TextChanged="OnSettingsChanged"/>
+      </StackPanel>
+
+      <!-- Filtreler -->
+      <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+  <CheckBox x:Name="chkGrayscale" Content="Gri" Checked="OnSettingsChanged" Unchecked="OnSettingsChanged"/>
+  <CheckBox x:Name="chkInvert" Content="Ters" Margin="8,0,0,0" Checked="OnSettingsChanged" Unchecked="OnSettingsChanged"/>
+  <CheckBox x:Name="chkBW" Content="S/B" Margin="8,0,0,0" Checked="OnSettingsChanged" Unchecked="OnSettingsChanged"/>
+        <TextBlock Text="Doygunluk" Margin="8,0,4,0"/>
+  <Slider x:Name="sliderSaturation" Minimum="-100" Maximum="100" Value="0" Width="80" ValueChanged="OnSettingsChanged"/>
+        <TextBlock Text="Parlaklık" Margin="8,0,4,0"/>
+  <Slider x:Name="sliderBrightness" Minimum="-100" Maximum="100" Value="0" Width="80" ValueChanged="OnSettingsChanged"/>
+      </StackPanel>
+
+      <Button x:Name="btnConvert" Content="Dönüştür" Width="80" Margin="12,0,0,0" Click="BtnConvert_Click"/>
+    </StackPanel>
+
+    <!-- Orta Panel: Görsel Listesi ve Önizleme -->
+    <Border Grid.Row="1" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="8" Padding="8">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="2*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+  <DataGrid x:Name="dgImages" Grid.Column="0" AutoGenerateColumns="False" CanUserAddRows="False" HeadersVisibility="Column" RowHeight="48" AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop">
+        <DataGrid.Columns>
+          <DataGridTemplateColumn Header="Önizleme" Width="60">
+            <DataGridTemplateColumn.CellTemplate>
+              <DataTemplate>
+                <Image Source="{Binding Thumbnail}" Width="40" Height="40" Stretch="UniformToFill"/>
+              </DataTemplate>
+            </DataGridTemplateColumn.CellTemplate>
+          </DataGridTemplateColumn>
+          <DataGridTextColumn Header="Dosya Adı" Binding="{Binding FileName}" Width="*"/>
+          <DataGridTextColumn Header="Yol" Binding="{Binding FilePath}" Width="2*"/>
+          <DataGridTextColumn Header="Boyut" Binding="{Binding SizeText}" Width="70"/>
+        </DataGrid.Columns>
+        </DataGrid>
+        <Border Grid.Column="1" Margin="8,0,0,0" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="6">
+          <Image x:Name="imgPreview" Stretch="Uniform"/>
+        </Border>
+      </Grid>
+    </Border>
+
+    <!-- Alt Panel: Hedef Klasör ve Kaydet -->
+    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+      <TextBlock Text="Hedef Klasör:" VerticalAlignment="Center" Margin="0,0,6,0"/>
+      <TextBox x:Name="txtTargetFolder" Width="180" IsReadOnly="True" Margin="0,0,6,0"/>
+      <Button x:Name="btnSelectFolder" Content="Klasör Seç" Width="80" Margin="0,0,6,0" Click="BtnSelectFolder_Click"/>
+      <Button x:Name="btnSaveAll" Content="Tümünü Kaydet" Width="100" Click="BtnSaveAll_Click"/>
+    </StackPanel>
+  </Grid>
+</Page>

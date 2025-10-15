@@ -1,0 +1,209 @@
+﻿<mah:MetroWindow
+    x:Class="SwissKnifeApp.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    mc:Ignorable="d"
+    Title="Türk Çakısı"
+    Height="720" Width="1200"
+    WindowStartupLocation="CenterScreen">
+
+    <mah:MetroWindow.Resources>
+        <!-- Menü buton stili -->
+        <Style x:Key="MenuButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#2C3E50"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="15,0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                              VerticalAlignment="Center" 
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#ECF0F1"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#BDC3C7"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Hamburger buton stili -->
+        <Style x:Key="HamburgerButton" TargetType="Button">
+            <Setter Property="Background" Value="#34495E"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#2C3E50"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </mah:MetroWindow.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition x:Name="MenuColumn" Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sol Menü Paneli -->
+        <Border Grid.Column="0" Background="#ECF0F1" BorderBrush="#BDC3C7" BorderThickness="0,0,1,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Başlık ve Hamburger -->
+                <Grid Grid.Row="0" Background="#34495E">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button x:Name="btnToggleMenu" Grid.Column="0" Style="{StaticResource HamburgerButton}" Click="ToggleMenu_Click">
+                        <iconPacks:PackIconMaterial Kind="Menu" Width="20" Height="20"/>
+                    </Button>
+
+                    <TextBlock Grid.Column="1" Text="Türk Çakısı" 
+                               Foreground="White" 
+                               FontSize="16" 
+                               FontWeight="Bold"
+                               VerticalAlignment="Center"
+                               Margin="10,0"/>
+                </Grid>
+
+                <!-- Menü Öğeleri -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="TextOperations">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="FileDocumentOutline" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Metin İşlemleri" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="UnitConverter">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Birim Dönüştürücü" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="PdfOperations">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="FilePdfBox" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="PDF İşlemleri" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="PasswordTools">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="ShieldLockOutline" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Şifre Araçları" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="QrCode">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome Kind="QrcodeSolid" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="QR Kod" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="SpeedTest">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="Speedometer" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="İnternet Hız Testi" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="ClipboardHistory">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome Kind="ClipboardSolid" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Clipboard Geçmişi" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="JsonXmlFormatter">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome Kind="CodeSolid" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="JSON/XML Biçimlendirme" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="ImageConverter">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconModern Kind="Image" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Görüntü Dönüştürücü" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="MoneyToText">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconModern Kind="Money" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Para Yazıya Çevir" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!--<Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="FileManager">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconModern Kind="Folder" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Dosya Yöneticisi" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>-->
+
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="DataAnalysis">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="ChartBar" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Veri Analiz Araçları" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
+        <!-- Ana İçerik Alanı -->
+        <Grid Grid.Column="1" Background="White">
+            <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
+            
+            <!-- Varsayılan içerik (Frame boşken görünür) -->
+            <Grid x:Name="WelcomeGrid" Background="White">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Image Source="pack://application:,,,/Resources/Icons/Logo.png" Width="160" Height="160" Margin="0,0,0,20"/>                                        
+                    <TextBlock Text="Sol menüden bir araç seçin" FontSize="16" Foreground="#7F8C8D" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Grid>
+</mah:MetroWindow>

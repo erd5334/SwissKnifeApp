@@ -1,0 +1,95 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		}
+	]
+}

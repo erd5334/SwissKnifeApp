@@ -1,0 +1,144 @@
+﻿<Page x:Class="SwissKnifeApp.Views.Modules.QrBarcodeToolsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      Title="QR ve Barkod Araçları">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Üst Başlık -->
+        <TextBlock Grid.Row="0" Text="📦 QR / Barkod Araçları" FontSize="22" FontWeight="Bold" Margin="0,0,0,10"/>
+
+        <!-- QR & Barkod Sekmeleri -->
+        <TabControl Grid.Row="1" x:Name="TabMain" Margin="0,10,0,0">
+
+            <!-- QR Kod Sekmesi -->
+            <TabItem Header="📱 QR Kod Oluştur / Oku">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- QR Türü seçimi -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,0,10">
+                        <TextBlock Text="QR Türü:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <ComboBox x:Name="CmbQrType" Width="160" SelectionChanged="CmbQrType_SelectionChanged">
+                            <ComboBoxItem Content="Metin / URL" IsSelected="True"/>
+                            <ComboBoxItem Content="Wi-Fi"/>
+                            <ComboBoxItem Content="vCard"/>
+                            <ComboBoxItem Content="E-posta"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <!-- Giriş Alanları -->
+                    <StackPanel Grid.Row="1" x:Name="PanelInputFields" Orientation="Vertical" Margin="0,0,0,10"/>
+
+                    <!-- QR Görseli -->
+                    <Border Grid.Row="2" BorderBrush="#CCCCCC" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image x:Name="ImgQrCode" Height="240" Width="240" Stretch="Uniform"/>
+                    </Border>
+
+                    <!-- Okunan Metin -->
+                    <TextBlock Grid.Row="3" x:Name="TxtDecoded" TextWrapping="Wrap" Margin="0,10,0,10" 
+                               FontWeight="Bold" MinHeight="30" Background="#F8F9FA" Padding="5"/>
+
+                    <!-- QR Butonları -->
+                    <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                        <Button x:Name="BtnGenerateQR" 
+                                Content="🔗 QR Oluştur" 
+                                Click="BtnGenerateQR_Click" 
+                                Margin="5" 
+                                Padding="10,5"
+                                IsEnabled="True"
+                                Background="#3498DB"
+                                Foreground="White"/>
+                        <Button x:Name="BtnLoadImage" 
+                                Content="📂 Görselden Oku" 
+                                Click="BtnLoadImage_Click" 
+                                Margin="5" 
+                                Padding="10,5"
+                                IsEnabled="True"
+                                Background="#2ECC71"
+                                Foreground="White"/>
+                        <Button x:Name="BtnSaveQR" 
+                                Content="💾 Kaydet" 
+                                Click="BtnSaveQR_Click" 
+                                Margin="5" 
+                                Padding="10,5"
+                                IsEnabled="True"
+                                Background="#E67E22"
+                                Foreground="White"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+            <!-- Barkod Sekmesi -->
+            <TabItem Header="🧾 Barkod Oluştur">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Barkod Türü -->
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                        <TextBlock Text="Barkod Türü:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <ComboBox x:Name="CmbBarcodeFormat" Width="150">
+                            <ComboBoxItem Content="CODE_128" IsSelected="True"/>
+                            <ComboBoxItem Content="EAN_13"/>
+                            <ComboBoxItem Content="CODE_39"/>
+                            <ComboBoxItem Content="ITF"/>
+                            <ComboBoxItem Content="UPC_A"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <!-- Barkod Metni -->
+                    <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,0,0,10">
+                        <TextBlock Text="Barkod Metni:" Margin="0,0,0,5"/>
+                        <TextBox x:Name="TxtBarcodeText" 
+                                 FontSize="14" 
+                                 Height="30"
+                                 Text="123456789012"/>
+                    </StackPanel>
+
+                    <!-- Barkod Görseli -->
+                    <Border Grid.Row="2" BorderBrush="#CCCCCC" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Image x:Name="ImgBarcode" Height="150" Width="400" Stretch="Uniform"/>
+                    </Border>
+
+                    <!-- Barkod Butonları -->
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+                        <Button x:Name="BtnGenerateBarcode" 
+                                Content="🧾 Barkod Oluştur" 
+                                Click="BtnGenerateBarcode_Click" 
+                                Margin="5" 
+                                Padding="10,5"
+                                IsEnabled="True"
+                                Background="#9B59B6"
+                                Foreground="White"/>
+                        <Button x:Name="BtnSaveBarcode" 
+                                Content="💾 Kaydet" 
+                                Click="BtnSaveBarcode_Click" 
+                                Margin="5" 
+                                Padding="10,5"
+                                IsEnabled="True"
+                                Background="#E67E22"
+                                Foreground="White"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Page>

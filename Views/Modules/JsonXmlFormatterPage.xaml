@@ -1,0 +1,78 @@
+﻿<UserControl x:Class="SwissKnifeApp.Views.Modules.JsonXmlFormatterPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:SwissKnifeApp.Views.Modules"
+             xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
+             Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Margin="20" Background="{Binding EditorBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 🧭 Başlık ve Tema Düğmesi -->
+        <DockPanel Margin="0 0 0 10">
+            <TextBlock Text="🧩 JSON / XML Biçimlendirme, Dönüştürme ve Sorgulama"
+                       Foreground="{Binding ForegroundColor}"
+                       FontSize="20"
+                       FontWeight="Bold"
+                       DockPanel.Dock="Left"/>
+
+            <ToggleButton x:Name="ThemeToggle"
+                          Width="120"
+                          Height="30"
+                          Margin="10 0 0 0"
+                          Content="{Binding ThemeToggleText}"
+                          HorizontalAlignment="Right"
+                          DockPanel.Dock="Right"
+                          Checked="ThemeToggle_Checked"
+                          Unchecked="ThemeToggle_Unchecked"/>
+        </DockPanel>
+
+        <!-- Ana Alan -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1.2*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ✏️ Kod Editörü -->
+            <Border Grid.Column="0" CornerRadius="10" BorderThickness="1" BorderBrush="#444">
+                <avalonedit:TextEditor Name="CodeEditor"
+                                       ShowLineNumbers="True"
+                                       FontFamily="Consolas"
+                                       FontSize="14"
+                                       TextChanged="CodeEditor_TextChanged"
+                                       VerticalScrollBarVisibility="Visible"/>
+            </Border>
+
+            <!-- 🧰 Araçlar -->
+            <StackPanel Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#2D2D30">
+                <Button Content="✨ Biçimlendir" Margin="0 5" Click="Format_Click"/>
+                <Button Content="📦 Sıkıştır" Margin="0 5" Click="Minify_Click"/>
+                <Button Content="✅ Doğrula" Margin="0 5" Click="Validate_Click"/>
+                <Separator Margin="0 10"/>
+                <Button Content="➡️ JSON → XML" Margin="0 5" Click="JsonToXml_Click"/>
+                <Button Content="⬅️ XML → JSON" Margin="0 5" Click="XmlToJson_Click"/>
+                <Separator Margin="0 10"/>
+                <Button Content="🧹 Temizle" Margin="0 5" Click="Clear_Click"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- 🔍 Sorgulama Alanı -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 15 0 0" VerticalAlignment="Bottom">
+            <TextBox x:Name="QueryBox"
+                     Width="400"
+                     Height="35"
+                     FontSize="14"
+                     VerticalContentAlignment="Center"/>
+            <Button Content="🔍 Sorgula"
+                    Width="100"
+                    Height="35"
+                    Margin="10 0 0 0"
+                    Click="Query_Click"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
