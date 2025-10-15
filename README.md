@@ -109,11 +109,17 @@ Türk Çakısı, günlük işlerinizi kolaylaştırmak için tasarlanmış, mode
    ```bash
    git clone https://github.com/kullaniciadi/SwissKnifeApp.git
    cd SwissKnifeApp
-   ```
+   ...existing code...
 
 2. **Bağımlılıkları Yükle**
+   Görsel dönüştürme modülünde SVG ve ICO desteği eklendi, dosya kaydetme hatası giderildi.
+   Birim dönüştürücü modülüne zaman/tarih araçları ve yaş hesaplama fonksiyonları eklendi.
+   Metin işlemleri modülüne yeni araçlar (kelime/simge sayacı, base64 şifreleme, lorem ipsum üretici) eklendi.
+   JSON tabanlı ayar sistemi ile son girilen veriler hatırlanıyor.
+   Proje GitHub’a yüklendi, katkı rehberi eklendi.
    ```bash
    dotnet restore
+   Projeye katkı için lütfen CONTRIBUTING.md dosyasını inceleyin ve pull request gönderin.
    ```
 
 3. **Projeyi Derle**
