@@ -1,0 +1,525 @@
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Controls;
+
+namespace SwissKnifeApp.Views.Modules
+{
+    public partial class FileManagerPage : Page
+    {
+        private string? _file1Content;
+        private string? _file2Content;
+        private ObservableCollection<FileRenameItem> _files = new();
+
+        public FileManagerPage()
+        {
+            InitializeComponent();
+            DgFiles.ItemsSource = _files;
+            TxtCustomTemplate.Text = "{name}_{date}";
+        }
+
+        // ============================================
+        // 1️⃣ DOSYA KARŞILAŞTIRICI (DIFF) BÖLÜMÜ
+        // ============================================
+
+        private void BtnSelectFile1_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Tüm Dosyalar|*.*|Metin Dosyaları|*.txt|Kod Dosyaları|*.cs;*.js;*.py;*.html;*.css"
+            };
+
+            if (dlg.ShowDialog() == true)
+            {
+                TxtFile1Path.Text = dlg.FileName;
+                _file1Content = File.ReadAllText(dlg.FileName);
+                TxtLeftContent.Text = _file1Content;
+            }
+        }
+
+        private void BtnSelectFile2_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Tüm Dosyalar|*.*|Metin Dosyaları|*.txt|Kod Dosyaları|*.cs;*.js;*.py;*.html;*.css"
+            };
+
+            if (dlg.ShowDialog() == true)
+            {
+                TxtFile2Path.Text = dlg.FileName;
+                _file2Content = File.ReadAllText(dlg.FileName);
+                TxtRightContent.Text = _file2Content;
+            }
+        }
+
+        private void BtnEnterText1_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new TextInputDialog("Sol Metin Girişi");
+            if (dialog.ShowDialog() == true)
+            {
+                _file1Content = dialog.InputText;
+                TxtFile1Path.Text = "[Manuel Metin Girişi]";
+                TxtLeftContent.Text = _file1Content;
+            }
+        }
+
+        private void BtnEnterText2_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new TextInputDialog("Sağ Metin Girişi");
+            if (dialog.ShowDialog() == true)
+            {
+                _file2Content = dialog.InputText;
+                TxtFile2Path.Text = "[Manuel Metin Girişi]";
+                TxtRightContent.Text = _file2Content;
+            }
+        }
+
+        private void BtnCompare_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_file1Content) || string.IsNullOrEmpty(_file2Content))
+            {
+                MessageBox.Show("Lütfen her iki dosya/metin içeriğini de seçin veya girin!", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var text1 = _file1Content;
+            var text2 = _file2Content;
+
+            // Ayarlara göre ön işleme
+            if (ChkIgnoreWhitespace.IsChecked == true)
+            {
+                text1 = Regex.Replace(text1, @"\s+", " ").Trim();
+                text2 = Regex.Replace(text2, @"\s+", " ").Trim();
+            }
+
+            if (ChkIgnoreCase.IsChecked == true)
+            {
+                text1 = text1.ToLowerInvariant();
+                text2 = text2.ToLowerInvariant();
+            }
+
+            // Karşılaştırma modu
+            var mode = CmbDiffMode.SelectedIndex;
+            string stats = "";
+
+            if (mode == 0) // Satır bazında
+            {
+                var (leftHighlighted, rightHighlighted, addedCount, removedCount, changedCount) = CompareLineByLine(text1, text2);
+                TxtLeftContent.Text = leftHighlighted;
+                TxtRightContent.Text = rightHighlighted;
+                stats = $"✅ Eklenen: {addedCount} satır | ❌ Silinen: {removedCount} satır | ✏️ Değiştirilen: {changedCount} satır";
+            }
+            else if (mode == 1) // Sözcük bazında
+            {
+                var (leftHighlighted, rightHighlighted, diffCount) = CompareWordByWord(text1, text2);
+                TxtLeftContent.Text = leftHighlighted;
+                TxtRightContent.Text = rightHighlighted;
+                stats = $"📝 Farklı sözcük sayısı: {diffCount}";
+            }
+            else if (mode == 2) // Karakter bazında
+            {
+                var (similarity, diffCount) = CompareCharByChar(text1, text2);
+                TxtLeftContent.Text = text1;
+                TxtRightContent.Text = text2;
+                stats = $"🔍 Benzerlik: %{similarity:F2} | Farklı karakter: {diffCount}";
+            }
+
+            TxtDiffStats.Text = stats;
+        }
+
+        private (string left, string right, int added, int removed, int changed) CompareLineByLine(string text1, string text2)
+        {
+            var lines1 = text1.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var lines2 = text2.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+            var leftResult = new List<string>();
+            var rightResult = new List<string>();
+
+            int added = 0, removed = 0, changed = 0;
+            int maxLines = Math.Max(lines1.Length, lines2.Length);
+
+            for (int i = 0; i < maxLines; i++)
+            {
+                var line1 = i < lines1.Length ? lines1[i] : "";
+                var line2 = i < lines2.Length ? lines2[i] : "";
+
+                if (line1 == line2)
+                {
+                    leftResult.Add($"  {line1}");
+                    rightResult.Add($"  {line2}");
+                }
+                else if (string.IsNullOrEmpty(line1))
+                {
+                    leftResult.Add($"");
+                    rightResult.Add($"+ {line2}");
+                    added++;
+                }
+                else if (string.IsNullOrEmpty(line2))
+                {
+                    leftResult.Add($"- {line1}");
+                    rightResult.Add($"");
+                    removed++;
+                }
+                else
+                {
+                    leftResult.Add($"~ {line1}");
+                    rightResult.Add($"~ {line2}");
+                    changed++;
+                }
+            }
+
+            return (string.Join("\n", leftResult), string.Join("\n", rightResult), added, removed, changed);
+        }
+
+        private (string left, string right, int diffCount) CompareWordByWord(string text1, string text2)
+        {
+            var words1 = text1.Split(new[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+            var words2 = text2.Split(new[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+
+            var leftWords = new List<string>();
+            var rightWords = new List<string>();
+            int diffCount = 0;
+
+            int maxWords = Math.Max(words1.Length, words2.Length);
+            for (int i = 0; i < maxWords; i++)
+            {
+                var word1 = i < words1.Length ? words1[i] : "";
+                var word2 = i < words2.Length ? words2[i] : "";
+
+                if (word1 == word2)
+                {
+                    leftWords.Add(word1);
+                    rightWords.Add(word2);
+                }
+                else
+                {
+                    leftWords.Add($"[{word1}]");
+                    rightWords.Add($"[{word2}]");
+                    diffCount++;
+                }
+            }
+
+            return (string.Join(" ", leftWords), string.Join(" ", rightWords), diffCount);
+        }
+
+        private (double similarity, int diffCount) CompareCharByChar(string text1, string text2)
+        {
+            int diffCount = 0;
+            int maxLength = Math.Max(text1.Length, text2.Length);
+
+            for (int i = 0; i < maxLength; i++)
+            {
+                var char1 = i < text1.Length ? text1[i] : '\0';
+                var char2 = i < text2.Length ? text2[i] : '\0';
+
+                if (char1 != char2)
+                    diffCount++;
+            }
+
+            double similarity = maxLength > 0 ? ((maxLength - diffCount) / (double)maxLength) * 100 : 100;
+            return (similarity, diffCount);
+        }
+
+        // ============================================
+        // 2️⃣ TOPLU YENİDEN ADLANDIRICI BÖLÜMÜ
+        // ============================================
+
+        private void BtnSelectFolder_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                TxtFolderPath.Text = dialog.SelectedPath;
+            }
+        }
+
+        private void BtnLoadFiles_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(TxtFolderPath.Text) || !Directory.Exists(TxtFolderPath.Text))
+            {
+                MessageBox.Show("Lütfen geçerli bir klasör seçin!", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            _files.Clear();
+
+            var searchOption = ChkIncludeSubfolders.IsChecked == true 
+                ? SearchOption.AllDirectories 
+                : SearchOption.TopDirectoryOnly;
+
+            var filter = string.IsNullOrWhiteSpace(TxtFileFilter.Text) ? "*.*" : TxtFileFilter.Text;
+
+            try
+            {
+                var files = Directory.GetFiles(TxtFolderPath.Text, filter, searchOption);
+                foreach (var file in files)
+                {
+                    _files.Add(new FileRenameItem
+                    {
+                        IsSelected = true,
+                        OriginalName = Path.GetFileName(file),
+                        NewName = Path.GetFileName(file),
+                        Extension = Path.GetExtension(file),
+                        FullPath = file
+                    });
+                }
+
+                MessageBox.Show($"{_files.Count} dosya yüklendi.", "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Dosyalar yüklenirken hata oluştu: {ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void CmbRenameMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (PnlSequential == null) return;
+
+            PnlSequential.Visibility = Visibility.Collapsed;
+            PnlDateTime.Visibility = Visibility.Collapsed;
+            PnlReplace.Visibility = Visibility.Collapsed;
+            PnlCustom.Visibility = Visibility.Collapsed;
+
+            switch (CmbRenameMode.SelectedIndex)
+            {
+                case 0: PnlSequential.Visibility = Visibility.Visible; break;
+                case 1: PnlDateTime.Visibility = Visibility.Visible; break;
+                case 2: PnlReplace.Visibility = Visibility.Visible; break;
+                case 3: PnlCustom.Visibility = Visibility.Visible; break;
+            }
+        }
+
+        private void BtnPreview_Click(object sender, RoutedEventArgs e)
+        {
+            if (_files.Count == 0)
+            {
+                MessageBox.Show("Lütfen önce dosyaları yükleyin!", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            ApplyRenameRules(preview: true);
+        }
+
+        private void BtnRename_Click(object sender, RoutedEventArgs e)
+        {
+            if (_files.Count == 0)
+            {
+                MessageBox.Show("Lütfen önce dosyaları yükleyin!", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var selectedFiles = _files.Where(f => f.IsSelected).ToList();
+            if (selectedFiles.Count == 0)
+            {
+                MessageBox.Show("Lütfen en az bir dosya seçin!", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var result = MessageBox.Show(
+                $"{selectedFiles.Count} dosya yeniden adlandırılacak. Devam etmek istiyor musunuz?",
+                "Onay",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                ApplyRenameRules(preview: false);
+            }
+        }
+
+        private void ApplyRenameRules(bool preview)
+        {
+            var mode = CmbRenameMode.SelectedIndex;
+            int counter = 0;
+            int successCount = 0;
+            int errorCount = 0;
+
+            foreach (var file in _files.Where(f => f.IsSelected))
+            {
+                string newName = file.OriginalName;
+
+                try
+                {
+                    switch (mode)
+                    {
+                        case 0: // Sıralı Numaralama
+                            var baseName = TxtBaseName.Text;
+                            var startNum = (int)(NumStartNumber.Value ?? 1);
+                            var digits = (int)(NumDigits.Value ?? 3);
+                            var num = (startNum + counter).ToString($"D{digits}");
+                            newName = $"{baseName}_{num}{file.Extension}";
+                            counter++;
+                            break;
+
+                        case 1: // Tarih/Zaman Ekleme
+                            var dateFormat = CmbDateFormat.SelectedIndex switch
+                            {
+                                0 => "yyyy-MM-dd",
+                                1 => "yyyyMMdd",
+                                2 => "dd-MM-yyyy",
+                                3 => "yyyy-MM-dd_HH-mm-ss",
+                                _ => "yyyy-MM-dd"
+                            };
+                            var dateStr = DateTime.Now.ToString(dateFormat);
+                            var nameWithoutExt = Path.GetFileNameWithoutExtension(file.OriginalName);
+                            newName = ChkDatePrefix.IsChecked == true
+                                ? $"{dateStr}_{nameWithoutExt}{file.Extension}"
+                                : $"{nameWithoutExt}_{dateStr}{file.Extension}";
+                            break;
+
+                        case 2: // Metin Değiştirme
+                            var searchText = TxtSearchText.Text;
+                            var replaceText = TxtReplaceText.Text;
+                            if (!string.IsNullOrEmpty(searchText))
+                            {
+                                if (ChkUseRegex.IsChecked == true)
+                                {
+                                    newName = Regex.Replace(file.OriginalName, searchText, replaceText);
+                                }
+                                else
+                                {
+                                    var comparison = ChkCaseSensitive.IsChecked == true
+                                        ? StringComparison.Ordinal
+                                        : StringComparison.OrdinalIgnoreCase;
+                                    newName = file.OriginalName.Replace(searchText, replaceText, comparison);
+                                }
+                            }
+                            break;
+
+                        case 3: // Özel Şablon
+                            var template = TxtCustomTemplate.Text;
+                            var originalNameNoExt = Path.GetFileNameWithoutExtension(file.OriginalName);
+                            newName = template
+                                .Replace("{name}", originalNameNoExt)
+                                .Replace("{date}", DateTime.Now.ToString("yyyy-MM-dd"))
+                                .Replace("{n}", counter.ToString("D3"))
+                                .Replace("{ext}", file.Extension.TrimStart('.'));
+                            newName += file.Extension;
+                            counter++;
+                            break;
+                    }
+
+                    // Geçersiz karakter kontrolü
+                    foreach (var c in Path.GetInvalidFileNameChars())
+                    {
+                        newName = newName.Replace(c, '_');
+                    }
+
+                    file.NewName = newName;
+
+                    // Önizleme modunda değilse, gerçekten yeniden adlandır
+                    if (!preview)
+                    {
+                        var directory = Path.GetDirectoryName(file.FullPath);
+                        var newPath = Path.Combine(directory!, newName);
+
+                        if (File.Exists(newPath))
+                        {
+                            MessageBox.Show($"Dosya zaten mevcut: {newName}", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            errorCount++;
+                            continue;
+                        }
+
+                        File.Move(file.FullPath, newPath);
+                        file.FullPath = newPath;
+                        file.OriginalName = newName;
+                        successCount++;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Hata ({file.OriginalName}): {ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                    errorCount++;
+                }
+            }
+
+            if (preview)
+            {
+                MessageBox.Show("Önizleme oluşturuldu! 'Yeni Dosya Adı' sütununu kontrol edin.", "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show($"İşlem tamamlandı!\n✅ Başarılı: {successCount}\n❌ Hatalı: {errorCount}", "Sonuç", MessageBoxButton.OK, MessageBoxImage.Information);
+                // Listeyi yenile
+                BtnLoadFiles_Click(null!, null!);
+            }
+        }
+    }
+
+    // ============================================
+    // YARDIMCI SINIFLAR
+    // ============================================
+
+    public class FileRenameItem
+    {
+        public bool IsSelected { get; set; }
+        public string OriginalName { get; set; } = "";
+        public string NewName { get; set; } = "";
+        public string Extension { get; set; } = "";
+        public string FullPath { get; set; } = "";
+    }
+
+    // Metin Giriş Dialog'u
+    public class TextInputDialog : Window
+    {
+        public string InputText { get; private set; } = "";
+        private TextBox _textBox;
+
+        public TextInputDialog(string title)
+        {
+            Title = title;
+            Width = 600;
+            Height = 400;
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
+            var grid = new Grid { Margin = new Thickness(10) };
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            _textBox = new TextBox
+            {
+                AcceptsReturn = true,
+                TextWrapping = TextWrapping.Wrap,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto
+            };
+            Grid.SetRow(_textBox, 0);
+            grid.Children.Add(_textBox);
+
+            var buttonPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Margin = new Thickness(0, 10, 0, 0)
+            };
+            Grid.SetRow(buttonPanel, 1);
+
+            var okButton = new Button
+            {
+                Content = "Tamam",
+                Width = 80,
+                Margin = new Thickness(0, 0, 10, 0),
+                Padding = new Thickness(10, 5, 10, 5)
+            };
+            okButton.Click += (s, e) => { InputText = _textBox.Text; DialogResult = true; };
+
+            var cancelButton = new Button
+            {
+                Content = "İptal",
+                Width = 80,
+                Padding = new Thickness(10, 5, 10, 5)
+            };
+            cancelButton.Click += (s, e) => { DialogResult = false; };
+
+            buttonPanel.Children.Add(okButton);
+            buttonPanel.Children.Add(cancelButton);
+            grid.Children.Add(buttonPanel);
+
+            Content = grid;
+        }
+    }
+}

@@ -1,0 +1,243 @@
+<Page x:Class="SwissKnifeApp.Views.Modules.FileManagerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      Title="Dosya Yöneticisi">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Üst Sekme Kontrolleri -->
+        <TabControl Grid.Row="1" Margin="0,10,0,0">
+            
+            <!-- 1️⃣ DOSYA KARŞILAŞTIRICI (DIFF) -->
+            <TabItem Header="📊 Dosya Karşılaştırıcı">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Dosya Seçim Paneli -->
+                    <GroupBox Header="Dosya Seçimi" Grid.Row="0" Margin="0,0,0,10">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Sol Dosya -->
+                            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="0,5">
+                                <TextBlock Text="Sol Dosya/Metin:" VerticalAlignment="Center" Width="120" FontWeight="Bold"/>
+                                <TextBox x:Name="TxtFile1Path" Width="400" Margin="5,0" IsReadOnly="True"/>
+                                <Button Content="📁 Dosya Seç" Click="BtnSelectFile1_Click" Margin="5,0" Padding="10,5"/>
+                                <Button Content="✏️ Metin Gir" Click="BtnEnterText1_Click" Margin="5,0" Padding="10,5"/>
+                            </StackPanel>
+
+                            <!-- Sağ Dosya -->
+                            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,5">
+                                <TextBlock Text="Sağ Dosya/Metin:" VerticalAlignment="Center" Width="120" FontWeight="Bold"/>
+                                <TextBox x:Name="TxtFile2Path" Width="400" Margin="5,0" IsReadOnly="True"/>
+                                <Button Content="📁 Dosya Seç" Click="BtnSelectFile2_Click" Margin="5,0" Padding="10,5"/>
+                                <Button Content="✏️ Metin Gir" Click="BtnEnterText2_Click" Margin="5,0" Padding="10,5"/>
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>
+
+                    <!-- Karşılaştırma Ayarları -->
+                    <GroupBox Header="Karşılaştırma Ayarları" Grid.Row="1" Margin="0,0,0,10">
+                        <StackPanel Orientation="Horizontal">
+                            <CheckBox x:Name="ChkIgnoreWhitespace" Content="Boşlukları Yoksay" IsChecked="False" Margin="0,0,20,0"/>
+                            <CheckBox x:Name="ChkIgnoreCase" Content="Büyük/Küçük Harf Duyarsız" IsChecked="False" Margin="0,0,20,0"/>
+                            <ComboBox x:Name="CmbDiffMode" Width="150" Margin="0,0,20,0" SelectedIndex="0">
+                                <ComboBoxItem Content="Satır Bazında"/>
+                                <ComboBoxItem Content="Sözcük Bazında"/>
+                                <ComboBoxItem Content="Karakter Bazında"/>
+                            </ComboBox>
+                            <Button Content="🔍 Karşılaştır" Click="BtnCompare_Click" Padding="15,8" FontWeight="Bold" 
+                                    Background="#2196F3" Foreground="White"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Karşılaştırma Sonucu -->
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Sol Panel -->
+                        <Border Grid.Column="0" BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Sol Dosya/Metin" Background="#E3F2FD" Padding="10" FontWeight="Bold"/>
+                                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                    <TextBox x:Name="TxtLeftContent" TextWrapping="Wrap" AcceptsReturn="True" 
+                                             IsReadOnly="True" BorderThickness="0" Padding="10"/>
+                                </ScrollViewer>
+                            </Grid>
+                        </Border>
+
+                        <!-- Ayırıcı -->
+                        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" Background="#CCCCCC"/>
+
+                        <!-- Sağ Panel -->
+                        <Border Grid.Column="2" BorderBrush="#DDDDDD" BorderThickness="1" CornerRadius="5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Sağ Dosya/Metin" Background="#E8F5E9" Padding="10" FontWeight="Bold"/>
+                                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                    <TextBox x:Name="TxtRightContent" TextWrapping="Wrap" AcceptsReturn="True" 
+                                             IsReadOnly="True" BorderThickness="0" Padding="10"/>
+                                </ScrollViewer>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <!-- İstatistikler -->
+                    <GroupBox Header="İstatistikler" Grid.Row="3" Margin="0,10,0,0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="TxtDiffStats" Text="Karşılaştırma yapılmadı." FontWeight="Bold" Foreground="#555"/>
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
+            <!-- 2️⃣ TOPLU YENİDEN ADLANDIRICI -->
+            <TabItem Header="📝 Toplu Yeniden Adlandırıcı">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Klasör Seçimi -->
+                    <GroupBox Header="Klasör ve Filtre Seçimi" Grid.Row="0" Margin="0,0,0,10">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,5">
+                                <TextBlock Text="Klasör:" VerticalAlignment="Center" Width="100" FontWeight="Bold"/>
+                                <TextBox x:Name="TxtFolderPath" Width="500" Margin="5,0" IsReadOnly="True"/>
+                                <Button Content="📁 Klasör Seç" Click="BtnSelectFolder_Click" Margin="5,0" Padding="10,5"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,5">
+                                <TextBlock Text="Dosya Filtresi:" VerticalAlignment="Center" Width="100" FontWeight="Bold"/>
+                                <TextBox x:Name="TxtFileFilter" Width="200" Text="*.*" Margin="5,0" ToolTip="Örn: *.jpg, *.txt, *.*"/>
+                                <CheckBox x:Name="ChkIncludeSubfolders" Content="Alt Klasörleri Dahil Et" Margin="20,0,0,0" IsChecked="False"/>
+                                <Button Content="🔄 Dosyaları Listele" Click="BtnLoadFiles_Click" Margin="20,0,0,0" Padding="10,5" 
+                                        Background="#4CAF50" Foreground="White" FontWeight="Bold"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- Dosya Listesi -->
+                    <GroupBox Header="Dosya Listesi" Grid.Row="1" Margin="0,0,0,10">
+                        <DataGrid x:Name="DgFiles" AutoGenerateColumns="False" CanUserAddRows="False" 
+                                  SelectionMode="Extended" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridCheckBoxColumn Header="✓" Binding="{Binding IsSelected}" Width="40"/>
+                                <DataGridTextColumn Header="Mevcut Dosya Adı" Binding="{Binding OriginalName}" Width="*"/>
+                                <DataGridTextColumn Header="Yeni Dosya Adı" Binding="{Binding NewName}" Width="*"/>
+                                <DataGridTextColumn Header="Uzantı" Binding="{Binding Extension}" Width="80"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </GroupBox>
+
+                    <!-- Yeniden Adlandırma Kuralları -->
+                    <GroupBox Header="Yeniden Adlandırma Kuralları" Grid.Row="2" Margin="0,0,0,10">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Mod Seçimi -->
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,5">
+                                <TextBlock Text="Mod:" VerticalAlignment="Center" Width="100" FontWeight="Bold"/>
+                                <ComboBox x:Name="CmbRenameMode" Width="200" Margin="5,0" SelectedIndex="0" SelectionChanged="CmbRenameMode_SelectionChanged">
+                                    <ComboBoxItem Content="Sıralı Numaralama"/>
+                                    <ComboBoxItem Content="Tarih/Zaman Ekleme"/>
+                                    <ComboBoxItem Content="Metin Değiştirme (Regex)"/>
+                                    <ComboBoxItem Content="Özel Şablon"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- Sıralı Numaralama Ayarları -->
+                            <StackPanel x:Name="PnlSequential" Grid.Row="1" Orientation="Horizontal" Margin="0,5" Visibility="Visible">
+                                <TextBlock Text="Temel Ad:" VerticalAlignment="Center" Width="100"/>
+                                <TextBox x:Name="TxtBaseName" Width="150" Text="Dosya" Margin="5,0"/>
+                                <TextBlock Text="Başlangıç:" VerticalAlignment="Center" Width="70" Margin="20,0,0,0"/>
+                                <mah:NumericUpDown x:Name="NumStartNumber" Width="80" Value="1" Minimum="0" Margin="5,0"/>
+                                <TextBlock Text="Basamak:" VerticalAlignment="Center" Width="70" Margin="20,0,0,0"/>
+                                <mah:NumericUpDown x:Name="NumDigits" Width="80" Value="3" Minimum="1" Maximum="10" Margin="5,0"/>
+                            </StackPanel>
+
+                            <!-- Tarih/Zaman Ekleme Ayarları -->
+                            <StackPanel x:Name="PnlDateTime" Grid.Row="1" Orientation="Horizontal" Margin="0,5" Visibility="Collapsed">
+                                <TextBlock Text="Format:" VerticalAlignment="Center" Width="100"/>
+                                <ComboBox x:Name="CmbDateFormat" Width="200" Margin="5,0" SelectedIndex="0">
+                                    <ComboBoxItem Content="yyyy-MM-dd (2025-10-16)"/>
+                                    <ComboBoxItem Content="yyyyMMdd (20251016)"/>
+                                    <ComboBoxItem Content="dd-MM-yyyy (16-10-2025)"/>
+                                    <ComboBoxItem Content="yyyy-MM-dd_HH-mm-ss"/>
+                                </ComboBox>
+                                <CheckBox x:Name="ChkDatePrefix" Content="Önüne Ekle" Margin="20,0,0,0" IsChecked="True"/>
+                            </StackPanel>
+
+                            <!-- Metin Değiştirme Ayarları -->
+                            <StackPanel x:Name="PnlReplace" Grid.Row="1" Margin="0,5" Visibility="Collapsed">
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Text="Ara:" VerticalAlignment="Center" Width="100"/>
+                                    <TextBox x:Name="TxtSearchText" Width="250" Margin="5,0"/>
+                                    <CheckBox x:Name="ChkUseRegex" Content="Regex Kullan" Margin="20,0,0,0" IsChecked="False"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Text="Değiştir:" VerticalAlignment="Center" Width="100"/>
+                                    <TextBox x:Name="TxtReplaceText" Width="250" Margin="5,0"/>
+                                    <CheckBox x:Name="ChkCaseSensitive" Content="Büyük/Küçük Harf Duyarlı" Margin="20,0,0,0" IsChecked="False"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Özel Şablon Ayarları -->
+                            <StackPanel x:Name="PnlCustom" Grid.Row="1" Margin="0,5" Visibility="Collapsed">
+                                <StackPanel Orientation="Horizontal" Margin="0,5">
+                                    <TextBlock Text="Şablon:" VerticalAlignment="Center" Width="100"/>
+                                    <TextBox x:Name="TxtCustomTemplate" Width="400" Margin="5,0"/>
+                                </StackPanel>
+                                <TextBlock Text="Değişkenler: {name}, {date}, {n}, {ext}" 
+                                          Margin="105,5,0,0" FontSize="11" Foreground="#666" FontStyle="Italic"/>
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>
+
+                    <!-- Aksiyonlar -->
+                    <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="👁️ Önizleme Göster" Click="BtnPreview_Click" Padding="15,8" Margin="0,0,10,0"
+                                Background="#FF9800" Foreground="White" FontWeight="Bold"/>
+                        <Button Content="✔️ Yeniden Adlandır" Click="BtnRename_Click" Padding="15,8"
+                                Background="#4CAF50" Foreground="White" FontWeight="Bold"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</Page>

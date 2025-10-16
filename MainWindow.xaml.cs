@@ -79,6 +79,9 @@ namespace SwissKnifeApp
                     case "MoneyToText":
                         MainFrame.Navigate(new MoneyToTextPage());
                         break;
+                    case "FileManager":
+                        MainFrame.Navigate(new FileManagerPage());
+                        break;
                     case "DataAnalysis":
                         MainFrame.Navigate(new DataAnalysisPage());
                         break;

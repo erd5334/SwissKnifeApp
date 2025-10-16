@@ -254,14 +254,22 @@ namespace SwissKnifeApp.Views.Modules
 
             if (result == MessageBoxResult.Yes)
             {
-                var confirmResult = MessageBox.Show("Bu işlem kalıcıdır. Devam etmek istiyor musunuz?",
+                var confirmResult = MessageBox.Show("Bu işlem kalıcıdır. Tüm parolalar ve kategoriler silinecek. Devam etmek istiyor musunuz?",
                     "SON UYARI", MessageBoxButton.YesNo, MessageBoxImage.Stop);
 
                 if (confirmResult == MessageBoxResult.Yes)
                 {
+                    // Tüm parolaları sil
                     _dbService.DeleteAllPasswords();
+                    // Tüm kategorileri sil (Genel hariç)
+                    var categories = _dbService.GetAllCategories().Where(c => c.Id != 1).ToList();
+                    foreach (var cat in categories)
+                    {
+                        _dbService.DeleteCategory(cat.Id);
+                    }
                     RefreshPasswordList();
-                    MessageBox.Show("Tüm parolalar silindi!");
+                    LoadData();
+                    MessageBox.Show("Tüm parolalar ve kategoriler silindi!");
                 }
             }
         }
@@ -339,6 +347,233 @@ namespace SwissKnifeApp.Views.Modules
             {
                 MessageBox.Show("Lütfen silinecek bir kategori seçin!");
             }
-        }       
+        }
+
+        // ============ İçe/Dışa Aktarma ============
+        private void BtnExportPasswords_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Microsoft.Win32.SaveFileDialog
+            {
+                Filter = "CSV Dosyası|*.csv",
+                FileName = $"parolalar_{DateTime.Now:yyyyMMdd_HHmmss}.csv"
+            };
+
+            if (dlg.ShowDialog() == true)
+            {
+                try
+                {
+                    var passwords = _dbService.GetAllPasswords();
+                    var categories = _dbService.GetAllCategories();
+
+                    using (var writer = new System.IO.StreamWriter(dlg.FileName, false, System.Text.Encoding.UTF8))
+                    {
+                        // Kategori bilgilerini yaz
+                        writer.WriteLine("### KATEGORILER ###");
+                        writer.WriteLine("KategoriId,KategoriAdi,Renk");
+                        foreach (var cat in categories)
+                        {
+                            writer.WriteLine($"{cat.Id},{EscapeCsv(cat.Name)},{EscapeCsv(cat.Color)}");
+                        }
+
+                        writer.WriteLine();
+                        writer.WriteLine("### PAROLALAR ###");
+                        writer.WriteLine("Id,Baslik,KullaniciAdi,SifreliParola,Url,Notlar,KategoriId,KategoriAdi,SonTarih,Guc,OlusturmaTarihi,DegistirmeTarihi");
+
+                        foreach (var pwd in passwords)
+                        {
+                            var line = $"{pwd.Id}," +
+                                      $"{EscapeCsv(pwd.Title)}," +
+                                      $"{EscapeCsv(pwd.Username)}," +
+                                      $"{EscapeCsv(pwd.EncryptedPassword)}," +
+                                      $"{EscapeCsv(pwd.Url)}," +
+                                      $"{EscapeCsv(pwd.Notes)}," +
+                                      $"{pwd.CategoryId}," +
+                                      $"{EscapeCsv(pwd.CategoryName)}," +
+                                      $"{pwd.ExpiryDate?.ToString("yyyy-MM-dd")}," +
+                                      $"{EscapeCsv(pwd.Strength)}," +
+                                      $"{pwd.CreatedDate:yyyy-MM-dd HH:mm:ss}," +
+                                      $"{pwd.ModifiedDate:yyyy-MM-dd HH:mm:ss}";
+                            writer.WriteLine(line);
+                        }
+                    }
+
+                    MessageBox.Show($"Parolalar başarıyla dışa aktarıldı!\nDosya: {dlg.FileName}", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Dışa aktarma hatası: {ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void BtnImportPasswords_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "CSV Dosyası|*.csv"
+            };
+
+            if (dlg.ShowDialog() == true)
+            {
+                var result = MessageBox.Show(
+                    "İçe aktarma işlemi mevcut kategorileri ve parolaları etkileyebilir.\n\n" +
+                    "• Aynı ID'ye sahip kategoriler güncellenecek\n" +
+                    "• Yeni kategoriler eklenecek\n" +
+                    "• Aynı ID'ye sahip parolalar ATLANACAK (yineleme önlenir)\n" +
+                    "• Yeni parolalar eklenecek\n\n" +
+                    "Devam etmek istiyor musunuz?",
+                    "İçe Aktarma Onayı",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        ImportPasswordsFromCsv(dlg.FileName);
+                        RefreshPasswordList();
+                        LoadData();
+                        MessageBox.Show("Parolalar başarıyla içe aktarıldı!", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"İçe aktarma hatası: {ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
+
+        private void ImportPasswordsFromCsv(string filePath)
+        {
+            var lines = System.IO.File.ReadAllLines(filePath, System.Text.Encoding.UTF8);
+            bool inCategories = false;
+            bool inPasswords = false;
+
+            var existingPasswordIds = _dbService.GetAllPasswords().Select(p => p.Id).ToHashSet();
+
+            foreach (var line in lines)
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                if (line.Contains("### KATEGORILER ###"))
+                {
+                    inCategories = true;
+                    inPasswords = false;
+                    continue;
+                }
+                else if (line.Contains("### PAROLALAR ###"))
+                {
+                    inCategories = false;
+                    inPasswords = true;
+                    continue;
+                }
+                else if (line.StartsWith("KategoriId,") || line.StartsWith("Id,"))
+                {
+                    continue; // Başlık satırlarını atla
+                }
+
+                if (inCategories)
+                {
+                    var parts = ParseCsvLine(line);
+                    if (parts.Length >= 2)
+                    {
+                        var catId = int.Parse(parts[0]);
+                        var catName = parts[1];
+                        var catColor = parts.Length > 2 ? parts[2] : "#2196F3";
+
+                        // Kategoriyi ekle veya güncelle
+                        var existingCats = _dbService.GetAllCategories();
+                        if (!existingCats.Any(c => c.Id == catId))
+                        {
+                            _dbService.AddCategory(catName, catColor);
+                        }
+                    }
+                }
+                else if (inPasswords)
+                {
+                    var parts = ParseCsvLine(line);
+                    if (parts.Length >= 12)
+                    {
+                        var id = int.Parse(parts[0]);
+                        
+                        // Aynı ID'ye sahip parola varsa atla (yineleme önlenir)
+                        if (existingPasswordIds.Contains(id))
+                        {
+                            continue;
+                        }
+
+                        var entry = new PasswordEntry
+                        {
+                            Title = parts[1],
+                            Username = parts[2],
+                            EncryptedPassword = parts[3], // Zaten şifrelenmiş
+                            Url = parts[4],
+                            Notes = parts[5],
+                            CategoryId = int.Parse(parts[6]),
+                            ExpiryDate = string.IsNullOrWhiteSpace(parts[8]) ? null : DateTime.Parse(parts[8]),
+                            Strength = parts[9],
+                            CreatedDate = DateTime.Parse(parts[10]),
+                            ModifiedDate = DateTime.Parse(parts[11])
+                        };
+
+                            // Kategori mevcut mu kontrol et, yoksa 'Genel' (ID=1) ata
+                            var existingCats = _dbService.GetAllCategories();
+                            if (!existingCats.Any(c => c.Id == entry.CategoryId))
+                            {
+                                entry.CategoryId = 1; // Genel
+                            }
+                        // Parolayı doğrudan şifrelenmiş haliyle ekle
+                        _dbService.AddPasswordEncrypted(entry);
+                    }
+                }
+            }
+        }
+
+        private string EscapeCsv(string? value)
+        {
+            if (string.IsNullOrEmpty(value)) return "";
+            if (value.Contains(",") || value.Contains("\"") || value.Contains("\n"))
+            {
+                return "\"" + value.Replace("\"", "\"\"") + "\"";
+            }
+            return value;
+        }
+
+        private string[] ParseCsvLine(string line)
+        {
+            var result = new System.Collections.Generic.List<string>();
+            bool inQuotes = false;
+            var currentField = new System.Text.StringBuilder();
+
+            for (int i = 0; i < line.Length; i++)
+            {
+                char c = line[i];
+
+                if (c == '"')
+                {
+                    if (inQuotes && i + 1 < line.Length && line[i + 1] == '"')
+                    {
+                        currentField.Append('"');
+                        i++;
+                    }
+                    else
+                    {
+                        inQuotes = !inQuotes;
+                    }
+                }
+                else if (c == ',' && !inQuotes)
+                {
+                    result.Add(currentField.ToString());
+                    currentField.Clear();
+                }
+                else
+                {
+                    currentField.Append(c);
+                }
+            }
+
+            result.Add(currentField.ToString());
+            return result.ToArray();
+        }
     }
 }

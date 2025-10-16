@@ -218,6 +218,29 @@ namespace SwissKnifeApp.Services
             command.ExecuteNonQuery();
         }
 
+        public void AddPasswordEncrypted(PasswordEntry entry)
+        {
+            using var connection = new SqliteConnection($"Data Source={_dbPath}");
+            connection.Open();
+
+            var command = connection.CreateCommand();
+            command.CommandText = @"
+                INSERT INTO Passwords (Title, Username, EncryptedPassword, Url, Notes, CategoryId, ExpiryDate, Strength, CreatedDate, ModifiedDate)
+                VALUES (@title, @username, @password, @url, @notes, @categoryId, @expiryDate, @strength, @createdDate, @modifiedDate)";
+            
+            command.Parameters.AddWithValue("@title", entry.Title);
+            command.Parameters.AddWithValue("@username", entry.Username ?? "");
+            command.Parameters.AddWithValue("@password", entry.EncryptedPassword); // Zaten şifrelenmiş
+            command.Parameters.AddWithValue("@url", entry.Url ?? "");
+            command.Parameters.AddWithValue("@notes", entry.Notes ?? "");
+            command.Parameters.AddWithValue("@categoryId", entry.CategoryId);
+            command.Parameters.AddWithValue("@expiryDate", entry.ExpiryDate?.ToString("yyyy-MM-dd") ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@strength", entry.Strength ?? "");
+            command.Parameters.AddWithValue("@createdDate", entry.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss"));
+            command.Parameters.AddWithValue("@modifiedDate", entry.ModifiedDate.ToString("yyyy-MM-dd HH:mm:ss"));
+            command.ExecuteNonQuery();
+        }
+
         public void UpdatePassword(PasswordEntry entry, string? plainPassword = null)
         {
             using var connection = new SqliteConnection($"Data Source={_dbPath}");
