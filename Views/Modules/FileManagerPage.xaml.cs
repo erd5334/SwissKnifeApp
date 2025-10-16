@@ -21,6 +21,170 @@ namespace SwissKnifeApp.Views.Modules
             DgFiles.ItemsSource = _files;
             TxtCustomTemplate.Text = "{name}_{date}";
         }
+        // =============================
+        // DOSYA ŞİFRELEME/ÇÖZME EVENT HANDLER STUB'LARI
+        // =============================
+        // AES ile dosya şifreleme
+        private void BtnEncryptFile_Click(object sender, RoutedEventArgs e)
+        {
+            var filePath = TxtEncryptFilePath.Text;
+            var password = PwdEncryptPassword.Password;
+            if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
+            {
+                TxtEncryptStatus.Text = "Geçerli bir dosya seçin.";
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                TxtEncryptStatus.Text = "Parola girin.";
+                return;
+            }
+            try
+            {
+                // Geçici dosya oluştur
+                var tempPath = filePath + ".tmp";
+                EncryptFileAES(filePath, tempPath, password);
+                
+                // Orijinal dosyayı sil ve geçici dosyayı yeniden adlandır
+                File.Delete(filePath);
+                File.Move(tempPath, filePath);
+                
+                TxtEncryptStatus.Text = $"✅ Şifreleme başarılı: {Path.GetFileName(filePath)}";
+                MessageBox.Show("Dosya başarıyla şifrelendi!\n\nUYARI: Orijinal dosya artık şifrelenmiş durumda.", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                TxtEncryptStatus.Text = $"❌ Hata: {ex.Message}";
+                MessageBox.Show($"Şifreleme sırasında hata oluştu:\n{ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // AES ile dosya çözme
+        private void BtnDecryptFile_Click(object sender, RoutedEventArgs e)
+        {
+            var filePath = TxtEncryptFilePath.Text;
+            var password = PwdEncryptPassword.Password;
+            if (string.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
+            {
+                TxtEncryptStatus.Text = "Geçerli bir dosya seçin.";
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                TxtEncryptStatus.Text = "Parola girin.";
+                return;
+            }
+            try
+            {
+                // Geçici dosya oluştur
+                var tempPath = filePath + ".tmp";
+                DecryptFileAES(filePath, tempPath, password);
+                
+                // Orijinal dosyayı sil ve geçici dosyayı yeniden adlandır
+                File.Delete(filePath);
+                File.Move(tempPath, filePath);
+                
+                TxtEncryptStatus.Text = $"✅ Çözme başarılı: {Path.GetFileName(filePath)}";
+                MessageBox.Show("Dosya başarıyla çözüldü!\n\nDosya artık orijinal haline döndü.", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                TxtEncryptStatus.Text = $"❌ Hata: {ex.Message}";
+                // Hata durumunda geçici dosyayı temizle
+                var tempPath = filePath + ".tmp";
+                if (File.Exists(tempPath))
+                    File.Delete(tempPath);
+                MessageBox.Show($"Çözme sırasında hata oluştu:\n{ex.Message}\n\nYanlış parola veya bozuk dosya olabilir.", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // Dosya seçimi
+        private void BtnSelectEncryptFile_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Tüm Dosyalar|*.*"
+            };
+            if (dlg.ShowDialog() == true)
+            {
+                TxtEncryptFilePath.Text = dlg.FileName;
+                TxtEncryptStatus.Text = "Dosya seçildi.";
+            }
+        }
+
+        // Sürükle-bırak ile dosya seçimi
+        private void EncryptFile_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                var files = (string[])e.Data.GetData(DataFormats.FileDrop);
+                if (files.Length > 0)
+                {
+                    TxtEncryptFilePath.Text = files[0];
+                    TxtEncryptStatus.Text = "Dosya seçildi (sürükle-bırak).";
+                }
+            }
+        }
+
+        private void EncryptFile_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = DragDropEffects.Copy;
+            e.Handled = true;
+        }
+
+        // Parola göster/gizle
+        private void ChkShowEncryptPassword_Checked(object sender, RoutedEventArgs e)
+        {
+            // PasswordBox'ı TextBox'a dönüştür
+            var parent = (StackPanel)PwdEncryptPassword.Parent;
+            var password = PwdEncryptPassword.Password;
+            var txt = new TextBox { Text = password, Width = PwdEncryptPassword.Width, Margin = PwdEncryptPassword.Margin, Name = "TxtEncryptPassword" };
+            parent.Children.Remove(PwdEncryptPassword);
+            parent.Children.Insert(0, txt);
+        }
+
+        private void ChkShowEncryptPassword_Unchecked(object sender, RoutedEventArgs e)
+        {
+            // TextBox'ı PasswordBox'a geri döndür
+            var parent = (StackPanel)ChkShowEncryptPassword.Parent;
+            var txt = parent.Children.OfType<TextBox>().FirstOrDefault(x => x.Name == "TxtEncryptPassword");
+            if (txt != null)
+            {
+                var pwd = new PasswordBox { Width = txt.Width, Margin = txt.Margin, Name = "PwdEncryptPassword" };
+                pwd.Password = txt.Text;
+                parent.Children.Remove(txt);
+                parent.Children.Insert(0, pwd);
+                PwdEncryptPassword = pwd;
+            }
+        }
+
+        // AES Şifreleme Fonksiyonu
+        private void EncryptFileAES(string inputPath, string outputPath, string password)
+        {
+            using var aes = System.Security.Cryptography.Aes.Create();
+            var salt = System.Text.Encoding.UTF8.GetBytes("SwissKnifeSalt2025");
+            var key = new System.Security.Cryptography.Rfc2898DeriveBytes(password, salt, 10000);
+            aes.Key = key.GetBytes(32);
+            aes.IV = key.GetBytes(16);
+            using var fsInput = new FileStream(inputPath, FileMode.Open, FileAccess.Read);
+            using var fsOutput = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
+            using var cs = new System.Security.Cryptography.CryptoStream(fsOutput, aes.CreateEncryptor(), System.Security.Cryptography.CryptoStreamMode.Write);
+            fsInput.CopyTo(cs);
+        }
+
+        // AES Çözme Fonksiyonu
+        private void DecryptFileAES(string inputPath, string outputPath, string password)
+        {
+            using var aes = System.Security.Cryptography.Aes.Create();
+            var salt = System.Text.Encoding.UTF8.GetBytes("SwissKnifeSalt2025");
+            var key = new System.Security.Cryptography.Rfc2898DeriveBytes(password, salt, 10000);
+            aes.Key = key.GetBytes(32);
+            aes.IV = key.GetBytes(16);
+            using var fsInput = new FileStream(inputPath, FileMode.Open, FileAccess.Read);
+            using var fsOutput = new FileStream(outputPath, FileMode.Create, FileAccess.Write);
+            using var cs = new System.Security.Cryptography.CryptoStream(fsInput, aes.CreateDecryptor(), System.Security.Cryptography.CryptoStreamMode.Read);
+            cs.CopyTo(fsOutput);
+        }
 
         // ============================================
         // 1️⃣ DOSYA KARŞILAŞTIRICI (DIFF) BÖLÜMÜ

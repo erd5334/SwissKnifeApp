@@ -119,6 +119,48 @@
                 </Grid>
             </TabItem>
 
+                <!-- 3️⃣ DOSYA ŞİFRELEME/ÇÖZME -->
+                <TabItem Header="🔒 Dosya Şifreleme/Çözme">
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Dosya Seçimi ve Sürükle-Bırak -->
+                        <GroupBox Header="Dosya Seçimi" Grid.Row="0" Margin="0,0,0,10">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBox x:Name="TxtEncryptFilePath" Width="400" Margin="5,0" IsReadOnly="True" AllowDrop="True" PreviewDragOver="EncryptFile_DragOver" Drop="EncryptFile_Drop"/>
+                                    <Button Content="📁 Dosya Seç" Click="BtnSelectEncryptFile_Click" Margin="5,0" Padding="10,5"/>
+                                </StackPanel>
+                                <TextBlock Text="Dosyayı seçin veya buraya sürükleyin." Margin="10,5,0,0" Foreground="#888" FontStyle="Italic"/>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <!-- Parola Girişi -->
+                        <GroupBox Header="Parola" Grid.Row="1" Margin="0,0,0,10">
+                            <StackPanel Orientation="Horizontal">
+                                <PasswordBox x:Name="PwdEncryptPassword" Width="200" Margin="5,0"/>
+                                <CheckBox x:Name="ChkShowEncryptPassword" Content="Parolayı Göster" Margin="10,0,0,0" Checked="ChkShowEncryptPassword_Checked" Unchecked="ChkShowEncryptPassword_Unchecked"/>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <!-- Şifreleme/Çözme Butonları -->
+                        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10">
+                            <Button Content="🔒 Şifrele" Click="BtnEncryptFile_Click" Padding="15,8" Background="#2196F3" Foreground="White" FontWeight="Bold"/>
+                            <Button Content="🔓 Çöz" Click="BtnDecryptFile_Click" Padding="15,8" Margin="10,0,0,0" Background="#4CAF50" Foreground="White" FontWeight="Bold"/>
+                        </StackPanel>
+
+                        <!-- Sonuç/Durum -->
+                        <GroupBox Header="Durum" Grid.Row="3" Margin="0,0,0,0">
+                            <TextBlock x:Name="TxtEncryptStatus" Text="Hazır." Foreground="#555" FontWeight="Bold"/>
+                        </GroupBox>
+                    </Grid>
+                </TabItem>
+
             <!-- 2️⃣ TOPLU YENİDEN ADLANDIRICI -->
             <TabItem Header="📝 Toplu Yeniden Adlandırıcı">
                 <Grid Margin="10">
