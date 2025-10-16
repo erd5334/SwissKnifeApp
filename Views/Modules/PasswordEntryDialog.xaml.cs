@@ -44,7 +44,28 @@ namespace SwissKnifeApp.Views.Modules
                 CmbCategory.SelectedIndex = 0;
             }
 
-            TxtPassword.PasswordChanged += (s, e) => UpdatePasswordStrength();
+            TxtPassword.PasswordChanged += (s, e) => {
+                TxtPasswordVisible.Text = TxtPassword.Password;
+                UpdatePasswordStrength();
+            };
+            TxtPasswordVisible.TextChanged += (s, e) => {
+                TxtPassword.Password = TxtPasswordVisible.Text;
+                UpdatePasswordStrength();
+            };
+        }
+
+        private void ChkShowPassword_Checked(object sender, RoutedEventArgs e)
+        {
+            TxtPasswordVisible.Text = TxtPassword.Password;
+            TxtPasswordVisible.Visibility = Visibility.Visible;
+            TxtPassword.Visibility = Visibility.Collapsed;
+        }
+
+        private void ChkShowPassword_Unchecked(object sender, RoutedEventArgs e)
+        {
+            TxtPassword.Password = TxtPasswordVisible.Text;
+            TxtPassword.Visibility = Visibility.Visible;
+            TxtPasswordVisible.Visibility = Visibility.Collapsed;
         }
 
         private void LoadCategories()

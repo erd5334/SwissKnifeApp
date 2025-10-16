@@ -157,7 +157,7 @@ namespace SwissKnifeApp.Views.Modules {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/Türk Çakısı;component/views/modules/qrbarcodetoolspage.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Türk Çakısı;V1.0.0.0;component/views/modules/qrbarcodetoolspage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Views\Modules\QrBarcodeToolsPage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

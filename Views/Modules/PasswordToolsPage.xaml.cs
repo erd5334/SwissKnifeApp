@@ -283,17 +283,17 @@ namespace SwissKnifeApp.Views.Modules
             }
         }
 
-        private void DgPasswords_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void DgPasswords_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (DgPasswords.SelectedItem is PasswordEntry entry)
             {
                 _selectedEntry = entry;
                 TxtDetailTitle.Text = entry.Title;
-                TxtDetailNotes.Text = entry.Notes;
                 TxtDetailPassword.Text = "****";
+                // Yeni detaylar
+                if (FindName("TxtDetailUsername") is TextBlock tbUser) tbUser.Text = entry.Username;                
             }
         }
-
         private void BtnShowPassword_Click(object sender, RoutedEventArgs e)
         {
             if (_selectedEntry != null)
@@ -311,5 +311,34 @@ namespace SwissKnifeApp.Views.Modules
                 }
             }
         }
+
+        private void BtnAddCategory_Click(object sender, RoutedEventArgs e)
+        {
+            var input = Microsoft.VisualBasic.Interaction.InputBox("Yeni kategori adı girin:", "Kategori Ekle", "");
+            if (!string.IsNullOrWhiteSpace(input))
+            {
+                _dbService.AddCategory(input);
+                LoadData();
+                MessageBox.Show("Kategori eklendi!");
+            }
+        }
+
+        private void BtnDeleteCategory_Click(object sender, RoutedEventArgs e)
+        {
+            if (CmbCategoryFilter.SelectedItem is PasswordCategory cat && cat.Id > 0)
+            {
+                var result = MessageBox.Show($"{cat.Name} kategorisini silmek istediğinize emin misiniz?", "Onay", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    _dbService.DeleteCategory(cat.Id);
+                    LoadData();
+                    MessageBox.Show("Kategori silindi!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Lütfen silinecek bir kategori seçin!");
+            }
+        }       
     }
 }
