@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WİNDOWS7_0_OR_GREATER
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\App.xaml
-13-412106991
+14-3254804
 1-1562078898
-171852074951
-3011417694484
-MainWindow.xaml;Resources\Themes\CustomStyles.xaml;Views\Modules\ClipboardHistoryPage.xaml;Views\Modules\DataAnalysisPage.xaml;Views\Modules\ImageConverterPage.xaml;Views\Modules\JsonXmlFormatterPage.xaml;Views\Modules\MoneyToTextPage.xaml;Views\Modules\PasswordToolsPage.xaml;Views\Modules\PdfOperationsPage.xaml;Views\Modules\QrBarcodeToolsPage.xaml;Views\Modules\SpeedTestPage.xaml;Views\Modules\TextOperationsPage.xaml;Views\Modules\UnitConverterPage.xaml;
+21734110871
+305-778207566
+MainWindow.xaml;Resources\Themes\CustomStyles.xaml;Views\Modules\ClipboardHistoryPage.xaml;Views\Modules\DataAnalysisPage.xaml;Views\Modules\ImageConverterPage.xaml;Views\Modules\JsonXmlFormatterPage.xaml;Views\Modules\MoneyToTextPage.xaml;Views\Modules\PasswordEntryDialog.xaml;Views\Modules\PasswordToolsPage.xaml;Views\Modules\PdfOperationsPage.xaml;Views\Modules\QrBarcodeToolsPage.xaml;Views\Modules\SpeedTestPage.xaml;Views\Modules\TextOperationsPage.xaml;Views\Modules\UnitConverterPage.xaml;
 
 False
 

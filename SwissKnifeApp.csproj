@@ -36,6 +36,7 @@
     <PackageReference Include="MahApps.Metro.IconPacks.Material" Version="6.1.0" />
     <PackageReference Include="MahApps.Metro.IconPacks.Modern" Version="6.1.0" />
     <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.5" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.0" />
     <PackageReference Include="OxyPlot.Wpf" Version="2.2.0" />
     <PackageReference Include="PdfiumViewer" Version="2.13.0" />
     <PackageReference Include="PDFsharp" Version="6.2.2" />
