@@ -234,6 +234,35 @@ dotnet publish -c Release -r win-x64 --self-contained
 - Arama özelliği
 - Metin ve görsel desteği
 
+### 11. ColorPickerPage
+**Dosya**: `Views/Modules/ColorPickerPage.xaml`
+- Renk seçici modülü (Paint tarzı eyedropper)
+- Tüm ekrandan renk seçme (global eyedropper)
+- HEX, RGB, HSL kodları ve 30+ programlama dili için kod blokları
+- Kopyalanabilir renk kodları
+- Çoklu monitör desteği
+
+### 12. EyedropperOverlayWindow
+**Dosya**: `Views/Modules/EyedropperOverlayWindow.xaml`
+- Global ekran renk seçici (Win32 interop)
+- Şeffaf overlay ile ekranın herhangi bir yerinden renk alma
+- Seçilen rengi ColorPickerPage'e aktarma
+
+### 13. TextSummarizerPage
+**Dosya**: `Views/Modules/TextSummarizerPage.xaml`
+- Metin özetleme (oransal özet)
+- Anahtar kelime bulma
+- Önemli cümle çıkarma
+- Türkçe/İngilizce dil desteği
+- Kopyalanabilir özet ve anahtar kelimeler
+
+### 14. FileManagerPage
+**Dosya**: `Views/Modules/FileManagerPage.xaml`
+- Dosya karşılaştırma (fark analizi)
+- Dosya şifreleme/çözme
+- Toplu dosya yeniden adlandırma
+- Gelişmiş filtre ve arama seçenekleri
+
 ## 🎨 Tasarım Özellikleri
 
 ### Renkler
