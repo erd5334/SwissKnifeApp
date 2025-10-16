@@ -85,6 +85,12 @@ namespace SwissKnifeApp
                     case "DataAnalysis":
                         MainFrame.Navigate(new DataAnalysisPage());
                         break;
+                    case "TextSummarizer":
+                        MainFrame.Navigate(new TextSummarizerPage());
+                        break;
+                    case "ColorPicker":
+                        MainFrame.Navigate(new ColorPickerPage());
+                        break;
 
                     default:
                         MessageBox.Show($"'{tag}' modülü henüz eklenmedi.", "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);

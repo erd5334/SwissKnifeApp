@@ -1,0 +1,15 @@
+<Window x:Class="SwissKnifeApp.Views.Modules.EyedropperOverlayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="EyedropperOverlay"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        Topmost="True"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Opacity="1"
+        Focusable="True">
+    <!-- Fill element to capture mouse clicks; nearly transparent to allow hit-testing -->
+    <Border Background="#01FFFFFF" MouseLeftButtonDown="OnMouseLeftButtonDown" KeyDown="OnKeyDown"/>
+</Window>

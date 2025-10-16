@@ -1,0 +1,42 @@
+<Page x:Class="SwissKnifeApp.Views.Modules.ColorPickerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      Title="Renk Seçici">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Renk Seçici" FontSize="24" FontWeight="Bold" Margin="0,0,0,20"/>
+        <Border Grid.Row="1" Background="LightGray" CornerRadius="8" Padding="20">
+            <StackPanel>
+                <Button Content="Renk Seçici (Damlalık)" x:Name="BtnEyedropper" Margin="0,0,0,10" Click="BtnEyedropper_Click"/>
+                <TextBlock Text="Bir alana tıklayarak renk seçin veya damlalık ile ekranın herhangi bir yerinden renk alın." FontWeight="SemiBold"/>
+                <WrapPanel Margin="0,10,0,10" x:Name="ColorSamplePanel">
+                    <!-- Renk örnekleri dinamik olarak eklenecek -->
+                </WrapPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <TextBlock Text="Seçilen Renk:" FontWeight="SemiBold"/>
+                    <Rectangle x:Name="SelectedColorRect" Width="32" Height="32" Stroke="Black" Margin="10,0,0,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <TextBlock Text="HEX:" FontWeight="SemiBold"/>
+                    <TextBox x:Name="HexCodeBox" Width="100" Margin="5,0,0,0" IsReadOnly="True"/>
+                    <Button Content="Kopyala" x:Name="BtnCopyHex" Margin="5,0,0,0" Click="BtnCopyHex_Click"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                    <TextBlock Text="RGB:" FontWeight="SemiBold"/>
+                    <TextBox x:Name="RgbCodeBox" Width="120" Margin="5,0,0,0" IsReadOnly="True"/>
+                    <Button Content="Kopyala" x:Name="BtnCopyRgb" Margin="5,0,0,0" Click="BtnCopyRgb_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <TabControl Grid.Row="2" Margin="0,20,0,0" x:Name="CodeTabControl">
+            <!-- Kod blokları dinamik olarak eklenecek -->
+        </TabControl>
+    </Grid>
+</Page>

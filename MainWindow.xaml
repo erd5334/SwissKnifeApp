@@ -188,6 +188,19 @@
                                 <TextBlock Text="Veri Analiz Araçları" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
+
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="TextSummarizer">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="FileDocument" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Metin Özetleyici" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="ColorPicker">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="Palette" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Renk Seçici" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
