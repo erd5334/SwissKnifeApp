@@ -79,6 +79,9 @@ namespace SwissKnifeApp
                     case "MoneyToText":
                         MainFrame.Navigate(new MoneyToTextPage());
                         break;
+                    case "TaxCalculator":
+                        MainFrame.Navigate(new TaxCalculatorPage());
+                        break;
                     case "FileManager":
                         MainFrame.Navigate(new FileManagerPage());
                         break;
@@ -90,6 +93,9 @@ namespace SwissKnifeApp
                         break;
                     case "ColorPicker":
                         MainFrame.Navigate(new ColorPickerPage());
+                        break;
+                    case "PhotoCollage":
+                        MainFrame.Navigate(new PhotoCollagePage());
                         break;
 
                     default:

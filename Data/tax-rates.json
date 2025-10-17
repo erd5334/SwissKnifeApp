@@ -1,0 +1,189 @@
+{
+  "Version": "2025.1",
+  "LastUpdated": "2025-10-17T00:00:00Z",
+  "Source": "https://gelir-vergisi.hesaplama.net/",
+  "GelirVergisi": {
+    "2025": {
+      "Ucret": [
+        { "Alt": 0, "Ust": 158000, "Oran": 15, "SabitVergi": 0 },
+        { "Alt": 158000, "Ust": 330000, "Oran": 20, "SabitVergi": 23700 },
+        { "Alt": 330000, "Ust": 1200000, "Oran": 27, "SabitVergi": 58100 },
+        { "Alt": 1200000, "Ust": 4300000, "Oran": 35, "SabitVergi": 293000 },
+        { "Alt": 4300000, "Ust": 999999999, "Oran": 40, "SabitVergi": 1378000 }
+      ],
+      "UcretDisi": [
+        { "Alt": 0, "Ust": 158000, "Oran": 15, "SabitVergi": 0 },
+        { "Alt": 158000, "Ust": 330000, "Oran": 20, "SabitVergi": 23700 },
+        { "Alt": 330000, "Ust": 800000, "Oran": 27, "SabitVergi": 58100 },
+        { "Alt": 800000, "Ust": 4300000, "Oran": 35, "SabitVergi": 185000 },
+        { "Alt": 4300000, "Ust": 999999999, "Oran": 40, "SabitVergi": 1410000 }
+      ]
+    },
+    "2024": {
+      "Ucret": [
+        { "Alt": 0, "Ust": 110000, "Oran": 15, "SabitVergi": 0 },
+        { "Alt": 110000, "Ust": 230000, "Oran": 20, "SabitVergi": 16500 },
+        { "Alt": 230000, "Ust": 870000, "Oran": 27, "SabitVergi": 40500 },
+        { "Alt": 870000, "Ust": 3000000, "Oran": 35, "SabitVergi": 213300 },
+        { "Alt": 3000000, "Ust": 999999999, "Oran": 40, "SabitVergi": 958800 }
+      ],
+      "UcretDisi": [
+        { "Alt": 0, "Ust": 110000, "Oran": 15, "SabitVergi": 0 },
+        { "Alt": 110000, "Ust": 230000, "Oran": 20, "SabitVergi": 16500 },
+        { "Alt": 230000, "Ust": 580000, "Oran": 27, "SabitVergi": 40500 },
+        { "Alt": 580000, "Ust": 3000000, "Oran": 35, "SabitVergi": 135000 },
+        { "Alt": 3000000, "Ust": 999999999, "Oran": 40, "SabitVergi": 982000 }
+      ]
+    }
+  },
+  "Kdv": {
+    "Oranlar": [1, 8, 10, 18, 20]
+  },
+  "KiraVergisi": {
+    "2025": {
+      "KonutIstisnasi": 47000,
+      "BeyanSiniri": 330000
+    },
+    "2024": {
+      "KonutIstisnasi": 33000,
+      "BeyanSiniri": 230000
+    }
+  },
+  "KurumlarVergisi": {
+    "2025": {
+      "Normal": 25,
+      "Finans": 30
+    },
+    "2024": {
+      "Normal": 25,
+      "Finans": 30
+    },
+    "2023": {
+      "Normal": 25,
+      "Finans": 30
+    },
+    "2022": {
+      "Normal": 23,
+      "Finans": 23
+    },
+    "2021": {
+      "Normal": 25,
+      "Finans": 25
+    },
+    "2018-2020": {
+      "Normal": 22,
+      "Finans": 22
+    }
+  },
+  "DamgaVergisi": {
+    "Genel": 0.948
+  },
+  "DegerArtisKazanci": {
+    "2025": {
+      "GayrimenkulOran": 50,
+      "MenkulOran": 50
+    }
+  },
+  "DegerliKonutVergisi": {
+    "2025": {
+      "Esik": 12500000,
+      "Oranlar": [
+        { "Alt": 12500000, "Ust": 25000000, "Oran": 0.6 },
+        { "Alt": 25000000, "Ust": 50000000, "Oran": 0.9 },
+        { "Alt": 50000000, "Ust": 75000000, "Oran": 1.2 },
+        { "Alt": 75000000, "Ust": 999999999, "Oran": 1.5 }
+      ]
+    }
+  },
+  "EmlakVergisi": {
+    "2025": {
+      "BinaOran": 0.2,
+      "AraziOran": 0.1
+    }
+  },
+  "KdvTevkifat": {
+    "Oranlar": [
+      { "Tanim": "Makine, Teçhizat, Demirbaş", "KdvOran": 18, "TevkifatOran": 50 },
+      { "Tanim": "Bakım Onarım", "KdvOran": 20, "TevkifatOran": 50 },
+      { "Tanim": "Yapı İşleri", "KdvOran": 20, "TevkifatOran": 30 },
+      { "Tanim": "Temizlik", "KdvOran": 20, "TevkifatOran": 50 },
+      { "Tanim": "Özel Güvenlik", "KdvOran": 20, "TevkifatOran": 50 },
+      { "Tanim": "Yemek Servisi", "KdvOran": 20, "TevkifatOran": 50 },
+      { "Tanim": "Hurda Teslimleri", "KdvOran": 20, "TevkifatOran": 90 },
+      { "Tanim": "Metal, Bakır, Çinko", "KdvOran": 20, "TevkifatOran": 90 },
+      { "Tanim": "Pamuk, Kösele, Küspe", "KdvOran": 20, "TevkifatOran": 90 }
+    ]
+  },
+  "KiraStopaj": {
+    "2025": {
+      "Oran": 20,
+      "IstisnaSiniri": 47000
+    }
+  },
+  "KonaklamaVergisi": {
+    "2025": {
+      "Oran": 2
+    }
+  },
+  "MotorluTasitlarVergisi": {
+    "2025": {
+      "Otomobil": [
+        { "Alt": 0, "Ust": 1300, "Yil1": 2193, "Yil2": 3289, "Yil3": 4932, "Yil4": 6851, "Yil5Plus": 9302 },
+        { "Alt": 1301, "Ust": 1600, "Yil1": 3835, "Yil2": 5753, "Yil3": 8629, "Yil4": 11984, "Yil5Plus": 16267 },
+        { "Alt": 1601, "Ust": 1800, "Yil1": 5753, "Yil2": 8629, "Yil3": 12944, "Yil4": 17976, "Yil5Plus": 24406 },
+        { "Alt": 1801, "Ust": 2000, "Yil1": 8629, "Yil2": 12944, "Yil3": 19416, "Yil4": 26964, "Yil5Plus": 36609 },
+        { "Alt": 2001, "Ust": 2500, "Yil1": 12944, "Yil2": 19416, "Yil3": 29124, "Yil4": 40445, "Yil5Plus": 54914 },
+        { "Alt": 2501, "Ust": 3000, "Yil1": 17259, "Yil2": 25888, "Yil3": 38832, "Yil4": 53927, "Yil5Plus": 73218 },
+        { "Alt": 3001, "Ust": 3500, "Yil1": 23011, "Yil2": 34517, "Yil3": 51775, "Yil4": 71927, "Yil5Plus": 97624 },
+        { "Alt": 3501, "Ust": 4000, "Yil1": 30741, "Yil2": 46112, "Yil3": 69168, "Yil4": 96087, "Yil5Plus": 130432 },
+        { "Alt": 4001, "Ust": 999999, "Yil1": 40329, "Yil2": 60494, "Yil3": 90741, "Yil4": 126087, "Yil5Plus": 171124 }
+      ],
+      "Motosiklet": [
+        { "Alt": 0, "Ust": 100, "Tutar": 219 },
+        { "Alt": 101, "Ust": 250, "Tutar": 493 },
+        { "Alt": 251, "Ust": 650, "Tutar": 1096 },
+        { "Alt": 651, "Ust": 1200, "Tutar": 2466 },
+        { "Alt": 1201, "Ust": 999999, "Tutar": 4932 }
+      ]
+    }
+  },
+  "OzelTuketimVergisi": {
+    "Akaryakit": [
+      { "Tanim": "Benzin", "Oran": 5.17 },
+      { "Tanim": "Motorin", "Oran": 3.44 },
+      { "Tanim": "LPG", "Oran": 2.07 }
+    ],
+    "Sigara": {
+      "MaktuOran": 0.85,
+      "NisbiOran": 63.38
+    },
+    "Alkol": [
+      { "Tanim": "Rakı, Votka", "Oran": 65 },
+      { "Tanim": "Şarap", "Oran": 40 },
+      { "Tanim": "Bira", "Oran": 63.3 }
+    ]
+  },
+  "VerasetIntikal": {
+    "2025": {
+      "Dilimler": [
+        { "Alt": 0, "Ust": 1500000, "Oran": 1 },
+        { "Alt": 1500000, "Ust": 3400000, "Oran": 3 },
+        { "Alt": 3400000, "Ust": 6500000, "Oran": 5 },
+        { "Alt": 6500000, "Ust": 12000000, "Oran": 7 },
+        { "Alt": 12000000, "Ust": 999999999, "Oran": 10 }
+      ],
+      "Istisna": {
+        "EsVeCocuk": 440000,
+        "Diger": 110000
+      }
+    }
+  },
+  "VergiGecikme": {
+    "2025": {
+      "AylikOran": 3.5
+    },
+    "2024": {
+      "AylikOran": 3.5
+    }
+  }
+}

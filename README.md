@@ -96,6 +96,45 @@ Türk Çakısı, günlük işlerinizi kolaylaştırmak için tasarlanmış, mode
 - **Yeniden Kullanım**: Eski pano kayıtlarını tek tıkla kullan
 - **Temizleme**: Tüm geçmişi tek seferde temizle
 
+### 🖼️ Resim Kolaj
+- **Çoklu Fotoğraf**: 1-20 arası fotoğrafla kolaj oluştur
+- **Şablon Seçimi**: Otomatik grid düzeni (2x2, 3x3, 4x4, 5x4)
+- **Özelleştirme**: 
+  - Kenarlık kalınlığı ve rengi
+  - Arka plan rengi (ColorPicker ile)
+  - Köşe yuvarlatma (0-50px)
+  - Fotoğraf arası boşluk
+- **Metin Ekleme**: 
+  - Kolaj üzerine yazı ekleme
+  - Pozisyon seçimi (üst/orta/alt, sol/orta/sağ)
+  - Yazı rengi (ColorPicker ile)
+  - Font boyutu ayarı
+- **Önizleme & Kaydetme**: Canlı önizleme ve PNG/JPG formatında kayıt
+- **Sürükle-Bırak**: Fotoğrafları direkt olarak sürükleyip bırakın
+
+### 💰 Vergi Hesaplayıcı
+Türkiye vergi sistemine özel 13 farklı vergi türü hesaplama:
+- **📊 Gelir Vergisi**: 5 dilimli artan oranlı hesaplama (ücret/ücret dışı ayrımı)
+- **🧾 KDV Hesaplama**: KDV dahil/hariç fiyat hesaplama (5 farklı oran)
+- **🏢 Kurumlar Vergisi**: Kurumlar vergisi hesaplama (finans sektörü ayrımı)
+- **🏠 Kira Gelir Vergisi**: Kira geliri vergisi hesaplama (istisna ile)
+- **📄 Damga Vergisi**: Belge ve sözleşme damga vergisi (‰0.948)
+- **🚗 MTV (Motorlu Taşıtlar Vergisi)**: Otomobil ve motosiklet MTV hesaplama
+- **✂️ KDV Tevkifatı**: 9 hizmet kategorisi için KDV tevkifat hesaplama
+- **📈 Değer Artış Kazancı**: Gayrimenkul ve menkul değer artış kazancı (%50 istisna)
+- **🏰 Değerli Konut Vergisi**: 12.5M TL üzeri konutlar için lüks konut vergisi
+- **🏘️ Emlak Vergisi**: Bina ve arazi emlak vergisi hesaplama
+- **⛽ ÖTV (Özel Tüketim Vergisi)**: Akaryakıt ÖTV hesaplama
+- **🎁 Veraset ve İntikal Vergisi**: Miras vergisi hesaplama (mirasçı türüne göre)
+- **⏱️ Vergi Gecikme Faizi**: Geciken vergi borçları için faiz hesaplama
+
+**Özellikler**:
+- 2024-2025 vergi oranları (JSON cache)
+- Dilim bazlı detaylı hesaplama
+- Matrah, vergi ve net tutar gösterimi
+- Web scraping ile otomatik oran güncelleme (HtmlAgilityPack)
+- Kullanıcı dostu arayüz ve validasyon
+
 ## 🚀 Kurulum
 
 ### Gereksinimler
@@ -170,6 +209,7 @@ dotnet publish -c Release -r win-x64 --self-contained
 - **HBMoneyToWords** (1.0.0): Para-metin dönüşümü
 - **WindowsAPICodePack** (8.0.5): Windows özel özellikleri
 - **CommunityToolkit.Mvvm** (8.4.0): MVVM pattern desteği
+- **HtmlAgilityPack** (1.12.4): Web scraping ve HTML parsing
 
 ## 📦 Modüller
 
@@ -263,6 +303,38 @@ dotnet publish -c Release -r win-x64 --self-contained
 - Toplu dosya yeniden adlandırma
 - Gelişmiş filtre ve arama seçenekleri
 
+### 15. PhotoCollagePage
+**Dosya**: `Views/Modules/PhotoCollagePage.xaml`
+- 1-20 arası fotoğrafla kolaj oluşturma
+- Otomatik şablon seçimi
+- Kenarlık, boşluk ve köşe ayarları
+- ColorPicker ile renk seçimi
+- Metin ekleme ve pozisyonlandırma
+- PNG/JPG formatında kaydetme
+
+### 16. TaxCalculatorPage
+**Dosya**: `Views/Modules/TaxCalculatorPage.xaml`
+**Servisler**: 
+- `Services/TaxCalculationService.cs` - 20+ vergi hesaplama metodu
+- `Services/TaxRatesScraperService.cs` - Web scraping servisi
+- `Models/TaxRateModels.cs` - 17 vergi veri modeli
+- `Data/tax-rates.json` - 2024-2025 vergi oranları cache
+
+13 farklı vergi türü hesaplama:
+- Gelir Vergisi (5 dilim)
+- KDV (5 oran)
+- Kurumlar Vergisi
+- Kira Gelir Vergisi
+- Damga Vergisi
+- MTV (Motorlu Taşıtlar)
+- KDV Tevkifatı (9 kategori)
+- Değer Artış Kazancı
+- Değerli Konut Vergisi
+- Emlak Vergisi
+- ÖTV (Akaryakıt)
+- Veraset ve İntikal Vergisi
+- Vergi Gecikme Faizi
+
 ## 🎨 Tasarım Özellikleri
 
 ### Renkler
@@ -295,7 +367,8 @@ SwissKnifeApp/
 ├── App.xaml                    # Uygulama yapılandırması
 ├── MainWindow.xaml             # Ana pencere ve navigasyon
 ├── Models/                     # Veri modelleri
-│   └── ClipboardItem.cs
+│   ├── ClipboardItem.cs
+│   └── TaxRateModels.cs       # Vergi hesaplama modelleri (17 class)
 ├── ViewModels/                 # MVVM view modelleri
 │   └── MainViewModel.cs
 ├── Views/
@@ -309,11 +382,17 @@ SwissKnifeApp/
 │       ├── JsonXmlFormatterPage.xaml
 │       ├── MoneyToTextPage.xaml
 │       ├── SpeedTestPage.xaml
-│       └── ClipboardHistoryPage.xaml
+│       ├── ClipboardHistoryPage.xaml
+│       ├── PhotoCollagePage.xaml      # Resim kolaj oluşturucu
+│       └── TaxCalculatorPage.xaml     # Vergi hesaplayıcı (13 tab)
 ├── Resources/                  # Kaynaklar
 │   ├── Icons/
 │   └── Themes/
-└── Services/                   # Servisler
+├── Services/                   # Servisler
+│   ├── TaxCalculationService.cs      # Vergi hesaplama servisi
+│   └── TaxRatesScraperService.cs     # Web scraping servisi
+└── Data/                       # Veri dosyaları
+    └── tax-rates.json          # Vergi oranları cache (2024-2025)
 
 ```
 
@@ -390,14 +469,18 @@ dotnet test
 - [ ] Otomatik güncelleme
 - [ ] Markdown önizleme
 - [ ] Regex test aracı
-- [ ] Color picker
 - [ ] Base conversion (2, 8, 10, 16)
+- [x] Resim kolaj oluşturucu (ColorPicker, metin ekleme)
+- [x] Vergi hesaplayıcı (13 vergi türü, web scraping)
+- [ ] Resim kolaj - Fotoğraf sürükle-bırak ile sıralama
 
 ## 🐛 Bilinen Sorunlar
 
 - ImageSharp kütüphanesinde güvenlik uyarıları (WebP ile ilgili)
 - SVG to PNG dönüşümünde bazı karmaşık SVG'ler sorun yaratabilir
 - ICO dönüşümü maksimum 256x256 boyutlarla sınırlı
+- Resim kolaj - Köşe yuvarlatma Border'larda tam uygulanmıyor
+- Vergi hesaplayıcı - Web scraping HTML parsing iyileştirilebilir (şu an fallback değerler kullanılıyor)
 
 ## 📄 Lisans
 
@@ -422,7 +505,29 @@ Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır.
 
 **Not**: Bu uygulama aktif geliştirme aşamasındadır. Yeni özellikler ve iyileştirmeler düzenli olarak eklenmektedir.
 
-**Versiyon**: 1.0.0  
-**Son Güncelleme**: 15 Ekim 2025
+**Versiyon**: 2.0.0  
+**Son Güncelleme**: 17 Ekim 2025
+
+## 🎉 Son Güncelleme (v2.0.0 - 17 Ekim 2025)
+
+### Yeni Özellikler
+- ✨ **Resim Kolaj Oluşturucu** eklendi (1-20 fotoğraf, özelleştirilebilir şablonlar)
+- ✨ **Vergi Hesaplayıcı** eklendi (13 farklı vergi türü, web scraping desteği)
+- 🎨 ColorPicker entegrasyonu (kolaj ve vergi modüllerinde)
+- 📊 JSON tabanlı vergi oranları cache sistemi
+- 🌐 HtmlAgilityPack ile web scraping altyapısı
+
+### İyileştirmeler
+- 🖼️ PDF servisleri genişletildi
+- 📝 Geliştirilmiş dosya yönetimi
+- 🎯 Kullanıcı arayüzü iyileştirmeleri
+- 📚 README detaylandırıldı
+
+### Teknik Detaylar
+- 17 yeni model class (TaxRateModels.cs)
+- 2 yeni servis (TaxCalculationService, TaxRatesScraperService)
+- 2 yeni sayfa (PhotoCollagePage, TaxCalculatorPage)
+- 350+ satır JSON vergi verisi
+- 1000+ satır XAML ve C# kodu eklendi
 
 ⭐ Beğendiyseniz yıldız vermeyi unutmayın!

@@ -175,6 +175,13 @@
                             </StackPanel>
                         </Button>
 
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="TaxCalculator">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Vergi Hesaplayıcı" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
                         <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="FileManager">
                             <StackPanel Orientation="Horizontal">
                                 <iconPacks:PackIconModern Kind="Folder" Width="20" Height="20" Margin="0,0,15,0"/>
@@ -201,6 +208,12 @@
                                 <TextBlock Text="Renk Seçici" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="PhotoCollage">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="ImageMultiple" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Fotoğraf Kolaj" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </ScrollViewer>
             </Grid>
@@ -213,7 +226,7 @@
             <!-- Varsayılan içerik (Frame boşken görünür) -->
             <Grid x:Name="WelcomeGrid" Background="White">
                 <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <Image Source="pack://application:,,,/Resources/Icons/Logo.png" Width="160" Height="160" Margin="0,0,0,20"/>                                        
+                    <Image Source="pack://application:,,,/Resources/Icons/Logo.png" Width="512" Height="512" Margin="0,0,0,20"/>                                        
                     <TextBlock Text="Sol menüden bir araç seçin" FontSize="16" Foreground="#7F8C8D" HorizontalAlignment="Center" Margin="0,10,0,0"/>
                 </StackPanel>
             </Grid>
