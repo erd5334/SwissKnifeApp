@@ -1,20 +1,16 @@
 ﻿using ICSharpCode.AvalonEdit.Highlighting;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.IO;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Xml;
-using Formatting = Newtonsoft.Json.Formatting;
+using SwissKnifeApp.Services;
 
 namespace SwissKnifeApp.Views.Modules
 {
     public partial class JsonXmlFormatterPage : UserControl
     {
         private bool isDarkMode = true;
+        private readonly JsonXmlFormatterService _service = new();
 
         public Brush EditorBackground => isDarkMode ? new SolidColorBrush(Color.FromRgb(30, 30, 30)) : Brushes.White;
         public Brush ForegroundColor => isDarkMode ? Brushes.White : Brushes.Black;
@@ -51,15 +47,11 @@ namespace SwissKnifeApp.Views.Modules
         {
             try
             {
-                var text = CodeEditor.Text.Trim();
-                if (text.StartsWith("{") || text.StartsWith("["))
-                {
+                var text = (CodeEditor.Text ?? string.Empty).Trim();
+                if (_service.IsJson(text))
                     CodeEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("JavaScript");
-                }
-                else if (text.StartsWith("<"))
-                {
+                else if (_service.IsXml(text))
                     CodeEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("XML");
-                }
             }
             catch { /* sessiz */ }
         }
@@ -69,18 +61,11 @@ namespace SwissKnifeApp.Views.Modules
         {
             try
             {
-                var text = CodeEditor.Text.Trim();
-                if (text.StartsWith("{") || text.StartsWith("["))
-                {
-                    var parsedJson = JToken.Parse(text);
-                    CodeEditor.Text = parsedJson.ToString(Formatting.Indented);
-                }
-                else if (text.StartsWith("<"))
-                {
-                    var doc = new XmlDocument();
-                    doc.LoadXml(text);
-                    CodeEditor.Text = BeautifyXml(doc);
-                }
+                var text = (CodeEditor.Text ?? string.Empty).Trim();
+                if (_service.IsJson(text))
+                    CodeEditor.Text = _service.BeautifyJson(text);
+                else if (_service.IsXml(text))
+                    CodeEditor.Text = _service.BeautifyXml(text);
             }
             catch (Exception ex)
             {
@@ -93,18 +78,11 @@ namespace SwissKnifeApp.Views.Modules
         {
             try
             {
-                var text = CodeEditor.Text.Trim();
-                if (text.StartsWith("{") || text.StartsWith("["))
-                {
-                    var parsedJson = JToken.Parse(text);
-                    CodeEditor.Text = parsedJson.ToString(Formatting.None);
-                }
-                else if (text.StartsWith("<"))
-                {
-                    var doc = new XmlDocument();
-                    doc.LoadXml(text);
-                    CodeEditor.Text = doc.OuterXml;
-                }
+                var text = (CodeEditor.Text ?? string.Empty).Trim();
+                if (_service.IsJson(text))
+                    CodeEditor.Text = _service.MinifyJson(text);
+                else if (_service.IsXml(text))
+                    CodeEditor.Text = _service.MinifyXml(text);
             }
             catch (Exception ex)
             {
@@ -117,17 +95,16 @@ namespace SwissKnifeApp.Views.Modules
         {
             try
             {
-                var text = CodeEditor.Text.Trim();
-                if (text.StartsWith("{") || text.StartsWith("["))
+                var text = (CodeEditor.Text ?? string.Empty).Trim();
+                if (_service.IsJson(text))
                 {
-                    JToken.Parse(text);
-                    MessageBox.Show("✅ JSON geçerli!");
+                    if (_service.TryValidateJson(text, out var err)) MessageBox.Show("✅ JSON geçerli!");
+                    else MessageBox.Show($"❌ JSON geçersiz: {err}");
                 }
-                else if (text.StartsWith("<"))
+                else if (_service.IsXml(text))
                 {
-                    var doc = new XmlDocument();
-                    doc.LoadXml(text);
-                    MessageBox.Show("✅ XML geçerli!");
+                    if (_service.TryValidateXml(text, out var err)) MessageBox.Show("✅ XML geçerli!");
+                    else MessageBox.Show($"❌ XML geçersiz: {err}");
                 }
                 else MessageBox.Show("⚠️ JSON veya XML formatı algılanamadı.");
             }
@@ -142,9 +119,8 @@ namespace SwissKnifeApp.Views.Modules
         {
             try
             {
-                var json = CodeEditor.Text.Trim();
-                XmlDocument doc = JsonConvert.DeserializeXmlNode(json, "Root");
-                CodeEditor.Text = BeautifyXml(doc);
+                var json = (CodeEditor.Text ?? string.Empty).Trim();
+                CodeEditor.Text = _service.JsonToXml(json, "Root");
                 CodeEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("XML");
             }
             catch (Exception ex)
@@ -158,11 +134,8 @@ namespace SwissKnifeApp.Views.Modules
         {
             try
             {
-                var xml = CodeEditor.Text.Trim();
-                var doc = new XmlDocument();
-                doc.LoadXml(xml);
-                string json = JsonConvert.SerializeXmlNode(doc, Formatting.Indented, true);
-                CodeEditor.Text = json;
+                var xml = (CodeEditor.Text ?? string.Empty).Trim();
+                CodeEditor.Text = _service.XmlToJson(xml);
                 CodeEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("JavaScript");
             }
             catch (Exception ex)
@@ -180,34 +153,19 @@ namespace SwissKnifeApp.Views.Modules
             try
             {
                 string query = QueryBox.Text;
-                string text = CodeEditor.Text.Trim();
+                string text = (CodeEditor.Text ?? string.Empty).Trim();
                 if (string.IsNullOrEmpty(query)) return;
-
-                if (text.StartsWith("{") || text.StartsWith("["))
-                {
-                    var token = JToken.Parse(text).SelectToken(query);
-                    MessageBox.Show(token?.ToString() ?? "Sonuç bulunamadı.");
-                }
-                else if (text.StartsWith("<"))
-                {
-                    var doc = new XmlDocument();
-                    doc.LoadXml(text);
-                    var node = doc.SelectSingleNode(query);
-                    MessageBox.Show(node?.OuterXml ?? "Sonuç bulunamadı.");
-                }
+                string? result = null;
+                if (_service.IsJson(text))
+                    result = _service.JsonQuery(text, query);
+                else if (_service.IsXml(text))
+                    result = _service.XmlQuery(text, query);
+                MessageBox.Show(result ?? "Sonuç bulunamadı.");
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Sorgu hatası: {ex.Message}");
             }
-        }
-
-        private string BeautifyXml(XmlDocument doc)
-        {
-            using var sw = new StringWriter();
-            using var xw = new XmlTextWriter(sw) { Formatting = System.Xml.Formatting.Indented };
-            doc.WriteTo(xw);
-            return sw.ToString();
         }
     }
 }
