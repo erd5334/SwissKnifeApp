@@ -82,6 +82,8 @@ Türk Çakısı, günlük işlerinizi kolaylaştırmak için tasarlanmış, mode
   - İlk harfi büyük yazma
 - **HBMoneyToWords Kütüphanesi**: Profesyonel para-metin dönüşümü
 
+Not: Bu modülün iş mantığı `Services/MoneyToTextService.cs` dosyasına taşınmıştır. UI katmanı sadece kullanıcı etkileşimini yönetir.
+
 ### 🌐 İnternet Hız Testi
 - **İndirme Hızı**: Gerçek zamanlı indirme hızı ölçümü (Mbps)
 - **Yükleme Hızı**: Gerçek zamanlı yükleme hızı ölçümü (Mbps)
@@ -388,7 +390,14 @@ SwissKnifeApp/
 ├── Resources/                  # Kaynaklar
 │   ├── Icons/
 │   └── Themes/
-├── Services/                   # Servisler
+├── Services/                   # Servisler (iş mantığı katmanı)
+│   ├── ClipboardHistoryService.cs    # Pano geçmişi
+│   ├── ColorPickerService.cs         # Renk seçici yardımcıları
+│   ├── DataAnalysisService.cs        # CSV/Excel/JSON analiz
+│   ├── FileManagerService.cs         # Şifreleme, diff, yeniden adlandırma
+│   ├── ImageConverterService.cs      # Görsel dönüşüm ve filtreler
+│   ├── JsonXmlFormatterService.cs    # JSON/XML formatlama ve dönüşüm
+│   ├── MoneyToTextService.cs         # Para -> yazı dönüşümü (HBMoneyToWords)
 │   ├── TaxCalculationService.cs      # Vergi hesaplama servisi
 │   └── TaxRatesScraperService.cs     # Web scraping servisi
 └── Data/                       # Veri dosyaları
@@ -522,6 +531,11 @@ Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır.
 - 📝 Geliştirilmiş dosya yönetimi
 - 🎯 Kullanıcı arayüzü iyileştirmeleri
 - 📚 README detaylandırıldı
+
+### Refaktör (Hizmet Katmanına Taşıma)
+- MoneyToTextPage modülündeki tüm iş mantığı `MoneyToTextService`'e taşındı.
+- JsonXmlFormatterPage, ClipboardHistoryPage, ColorPickerPage, DataAnalysisPage modülleri servis katmanını kullanacak şekilde güncellendi.
+- UI event handler'ları sadeleştirildi; servisler test edilebilir hale getirildi.
 
 ### Teknik Detaylar
 - 17 yeni model class (TaxRateModels.cs)

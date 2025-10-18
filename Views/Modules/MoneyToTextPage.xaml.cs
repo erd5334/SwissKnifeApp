@@ -23,8 +23,12 @@ namespace SwissKnifeApp.Views.Modules
     /// </summary>
     public partial class MoneyToTextPage : Page
     {
-        public MoneyToTextPage()
+        private readonly SwissKnifeApp.Services.MoneyToTextService _moneyToTextService;
+        public MoneyToTextPage() : this(new SwissKnifeApp.Services.MoneyToTextService()) { }
+
+        public MoneyToTextPage(SwissKnifeApp.Services.MoneyToTextService service)
         {
+            _moneyToTextService = service;
             InitializeComponent();
         }
 
@@ -45,56 +49,14 @@ namespace SwissKnifeApp.Views.Modules
                 return;
             }
 
-            string result = string.Empty;
-            try
-            {
-                var lang = ((cmbLanguage?.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "Türkçe").ToLowerInvariant();
-                int casing = cmbCasing?.SelectedIndex ?? 2;
-                bool noSpaces = chkNoSpaces?.IsChecked == true;
-                string separator = txtSeparator?.Text ?? " ";
-                bool firstLetterUpper = chkFirstLetterUpper?.IsChecked == true;
+            var langText = (cmbLanguage?.SelectedItem as ComboBoxItem)?.Content?.ToString();
+            var language = _moneyToTextService.ParseLanguage(langText);
+            var casing = _moneyToTextService.ParseCasingIndex(cmbCasing?.SelectedIndex);
+            bool noSpaces = chkNoSpaces?.IsChecked == true;
+            string separator = txtSeparator?.Text ?? " ";
+            bool firstLetterUpper = chkFirstLetterUpper?.IsChecked == true;
 
-                FormatOptions? format = null;
-                if (!string.IsNullOrWhiteSpace(separator) || firstLetterUpper)
-                {
-                    format = new FormatOptions {
-                        WordSeparator = !string.IsNullOrWhiteSpace(separator) ? separator : " ",
-                        FirstLetterUppercase = firstLetterUpper
-                    };
-                }
-
-                // Öncelik: Büyük harf, ilk harf büyük, boşluksuz
-                if (lang.Contains("türk"))
-                {
-                    if (casing == 0) // Büyük harf
-                        result = amount.ToWordsTurkish(options: FormatOptions.UpperCase);
-                    else if (casing == 2) // İlk harf büyük
-                        result = amount.ToWordsTurkish(options: FormatOptions.TitleCase);
-                    else if (noSpaces)
-                        result = amount.ToWordsTurkish(options: FormatOptions.NoSpaces);
-                    else if (format != null)
-                        result = amount.ToWordsTurkish(options: format);
-                    else
-                        result = amount.ToWordsTurkish(); // Küçük harf varsayılan
-                }
-                else
-                {
-                    if (casing == 0)
-                        result = amount.ToWordsEnglish(options: FormatOptions.UpperCase);
-                    else if (casing == 2)
-                        result = amount.ToWordsEnglish(options: FormatOptions.TitleCase);
-                    else if (noSpaces)
-                        result = amount.ToWordsEnglish(options: FormatOptions.NoSpaces);
-                    else if (format != null)
-                        result = amount.ToWordsEnglish(options: format);
-                    else
-                        result = amount.ToWordsEnglish();
-                }
-            }
-            catch (Exception ex)
-            {
-                result = $"Hata: {ex.Message}";
-            }
+            var result = _moneyToTextService.Convert(amount, language, casing, noSpaces, separator, firstLetterUpper);
             if (txtResultBlock != null)
                 txtResultBlock.Text = result;
         }
