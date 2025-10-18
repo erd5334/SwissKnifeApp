@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using SwissKnifeApp.Services;
 // using System.Text; // not needed
 
 namespace SwissKnifeApp.Views.Modules
@@ -13,14 +14,11 @@ namespace SwissKnifeApp.Views.Modules
     public partial class ColorPickerPage : Page
     {
         private Color _selectedColor = Colors.Transparent;
+        private readonly ColorPickerService _service = new();
         private readonly List<Color> _colorSamples = new()
         {
             Colors.Red, Colors.Green, Colors.Blue, Colors.Yellow, Colors.Orange, Colors.Purple, Colors.Cyan, Colors.Magenta,
             Colors.Black, Colors.White, Colors.Gray, Colors.Brown, Colors.Pink, Colors.Lime, Colors.Teal, Colors.Navy
-        };
-        private readonly List<string> _codeLanguages = new()
-        {
-            "XAML Background", "XAML Foreground", "React (sx)", "React (inline style)", "XAML", "CSS", "C#", "HTML", "Python", "VB.NET", "Excel VBA", "NET MAUI", "Flutter", "Java", "Kotlin", "Swift", "Objective-C", "Android XML", "SCSS", "LESS", "Tailwind CSS", "QML", "Unity C#", "MATLAB", "Figma", "SVG", "Dart", "PowerShell", "Rust", "Go", "C++ (Qt)", "Delphi", "PHP", "Laravel"
         };
 
         public ColorPickerPage()
@@ -79,13 +77,10 @@ namespace SwissKnifeApp.Views.Modules
         {
             _selectedColor = color;
             SelectedColorRect.Fill = new SolidColorBrush(color);
-            HexCodeBox.Text = ColorToHex(color);
-            RgbCodeBox.Text = ColorToRgb(color);
+            HexCodeBox.Text = _service.ToHex(color);
+            RgbCodeBox.Text = _service.ToRgb(color);
             PopulateCodeTabs(color);
         }
-
-        private string ColorToHex(Color color) => $"#{color.R:X2}{color.G:X2}{color.B:X2}";
-        private string ColorToRgb(Color color) => $"rgb({color.R}, {color.G}, {color.B})";
 
         private void BtnCopyHex_Click(object sender, RoutedEventArgs e)
         {
@@ -100,14 +95,12 @@ namespace SwissKnifeApp.Views.Modules
         private void PopulateCodeTabs(Color color)
         {
             CodeTabControl.Items.Clear();
-            string hex = ColorToHex(color);
-            string rgb = ColorToRgb(color);
-            foreach (var lang in _codeLanguages)
+            foreach (var lang in _service.CodeLanguages)
             {
                 var tab = new TabItem { Header = lang };
                 var codeBox = new TextBox
                 {
-                    Text = GenerateCodeBlock(lang, hex, rgb),
+                    Text = _service.GenerateCode(lang, color),
                     IsReadOnly = true,
                     FontFamily = new FontFamily("Consolas"),
                     FontSize = 14,
@@ -117,48 +110,6 @@ namespace SwissKnifeApp.Views.Modules
                 tab.Content = codeBox;
                 CodeTabControl.Items.Add(tab);
             }
-        }
-
-        private string GenerateCodeBlock(string lang, string hex, string rgb)
-        {
-            return lang switch
-            {
-                "XAML Background" => $"Background=\"{hex}\"",
-                "XAML Foreground" => $"Foreground=\"{hex}\"",
-                "React (sx)" => $"sx={{ backgroundColor: '{hex}' }}",
-                "React (inline style)" => $"style={{ backgroundColor: '{hex}' }}",
-                "XAML" => $"<SolidColorBrush Color=\"{hex}\" />",
-                "CSS" => $"background-color: {hex};",
-                "C#" => $"Color color = (Color)ColorConverter.ConvertFromString(\"{hex}\");",
-                "HTML" => $"<div style=\"background:{hex};\"></div>",
-                "Python" => $"color = '{hex}'",
-                "VB.NET" => $"Dim color As Color = ColorTranslator.FromHtml(\"{hex}\")",
-                "Excel VBA" => $"Range(\"A1\").Interior.Color = RGB({_selectedColor.R}, {_selectedColor.G}, {_selectedColor.B})",
-                "NET MAUI" => $"Color.FromArgb(\"{hex}\")",
-                "Flutter" => $"Color(0xFF{hex.Substring(1)})",
-                "Java" => $"Color color = Color.decode(\"{hex}\");",
-                "Kotlin" => $"val color = Color.parseColor(\"{hex}\")",
-                "Swift" => $"let color = UIColor(hex: \"{hex}\")",
-                "Objective-C" => $"UIColor *color = [UIColor colorWithHexString: @\"{hex}\"];",
-                "Android XML" => $"<color name=\"custom\">{hex}</color>",
-                "SCSS" => $"$color: {hex};",
-                "LESS" => $"@color: {hex};",
-                "Tailwind CSS" => $"bg-[{hex}]",
-                "QML" => $"color: \"{hex}\"",
-                "Unity C#" => $"Color color = new Color32({_selectedColor.R}, {_selectedColor.G}, {_selectedColor.B}, 255);",
-                "MATLAB" => $"color = [{_selectedColor.R}/255, {_selectedColor.G}/255, {_selectedColor.B}/255];",
-                "Figma" => $"HEX: {hex} | RGB: {_selectedColor.R}, {_selectedColor.G}, {_selectedColor.B}",
-                "SVG" => $"fill=\"{hex}\"",
-                "Dart" => $"Color(0xFF{hex.Substring(1)})",
-                "PowerShell" => $"$color = '{hex}'",
-                "Rust" => $"let color = \"{hex}\";",
-                "Go" => $"color := \"{hex}\"",
-                "C++ (Qt)" => $"QColor color(\"{hex}\");",
-                "Delphi" => $"Color := StringToColor(\"{hex}\");",
-                "PHP" => $"$color = '{hex}';",
-                "Laravel" => $"$color = '{hex}';",
-                _ => hex
-            };
         }
 
         // The following fields must be defined in XAML with x:Name to be available:

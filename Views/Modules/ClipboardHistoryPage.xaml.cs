@@ -1,8 +1,8 @@
 ﻿using SwissKnifeApp.Models;
+using SwissKnifeApp.Services;
 using System;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Text.Json;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -12,15 +12,22 @@ namespace SwissKnifeApp.Views.Modules
 {
     public partial class ClipboardHistoryPage : Page
     {
-        private ObservableCollection<ClipboardItem> _allItems = new();
-        private ObservableCollection<ClipboardItem> _filteredItems = new();
-        private string _saveFile = "clipboard_history.json";
-        private string _lastText = "";
+        private readonly ClipboardHistoryService _clipboardService;
+        private readonly ObservableCollection<ClipboardItem> _filteredItems;
 
         public ClipboardHistoryPage()
         {
             InitializeComponent();
+
+            _clipboardService = new ClipboardHistoryService();
+            _filteredItems = new ObservableCollection<ClipboardItem>();
+
             ClipboardList.ItemsSource = _filteredItems;
+            
+            // Kaydedilmiş geçmişi yükle
+            _clipboardService.LoadFromFile();
+            ApplySearchFilter("");
+
             StartClipboardWatcher();
         }
 
@@ -31,101 +38,28 @@ namespace SwissKnifeApp.Views.Modules
             timer.Start();
         }
 
-        private string _lastImageHash = "";
-
         private void CheckClipboard()
         {
-            try
+            if (_clipboardService.CheckAndAddClipboardContent())
             {
-                if (Clipboard.ContainsText())
-                {
-                    string text = Clipboard.GetText();
-                    if (text != _lastText)
-                    {
-                        _lastText = text;
-                        AddClipboardItem("Text", text, text.Length > 100 ? text[..100] + "..." : text);
-                    }
-                }
-                else if (Clipboard.ContainsImage())
-                {
-                    var img = Clipboard.GetImage();
-                    if (img != null)
-                    {
-                        string hash = GetImageHash(img);
-                        if (hash != _lastImageHash)
-                        {
-                            _lastImageHash = hash;
-                            AddClipboardItem("Image", img, "[Görsel]");
-                        }
-                    }
-                }
-                else if (Clipboard.ContainsFileDropList())
-                {
-                    var files = Clipboard.GetFileDropList();
-                    string joined = string.Join(", ", files.Cast<string>());
-                    if (joined != _lastText)
-                    {
-                        _lastText = joined;
-                        AddClipboardItem("File", files, joined);
-                    }
-                }
+                // Yeni öğe eklendi, filtreyi yenile
+                ApplySearchFilter(SearchBox.Text);
             }
-            catch { }
-        }
-
-        private string GetImageHash(BitmapSource image)
-        {
-            try
-            {
-                int stride = image.PixelWidth * (image.Format.BitsPerPixel / 8);
-                byte[] pixels = new byte[stride * image.PixelHeight];
-                image.CopyPixels(pixels, stride, 0);
-
-                // sadece ilk birkaç pikselin ortalamasını alarak basit bir hash
-                int sampleSize = Math.Min(pixels.Length, 5000);
-                int sum = 0;
-                for (int i = 0; i < sampleSize; i++)
-                    sum += pixels[i];
-
-                return $"{image.PixelWidth}x{image.PixelHeight}_{sum % 100000}";
-            }
-            catch
-            {
-                return Guid.NewGuid().ToString();
-            }
-        }
-
-
-        private void AddClipboardItem(string type, object data, string preview)
-        {
-            var item = new ClipboardItem
-            {
-                Time = DateTime.Now,
-                Type = type,
-                Data = data,
-                Preview = preview
-            };
-            _allItems.Insert(0, item);
-            ApplySearchFilter(SearchBox.Text);
         }
 
         private void ClipboardList_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (ClipboardList.SelectedItem is ClipboardItem item)
             {
-                switch (item.Type)
+                bool success = _clipboardService.CopyItemToClipboard(item);
+                if (success)
                 {
-                    case "Text":
-                        Clipboard.SetText(item.Data.ToString());
-                        break;
-                    case "Image":
-                        Clipboard.SetImage((BitmapSource)item.Data);
-                        break;
-                    case "File":
-                        // FileDropList tipi için ek işlem yapılabilir
-                        break;
+                    MessageBox.Show("Panoya kopyalandı.", "Clipboard", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
-                MessageBox.Show("Panoya kopyalandı.", "Clipboard", MessageBoxButton.OK, MessageBoxImage.Information);
+                else
+                {
+                    MessageBox.Show("Panoya kopyalanamadı.", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -145,30 +79,43 @@ namespace SwissKnifeApp.Views.Modules
 
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
-            _allItems.Clear();
+            _clipboardService.ClearAll();
             _filteredItems.Clear();
+            MessageBox.Show("Geçmiş temizlendi.", "Clipboard", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            var json = JsonSerializer.Serialize(_allItems);
-            File.WriteAllText(_saveFile, json);
-            MessageBox.Show("Geçmiş kaydedildi.");
+            bool success = _clipboardService.SaveToFile();
+            if (success)
+            {
+                MessageBox.Show("Geçmiş kaydedildi.", "Clipboard", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Geçmiş kaydedilemedi.", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void Load_Click(object sender, RoutedEventArgs e)
         {
-            if (!File.Exists(_saveFile)) return;
-
-            var items = JsonSerializer.Deserialize<ObservableCollection<ClipboardItem>>(File.ReadAllText(_saveFile));
-            _allItems.Clear();
-            foreach (var item in items)
-                _allItems.Add(item);
-
-            ApplySearchFilter(SearchBox.Text);
+            bool success = _clipboardService.LoadFromFile();
+            if (success)
+            {
+                ApplySearchFilter("");
+                MessageBox.Show($"{_clipboardService.GetItemCount()} öğe yüklendi.", "Clipboard", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show("Geçmiş yüklenemedi veya dosya bulunamadı.", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
-        private void Refresh_Click(object sender, RoutedEventArgs e) => CheckClipboard();
+        private void Refresh_Click(object sender, RoutedEventArgs e)
+        {
+            CheckClipboard();
+            MessageBox.Show("Pano kontrol edildi.", "Clipboard", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -179,21 +126,12 @@ namespace SwissKnifeApp.Views.Modules
         {
             _filteredItems.Clear();
 
-            var filtered = string.IsNullOrWhiteSpace(query)
-                ? _allItems
-                : new ObservableCollection<ClipboardItem>(_allItems
-                    .Where(i => i.Preview.Contains(query, StringComparison.OrdinalIgnoreCase)));
-
+            var filtered = _clipboardService.FilterItems(query);
+            
             foreach (var item in filtered)
+            {
                 _filteredItems.Add(item);
+            }
         }
-    }
-
-    public class ClipboardItem
-    {
-        public DateTime Time { get; set; }
-        public string Type { get; set; }
-        public string Preview { get; set; }
-        public object Data { get; set; }
     }
 }

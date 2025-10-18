@@ -6,11 +6,14 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using SwissKnifeApp.Services;
+using SwissKnifeApp.Models;
 
 namespace SwissKnifeApp.Views.Modules
 {
     public partial class FileManagerPage : Page
     {
+        private readonly FileManagerService _service = new();
         private string? _file1Content;
         private string? _file2Content;
         private ObservableCollection<FileRenameItem> _files = new();
@@ -41,14 +44,10 @@ namespace SwissKnifeApp.Views.Modules
             }
             try
             {
-                // Geçici dosya oluştur
                 var tempPath = filePath + ".tmp";
-                EncryptFileAES(filePath, tempPath, password);
-                
-                // Orijinal dosyayı sil ve geçici dosyayı yeniden adlandır
+                _service.EncryptFile(filePath, tempPath, password);
                 File.Delete(filePath);
                 File.Move(tempPath, filePath);
-                
                 TxtEncryptStatus.Text = $"✅ Şifreleme başarılı: {Path.GetFileName(filePath)}";
                 MessageBox.Show("Dosya başarıyla şifrelendi!\n\nUYARI: Orijinal dosya artık şifrelenmiş durumda.", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -76,24 +75,18 @@ namespace SwissKnifeApp.Views.Modules
             }
             try
             {
-                // Geçici dosya oluştur
                 var tempPath = filePath + ".tmp";
-                DecryptFileAES(filePath, tempPath, password);
-                
-                // Orijinal dosyayı sil ve geçici dosyayı yeniden adlandır
+                _service.DecryptFile(filePath, tempPath, password);
                 File.Delete(filePath);
                 File.Move(tempPath, filePath);
-                
                 TxtEncryptStatus.Text = $"✅ Çözme başarılı: {Path.GetFileName(filePath)}";
                 MessageBox.Show("Dosya başarıyla çözüldü!\n\nDosya artık orijinal haline döndü.", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
                 TxtEncryptStatus.Text = $"❌ Hata: {ex.Message}";
-                // Hata durumunda geçici dosyayı temizle
                 var tempPath = filePath + ".tmp";
-                if (File.Exists(tempPath))
-                    File.Delete(tempPath);
+                if (File.Exists(tempPath)) File.Delete(tempPath);
                 MessageBox.Show($"Çözme sırasında hata oluştu:\n{ex.Message}\n\nYanlış parola veya bozuk dosya olabilir.", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -272,21 +265,23 @@ namespace SwissKnifeApp.Views.Modules
 
             if (mode == 0) // Satır bazında
             {
-                var (leftHighlighted, rightHighlighted, addedCount, removedCount, changedCount) = CompareLineByLine(text1, text2);
+                var (leftHighlighted, rightHighlighted, addedCount, removedCount, changedCount) =
+                    _service.CompareLineByLine(text1, text2, ChkIgnoreWhitespace.IsChecked == true, ChkIgnoreCase.IsChecked == true);
                 TxtLeftContent.Text = leftHighlighted;
                 TxtRightContent.Text = rightHighlighted;
                 stats = $"✅ Eklenen: {addedCount} satır | ❌ Silinen: {removedCount} satır | ✏️ Değiştirilen: {changedCount} satır";
             }
             else if (mode == 1) // Sözcük bazında
             {
-                var (leftHighlighted, rightHighlighted, diffCount) = CompareWordByWord(text1, text2);
+                var (leftHighlighted, rightHighlighted, diffCount) =
+                    _service.CompareWordByWord(text1, text2, ChkIgnoreWhitespace.IsChecked == true, ChkIgnoreCase.IsChecked == true);
                 TxtLeftContent.Text = leftHighlighted;
                 TxtRightContent.Text = rightHighlighted;
                 stats = $"📝 Farklı sözcük sayısı: {diffCount}";
             }
             else if (mode == 2) // Karakter bazında
             {
-                var (similarity, diffCount) = CompareCharByChar(text1, text2);
+                var (similarity, diffCount) = _service.CompareCharByChar(text1, text2);
                 TxtLeftContent.Text = text1;
                 TxtRightContent.Text = text2;
                 stats = $"🔍 Benzerlik: %{similarity:F2} | Farklı karakter: {diffCount}";
@@ -295,98 +290,7 @@ namespace SwissKnifeApp.Views.Modules
             TxtDiffStats.Text = stats;
         }
 
-        private (string left, string right, int added, int removed, int changed) CompareLineByLine(string text1, string text2)
-        {
-            var lines1 = text1.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            var lines2 = text2.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
-            var leftResult = new List<string>();
-            var rightResult = new List<string>();
-
-            int added = 0, removed = 0, changed = 0;
-            int maxLines = Math.Max(lines1.Length, lines2.Length);
-
-            for (int i = 0; i < maxLines; i++)
-            {
-                var line1 = i < lines1.Length ? lines1[i] : "";
-                var line2 = i < lines2.Length ? lines2[i] : "";
-
-                if (line1 == line2)
-                {
-                    leftResult.Add($"  {line1}");
-                    rightResult.Add($"  {line2}");
-                }
-                else if (string.IsNullOrEmpty(line1))
-                {
-                    leftResult.Add($"");
-                    rightResult.Add($"+ {line2}");
-                    added++;
-                }
-                else if (string.IsNullOrEmpty(line2))
-                {
-                    leftResult.Add($"- {line1}");
-                    rightResult.Add($"");
-                    removed++;
-                }
-                else
-                {
-                    leftResult.Add($"~ {line1}");
-                    rightResult.Add($"~ {line2}");
-                    changed++;
-                }
-            }
-
-            return (string.Join("\n", leftResult), string.Join("\n", rightResult), added, removed, changed);
-        }
-
-        private (string left, string right, int diffCount) CompareWordByWord(string text1, string text2)
-        {
-            var words1 = text1.Split(new[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-            var words2 = text2.Split(new[] { ' ', '\t', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-
-            var leftWords = new List<string>();
-            var rightWords = new List<string>();
-            int diffCount = 0;
-
-            int maxWords = Math.Max(words1.Length, words2.Length);
-            for (int i = 0; i < maxWords; i++)
-            {
-                var word1 = i < words1.Length ? words1[i] : "";
-                var word2 = i < words2.Length ? words2[i] : "";
-
-                if (word1 == word2)
-                {
-                    leftWords.Add(word1);
-                    rightWords.Add(word2);
-                }
-                else
-                {
-                    leftWords.Add($"[{word1}]");
-                    rightWords.Add($"[{word2}]");
-                    diffCount++;
-                }
-            }
-
-            return (string.Join(" ", leftWords), string.Join(" ", rightWords), diffCount);
-        }
-
-        private (double similarity, int diffCount) CompareCharByChar(string text1, string text2)
-        {
-            int diffCount = 0;
-            int maxLength = Math.Max(text1.Length, text2.Length);
-
-            for (int i = 0; i < maxLength; i++)
-            {
-                var char1 = i < text1.Length ? text1[i] : '\0';
-                var char2 = i < text2.Length ? text2[i] : '\0';
-
-                if (char1 != char2)
-                    diffCount++;
-            }
-
-            double similarity = maxLength > 0 ? ((maxLength - diffCount) / (double)maxLength) * 100 : 100;
-            return (similarity, diffCount);
-        }
+        // Compare methods moved to FileManagerService
 
         // ============================================
         // 2️⃣ TOPLU YENİDEN ADLANDIRICI BÖLÜMÜ
@@ -498,109 +402,31 @@ namespace SwissKnifeApp.Views.Modules
 
         private void ApplyRenameRules(bool preview)
         {
-            var mode = CmbRenameMode.SelectedIndex;
-            int counter = 0;
-            int successCount = 0;
-            int errorCount = 0;
-
-            foreach (var file in _files.Where(f => f.IsSelected))
+            var options = new RenameOptions
             {
-                string newName = file.OriginalName;
-
-                try
+                Mode = (RenameMode)CmbRenameMode.SelectedIndex,
+                BaseName = TxtBaseName.Text,
+                StartNumber = (int)(NumStartNumber.Value ?? 1),
+                Digits = (int)(NumDigits.Value ?? 3),
+                DateFormat = CmbDateFormat.SelectedIndex switch
                 {
-                    switch (mode)
-                    {
-                        case 0: // Sıralı Numaralama
-                            var baseName = TxtBaseName.Text;
-                            var startNum = (int)(NumStartNumber.Value ?? 1);
-                            var digits = (int)(NumDigits.Value ?? 3);
-                            var num = (startNum + counter).ToString($"D{digits}");
-                            newName = $"{baseName}_{num}{file.Extension}";
-                            counter++;
-                            break;
+                    0 => "yyyy-MM-dd",
+                    1 => "yyyyMMdd",
+                    2 => "dd-MM-yyyy",
+                    3 => "yyyy-MM-dd_HH-mm-ss",
+                    _ => "yyyy-MM-dd"
+                },
+                DatePrefix = ChkDatePrefix.IsChecked == true,
+                DateNow = DateTime.Now,
+                SearchText = TxtSearchText.Text,
+                ReplaceText = TxtReplaceText.Text,
+                UseRegex = ChkUseRegex.IsChecked == true,
+                CaseSensitive = ChkCaseSensitive.IsChecked == true,
+                Template = TxtCustomTemplate.Text
+            };
 
-                        case 1: // Tarih/Zaman Ekleme
-                            var dateFormat = CmbDateFormat.SelectedIndex switch
-                            {
-                                0 => "yyyy-MM-dd",
-                                1 => "yyyyMMdd",
-                                2 => "dd-MM-yyyy",
-                                3 => "yyyy-MM-dd_HH-mm-ss",
-                                _ => "yyyy-MM-dd"
-                            };
-                            var dateStr = DateTime.Now.ToString(dateFormat);
-                            var nameWithoutExt = Path.GetFileNameWithoutExtension(file.OriginalName);
-                            newName = ChkDatePrefix.IsChecked == true
-                                ? $"{dateStr}_{nameWithoutExt}{file.Extension}"
-                                : $"{nameWithoutExt}_{dateStr}{file.Extension}";
-                            break;
-
-                        case 2: // Metin Değiştirme
-                            var searchText = TxtSearchText.Text;
-                            var replaceText = TxtReplaceText.Text;
-                            if (!string.IsNullOrEmpty(searchText))
-                            {
-                                if (ChkUseRegex.IsChecked == true)
-                                {
-                                    newName = Regex.Replace(file.OriginalName, searchText, replaceText);
-                                }
-                                else
-                                {
-                                    var comparison = ChkCaseSensitive.IsChecked == true
-                                        ? StringComparison.Ordinal
-                                        : StringComparison.OrdinalIgnoreCase;
-                                    newName = file.OriginalName.Replace(searchText, replaceText, comparison);
-                                }
-                            }
-                            break;
-
-                        case 3: // Özel Şablon
-                            var template = TxtCustomTemplate.Text;
-                            var originalNameNoExt = Path.GetFileNameWithoutExtension(file.OriginalName);
-                            newName = template
-                                .Replace("{name}", originalNameNoExt)
-                                .Replace("{date}", DateTime.Now.ToString("yyyy-MM-dd"))
-                                .Replace("{n}", counter.ToString("D3"))
-                                .Replace("{ext}", file.Extension.TrimStart('.'));
-                            newName += file.Extension;
-                            counter++;
-                            break;
-                    }
-
-                    // Geçersiz karakter kontrolü
-                    foreach (var c in Path.GetInvalidFileNameChars())
-                    {
-                        newName = newName.Replace(c, '_');
-                    }
-
-                    file.NewName = newName;
-
-                    // Önizleme modunda değilse, gerçekten yeniden adlandır
-                    if (!preview)
-                    {
-                        var directory = Path.GetDirectoryName(file.FullPath);
-                        var newPath = Path.Combine(directory!, newName);
-
-                        if (File.Exists(newPath))
-                        {
-                            MessageBox.Show($"Dosya zaten mevcut: {newName}", "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
-                            errorCount++;
-                            continue;
-                        }
-
-                        File.Move(file.FullPath, newPath);
-                        file.FullPath = newPath;
-                        file.OriginalName = newName;
-                        successCount++;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Hata ({file.OriginalName}): {ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
-                    errorCount++;
-                }
-            }
+            var selectedFiles = _files.Where(f => f.IsSelected).ToList();
+            var (successCount, errorCount) = _service.ApplyRenameRules(selectedFiles, options, preview);
 
             if (preview)
             {
@@ -609,7 +435,6 @@ namespace SwissKnifeApp.Views.Modules
             else
             {
                 MessageBox.Show($"İşlem tamamlandı!\n✅ Başarılı: {successCount}\n❌ Hatalı: {errorCount}", "Sonuç", MessageBoxButton.OK, MessageBoxImage.Information);
-                // Listeyi yenile
                 BtnLoadFiles_Click(null!, null!);
             }
         }
