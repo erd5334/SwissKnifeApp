@@ -214,6 +214,27 @@
                                 <TextBlock Text="Fotoğraf Kolaj" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
+
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="AudioTools">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="Music" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Ses Araçları" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="VideoTools">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="VideoBox" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Video Araçları" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="YouTubeClipDownloader">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="Youtube" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="YouTube Kesit İndirici" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </ScrollViewer>
             </Grid>

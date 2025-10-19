@@ -15,6 +15,7 @@ namespace SwissKnifeApp.Views.Modules
 {
     public partial class QrBarcodeToolsPage : Page
     {
+        private readonly SwissKnifeApp.Services.QrBarcodeService _qrService = new SwissKnifeApp.Services.QrBarcodeService();
         public QrBarcodeToolsPage()
         {
             InitializeComponent();
@@ -103,8 +104,7 @@ namespace SwissKnifeApp.Views.Modules
                     case "Wi-Fi":
                         string ssid = GetTextBoxValue(0);
                         string password = GetPasswordBoxValue(1); // Wi-Fi şifresi 1. index'te (PasswordBox)
-                        var wifiGenerator = new PayloadGenerator.WiFi(ssid, password, PayloadGenerator.WiFi.Authentication.WPA, false);
-                        payload = wifiGenerator.ToString();
+                        payload = _qrService.CreateWifiPayload(ssid, password, PayloadGenerator.WiFi.Authentication.WPA, false);
                         break;
 
                     case "vCard":
@@ -114,32 +114,14 @@ namespace SwissKnifeApp.Views.Modules
                         string phone = GetTextBoxValue(3);
                         
                         // QRCoder'da ContactData kullanılır
-                        var contactData = new PayloadGenerator.ContactData(
-                            PayloadGenerator.ContactData.ContactOutputType.VCard3,
-                            firstName,
-                            lastName,
-                            null, // nickname
-                            phone,
-                            null, // mobile
-                            emailAddr,
-                            null, // birthday
-                            null, // website
-                            null, // street
-                            null, // houseNumber
-                            null, // city
-                            null, // zipCode
-                            null, // country
-                            null  // note
-                        );
-                        payload = contactData.ToString();
+                        payload = _qrService.CreateVCardPayload(firstName, lastName, emailAddr, phone);
                         break;
 
                     case "E-posta":
                         string toAddress = GetTextBoxValue(0);
                         string subject = GetTextBoxValue(1);
                         string body = GetTextBoxValue(2);
-                        var mailGenerator = new PayloadGenerator.Mail(toAddress, subject, body);
-                        payload = mailGenerator.ToString();
+                        payload = _qrService.CreateMailPayload(toAddress, subject, body);
                         break;
 
                     default:
@@ -153,10 +135,7 @@ namespace SwissKnifeApp.Views.Modules
                     return;
                 }
 
-                using var qrGen = new QRCodeGenerator();
-                using var data = qrGen.CreateQrCode(payload, QRCodeGenerator.ECCLevel.Q);
-                using var qr = new QRCode(data);
-                using var bmp = qr.GetGraphic(20);
+                using var bmp = _qrService.GenerateQrBitmap(payload, 20);
                 ImgQrCode.Source = BitmapToImageSource(bmp);
             }
             catch (Exception ex)
@@ -252,15 +231,9 @@ namespace SwissKnifeApp.Views.Modules
 
             try
             {
-                var source = new BitmapLuminanceSource(bitmap);
-                var binarizer = new HybridBinarizer(source);
-                var binaryBitmap = new BinaryBitmap(binarizer);
-
-                var reader = new MultiFormatReader();
-                var result = reader.decode(binaryBitmap);
-
+                var decoded = _qrService.DecodeFromBitmap(bitmap);
                 if (TxtDecoded != null)
-                    TxtDecoded.Text = result != null ? $"✅ Okunan Veri: {result.Text}" : "⚠️ Kod okunamadı.";
+                    TxtDecoded.Text = decoded != null ? $"✅ Okunan Veri: {decoded}" : "⚠️ Kod okunamadı.";
             }
             catch (Exception ex)
             {
@@ -293,7 +266,7 @@ namespace SwissKnifeApp.Views.Modules
 
             try
             {
-                using var bmp = GenerateBarcodeBitmap(text, format, 600, 200);
+                using var bmp = _qrService.GenerateBarcodeBitmap(text, format, 600, 200);
                 if (ImgBarcode != null)
                     ImgBarcode.Source = BitmapToImageSource(bmp);
             }
@@ -301,38 +274,6 @@ namespace SwissKnifeApp.Views.Modules
             {
                 MessageBox.Show($"Barkod oluşturulamadı: {ex.Message}");
             }
-        }
-
-        // 🔸 Barkod oluşturma yardımcı
-        private Bitmap GenerateBarcodeBitmap(string text, BarcodeFormat format, int width = 400, int height = 120)
-        {
-            var writer = new BarcodeWriterPixelData
-            {
-                Format = format,
-                Options = new EncodingOptions
-                {
-                    Height = height,
-                    Width = width,
-                    Margin = 10,
-                    PureBarcode = false
-                },
-                Renderer = new PixelDataRenderer()
-            };
-
-            var pixelData = writer.Write(text);
-            var bitmap = new Bitmap(pixelData.Width, pixelData.Height, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
-            var bitmapData = bitmap.LockBits(new Rectangle(0, 0, pixelData.Width, pixelData.Height),
-                System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
-
-            try
-            {
-                System.Runtime.InteropServices.Marshal.Copy(pixelData.Pixels, 0, bitmapData.Scan0, pixelData.Pixels.Length);
-            }
-            finally
-            {
-                bitmap.UnlockBits(bitmapData);
-            }
-            return bitmap;
         }
 
         // 🔸 Bitmap -> ImageSource dönüştürücü

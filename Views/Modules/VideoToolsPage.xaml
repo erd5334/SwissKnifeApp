@@ -1,0 +1,113 @@
+<Page x:Class="SwissKnifeApp.Views.Modules.VideoToolsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      Title="Video Araçları">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,8" VerticalAlignment="Center">
+            <Button Content="Dosyaları Seç" Padding="12,6" Click="BtnPickFiles_Click"/>
+            <TextBlock Text="Seçilen:" Margin="12,0,0,0" VerticalAlignment="Center"/>
+            <TextBlock x:Name="LblSelectedCount" Text="0" FontWeight="Bold" VerticalAlignment="Center" Margin="4,0,0,0"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,0,0,8" VerticalAlignment="Center">
+            <TextBlock Text="Çıkış Klasörü" VerticalAlignment="Center"/>
+            <TextBox x:Name="TxtOutput" Margin="8,0,0,0" Height="28" Width="360"/>
+            <Button Content="Seç" Margin="8,0,0,0" Padding="12,6" Click="BtnPickFolder_Click"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,8">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="İşlem:" VerticalAlignment="Center"/>
+                <ComboBox x:Name="CmbMode" Width="160" Margin="8,0,0,0">
+                    <ComboBoxItem Content="Dönüştür" IsSelected="True"/>
+                    <ComboBoxItem Content="Trim/Kırp"/>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="24,0,0,0">
+                <TextBlock Text="Format:" VerticalAlignment="Center"/>
+                <ComboBox x:Name="CmbFormat" Width="120" Margin="8,0,0,0">
+                    <ComboBoxItem Content="MP4" IsSelected="True"/>
+                    <ComboBoxItem Content="MKV"/>
+                    <ComboBoxItem Content="WEBM"/>
+                    <ComboBoxItem Content="MOV"/>
+                    <ComboBoxItem Content="TS"/>
+                    <ComboBoxItem Content="AVI"/>
+                    <ComboBoxItem Content="FLV"/>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="24,0,0,0">
+                <TextBlock Text="Codec:" VerticalAlignment="Center"/>
+                <ComboBox x:Name="CmbCodec" Width="140" Margin="8,0,0,0">
+                    <ComboBoxItem Content="H264" IsSelected="True"/>
+                    <ComboBoxItem Content="H265"/>
+                    <ComboBoxItem Content="VP9"/>
+                    <ComboBoxItem Content="COPY"/>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="24,0,0,0">
+                <TextBlock Text="Kalite:" VerticalAlignment="Center"/>
+                <ComboBox x:Name="CmbQuality" Width="140" Margin="8,0,0,0">
+                    <ComboBoxItem Content="Highest" IsSelected="True"/>
+                    <ComboBoxItem Content="High"/>
+                    <ComboBoxItem Content="Medium"/>
+                    <ComboBoxItem Content="Low"/>
+                    <ComboBoxItem Content="Lossless"/>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="24,0,0,0">
+                <TextBlock Text="Çözünürlük:" VerticalAlignment="Center"/>
+                <ComboBox x:Name="CmbResolution" Width="140" Margin="8,0,0,0">
+                    <ComboBoxItem Content="Original" IsSelected="True"/>
+                    <ComboBoxItem Content="2160p"/>
+                    <ComboBoxItem Content="1440p"/>
+                    <ComboBoxItem Content="1080p"/>
+                    <ComboBoxItem Content="720p"/>
+                    <ComboBoxItem Content="480p"/>
+                </ComboBox>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,0,0,8">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Başlangıç" VerticalAlignment="Center"/>
+                <TextBox x:Name="TxtStart" Width="100" Height="28" Margin="8,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="24,0,0,0">
+                <TextBlock Text="Bitiş" VerticalAlignment="Center"/>
+                <TextBox x:Name="TxtEnd" Width="100" Height="28" Margin="8,0,0,0"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="24,0,0,0">
+                <TextBlock Text="Kırp (x,y,w,h)" VerticalAlignment="Center"/>
+                <TextBox x:Name="TxtCrop" Width="160" Height="28" Margin="8,0,0,0"/>
+            </StackPanel>
+            <Button x:Name="BtnStart" Content="Başlat" Margin="24,0,0,0" Padding="16,6" Click="BtnStart_Click"/>
+            <Button x:Name="BtnCancel" Content="İptal" Margin="8,0,0,0" Padding="16,6" Click="BtnCancel_Click" IsEnabled="False"/>
+        </StackPanel>
+
+        <Grid Grid.Row="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="İlerleme" FontWeight="Bold"/>
+            <ProgressBar x:Name="PbTotal" Grid.Row="0" Height="18" Margin="0,20,0,0" Minimum="0" Maximum="100"/>
+            <TextBlock Text="Log" Grid.Row="1" FontWeight="Bold" Margin="0,8,0,0"/>
+            <ScrollViewer Grid.Row="2" Margin="0,24,0,0">
+                <TextBox x:Name="TxtLog" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"/>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+    
+</Page>

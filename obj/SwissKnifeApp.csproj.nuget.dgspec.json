@@ -67,6 +67,10 @@
               "target": "Package",
               "version": "[1.0.0, )"
             },
+            "HtmlAgilityPack": {
+              "target": "Package",
+              "version": "[1.12.4, )"
+            },
             "LucideIcons": {
               "target": "Package",
               "version": "[1.0.0.5, )"
@@ -118,6 +122,10 @@
             "SixLabors.ImageSharp": {
               "target": "Package",
               "version": "[3.1.11, )"
+            },
+            "SixLabors.ImageSharp.Drawing": {
+              "target": "Package",
+              "version": "[2.1.7, )"
             },
             "SpeedTest.Net": {
               "target": "Package",

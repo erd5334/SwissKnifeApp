@@ -173,6 +173,13 @@ Türkiye vergi sistemine özel 13 farklı vergi türü hesaplama:
    dotnet run
    ```
 
+### Harici Araçlar (YouTube/Ses/Video modülleri)
+- Uygulama, `ffmpeg`, `ffprobe` ve `yt-dlp` araçlarını otomatik keşfeder.
+- Portable kullanım için, uygulama klasöründe `Tools/` dizini oluşturup `yt-dlp.exe` ve `ffmpeg.exe` dosyalarını kopyalayabilirsiniz.
+- Alternatif olarak `C:\\Tools` veya PATH üzerinde bulunmaları yeterlidir.
+- “Araçları Kur” butonu ile otomatik indirme yapılabilir.
+- Ayrıntılı kurulum ve dağıtım notları: `SETUP_KILAVUZU.md`
+
 ### Yayınlama (Release)
 ```bash
 dotnet publish -c Release -r win-x64 --self-contained
@@ -196,6 +203,7 @@ dotnet publish -c Release -r win-x64 --self-contained
 
 ### Görsel İşleme
 - **SixLabors.ImageSharp** (3.1.4): Güçlü görsel işleme kütüphanesi
+- **SixLabors.ImageSharp.Drawing** (2.x): Kolaj üzerinde metin/çizim işlemleri
 - **Svg** (3.4.7): SVG dosya desteği
 
 ### PDF İşlemleri
@@ -212,6 +220,12 @@ dotnet publish -c Release -r win-x64 --self-contained
 - **WindowsAPICodePack** (8.0.5): Windows özel özellikleri
 - **CommunityToolkit.Mvvm** (8.4.0): MVVM pattern desteği
 - **HtmlAgilityPack** (1.12.4): Web scraping ve HTML parsing
+
+### Harici Araçlar
+- **FFmpeg / FFprobe**: Ses/video dönüştürme, kırpma, kırpma (crop), süre ölçümü
+- **yt-dlp**: YouTube videolarını indirme ve zaman aralığına göre kesit alma
+
+Not: Bu araçlar portable olarak uygulama dizininde `Tools/` klasöründe veya sistem PATH üzerinde bulunabilir. Uygulama içerisindeki “Araçları Kur” butonu ile otomatik indirilebilir.
 
 ## 📦 Modüller
 
@@ -336,6 +350,40 @@ dotnet publish -c Release -r win-x64 --self-contained
 - ÖTV (Akaryakıt)
 - Veraset ve İntikal Vergisi
 - Vergi Gecikme Faizi
+
+### 17. YouTubeClipDownloaderPage
+**Dosya**: `Views/Modules/YouTubeClipDownloaderPage.xaml`
+**Servis**: `Services/YoutubeTxtClipDownloaderService.cs`
+- TXT veya Manuel aralık girişi ile YouTube videosundan kesit indirme
+- `--download-sections` ile tam saniye bazlı kesitler (örn. `*150-180`)
+- `--force-keyframes-at-cuts` ile temiz kesme
+- 1080p’ye kadar en iyi kalite otomatik seçim ve MP4 birleştirme
+- Toplam/parça ilerleme çubukları ve ayrıntılı log
+- Taşınabilir araç keşfi: `[Uygulama]/Tools`, `C:\\Tools`, veya PATH
+- “Araçları Kur” ile otomatik yt-dlp/ffmpeg indirimi
+   - Ayrıntılı kullanım ve TXT formatı: `YOUTUBE_KESIT_KULLANIM.md`
+   - Modül genel kılavuzu: `YOUTUBE_KULLANIM.md`
+
+### 18. AudioToolsPage
+**Dosya**: `Views/Modules/AudioToolsPage.xaml`
+**Servis**: `Services/AudioToolsService.cs`
+- Toplu dönüştürme ve Trim (kesme)
+- Formatlar: MP3, AAC (m4a), WAV, FLAC, OPUS
+- Kalite ön ayarları: Highest/High/Medium/Low/Lossless
+- Opsiyonel ses normalizasyonu: `loudnorm`
+- İlerleme takibi (ffmpeg zamanından) ve loglama
+- ffprobe ile süre tespiti, portable araç keşfi (`Tools/`, `C:\\Tools`, PATH)
+
+### 19. VideoToolsPage
+**Dosya**: `Views/Modules/VideoToolsPage.xaml`
+**Servis**: `Services/VideoToolsService.cs`
+- Dönüştürme ve Trim/Kırp (crop)
+- Formatlar: MP4, MKV, WEBM, MOV, TS, AVI, FLV
+- Codecler: H.264, H.265 (HEVC), VP9, (uygun durumlarda) Copy
+- CRF tabanlı kalite: Highest/High/Medium/Low/Lossless
+- Çözünürlük ön ayarları: Original, 2160p, 1440p, 1080p, 720p, 480p
+- Kapsayıcı/codec uyumluluğu, `yuv420p`, MP4 için `-movflags +faststart` ve HEVC için `-tag:v hvc1`
+- ffprobe ile süre tespiti, ilerleme takibi, portable araç keşfi
 
 ## 🎨 Tasarım Özellikleri
 

@@ -97,6 +97,15 @@ namespace SwissKnifeApp
                     case "PhotoCollage":
                         MainFrame.Navigate(new PhotoCollagePage());
                         break;
+                    case "AudioTools":
+                        MainFrame.Navigate(new AudioToolsPage());
+                        break;
+                    case "VideoTools":
+                        MainFrame.Navigate(new VideoToolsPage());
+                        break;
+                    case "YouTubeClipDownloader":
+                        MainFrame.Navigate(new YouTubeClipDownloaderPage());
+                        break;
 
                     default:
                         MessageBox.Show($"'{tag}' modülü henüz eklenmedi.", "Bilgi", MessageBoxButton.OK, MessageBoxImage.Information);

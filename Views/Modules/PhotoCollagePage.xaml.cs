@@ -24,6 +24,7 @@ namespace SwissKnifeApp.Views.Modules
 {
     public partial class PhotoCollagePage : Page
     {
+    private readonly SwissKnifeApp.Services.PhotoCollageService _collageService = new SwissKnifeApp.Services.PhotoCollageService();
 
         private List<string> _loadedPhotos = new List<string>();
         private int _maxPhotos = 4; // Default for 2x2 template
@@ -829,7 +830,59 @@ namespace SwissKnifeApp.Views.Modules
                         outputSize = int.Parse(sizeItem.Tag?.ToString() ?? "1200");
                     }
 
-                    CreateAndSaveCollage(saveFileDialog.FileName, outputSize);
+                    // Şablon
+                    string template = "4";
+                    if (CmbTemplate?.SelectedItem is ComboBoxItem templateItem)
+                    {
+                        template = templateItem.Tag?.ToString() ?? "4";
+                    }
+
+                    // Arka plan rengi
+                    var bgColorHex = ColorPickerBackground.SelectedColor?.ToString() ?? "#FFFFFF";
+
+                    // Kenarlık - export için 600 referansına göre ölçekleyelim
+                    int borderWidthPx = (int)(SliderBorderWidth.Value * outputSize / 600.0);
+
+                    // Metin overlay
+                    SwissKnifeApp.Services.TextOverlayOptions? overlay = null;
+                    if (!string.IsNullOrWhiteSpace(TxtOverlayText?.Text))
+                    {
+                        float fontSize = (float)(NumFontSize?.Value ?? 24) * outputSize / 600f;
+
+                        var pos = SwissKnifeApp.Services.TextPosition.TopLeft;
+                        if (CmbTextPosition?.SelectedItem is ComboBoxItem posItem)
+                        {
+                            string p = posItem.Tag?.ToString() ?? "TopLeft";
+                            pos = p switch
+                            {
+                                "TopCenter" => SwissKnifeApp.Services.TextPosition.TopCenter,
+                                "TopRight" => SwissKnifeApp.Services.TextPosition.TopRight,
+                                "BottomLeft" => SwissKnifeApp.Services.TextPosition.BottomLeft,
+                                "BottomCenter" => SwissKnifeApp.Services.TextPosition.BottomCenter,
+                                "BottomRight" => SwissKnifeApp.Services.TextPosition.BottomRight,
+                                "Center" => SwissKnifeApp.Services.TextPosition.Center,
+                                _ => SwissKnifeApp.Services.TextPosition.TopLeft
+                            };
+                        }
+
+                        overlay = new SwissKnifeApp.Services.TextOverlayOptions
+                        {
+                            Text = TxtOverlayText.Text,
+                            FontSize = fontSize,
+                            ColorHex = ColorPickerText.SelectedColor?.ToString() ?? "#FFFFFF",
+                            Position = pos
+                        };
+                    }
+
+                    _collageService.CreateCollage(
+                        saveFileDialog.FileName,
+                        outputSize,
+                        _loadedPhotos,
+                        template,
+                        bgColorHex,
+                        borderWidthPx,
+                        overlay);
+
                     MessageBox.Show("Kolaj başarıyla kaydedildi!", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 catch (Exception ex)
@@ -838,172 +891,7 @@ namespace SwissKnifeApp.Views.Modules
                 }
             }
         }
-
-        private void CreateAndSaveCollage(string fileName, int size)
-        {
-            // Arka plan rengi
-            var bgColorHex = ColorPickerBackground.SelectedColor?.ToString() ?? "#FFFFFF";
-            using var image = new Image<Rgba32>(size, size);
-            image.Mutate(ctx => ctx.Fill(Rgba32.ParseHex(bgColorHex)));
-
-            int borderWidth = (int)(SliderBorderWidth.Value * size / 600.0);
-
-            // Şablon
-            string template = "4";
-            if (CmbTemplate?.SelectedItem is ComboBoxItem templateItem)
-            {
-                template = templateItem.Tag?.ToString() ?? "4";
-            }
-
-            // Fotoğrafları yerleştir
-            DrawPhotosOnImage(image, template, size, borderWidth);
-
-            // Metin ekle
-            if (!string.IsNullOrWhiteSpace(TxtOverlayText?.Text))
-            {
-                DrawTextOnImage(image, size);
-            }
-
-            // Kaydet
-            if (fileName.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase))
-            {
-                image.SaveAsJpeg(fileName);
-            }
-            else
-            {
-                image.SaveAsPng(fileName);
-            }
-        }
-
-        private void DrawPhotosOnImage(Image<Rgba32> canvas, string template, int size, int borderWidth)
-        {
-            switch (template)
-            {
-                case "2H":
-                    DrawGridPhotos(canvas, 1, 2, size, borderWidth);
-                    break;
-                case "2V":
-                    DrawGridPhotos(canvas, 2, 1, size, borderWidth);
-                    break;
-                case "3":
-                    DrawCustom3Photos(canvas, size, borderWidth);
-                    break;
-                case "4":
-                    DrawGridPhotos(canvas, 2, 2, size, borderWidth);
-                    break;
-                case "6":
-                    DrawGridPhotos(canvas, 2, 3, size, borderWidth);
-                    break;
-                case "9":
-                    DrawGridPhotos(canvas, 3, 3, size, borderWidth);
-                    break;
-            }
-        }
-
-        private void DrawGridPhotos(Image<Rgba32> canvas, int rows, int cols, int size, int borderWidth)
-        {
-            int cellWidth = (size - (cols + 1) * borderWidth) / cols;
-            int cellHeight = (size - (rows + 1) * borderWidth) / rows;
-
-            int photoIndex = 0;
-
-            for (int row = 0; row < rows; row++)
-            {
-                for (int col = 0; col < cols; col++)
-                {
-                    if (photoIndex >= _loadedPhotos.Count) return;
-
-                    int x = borderWidth + col * (cellWidth + borderWidth);
-                    int y = borderWidth + row * (cellHeight + borderWidth);
-
-                    try
-                    {
-                        using var photo = SixLabors.ImageSharp.Image.Load<Rgba32>(_loadedPhotos[photoIndex]);
-                        photo.Mutate(ctx => ctx.Resize(cellWidth, cellHeight, KnownResamplers.Lanczos3));
-
-                        canvas.Mutate(ctx => ctx.DrawImage(photo, new SixLabors.ImageSharp.Point(x, y), 1f));
-                    }
-                    catch { }
-
-                    photoIndex++;
-                }
-            }
-        }
-
-        private void DrawCustom3Photos(Image<Rgba32> canvas, int size, int borderWidth)
-        {
-            int topHeight = (size - 3 * borderWidth) / 2;
-            int topWidth = (size - 3 * borderWidth) / 2;
-            int bottomHeight = topHeight;
-            int bottomWidth = size - 2 * borderWidth;
-
-            // Üst sol
-            if (_loadedPhotos.Count > 0)
-                DrawSinglePhoto(canvas, borderWidth, borderWidth, topWidth, topHeight, 0);
-
-            // Üst sağ
-            if (_loadedPhotos.Count > 1)
-                DrawSinglePhoto(canvas, 2 * borderWidth + topWidth, borderWidth, topWidth, topHeight, 1);
-
-            // Alt ortada
-            if (_loadedPhotos.Count > 2)
-                DrawSinglePhoto(canvas, borderWidth, 2 * borderWidth + topHeight, bottomWidth, bottomHeight, 2);
-        }
-
-        private void DrawSinglePhoto(Image<Rgba32> canvas, int x, int y, int width, int height, int photoIndex)
-        {
-            try
-            {
-                using var photo = SixLabors.ImageSharp.Image.Load<Rgba32>(_loadedPhotos[photoIndex]);
-                photo.Mutate(ctx => ctx.Resize(width, height, KnownResamplers.Lanczos3));
-                canvas.Mutate(ctx => ctx.DrawImage(photo, new SixLabors.ImageSharp.Point(x, y), 1f));
-            }
-            catch { }
-    }
-
-    private void DrawTextOnImage(Image<Rgba32> image, int size)
-    {
-        string text = TxtOverlayText.Text;
-        float fontSize = (float)(NumFontSize?.Value ?? 24) * size / 600f;
-
-    var textColor = Rgba32.ParseHex(ColorPickerText.SelectedColor?.ToString() ?? "#FFFFFF");
-
-        // Metin konumu
-        string position = "TopLeft";
-        if (CmbTextPosition?.SelectedItem is ComboBoxItem posItem)
-        {
-            position = posItem.Tag?.ToString() ?? "TopLeft";
-        }
-        float margin = 20 * size / 600f;
-        float x = margin, y = margin;
-        switch (position)
-        {
-            case "TopLeft":
-                x = margin; y = margin; break;
-            case "TopCenter":
-                x = size / 2f; y = margin; break;
-            case "TopRight":
-                x = size - margin; y = margin; break;
-            case "BottomLeft":
-                x = margin; y = size - margin; break;
-            case "BottomCenter":
-                x = size / 2f; y = size - margin; break;
-            case "BottomRight":
-                x = size - margin; y = size - margin; break;
-            case "Center":
-                x = size / 2f; y = size / 2f; break;
-        }
-
-        try
-        {
-            var font = ImageSharpFonts.CreateFont("Arial", fontSize, ImageSharpFontStyle.Bold);
-            image.Mutate(ctx =>
-            {
-                ctx.DrawText(text, font, textColor, new PointF(x, y));
-            });
-        }
-        catch { }
-    }
+        
 
     private void ColorPickerBackground_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e)
     {

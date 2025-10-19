@@ -11,6 +11,7 @@ namespace SwissKnifeApp.Views.Modules
 {
     public partial class TextSummarizerPage : Page
     {
+        private readonly SwissKnifeApp.Services.TextSummarizerService _summarizer = new SwissKnifeApp.Services.TextSummarizerService();
         public TextSummarizerPage()
         {
             InitializeComponent();
@@ -63,8 +64,8 @@ namespace SwissKnifeApp.Views.Modules
                 return;
             }
 
-            var wordCount = GetWords(text).Count;
-            var sentenceCount = GetSentences(text).Count;
+            var wordCount = _summarizer.GetWords(text).Count;
+            var sentenceCount = _summarizer.GetSentences(text).Count;
             var charCount = text.Length;
 
             TxtInputStats.Text = $"Kelime: {wordCount} | Cümle: {sentenceCount} | Karakter: {charCount}";
@@ -94,12 +95,12 @@ namespace SwissKnifeApp.Views.Modules
             {
                 var ratio = (int)SliderSummaryRatio.Value / 100.0;
                 var language = CmbLanguage.SelectedIndex == 0 ? "tr" : "en";
-                var summary = SummarizeText(text, ratio, language);
+                var summary = _summarizer.SummarizeText(text, ratio, language);
 
                 TxtSummary.Text = summary;
 
-                var originalWords = GetWords(text).Count;
-                var summaryWords = GetWords(summary).Count;
+                var originalWords = _summarizer.GetWords(text).Count;
+                var summaryWords = _summarizer.GetWords(summary).Count;
                 var reduction = (1 - (double)summaryWords / originalWords) * 100;
 
                 TxtSummaryStats.Text = $"✅ Özet oluşturuldu! | Orijinal: {originalWords} kelime → Özet: {summaryWords} kelime | Azalma: %{reduction:F1}";
@@ -111,58 +112,7 @@ namespace SwissKnifeApp.Views.Modules
             }
         }
 
-        private string SummarizeText(string text, double ratio, string language)
-        {
-            // Cümlelere ayır
-            var sentences = GetSentences(text);
-            if (sentences.Count == 0) return "";
-
-            // Her cümlenin skorunu hesapla
-            var sentenceScores = new Dictionary<string, double>();
-            var words = GetWords(text);
-            var wordFreq = CalculateWordFrequency(words, language);
-
-            foreach (var sentence in sentences)
-            {
-                var sentenceWords = GetWords(sentence);
-                double score = 0;
-
-                foreach (var word in sentenceWords)
-                {
-                    var normalizedWord = NormalizeWord(word, language);
-                    if (wordFreq.ContainsKey(normalizedWord))
-                    {
-                        score += wordFreq[normalizedWord];
-                    }
-                }
-
-                // Cümle uzunluğuna göre normalize et
-                if (sentenceWords.Count > 0)
-                    score /= sentenceWords.Count;
-
-                sentenceScores[sentence] = score;
-            }
-
-            // En yüksek skorlu cümleleri seç
-            var targetCount = Math.Max(1, (int)(sentences.Count * ratio));
-            var selectedSentences = sentenceScores
-                .OrderByDescending(x => x.Value)
-                .Take(targetCount)
-                .Select(x => x.Key)
-                .ToList();
-
-            // Orijinal sıralamayı koru
-            var summary = new List<string>();
-            foreach (var sentence in sentences)
-            {
-                if (selectedSentences.Contains(sentence))
-                {
-                    summary.Add(sentence);
-                }
-            }
-
-            return string.Join(" ", summary);
-        }
+        
 
         // ============================================
         // ANAHTAR KELİME BULUCU
@@ -182,7 +132,7 @@ namespace SwissKnifeApp.Views.Modules
             {
                 var count = (int)(NumKeywordCount.Value ?? 10);
                 var language = CmbLanguage.SelectedIndex == 0 ? "tr" : "en";
-                var keywords = FindKeywords(text, count, language);
+                var keywords = _summarizer.FindKeywords(text, count, language);
 
                 var keywordList = keywords.Select((kv, index) => new KeywordItem
                 {
@@ -200,16 +150,7 @@ namespace SwissKnifeApp.Views.Modules
             }
         }
 
-        private Dictionary<string, double> FindKeywords(string text, int count, string language)
-        {
-            var words = GetWords(text);
-            var wordFreq = CalculateWordFrequency(words, language);
-
-            return wordFreq
-                .OrderByDescending(x => x.Value)
-                .Take(count)
-                .ToDictionary(x => x.Key, x => x.Value);
-        }
+        
 
         // ============================================
         // ÖNEMLİ CÜMLE BULUCU
@@ -229,7 +170,7 @@ namespace SwissKnifeApp.Views.Modules
             {
                 var count = (int)(NumSentenceCount.Value ?? 5);
                 var language = CmbLanguage.SelectedIndex == 0 ? "tr" : "en";
-                var sentences = FindImportantSentences(text, count, language);
+                var sentences = _summarizer.FindImportantSentences(text, count, language);
 
                 var sentenceList = sentences.Select((kv, index) => new SentenceItem
                 {
@@ -247,150 +188,13 @@ namespace SwissKnifeApp.Views.Modules
             }
         }
 
-        private Dictionary<string, double> FindImportantSentences(string text, int count, string language)
-        {
-            var sentences = GetSentences(text);
-            var words = GetWords(text);
-            var wordFreq = CalculateWordFrequency(words, language);
-
-            var sentenceScores = new Dictionary<string, double>();
-
-            foreach (var sentence in sentences)
-            {
-                var sentenceWords = GetWords(sentence);
-                double score = 0;
-
-                // Kelime frekansına göre skor
-                foreach (var word in sentenceWords)
-                {
-                    var normalizedWord = NormalizeWord(word, language);
-                    if (wordFreq.ContainsKey(normalizedWord))
-                    {
-                        score += wordFreq[normalizedWord];
-                    }
-                }
-
-                // Cümle pozisyonu bonusu (başlangıç cümleleri önemli)
-                var position = sentences.IndexOf(sentence);
-                if (position < sentences.Count * 0.1) // İlk %10
-                    score *= 1.2;
-
-                // Normalize et
-                if (sentenceWords.Count > 0)
-                    score /= sentenceWords.Count;
-
-                sentenceScores[sentence] = score;
-            }
-
-            return sentenceScores
-                .OrderByDescending(x => x.Value)
-                .Take(count)
-                .ToDictionary(x => x.Key, x => x.Value);
-        }
+        
 
         // ============================================
         // YARDIMCI FONKSİYONLAR
         // ============================================
 
-        private List<string> GetSentences(string text)
-        {
-            // Cümleleri ayır (. ! ? ile biten)
-            var sentences = Regex.Split(text, @"(?<=[.!?])\s+")
-                .Where(s => !string.IsNullOrWhiteSpace(s))
-                .Select(s => s.Trim())
-                .ToList();
-            return sentences;
-        }
-
-        private List<string> GetWords(string text)
-        {
-            // Kelimeleri ayır
-            var words = Regex.Split(text, @"\W+")
-                .Where(w => !string.IsNullOrWhiteSpace(w) && w.Length > 1)
-                .ToList();
-            return words;
-        }
-
-        private Dictionary<string, double> CalculateWordFrequency(List<string> words, string language)
-        {
-            var stopWords = GetStopWords(language);
-            var wordFreq = new Dictionary<string, double>();
-
-            foreach (var word in words)
-            {
-                var normalizedWord = NormalizeWord(word, language);
-
-                // Stop word kontrolü
-                if (stopWords.Contains(normalizedWord))
-                    continue;
-
-                if (!wordFreq.ContainsKey(normalizedWord))
-                    wordFreq[normalizedWord] = 0;
-
-                wordFreq[normalizedWord]++;
-            }
-
-            // Normalize et (TF-IDF benzeri)
-            var maxFreq = wordFreq.Values.Max();
-            var normalizedFreq = new Dictionary<string, double>();
-
-            foreach (var kv in wordFreq)
-            {
-                normalizedFreq[kv.Key] = kv.Value / maxFreq;
-            }
-
-            return normalizedFreq;
-        }
-
-        private string NormalizeWord(string word, string language)
-        {
-            var normalized = word.ToLowerInvariant();
-
-            if (language == "tr")
-            {
-                // Türkçe karakterler
-                normalized = normalized
-                    .Replace('ı', 'i')
-                    .Replace('ğ', 'g')
-                    .Replace('ü', 'u')
-                    .Replace('ş', 's')
-                    .Replace('ö', 'o')
-                    .Replace('ç', 'c');
-            }
-
-            return normalized;
-        }
-
-        private HashSet<string> GetStopWords(string language)
-        {
-            if (language == "tr")
-            {
-                return new HashSet<string>
-                {
-                    "bir", "ve", "veya", "ancak", "fakat", "çünkü", "için", "ile", "bu", "şu", "o",
-                    "ben", "sen", "biz", "siz", "onlar", "şey", "var", "yok", "gibi", "kadar",
-                    "daha", "en", "çok", "az", "şimdi", "sonra", "önce", "burada", "orada",
-                    "her", "bazı", "hiç", "de", "da", "mi", "mı", "mu", "mü", "ki", "ise",
-                    "olan", "olarak", "ama", "sadece", "bile", "artık", "hala", "dahi",
-                    "ne", "nasıl", "neden", "niçin", "nerede", "kim", "kime", "ne zaman"
-                };
-            }
-            else // İngilizce
-            {
-                return new HashSet<string>
-                {
-                    "the", "a", "an", "and", "or", "but", "if", "then", "else", "when",
-                    "at", "from", "by", "on", "off", "for", "in", "out", "over", "to",
-                    "into", "with", "is", "are", "was", "were", "be", "been", "being",
-                    "have", "has", "had", "do", "does", "did", "will", "would", "should",
-                    "could", "may", "might", "must", "can", "this", "that", "these", "those",
-                    "i", "you", "he", "she", "it", "we", "they", "what", "which", "who",
-                    "where", "when", "why", "how", "all", "each", "every", "both", "few",
-                    "more", "most", "other", "some", "such", "no", "nor", "not", "only",
-                    "own", "same", "so", "than", "too", "very", "just", "as"
-                };
-            }
-        }
+        
 
         // ============================================
         // KOPYALAMA FONKSİYONLARI
