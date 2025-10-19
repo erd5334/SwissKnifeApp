@@ -103,6 +103,10 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.4, )"
+            },
             "OxyPlot.Wpf": {
               "target": "Package",
               "version": "[2.2.0, )"
@@ -126,14 +130,6 @@
             "SixLabors.ImageSharp.Drawing": {
               "target": "Package",
               "version": "[2.1.7, )"
-            },
-            "SpeedTest.Net": {
-              "target": "Package",
-              "version": "[1.3.0, )"
-            },
-            "SpeedTest.NetCore": {
-              "target": "Package",
-              "version": "[2.1.0, )"
             },
             "ZXing.Net": {
               "target": "Package",

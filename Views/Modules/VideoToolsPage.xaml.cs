@@ -16,9 +16,20 @@ namespace SwissKnifeApp.Views.Modules
         private CancellationTokenSource? _cts;
         private readonly List<string> _selectedFiles = new();
 
+        private bool _isSliderDragging = false;
+        private bool _isMediaOpened = false;
+        private System.Windows.Threading.DispatcherTimer? _timer;
+
         public VideoToolsPage()
         {
             InitializeComponent();
+            _timer = new System.Windows.Threading.DispatcherTimer();
+            _timer.Interval = TimeSpan.FromMilliseconds(500);
+            _timer.Tick += Timer_Tick;
+            VideoPlayer.MediaOpened += VideoPlayer_MediaOpened;
+            VideoPlayer.MediaEnded += VideoPlayer_MediaEnded;
+            SliderPosition.AddHandler(Slider.PreviewMouseDownEvent, new System.Windows.Input.MouseButtonEventHandler(Slider_MouseDown), true);
+            SliderPosition.AddHandler(Slider.PreviewMouseUpEvent, new System.Windows.Input.MouseButtonEventHandler(Slider_MouseUp), true);
         }
 
         private void BtnPickFiles_Click(object sender, RoutedEventArgs e)
@@ -37,7 +48,102 @@ namespace SwissKnifeApp.Views.Modules
                 {
                     TxtOutput.Text = Path.GetDirectoryName(_selectedFiles[0]) ?? "";
                 }
+                // Seçilen ilk videoyu oynatıcıya yükle
+                if (_selectedFiles.Count > 0)
+                {
+                    VideoPlayer.Source = new Uri(_selectedFiles[0]);
+                    VideoPlayer.Position = TimeSpan.Zero;
+                    _isMediaOpened = false;
+                }
             }
+        }
+        // Video oynatıcı kontrolleri
+        private void BtnPlay_Click(object sender, RoutedEventArgs e)
+        {
+            if (VideoPlayer.Source != null)
+            {
+                VideoPlayer.Play();
+                _timer?.Start();
+            }
+        }
+
+        private void BtnPause_Click(object sender, RoutedEventArgs e)
+        {
+            VideoPlayer.Pause();
+            _timer?.Stop();
+        }
+
+        private void BtnStop_Click(object sender, RoutedEventArgs e)
+        {
+            VideoPlayer.Stop();
+            _timer?.Stop();
+            SliderPosition.Value = 0;
+        }
+
+        private void BtnForward_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isMediaOpened)
+            {
+                var pos = VideoPlayer.Position + TimeSpan.FromSeconds(5);
+                if (pos > VideoPlayer.NaturalDuration.TimeSpan)
+                    pos = VideoPlayer.NaturalDuration.TimeSpan;
+                VideoPlayer.Position = pos;
+            }
+        }
+
+        private void BtnBackward_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isMediaOpened)
+            {
+                var pos = VideoPlayer.Position - TimeSpan.FromSeconds(5);
+                if (pos < TimeSpan.Zero) pos = TimeSpan.Zero;
+                VideoPlayer.Position = pos;
+            }
+        }
+
+        private void VideoPlayer_MediaOpened(object? sender, RoutedEventArgs e)
+        {
+            _isMediaOpened = true;
+            SliderPosition.Maximum = VideoPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+            SliderPosition.Value = 0;
+            TxtTotalTime.Text = FormatTime(VideoPlayer.NaturalDuration.TimeSpan);
+            TxtCurrentTime.Text = "00:00";
+        }
+
+        private void VideoPlayer_MediaEnded(object? sender, RoutedEventArgs e)
+        {
+            _timer?.Stop();
+            SliderPosition.Value = 0;
+        }
+
+        private void Timer_Tick(object? sender, EventArgs e)
+        {
+            if (!_isSliderDragging && _isMediaOpened)
+            {
+                SliderPosition.Value = VideoPlayer.Position.TotalSeconds;
+                TxtCurrentTime.Text = FormatTime(VideoPlayer.Position);
+            }
+        }
+        private string FormatTime(TimeSpan ts)
+        {
+            if (ts.TotalHours >= 1)
+                return ts.ToString(@"hh\:mm\:ss");
+            else
+                return ts.ToString(@"mm\:ss");
+        }
+
+        private void Slider_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            _isSliderDragging = true;
+        }
+
+        private void Slider_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (_isMediaOpened)
+            {
+                VideoPlayer.Position = TimeSpan.FromSeconds(SliderPosition.Value);
+            }
+            _isSliderDragging = false;
         }
 
         private void BtnPickFolder_Click(object sender, RoutedEventArgs e)

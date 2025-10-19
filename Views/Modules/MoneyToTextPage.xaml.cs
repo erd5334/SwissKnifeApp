@@ -49,7 +49,25 @@ namespace SwissKnifeApp.Views.Modules
                 return;
             }
 
-            var langText = (cmbLanguage?.SelectedItem as ComboBoxItem)?.Content?.ToString();
+            string? langText = null;
+            if (cmbLanguage != null)
+            {
+                // Prefer SelectedValue (bound to Tag), fallback to ComboBoxItem.Content or TextBlock text inside
+                langText = cmbLanguage.SelectedValue as string;
+                if (string.IsNullOrWhiteSpace(langText))
+                {
+                    if (cmbLanguage.SelectedItem is ComboBoxItem cbi)
+                    {
+                        langText = cbi.Tag as string
+                                   ?? cbi.Content?.ToString();
+                        if (string.IsNullOrWhiteSpace(langText) && cbi.Content is StackPanel sp)
+                        {
+                            var tb = sp.Children.OfType<TextBlock>().FirstOrDefault();
+                            langText = tb?.Text;
+                        }
+                    }
+                }
+            }
             var language = _moneyToTextService.ParseLanguage(langText);
             var casing = _moneyToTextService.ParseCasingIndex(cmbCasing?.SelectedIndex);
             bool noSpaces = chkNoSpaces?.IsChecked == true;

@@ -2,7 +2,14 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       Title="Dosya Yöneticisi">
+
+    <!-- Page-level accent override (FileManager = Deep Orange) -->
+    <Page.Resources>
+        <SolidColorBrush x:Key="AccentBrush" Color="#FF5722"/>
+        <SolidColorBrush x:Key="AccentBrush2" Color="#E64A19"/>
+    </Page.Resources>
 
     <Grid Margin="20">
         <Grid.RowDefinitions>
@@ -10,12 +17,25 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,12">
+            <iconPacks:PackIconMaterial Kind="FolderMultiple" Width="28" Height="28" Foreground="{StaticResource AccentBrush}"/>
+            <TextBlock Text="Dosya Yöneticisi" FontSize="20" FontWeight="Bold" Margin="8,0,0,0"/>
+            <TextBlock Text=" • Dosyalarınızı yönetin" Foreground="#607D8B" Margin="6,4,0,0"/>
+        </StackPanel>
+
         <!-- Üst Sekme Kontrolleri -->
-        <TabControl Grid.Row="1" Margin="0,10,0,0">
+        <TabControl Grid.Row="1" Margin="0">
             
             <!-- 1️⃣ DOSYA KARŞILAŞTIRICI (DIFF) -->
-            <TabItem Header="📊 Dosya Karşılaştırıcı">
-                <Grid Margin="10">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="FileCompare" Width="16" Height="16" Margin="0,0,6,0"/>
+                        <TextBlock Text="Dosya Karşılaştırıcı"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="15">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -24,49 +44,80 @@
                     </Grid.RowDefinitions>
 
                     <!-- Dosya Seçim Paneli -->
-                    <GroupBox Header="Dosya Seçimi" Grid.Row="0" Margin="0,0,0,10">
+                    <Border Grid.Row="0" Style="{StaticResource Card}" Margin="0,0,0,12">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="Dosya Seçimi" Style="{StaticResource SectionHeader}"/>
+
+                            <!-- Sol Dosya -->
+                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Text="Sol Dosya/Metin:" VerticalAlignment="Center" Width="120" FontWeight="SemiBold"/>
+                                <TextBox x:Name="TxtFile1Path" Style="{StaticResource RoundedTextBox}" Width="400" Height="32" Margin="0,0,10,0" IsReadOnly="True"/>
+                                <Button Style="{StaticResource OutlineButtonStyle}" Click="BtnSelectFile1_Click" Margin="0,0,8,0" Padding="10,7">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="FolderOpen" Width="16" Height="16" Margin="5,0,10,0"/>
+                                        <TextBlock Text="Dosya Seç" Width="55"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource OutlineButtonStyle}" Click="BtnEnterText1_Click" Padding="10,7">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="TextBox" Width="16" Height="16" Margin="5,0,10,0"/>
+                                        <TextBlock Text="Metin Gir" Width="55"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+
+                            <!-- Sağ Dosya -->
+                            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0">
+                                <TextBlock Text="Sağ Dosya/Metin:" VerticalAlignment="Center" Width="120" FontWeight="SemiBold"/>
+                                <TextBox x:Name="TxtFile2Path" Style="{StaticResource RoundedTextBox}" Width="400" Height="32" Margin="0,0,10,0" IsReadOnly="True"/>
+                                <Button Style="{StaticResource OutlineButtonStyle}" Click="BtnSelectFile2_Click" Margin="0,0,8,0" Padding="10,7">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="FolderOpen" Width="16" Height="16" Margin="5,0,10,0"/>
+                                        <TextBlock Text="Dosya Seç" Width="55"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource OutlineButtonStyle}" Click="BtnEnterText1_Click" Padding="10,7">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="TextBox" Width="16" Height="16" Margin="5,0,10,0"/>
+                                        <TextBlock Text="Metin Gir" Width="55"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Karşılaştırma Ayarları -->
+                    <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,12">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-
-                            <!-- Sol Dosya -->
-                            <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="0,5">
-                                <TextBlock Text="Sol Dosya/Metin:" VerticalAlignment="Center" Width="120" FontWeight="Bold"/>
-                                <TextBox x:Name="TxtFile1Path" Width="400" Margin="5,0" IsReadOnly="True"/>
-                                <Button Content="📁 Dosya Seç" Click="BtnSelectFile1_Click" Margin="5,0" Padding="10,5"/>
-                                <Button Content="✏️ Metin Gir" Click="BtnEnterText1_Click" Margin="5,0" Padding="10,5"/>
-                            </StackPanel>
-
-                            <!-- Sağ Dosya -->
-                            <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,5">
-                                <TextBlock Text="Sağ Dosya/Metin:" VerticalAlignment="Center" Width="120" FontWeight="Bold"/>
-                                <TextBox x:Name="TxtFile2Path" Width="400" Margin="5,0" IsReadOnly="True"/>
-                                <Button Content="📁 Dosya Seç" Click="BtnSelectFile2_Click" Margin="5,0" Padding="10,5"/>
-                                <Button Content="✏️ Metin Gir" Click="BtnEnterText2_Click" Margin="5,0" Padding="10,5"/>
+                            <TextBlock Text="Karşılaştırma Ayarları" Style="{StaticResource SectionHeader}"/>
+                            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                <CheckBox x:Name="ChkIgnoreWhitespace" Content="Boşlukları Yoksay" IsChecked="False" Margin="0,0,20,0"/>
+                                <CheckBox x:Name="ChkIgnoreCase" Content="Büyük/Küçük Harf Duyarsız" IsChecked="False" Margin="0,0,20,0"/>
+                                <TextBlock Text="Mod:" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,8,0"/>
+                                <ComboBox x:Name="CmbDiffMode" Width="160" Margin="0,0,20,0" SelectedIndex="0">
+                                    <ComboBoxItem Content="Satır Bazında"/>
+                                    <ComboBoxItem Content="Sözcük Bazında"/>
+                                    <ComboBoxItem Content="Karakter Bazında"/>
+                                </ComboBox>
+                                <Button Style="{StaticResource AccentButtonStyle}" Click="BtnCompare_Click" Padding="12,8">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="Magnify" Width="16" Height="16" Margin="5,0,10,0"/>
+                                        <TextBlock Text="Karşılaştır" Width="70"/>
+                                    </StackPanel>
+                                </Button>
                             </StackPanel>
                         </Grid>
-                    </GroupBox>
-
-                    <!-- Karşılaştırma Ayarları -->
-                    <GroupBox Header="Karşılaştırma Ayarları" Grid.Row="1" Margin="0,0,0,10">
-                        <StackPanel Orientation="Horizontal">
-                            <CheckBox x:Name="ChkIgnoreWhitespace" Content="Boşlukları Yoksay" IsChecked="False" Margin="0,0,20,0"/>
-                            <CheckBox x:Name="ChkIgnoreCase" Content="Büyük/Küçük Harf Duyarsız" IsChecked="False" Margin="0,0,20,0"/>
-                            <ComboBox x:Name="CmbDiffMode" Width="150" Margin="0,0,20,0" SelectedIndex="0">
-                                <ComboBoxItem Content="Satır Bazında"/>
-                                <ComboBoxItem Content="Sözcük Bazında"/>
-                                <ComboBoxItem Content="Karakter Bazında"/>
-                            </ComboBox>
-                            <Button Content="🔍 Karşılaştır" Click="BtnCompare_Click" Padding="15,8" FontWeight="Bold" 
-                                    Background="#2196F3" Foreground="White"/>
-                        </StackPanel>
-                    </GroupBox>
+                    </Border>
 
                     <!-- Karşılaştırma Sonucu -->
                     <Grid Grid.Row="2">
@@ -111,17 +162,31 @@
                     </Grid>
 
                     <!-- İstatistikler -->
-                    <GroupBox Header="İstatistikler" Grid.Row="3" Margin="0,10,0,0">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock x:Name="TxtDiffStats" Text="Karşılaştırma yapılmadı." FontWeight="Bold" Foreground="#555"/>
-                        </StackPanel>
-                    </GroupBox>
+                    <Border Grid.Row="3" Style="{StaticResource Card}" Margin="0,12,0,0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <iconPacks:PackIconMaterial Kind="Information" Width="18" Height="18" Foreground="{StaticResource AccentBrush}" Margin="0,0,8,0"/>
+                                <TextBlock Text="İstatistikler" Style="{StaticResource SectionHeader}" Margin="0"/>
+                            </StackPanel>
+                            <TextBlock x:Name="TxtDiffStats" Grid.Row="1" Text="Karşılaştırma yapılmadı." FontWeight="SemiBold" Foreground="#2C3E50"/>
+                        </Grid>
+                    </Border>
                 </Grid>
             </TabItem>
 
                 <!-- 3️⃣ DOSYA ŞİFRELEME/ÇÖZME -->
-                <TabItem Header="🔒 Dosya Şifreleme/Çözme">
-                    <Grid Margin="10">
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconMaterial Kind="LockOutline" Width="16" Height="16" Margin="0,0,6,0"/>
+                            <TextBlock Text="Dosya Şifreleme/Çözme"/>
+                        </StackPanel>
+                    </TabItem.Header>
+                    <Grid Margin="15">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -130,40 +195,86 @@
                         </Grid.RowDefinitions>
 
                         <!-- Dosya Seçimi ve Sürükle-Bırak -->
-                        <GroupBox Header="Dosya Seçimi" Grid.Row="0" Margin="0,0,0,10">
-                            <StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBox x:Name="TxtEncryptFilePath" Width="400" Margin="5,0" IsReadOnly="True" AllowDrop="True" PreviewDragOver="EncryptFile_DragOver" Drop="EncryptFile_Drop"/>
-                                    <Button Content="📁 Dosya Seç" Click="BtnSelectEncryptFile_Click" Margin="5,0" Padding="10,5"/>
+                        <Border Grid.Row="0" Style="{StaticResource Card}" Margin="0,0,0,12">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Dosya Seçimi" Style="{StaticResource SectionHeader}"/>
+                                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBox x:Name="TxtEncryptFilePath" Style="{StaticResource RoundedTextBox}" Width="450" Height="32" Margin="0,0,10,0" IsReadOnly="True" AllowDrop="True" PreviewDragOver="EncryptFile_DragOver" Drop="EncryptFile_Drop"/>
+                                    <Button Style="{StaticResource AccentButtonStyle}" Click="BtnSelectEncryptFile_Click" Padding="10,7">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="FolderOpen" Width="16" Height="16" Margin="5,0,10,0"/>
+                                            <TextBlock Text="Dosya Seç" Width="55"/>
+                                        </StackPanel>
+                                    </Button>
                                 </StackPanel>
-                                <TextBlock Text="Dosyayı seçin veya buraya sürükleyin." Margin="10,5,0,0" Foreground="#888" FontStyle="Italic"/>
-                            </StackPanel>
-                        </GroupBox>
+                                <TextBlock Grid.Row="2" Text="💡 Dosyayı seçin veya buraya sürükleyin." Foreground="#607D8B" FontStyle="Italic" FontSize="12"/>
+                            </Grid>
+                        </Border>
 
                         <!-- Parola Girişi -->
-                        <GroupBox Header="Parola" Grid.Row="1" Margin="0,0,0,10">
-                            <StackPanel Orientation="Horizontal">
-                                <PasswordBox x:Name="PwdEncryptPassword" Width="200" Margin="5,0"/>
-                                <CheckBox x:Name="ChkShowEncryptPassword" Content="Parolayı Göster" Margin="10,0,0,0" Checked="ChkShowEncryptPassword_Checked" Unchecked="ChkShowEncryptPassword_Unchecked"/>
-                            </StackPanel>
-                        </GroupBox>
+                        <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,12">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Parola" Style="{StaticResource SectionHeader}"/>
+                                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                    <PasswordBox x:Name="PwdEncryptPassword" Width="250" Height="32" Margin="0,0,16,0"/>
+                                    <CheckBox x:Name="ChkShowEncryptPassword" Content="Parolayı Göster" VerticalAlignment="Center" Checked="ChkShowEncryptPassword_Checked" Unchecked="ChkShowEncryptPassword_Unchecked"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
 
                         <!-- Şifreleme/Çözme Butonları -->
-                        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10">
-                            <Button Content="🔒 Şifrele" Click="BtnEncryptFile_Click" Padding="15,8" Background="#2196F3" Foreground="White" FontWeight="Bold"/>
-                            <Button Content="🔓 Çöz" Click="BtnDecryptFile_Click" Padding="15,8" Margin="10,0,0,0" Background="#4CAF50" Foreground="White" FontWeight="Bold"/>
-                        </StackPanel>
+                        <Border Grid.Row="2" Style="{StaticResource Card}" Margin="0,0,0,12">
+                            <StackPanel Orientation="Horizontal">
+                                <Button Style="{StaticResource AccentButtonStyle}" Click="BtnEncryptFile_Click" Padding="12,8" Margin="0,0,10,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="Lock" Width="16" Height="16" Margin="5,0,10,0"/>
+                                        <TextBlock Text="Şifrele" Width="50"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource OutlineButtonStyle}" Click="BtnDecryptFile_Click" Padding="12,8">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="LockOpenVariant" Width="16" Height="16" Margin="5,0,10,0"/>
+                                        <TextBlock Text="Şifre Çöz" Width="60"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </Border>
 
                         <!-- Sonuç/Durum -->
-                        <GroupBox Header="Durum" Grid.Row="3" Margin="0,0,0,0">
-                            <TextBlock x:Name="TxtEncryptStatus" Text="Hazır." Foreground="#555" FontWeight="Bold"/>
-                        </GroupBox>
+                        <Border Grid.Row="3" Style="{StaticResource Card}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <iconPacks:PackIconMaterial Kind="Information" Width="18" Height="18" Foreground="{StaticResource AccentBrush}" Margin="0,0,8,0"/>
+                                    <TextBlock Text="Durum" Style="{StaticResource SectionHeader}" Margin="0"/>
+                                </StackPanel>
+                                <TextBlock x:Name="TxtEncryptStatus" Grid.Row="1" Text="Hazır." Foreground="#2C3E50" FontWeight="SemiBold"/>
+                            </Grid>
+                        </Border>
                     </Grid>
                 </TabItem>
 
             <!-- 2️⃣ TOPLU YENİDEN ADLANDIRICI -->
-            <TabItem Header="📝 Toplu Yeniden Adlandırıcı">
-                <Grid Margin="10">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="RenameBox" Width="16" Height="16" Margin="0,0,6,0"/>
+                        <TextBlock Text="Toplu Yeniden Adlandırıcı"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="15">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
@@ -172,49 +283,74 @@
                     </Grid.RowDefinitions>
 
                     <!-- Klasör Seçimi -->
-                    <GroupBox Header="Klasör ve Filtre Seçimi" Grid.Row="0" Margin="0,0,0,10">
-                        <StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,5">
-                                <TextBlock Text="Klasör:" VerticalAlignment="Center" Width="100" FontWeight="Bold"/>
-                                <TextBox x:Name="TxtFolderPath" Width="500" Margin="5,0" IsReadOnly="True"/>
-                                <Button Content="📁 Klasör Seç" Click="BtnSelectFolder_Click" Margin="5,0" Padding="10,5"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="0,5">
-                                <TextBlock Text="Dosya Filtresi:" VerticalAlignment="Center" Width="100" FontWeight="Bold"/>
-                                <TextBox x:Name="TxtFileFilter" Width="200" Text="*.*" Margin="5,0" ToolTip="Örn: *.jpg, *.txt, *.*"/>
-                                <CheckBox x:Name="ChkIncludeSubfolders" Content="Alt Klasörleri Dahil Et" Margin="20,0,0,0" IsChecked="False"/>
-                                <Button Content="🔄 Dosyaları Listele" Click="BtnLoadFiles_Click" Margin="20,0,0,0" Padding="10,5" 
-                                        Background="#4CAF50" Foreground="White" FontWeight="Bold"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </GroupBox>
-
-                    <!-- Dosya Listesi -->
-                    <GroupBox Header="Dosya Listesi" Grid.Row="1" Margin="0,0,0,10">
-                        <DataGrid x:Name="DgFiles" AutoGenerateColumns="False" CanUserAddRows="False" 
-                                  SelectionMode="Extended" IsReadOnly="True">
-                            <DataGrid.Columns>
-                                <DataGridCheckBoxColumn Header="✓" Binding="{Binding IsSelected}" Width="40"/>
-                                <DataGridTextColumn Header="Mevcut Dosya Adı" Binding="{Binding OriginalName}" Width="*"/>
-                                <DataGridTextColumn Header="Yeni Dosya Adı" Binding="{Binding NewName}" Width="*"/>
-                                <DataGridTextColumn Header="Uzantı" Binding="{Binding Extension}" Width="80"/>
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </GroupBox>
-
-                    <!-- Yeniden Adlandırma Kuralları -->
-                    <GroupBox Header="Yeniden Adlandırma Kuralları" Grid.Row="2" Margin="0,0,0,10">
+                    <Border Grid.Row="0" Style="{StaticResource Card}" Margin="0,0,0,12">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
+                            <TextBlock Text="Klasör ve Filtre Seçimi" Style="{StaticResource SectionHeader}"/>
+                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Text="Klasör:" VerticalAlignment="Center" Width="90" FontWeight="SemiBold"/>
+                                <TextBox x:Name="TxtFolderPath" Style="{StaticResource RoundedTextBox}" Width="450" Height="32" Margin="0,0,10,0" IsReadOnly="True"/>
+                                <Button Style="{StaticResource OutlineButtonStyle}" Click="BtnSelectFolder_Click" Padding="10,7">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="FolderOpen" Width="16" Height="16" Margin="5,0,10,0"/>
+                                        <TextBlock Text="Klasör Seç" Width="60"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                                <TextBlock Text="Filtre:" VerticalAlignment="Center" Width="90" FontWeight="SemiBold"/>
+                                <TextBox x:Name="TxtFileFilter" Style="{StaticResource RoundedTextBox}" Width="180" Height="32" Text="*.*" Margin="0,0,16,0" mah:TextBoxHelper.Watermark="*.jpg, *.txt"/>
+                                <CheckBox x:Name="ChkIncludeSubfolders" Content="Alt Klasörleri Dahil Et" VerticalAlignment="Center" Margin="0,0,20,0" IsChecked="False"/>
+                                <Button Style="{StaticResource AccentButtonStyle}" Click="BtnLoadFiles_Click" Padding="12,8">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="Refresh" Width="16" Height="16" Margin="5,0,10,0"/>
+                                        <TextBlock Text="Dosyaları Listele" Width="100"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Dosya Listesi -->
+                    <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,12">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Dosya Listesi" Style="{StaticResource SectionHeader}"/>
+                            <DataGrid x:Name="DgFiles" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" 
+                                      SelectionMode="Extended" IsReadOnly="True">
+                                <DataGrid.Columns>
+                                    <DataGridCheckBoxColumn Header="✓" Binding="{Binding IsSelected}" Width="40"/>
+                                    <DataGridTextColumn Header="Mevcut Dosya Adı" Binding="{Binding OriginalName}" Width="*"/>
+                                    <DataGridTextColumn Header="Yeni Dosya Adı" Binding="{Binding NewName}" Width="*"/>
+                                    <DataGridTextColumn Header="Uzantı" Binding="{Binding Extension}" Width="80"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Border>
+
+                    <!-- Yeniden Adlandırma Kuralları -->
+                    <Border Grid.Row="2" Style="{StaticResource Card}" Margin="0,0,0,12">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Yeniden Adlandırma Kuralları" Style="{StaticResource SectionHeader}"/>
 
                             <!-- Mod Seçimi -->
-                            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,5">
-                                <TextBlock Text="Mod:" VerticalAlignment="Center" Width="100" FontWeight="Bold"/>
-                                <ComboBox x:Name="CmbRenameMode" Width="200" Margin="5,0" SelectedIndex="0" SelectionChanged="CmbRenameMode_SelectionChanged">
+                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBlock Text="Mod:" VerticalAlignment="Center" Width="100" FontWeight="SemiBold"/>
+                                <ComboBox x:Name="CmbRenameMode" Width="250" SelectedIndex="0" SelectionChanged="CmbRenameMode_SelectionChanged">
                                     <ComboBoxItem Content="Sıralı Numaralama"/>
                                     <ComboBoxItem Content="Tarih/Zaman Ekleme"/>
                                     <ComboBoxItem Content="Metin Değiştirme (Regex)"/>
@@ -223,59 +359,67 @@
                             </StackPanel>
 
                             <!-- Sıralı Numaralama Ayarları -->
-                            <StackPanel x:Name="PnlSequential" Grid.Row="1" Orientation="Horizontal" Margin="0,5" Visibility="Visible">
-                                <TextBlock Text="Temel Ad:" VerticalAlignment="Center" Width="100"/>
-                                <TextBox x:Name="TxtBaseName" Width="150" Text="Dosya" Margin="5,0"/>
-                                <TextBlock Text="Başlangıç:" VerticalAlignment="Center" Width="70" Margin="20,0,0,0"/>
-                                <mah:NumericUpDown x:Name="NumStartNumber" Width="80" Value="1" Minimum="0" Margin="5,0"/>
-                                <TextBlock Text="Basamak:" VerticalAlignment="Center" Width="70" Margin="20,0,0,0"/>
-                                <mah:NumericUpDown x:Name="NumDigits" Width="80" Value="3" Minimum="1" Maximum="10" Margin="5,0"/>
+                            <StackPanel x:Name="PnlSequential" Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,8" Visibility="Visible">
+                                <TextBlock Text="Temel Ad:" VerticalAlignment="Center" Width="100" FontWeight="SemiBold"/>
+                                <TextBox x:Name="TxtBaseName" Style="{StaticResource RoundedTextBox}" Width="150" Height="32" Text="Dosya" Margin="0,0,16,0"/>
+                                <TextBlock Text="Başlangıç:" VerticalAlignment="Center" Width="70" FontWeight="SemiBold"/>
+                                <mah:NumericUpDown x:Name="NumStartNumber" Width="80" Height="32" Value="1" Minimum="0" Margin="0,0,16,0"/>
+                                <TextBlock Text="Basamak:" VerticalAlignment="Center" Width="70" FontWeight="SemiBold"/>
+                                <mah:NumericUpDown x:Name="NumDigits" Width="80" Height="32" Value="3" Minimum="1" Maximum="10"/>
                             </StackPanel>
 
                             <!-- Tarih/Zaman Ekleme Ayarları -->
-                            <StackPanel x:Name="PnlDateTime" Grid.Row="1" Orientation="Horizontal" Margin="0,5" Visibility="Collapsed">
-                                <TextBlock Text="Format:" VerticalAlignment="Center" Width="100"/>
-                                <ComboBox x:Name="CmbDateFormat" Width="200" Margin="5,0" SelectedIndex="0">
+                            <StackPanel x:Name="PnlDateTime" Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,8" Visibility="Collapsed">
+                                <TextBlock Text="Format:" VerticalAlignment="Center" Width="100" FontWeight="SemiBold"/>
+                                <ComboBox x:Name="CmbDateFormat" Width="250" Margin="0,0,16,0" SelectedIndex="0">
                                     <ComboBoxItem Content="yyyy-MM-dd (2025-10-16)"/>
                                     <ComboBoxItem Content="yyyyMMdd (20251016)"/>
                                     <ComboBoxItem Content="dd-MM-yyyy (16-10-2025)"/>
                                     <ComboBoxItem Content="yyyy-MM-dd_HH-mm-ss"/>
                                 </ComboBox>
-                                <CheckBox x:Name="ChkDatePrefix" Content="Önüne Ekle" Margin="20,0,0,0" IsChecked="True"/>
+                                <CheckBox x:Name="ChkDatePrefix" Content="Önüne Ekle" VerticalAlignment="Center" IsChecked="True"/>
                             </StackPanel>
 
                             <!-- Metin Değiştirme Ayarları -->
-                            <StackPanel x:Name="PnlReplace" Grid.Row="1" Margin="0,5" Visibility="Collapsed">
-                                <StackPanel Orientation="Horizontal" Margin="0,5">
-                                    <TextBlock Text="Ara:" VerticalAlignment="Center" Width="100"/>
-                                    <TextBox x:Name="TxtSearchText" Width="250" Margin="5,0"/>
-                                    <CheckBox x:Name="ChkUseRegex" Content="Regex Kullan" Margin="20,0,0,0" IsChecked="False"/>
+                            <StackPanel x:Name="PnlReplace" Grid.Row="2" Margin="0,0,0,8" Visibility="Collapsed">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <TextBlock Text="Ara:" VerticalAlignment="Center" Width="100" FontWeight="SemiBold"/>
+                                    <TextBox x:Name="TxtSearchText" Style="{StaticResource RoundedTextBox}" Width="250" Height="32" Margin="0,0,16,0"/>
+                                    <CheckBox x:Name="ChkUseRegex" Content="Regex Kullan" VerticalAlignment="Center" IsChecked="False"/>
                                 </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="0,5">
-                                    <TextBlock Text="Değiştir:" VerticalAlignment="Center" Width="100"/>
-                                    <TextBox x:Name="TxtReplaceText" Width="250" Margin="5,0"/>
-                                    <CheckBox x:Name="ChkCaseSensitive" Content="Büyük/Küçük Harf Duyarlı" Margin="20,0,0,0" IsChecked="False"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Değiştir:" VerticalAlignment="Center" Width="100" FontWeight="SemiBold"/>
+                                    <TextBox x:Name="TxtReplaceText" Style="{StaticResource RoundedTextBox}" Width="250" Height="32" Margin="0,0,16,0"/>
+                                    <CheckBox x:Name="ChkCaseSensitive" Content="Büyük/Küçük Harf Duyarlı" VerticalAlignment="Center" IsChecked="False"/>
                                 </StackPanel>
                             </StackPanel>
 
                             <!-- Özel Şablon Ayarları -->
-                            <StackPanel x:Name="PnlCustom" Grid.Row="1" Margin="0,5" Visibility="Collapsed">
-                                <StackPanel Orientation="Horizontal" Margin="0,5">
-                                    <TextBlock Text="Şablon:" VerticalAlignment="Center" Width="100"/>
-                                    <TextBox x:Name="TxtCustomTemplate" Width="400" Margin="5,0"/>
+                            <StackPanel x:Name="PnlCustom" Grid.Row="2" Margin="0,0,0,8" Visibility="Collapsed">
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                                    <TextBlock Text="Şablon:" VerticalAlignment="Center" Width="100" FontWeight="SemiBold"/>
+                                    <TextBox x:Name="TxtCustomTemplate" Style="{StaticResource RoundedTextBox}" Width="450" Height="32"/>
                                 </StackPanel>
-                                <TextBlock Text="Değişkenler: {name}, {date}, {n}, {ext}" 
-                                          Margin="105,5,0,0" FontSize="11" Foreground="#666" FontStyle="Italic"/>
+                                <TextBlock Text="💡 Değişkenler: {name}, {date}, {n}, {ext}" 
+                                          Margin="100,0,0,0" FontSize="11" Foreground="#607D8B" FontStyle="Italic"/>
                             </StackPanel>
                         </Grid>
-                    </GroupBox>
+                    </Border>
 
                     <!-- Aksiyonlar -->
                     <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button Content="👁️ Önizleme Göster" Click="BtnPreview_Click" Padding="15,8" Margin="0,0,10,0"
-                                Background="#FF9800" Foreground="White" FontWeight="Bold"/>
-                        <Button Content="✔️ Yeniden Adlandır" Click="BtnRename_Click" Padding="15,8"
-                                Background="#4CAF50" Foreground="White" FontWeight="Bold"/>
+                        <Button Style="{StaticResource OutlineButtonStyle}" Click="BtnPreview_Click" Padding="12,8" Margin="0,0,10,0">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="Eye" Width="16" Height="16" Margin="5,0,10,0"/>
+                                <TextBlock Text="Önizleme Göster" Width="95"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource AccentButtonStyle}" Click="BtnRename_Click" Padding="12,8">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="Check" Width="16" Height="16" Margin="5,0,10,0"/>
+                                <TextBlock Text="Yeniden Adlandır" Width="105"/>
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </Grid>
             </TabItem>

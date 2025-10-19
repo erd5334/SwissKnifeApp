@@ -16,9 +16,115 @@ namespace SwissKnifeApp.Views.Modules
         private CancellationTokenSource? _cts;
         private readonly List<string> _selectedFiles = new();
 
+        private bool _isSliderDragging = false;
+        private bool _isMediaOpened = false;
+        private System.Windows.Threading.DispatcherTimer? _timer;
+
         public AudioToolsPage()
         {
             InitializeComponent();
+            _timer = new System.Windows.Threading.DispatcherTimer();
+            _timer.Interval = TimeSpan.FromMilliseconds(500);
+            _timer.Tick += Timer_Tick;
+            AudioPlayer.MediaOpened += AudioPlayer_MediaOpened;
+            AudioPlayer.MediaEnded += AudioPlayer_MediaEnded;
+            SliderPosition.AddHandler(Slider.PreviewMouseDownEvent, new System.Windows.Input.MouseButtonEventHandler(Slider_MouseDown), true);
+            SliderPosition.AddHandler(Slider.PreviewMouseUpEvent, new System.Windows.Input.MouseButtonEventHandler(Slider_MouseUp), true);
+        }
+        // Audio player controls
+        private void BtnPlayAudio_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedFiles.Count > 0)
+            {
+                if (AudioPlayer.Source == null || AudioPlayer.Source.OriginalString != _selectedFiles[0])
+                {
+                    AudioPlayer.Source = new Uri(_selectedFiles[0]);
+                    AudioPlayer.Position = TimeSpan.Zero;
+                    _isMediaOpened = false;
+                }
+                AudioPlayer.Play();
+                _timer?.Start();
+            }
+        }
+
+        private void BtnPauseAudio_Click(object sender, RoutedEventArgs e)
+        {
+            AudioPlayer.Pause();
+            _timer?.Stop();
+        }
+
+        private void BtnStopAudio_Click(object sender, RoutedEventArgs e)
+        {
+            AudioPlayer.Stop();
+            _timer?.Stop();
+            SliderPosition.Value = 0;
+        }
+
+        private void BtnForwardAudio_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isMediaOpened)
+            {
+                var pos = AudioPlayer.Position + TimeSpan.FromSeconds(5);
+                if (pos > AudioPlayer.NaturalDuration.TimeSpan)
+                    pos = AudioPlayer.NaturalDuration.TimeSpan;
+                AudioPlayer.Position = pos;
+            }
+        }
+
+        private void BtnBackwardAudio_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isMediaOpened)
+            {
+                var pos = AudioPlayer.Position - TimeSpan.FromSeconds(5);
+                if (pos < TimeSpan.Zero) pos = TimeSpan.Zero;
+                AudioPlayer.Position = pos;
+            }
+        }
+
+        private void AudioPlayer_MediaOpened(object? sender, RoutedEventArgs e)
+        {
+            _isMediaOpened = true;
+            SliderPosition.Maximum = AudioPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+            SliderPosition.Value = 0;
+            TxtTotalTime.Text = FormatTime(AudioPlayer.NaturalDuration.TimeSpan);
+            TxtCurrentTime.Text = "00:00";
+        }
+
+        private void AudioPlayer_MediaEnded(object? sender, RoutedEventArgs e)
+        {
+            _timer?.Stop();
+            SliderPosition.Value = 0;
+        }
+
+        private void Timer_Tick(object? sender, EventArgs e)
+        {
+            if (!_isSliderDragging && _isMediaOpened)
+            {
+                SliderPosition.Value = AudioPlayer.Position.TotalSeconds;
+                TxtCurrentTime.Text = FormatTime(AudioPlayer.Position);
+            }
+        }
+
+        private string FormatTime(TimeSpan ts)
+        {
+            if (ts.TotalHours >= 1)
+                return ts.ToString(@"hh\:mm\:ss");
+            else
+                return ts.ToString(@"mm\:ss");
+        }
+
+        private void Slider_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            _isSliderDragging = true;
+        }
+
+        private void Slider_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (_isMediaOpened)
+            {
+                AudioPlayer.Position = TimeSpan.FromSeconds(SliderPosition.Value);
+            }
+            _isSliderDragging = false;
         }
 
         private void BtnPickFiles_Click(object sender, RoutedEventArgs e)

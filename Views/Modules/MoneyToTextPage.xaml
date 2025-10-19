@@ -3,48 +3,167 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:SwissKnifeApp.Views.Modules"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="600" d:DesignWidth="900"
       Title="MoneyToTextPage">
 
-  <Grid Margin="40">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="*"/>
-    </Grid.RowDefinitions>
+    <!-- Sayfa özel vurgu renkleri (Para temalı: yeşil) -->
+    <Page.Resources>
+        <SolidColorBrush x:Key="AccentBrush" Color="#4CAF50"/>
+        <SolidColorBrush x:Key="AccentBrush2" Color="#2E7D32"/>
+    </Page.Resources>
 
-    <TextBlock Text="💸 Parayı Yazıya Çevir" FontSize="22" FontWeight="Bold" Foreground="#2D3748" Margin="0,0,0,20" Grid.Row="0"/>
+    <Grid Margin="30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-    <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,0,0,12" VerticalAlignment="Top">
-      <TextBox x:Name="txtAmount" Width="160" Height="32" FontSize="16" Margin="0,0,12,0" VerticalContentAlignment="Center"/>
-      <ComboBox x:Name="cmbCurrency" Width="100" Height="32" FontSize="16" SelectedIndex="0" Margin="0,0,12,0">
-        <ComboBoxItem Content="TRY"/>
-        <ComboBoxItem Content="USD"/>
-      </ComboBox>
-      <ComboBox x:Name="cmbLanguage" Width="100" Height="32" FontSize="16" SelectedIndex="0" Margin="0,0,12,0">
-        <ComboBoxItem Content="Türkçe"/>
-        <ComboBoxItem Content="İngilizce"/>
-      </ComboBox>
-      <Button x:Name="btnConvert" Content="Yazıya Çevir" Width="120" Height="32" FontSize="16" Click="BtnConvert_Click"/>
-    </StackPanel>
-
-    <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0,0,0,12" VerticalAlignment="Top" >
-      <ComboBox x:Name="cmbCasing" Width="120" Height="32" FontSize="16" SelectedIndex="2" Margin="0,0,12,0">
-        <ComboBoxItem Content="Büyük Harf"/>
-        <ComboBoxItem Content="Küçük Harf"/>
-        <ComboBoxItem Content="İlk Harf Büyük"/>
-      </ComboBox>
-      <CheckBox x:Name="chkNoSpaces" Content="Boşluksuz" FontSize="16" Margin="0,0,12,0"/>
-      <TextBox x:Name="txtSeparator" Width="60" Height="32" FontSize="16" Margin="0,0,12,0" VerticalContentAlignment="Center"/>
-      <TextBlock Text="Ayraç" FontSize="16" VerticalAlignment="Center"/>
-            <Button x:Name="btnCopy" Content="📋 Kopyala" Width="100" Height="32" FontSize="12" Margin="15,0,0,0" Click="btnCopy_Click"/>
+        <!-- Başlık -->
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,25">
+            <iconPacks:PackIconLucide Kind="Wallet" Width="28" Height="28" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+            <TextBlock Text="Parayı Yazıya Çevirici" FontSize="26" FontWeight="SemiBold" Foreground="#2C3E50" VerticalAlignment="Center"/>
         </StackPanel>
 
-    <Border Grid.Row="3" Padding="16" Background="#F9FAFB" CornerRadius="8" BorderBrush="#E5E7EB" BorderThickness="1">
-      <TextBlock x:Name="txtResult" FontSize="18" Foreground="#374151" TextWrapping="Wrap"/>
-    </Border>
-  </Grid>
+        <!-- Miktar ve Dil Seçimi -->
+        <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
+                    <iconPacks:PackIconMaterial Kind="CashMultiple" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+                    <TextBlock Text="Miktar ve Dil Seçimi" Style="{StaticResource SectionHeader}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="1">
+                    <StackPanel Orientation="Vertical" Margin="0,0,20,0">
+                        <TextBlock Text="Giriş Miktarı" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBox x:Name="txtAmount" Width="200" Height="35" FontSize="16" VerticalContentAlignment="Center" Style="{StaticResource RoundedTextBox}" mah:TextBoxHelper.Watermark="Örnek: 1250.75" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Margin="0,0,20,0">
+                        <TextBlock Text="Para Birimi" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <ComboBox x:Name="cmbCurrency" Width="100" FontSize="16" SelectedIndex="0">
+                            <ComboBoxItem Content="TRY"/>
+                            <ComboBoxItem Content="USD"/>
+                            <ComboBoxItem Content="EUR"/>
+                            <ComboBoxItem Content="GBP"/>
+                            <ComboBoxItem Content="RUB"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Margin="0,0,20,0">
+                        <TextBlock Text="Çeviri Dili" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <ComboBox x:Name="cmbLanguage" Width="140" FontSize="16" SelectedIndex="0" SelectedValuePath="Tag">
+                            <ComboBoxItem Tag="Türkçe">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="FlagVariant" Margin="0,0,8,0"/>
+                                    <TextBlock Text="Türkçe"/>
+                                </StackPanel>
+                            </ComboBoxItem>
+                            <ComboBoxItem Tag="İngilizce">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="FlagVariant" Margin="0,0,8,0"/>
+                                    <TextBlock Text="İngilizce"/>
+                                </StackPanel>
+                            </ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <Button x:Name="btnConvert" Click="BtnConvert_Click"
+                            Margin="10,22,0,0" Padding="15,0" Style="{StaticResource AccentButtonStyle}" Foreground="Black">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFC6E4C7"/>
+                                <GradientStop Color="#FF08FF0C" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconLucide Kind="Zap" Width="18" Height="18" Margin="5,0,10,0"/>
+                            <TextBlock Text="Hemen Çevir" FontWeight="Bold" Width="70"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Formatlama Seçenekleri -->
+        <Border Grid.Row="2" Style="{StaticResource Card}" Margin="0,0,0,20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
+                    <iconPacks:PackIconMaterial Kind="Tune" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+                    <TextBlock Text="Formatlama Seçenekleri" Style="{StaticResource SectionHeader}"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="1">
+                    <StackPanel Orientation="Vertical" Margin="0,0,25,0">
+                        <TextBlock Text="Metin Stili" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <ComboBox x:Name="cmbCasing" Width="160" FontSize="16" SelectedIndex="2">
+                            <ComboBoxItem Content="BÜYÜK HARF"/>
+                            <ComboBoxItem Content="küçük harf"/>
+                            <ComboBoxItem Content="İlk Harf Büyük"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Margin="0,0,25,0" VerticalAlignment="Center">
+                        <TextBlock Text="Ekstra Ayarlar" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <CheckBox x:Name="chkNoSpaces" Content="Boşluksuz Yazım" FontSize="16" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Vertical" Margin="0,0,25,0">
+                        <TextBlock Text="Kuruş Ayıracı (opsiyonel)" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBox x:Name="txtSeparator" Width="140" Height="35" FontSize="16" VerticalContentAlignment="Center" Style="{StaticResource RoundedTextBox}" mah:TextBoxHelper.Watermark="Örn: 'virgül'" />
+                    </StackPanel>
+
+                    <Button x:Name="btnCopy" Click="btnCopy_Click"
+                            Margin="40,22,0,0" Padding="15,0" Style="{StaticResource AccentButtonStyle}" Foreground="Black">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                <GradientStop Color="#FFA4ABA0"/>
+                                <GradientStop Color="#FF9CDE70" Offset="1"/>
+                                <GradientStop Color="White"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconMaterial Kind="ContentCopy" Width="18" Height="18" Margin="5,0,10,0"/>
+                            <TextBlock Text="Sonucu Kopyala" FontWeight="Bold" Width="90"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Sonuç -->
+        <Border Grid.Row="3" Style="{StaticResource Card}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
+                    <iconPacks:PackIconMaterial Kind="FileDocumentOutline" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+                    <TextBlock Text="Çevrilmiş Metin Sonucu" Style="{StaticResource SectionHeader}"/>
+                </StackPanel>
+                <Border Grid.Row="1" Padding="10" Background="#FFFFFF" CornerRadius="8">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <TextBlock x:Name="txtResult" FontSize="18" Foreground="#2C3E50" TextWrapping="Wrap" MinHeight="100" Text="Çevrilen metin sonucu burada görünecektir..."/>
+                    </ScrollViewer>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
 </Page>

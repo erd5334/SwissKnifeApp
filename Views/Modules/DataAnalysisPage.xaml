@@ -4,11 +4,39 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:oxy="http://oxyplot.org/wpf"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d"
-             Background="Wheat">
-    <!-- ALT SEKMELER (Orta / İleri Analiz) -->
-    <TabControl Grid.Row="1" Grid.ColumnSpan="2" Margin="0,10,0,0">
-        <TabItem Header="Temel Analiz">
+             Background="#F5F5F5">
+
+    <!-- Page-level accent override (DataAnalysis = Teal) -->
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="AccentBrush" Color="#00897B"/>
+        <SolidColorBrush x:Key="AccentBrush2" Color="#00695C"/>
+    </UserControl.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,12">
+            <iconPacks:PackIconMaterial Kind="ChartBox" Width="28" Height="28" Foreground="{StaticResource AccentBrush}"/>
+            <TextBlock Text="Veri Analiz Araçları" FontSize="20" FontWeight="Bold" Margin="8,0,0,0"/>
+            <TextBlock Text=" • CSV verilerini analiz edin" Foreground="#607D8B" Margin="6,4,0,0"/>
+        </StackPanel>
+
+        <!-- ALT SEKMELER (Orta / İleri Analiz) -->
+        <TabControl Grid.Row="1" Margin="0">
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="ChartBar" Width="16" Height="16" Margin="0,0,6,0"/>
+                    <TextBlock Text="Temel Analiz"/>
+                </StackPanel>
+            </TabItem.Header>
             <Grid Margin="15">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -16,22 +44,36 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- ÜST BAŞLIK -->
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,10">
-                    <TextBlock Text="📊 Veri Analiz Araçları"
-                       FontSize="22"
-                       FontWeight="Bold"
-                       Foreground="SteelBlue"/>
-                    <Button Content="Dosya Aç" Width="120" Margin="20,0,0,0" Click="BtnOpenFile_Click"/>
-                    <ComboBox x:Name="cmbChartType" Width="150" Margin="10,0"
-                      SelectionChanged="CmbChartType_SelectionChanged">
-                        <ComboBoxItem Content="Bar Grafiği" IsSelected="True"/>
-                        <ComboBoxItem Content="Pasta Grafiği"/>
-                        <ComboBoxItem Content="Çizgi Grafiği"/>
-                        <ComboBoxItem Content="Dağılım Grafiği"/>
-                    </ComboBox>
-                    <Button Content="Rapor Oluştur" Width="140" Margin="10,0" Click="BtnExportReport_Click"/>
-                </StackPanel>
+                <!-- ÜST BAŞLIK / KONTROLLER CARD -->
+                <Border Grid.Row="0" Style="{StaticResource Card}" Margin="0,0,0,12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button Style="{StaticResource AccentButtonStyle}" Click="BtnOpenFile_Click" Padding="12,8">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="FolderOpen" Width="16" Height="16" Margin="5,0,10,0"/>
+                                    <TextBlock Text="Dosya Aç" Width="45"/>
+                                </StackPanel>
+                            </Button>
+                            <TextBlock Text="Grafik Tipi:" VerticalAlignment="Center" Margin="24,0,10,0" FontWeight="SemiBold"/>
+                            <ComboBox x:Name="cmbChartType" Width="160" Margin="0" SelectionChanged="CmbChartType_SelectionChanged">
+                                <ComboBoxItem Content="Bar Grafiği" IsSelected="True"/>
+                                <ComboBoxItem Content="Pasta Grafiği"/>
+                                <ComboBoxItem Content="Çizgi Grafiği"/>
+                                <ComboBoxItem Content="Dağılım Grafiği"/>
+                            </ComboBox>
+                        </StackPanel>
+                        <Button Grid.Column="1" Style="{StaticResource OutlineButtonStyle}" Click="BtnExportReport_Click" Padding="12,8">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="FileDocument" Width="16" Height="16" Margin="5,0,10,0"/>
+                                <TextBlock Text="Rapor Oluştur" Width="75"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </Border>
 
                 <!-- ANA GÖVDE -->
                 <Grid Grid.Row="1">
@@ -40,89 +82,206 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- SOL PANEL: TABLO -->
-                    <Border Grid.Column="0" BorderThickness="1" BorderBrush="#DDD" CornerRadius="8">
+                    <!-- SOL PANEL: TABLO CARD -->
+                    <Border Grid.Column="0" Style="{StaticResource Card}">
                         <Grid>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
 
-                            <DockPanel Grid.Row="0" Margin="5">
-                                <TextBlock Text="Filtre:" VerticalAlignment="Center"/>
-                                <TextBox x:Name="txtFilter" Width="200" Margin="10,0" 
-                                 VerticalAlignment="Center"
-                                 TextChanged="TxtFilter_TextChanged"/>
-                            </DockPanel>
+                            <TextBlock Grid.Row="0" Text="Veri Tablosu" Style="{StaticResource SectionHeader}"/>
+
+                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,8">
+                                <iconPacks:PackIconMaterial Kind="Magnify" Width="16" Height="16" VerticalAlignment="Center" Foreground="#607D8B" Margin="0,0,8,0"/>
+                                <TextBlock Text="Filtre:" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,8,0"/>
+                                <TextBox x:Name="txtFilter" Style="{StaticResource RoundedTextBox}" Width="250" Height="32" TextChanged="TxtFilter_TextChanged" mah:TextBoxHelper.Watermark="Ara..."/>
+                            </StackPanel>
 
                             <DataGrid x:Name="dataGrid"
-                              Grid.Row="1"
+                              Grid.Row="2"
                               AutoGenerateColumns="True"
                               IsReadOnly="True"
                               AlternatingRowBackground="#F7F9FB"
                               CanUserSortColumns="True"
                               GridLinesVisibility="All"/>
 
-                            <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="10,5" HorizontalAlignment="Left">
-                                <TextBlock Text="Seçilen sütun:" FontWeight="Bold"/>
-                                <ComboBox x:Name="cmbColumns" Width="150" Margin="10,0"/>
-                                <Button Content="İstatistik Hesapla" Margin="10,0" Click="BtnStats_Click"/>
-                                <Button Content="Korelasyon" Margin="10,0" Click="BtnCorrelation_Click"/>
+                            <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,10,0,0">
+                                <TextBlock Text="Sütun:" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <ComboBox x:Name="cmbColumns" Width="160" Margin="0,0,16,0"/>
+                                <Button Style="{StaticResource OutlineButtonStyle}" Margin="0,0,10,0" Click="BtnStats_Click" Padding="10,7">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="Calculator" Width="16" Height="16" Margin="5,0,10,0"/>
+                                        <TextBlock Text="İstatistik Hesapla" Width="95"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource OutlineButtonStyle}" Margin="0" Click="BtnCorrelation_Click" Padding="10,7">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="ChartScatterPlot" Width="16" Height="16" Margin="5,0,10,0"/>
+                                        <TextBlock Text="Korelasyon" Width="60"/>
+                                    </StackPanel>
+                                </Button>
                             </StackPanel>
                         </Grid>
                     </Border>
 
-                    <!-- SAĞ PANEL: OXY PLOT -->
-                    <Border Grid.Column="1" BorderThickness="1" BorderBrush="#DDD" CornerRadius="8" Margin="10,0,0,0">
-                        <StackPanel>
-                            <TextBlock Text="Grafik Görünümü"
-                               FontSize="16"
-                               FontWeight="Bold"
-                               Foreground="SteelBlue"
-                               Margin="10"/>
+                    <!-- SAĞ PANEL: OXY PLOT CARD -->
+                    <Border Grid.Column="1" Style="{StaticResource Card}" Margin="12,0,0,0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <iconPacks:PackIconMaterial Kind="ChartLine" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,8,0"/>
+                                <TextBlock Text="Grafik Görünümü" Style="{StaticResource SectionHeader}" Margin="0"/>
+                            </StackPanel>
                             <oxy:PlotView x:Name="oxyChart"
+                                  Grid.Row="1"
                                   Height="350"
-                                  Margin="10"
                                   Background="White"/>
-                        </StackPanel>
+                        </Grid>
                     </Border>
                 </Grid>
 
-                <TextBlock x:Name="txtStatsResult"
-                   Grid.Row="2"
-                   Margin="10"
-                   FontFamily="Consolas"
-                   FontSize="14"
-                   Foreground="DarkSlateGray"
-                   TextWrapping="Wrap"/>
+                <!-- SONUÇ CARD -->
+                <Border Grid.Row="2" Style="{StaticResource Card}" Margin="0,12,0,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <iconPacks:PackIconMaterial Kind="Information" Width="18" Height="18" Foreground="{StaticResource AccentBrush}" Margin="0,0,8,0"/>
+                            <TextBlock Text="Sonuçlar" Style="{StaticResource SectionHeader}" Margin="0"/>
+                        </StackPanel>
+                        <TextBlock x:Name="txtStatsResult"
+                           Grid.Row="1"
+                           FontFamily="Consolas"
+                           FontSize="13"
+                           Foreground="#2C3E50"
+                           TextWrapping="Wrap"/>
+                    </Grid>
+                </Border>
             </Grid>
 
         </TabItem>
 
-        <TabItem Header="Orta Analiz">
-            <StackPanel Margin="10">
-                <TextBlock Text="📊 Histogram ve Frekans Dağılımı"
-                       FontWeight="Bold" FontSize="16" Foreground="SteelBlue"/>
-                <ComboBox x:Name="cmbHistogramColumn" Width="200" Margin="0,10"/>
-                <Button Content="Histogram Oluştur" Click="BtnHistogram_Click" Width="180"/>
-                <oxy:PlotView x:Name="histogramChart" Height="300" Margin="0,10"/>
-                <TextBlock x:Name="txtHistogramInfo" FontFamily="Consolas"/>
-            </StackPanel>
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="ChartHistogram" Width="16" Height="16" Margin="0,0,6,0"/>
+                    <TextBlock Text="Orta Analiz"/>
+                </StackPanel>
+            </TabItem.Header>
+            <Grid Margin="15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Kontrol Card -->
+                <Border Grid.Row="0" Style="{StaticResource Card}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <iconPacks:PackIconMaterial Kind="ChartHistogram" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,8,0"/>
+                            <TextBlock Text="Histogram ve Frekans Dağılımı" Style="{StaticResource SectionHeader}" Margin="0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Sütun:" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <ComboBox x:Name="cmbHistogramColumn" Width="200" Margin="0,0,16,0"/>
+                            <Button Style="{StaticResource AccentButtonStyle}" Click="BtnHistogram_Click" Margin="0" Padding="12,8">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="ChartBar" Width="16" Height="16" Margin="5,0,10,0"/>
+                                    <TextBlock Text="Histogram Oluştur" Width="105"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Grafik Card -->
+                <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,12">
+                    <oxy:PlotView x:Name="histogramChart" Height="350" Background="White"/>
+                </Border>
+
+                <!-- Sonuç Card -->
+                <Border Grid.Row="2" Style="{StaticResource Card}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <iconPacks:PackIconMaterial Kind="Information" Width="18" Height="18" Foreground="{StaticResource AccentBrush}" Margin="0,0,8,0"/>
+                            <TextBlock Text="Bilgi" Style="{StaticResource SectionHeader}" Margin="0"/>
+                        </StackPanel>
+                        <TextBlock x:Name="txtHistogramInfo" Grid.Row="1" FontFamily="Consolas" FontSize="13" Foreground="#2C3E50" TextWrapping="Wrap"/>
+                    </Grid>
+                </Border>
+            </Grid>
         </TabItem>
 
-        <TabItem Header="İleri Analiz">
-            <StackPanel Margin="10">
-                <TextBlock Text="📈 Regresyon Analizi" FontWeight="Bold" FontSize="16" Foreground="DarkRed"/>
-                <StackPanel Orientation="Horizontal" Margin="0,10">
-                    <ComboBox x:Name="cmbXColumn" Width="200" Margin="0,0,10,0"/>
-                    <ComboBox x:Name="cmbYColumn" Width="200"/>
-                    <Button Content="Regresyon Hesapla" Click="BtnRegression_Click" Width="180" Margin="10,0,0,0"/>
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="ChartLineVariant" Width="16" Height="16" Margin="0,0,6,0"/>
+                    <TextBlock Text="İleri Analiz"/>
                 </StackPanel>
-                <oxy:PlotView x:Name="regressionChart" Height="300" Margin="0,10"/>
-                <TextBlock x:Name="txtRegressionInfo" FontFamily="Consolas" TextWrapping="Wrap"/>
-            </StackPanel>
+            </TabItem.Header>
+            <Grid Margin="15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Kontrol Card -->
+                <Border Grid.Row="0" Style="{StaticResource Card}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <iconPacks:PackIconMaterial Kind="ChartLineVariant" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,8,0"/>
+                            <TextBlock Text="Regresyon Analizi" Style="{StaticResource SectionHeader}" Margin="0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="X Sütun:" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <ComboBox x:Name="cmbXColumn" Width="160" Margin="0,0,20,0"/>
+                            <TextBlock Text="Y Sütun:" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <ComboBox x:Name="cmbYColumn" Width="160" Margin="0,0,20,0"/>
+                            <Button Style="{StaticResource AccentButtonStyle}" Click="BtnRegression_Click" Margin="0" Padding="12,8">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Calculator" Width="16" Height="16" Margin="5,0,10,0"/>
+                                    <TextBlock Text="Regresyon Hesapla" Width="105"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Grafik Card -->
+                <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,12">
+                    <oxy:PlotView x:Name="regressionChart" Height="350" Background="White"/>
+                </Border>
+
+                <!-- Sonuç Card -->
+                <Border Grid.Row="2" Style="{StaticResource Card}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <iconPacks:PackIconMaterial Kind="Information" Width="18" Height="18" Foreground="{StaticResource AccentBrush}" Margin="0,0,8,0"/>
+                            <TextBlock Text="Regresyon Bilgisi" Style="{StaticResource SectionHeader}" Margin="0"/>
+                        </StackPanel>
+                        <TextBlock x:Name="txtRegressionInfo" Grid.Row="1" FontFamily="Consolas" FontSize="13" Foreground="#2C3E50" TextWrapping="Wrap"/>
+                    </Grid>
+                </Border>
+            </Grid>
         </TabItem>
     </TabControl>
-
+    </Grid>
 </UserControl>

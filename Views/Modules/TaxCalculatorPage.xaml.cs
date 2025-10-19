@@ -22,39 +22,87 @@ namespace SwissKnifeApp.Views.Modules
 
         private void LoadInitialData()
         {
-            // Son güncelleme tarihini göster
-            var lastUpdate = _taxService.GetLastUpdateDate();
-            TxtLastUpdate.Text = lastUpdate == DateTime.MinValue 
-                ? "Henüz güncellenmedi" 
-                : lastUpdate.ToString("dd.MM.yyyy HH:mm");
+            try
+            {
+                // Son güncelleme tarihini göster
+                var lastUpdate = _taxService.GetLastUpdateDate();
+                TxtLastUpdate.Text = lastUpdate == DateTime.MinValue 
+                    ? "Henüz güncellenmedi" 
+                    : lastUpdate.ToString("dd.MM.yyyy HH:mm");
 
-            // Yıl combobox'larını doldur
-            var incomeYears = _taxService.GetAvailableYears("gelir");
-            foreach (var year in incomeYears)
-            {
-                CmbIncomeYear.Items.Add(new ComboBoxItem { Content = year.ToString(), Tag = year });
-                CmbRentYear.Items.Add(new ComboBoxItem { Content = year.ToString(), Tag = year });
-            }
-            if (CmbIncomeYear.Items.Count > 0) 
-            {
-                CmbIncomeYear.SelectedIndex = 0;
-                CmbRentYear.SelectedIndex = 0;
-            }
+                // Yıl combobox'larını doldur
+                var incomeYears = _taxService.GetAvailableYears("gelir");
+                foreach (var year in incomeYears)
+                {
+                    CmbIncomeYear.Items.Add(new ComboBoxItem { Content = year.ToString(), Tag = year });
+                    CmbRentYear.Items.Add(new ComboBoxItem { Content = year.ToString(), Tag = year });
+                }
+                if (CmbIncomeYear.Items.Count > 0) 
+                {
+                    CmbIncomeYear.SelectedIndex = 0;
+                    CmbRentYear.SelectedIndex = 0;
+                }
 
-            var corporateYears = _taxService.GetAvailableYears("kurumlar");
-            foreach (var year in corporateYears)
-            {
-                CmbCorporateYear.Items.Add(new ComboBoxItem { Content = year.ToString(), Tag = year });
-            }
-            if (CmbCorporateYear.Items.Count > 0) CmbCorporateYear.SelectedIndex = 0;
+                var corporateYears = _taxService.GetAvailableYears("kurumlar");
+                foreach (var year in corporateYears)
+                {
+                    CmbCorporateYear.Items.Add(new ComboBoxItem { Content = year.ToString(), Tag = year });
+                }
+                if (CmbCorporateYear.Items.Count > 0) CmbCorporateYear.SelectedIndex = 0;
 
-            // KDV Tevkifat kategorilerini yükle
-            var categories = _taxService.GetVatWithholdingCategories();
-            foreach (var cat in categories)
-            {
-                CmbWithholdingCategory.Items.Add(new ComboBoxItem { Content = cat, Tag = cat });
+                // KDV Tevkifat kategorilerini yükle
+                var categories = _taxService.GetVatWithholdingCategories();
+                if (categories == null || categories.Count == 0)
+                {
+                    System.Diagnostics.Debug.WriteLine("KDV Tevkifat kategorileri yüklenemedi!");
+                    MessageBox.Show("Vergi oranları yüklenemedi. Lütfen Data/tax-rates.json dosyasını kontrol edin.", 
+                        "Uyarı", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else
+                {
+                    foreach (var cat in categories)
+                    {
+                        CmbWithholdingCategory.Items.Add(new ComboBoxItem { Content = cat, Tag = cat });
+                    }
+                    if (CmbWithholdingCategory.Items.Count > 0) CmbWithholdingCategory.SelectedIndex = 0;
+                }
             }
-            if (CmbWithholdingCategory.Items.Count > 0) CmbWithholdingCategory.SelectedIndex = 0;
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Veri yükleme hatası: {ex.Message}", "Hata", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void BtnSettings_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var settingsWindow = new TaxSettingsWindow
+                {
+                    Owner = Window.GetWindow(this)
+                };
+
+                if (settingsWindow.ShowDialog() == true)
+                {
+                    // Reload UI data after settings saved
+                    LoadInitialData();
+                    
+                    // Update last update date
+                    var lastUpdate = TaxCalculationService.Instance.GetLastUpdateDate();
+                    TxtLastUpdate.Text = lastUpdate == DateTime.MinValue 
+                        ? "Manuel Düzenleme" 
+                        : lastUpdate.ToString("dd.MM.yyyy HH:mm");
+
+                    MessageBox.Show("Vergi oranları başarıyla güncellendi. Yeni oranlar artık hesaplamalarda kullanılıyor.", 
+                        "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ayarlar penceresi açılırken hata oluştu: {ex.Message}", "Hata", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private async void BtnRefreshRates_Click(object sender, RoutedEventArgs e)
@@ -296,19 +344,34 @@ namespace SwissKnifeApp.Views.Modules
         {
             try
             {
-                if (NumEngineSize.Value == null)
+                if (NumEngineSize.Value == null || CmbMtvYear.SelectedItem == null || CmbVehicleType.SelectedItem == null)
                 {
-                    MessageBox.Show("Lütfen motor hacmini girin!", "Uyarı", 
+                    MessageBox.Show("Lütfen tüm alanları doldurun!", "Uyarı", 
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                bool isMotorcycle = ((ComboBoxItem)CmbVehicleType.SelectedItem).Tag.ToString() == "motorcycle";
+                
+                if (!isMotorcycle && CmbCarAge.SelectedItem == null)
+                {
+                    MessageBox.Show("Lütfen araç yaşını seçin!", "Uyarı", 
                         MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
                 int year = int.Parse(((ComboBoxItem)CmbMtvYear.SelectedItem).Tag.ToString() ?? "2025");
                 int engineSize = (int)NumEngineSize.Value.Value;
-                bool isMotorcycle = ((ComboBoxItem)CmbVehicleType.SelectedItem).Tag.ToString() == "motorcycle";
                 int carAge = isMotorcycle ? 1 : int.Parse(((ComboBoxItem)CmbCarAge.SelectedItem).Tag.ToString() ?? "1");
 
                 decimal tax = _taxService.CalculateMotorVehicleTax(year, engineSize, carAge, isMotorcycle);
+
+                if (tax == 0)
+                {
+                    MessageBox.Show("Girilen motor hacmi için MTV bulunamadı. Lütfen geçerli bir motor hacmi girin.", "Uyarı", 
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
                 TxtMtvAmount.Text = $"{tax:N2} TL";
                 MtvResult.Visibility = Visibility.Visible;
@@ -344,9 +407,16 @@ namespace SwissKnifeApp.Views.Modules
                 }
 
                 decimal amount = (decimal)NumWithholdingAmount.Value.Value;
-                string category = ((ComboBoxItem)CmbWithholdingCategory.SelectedItem).Content.ToString() ?? "";
+                string category = ((ComboBoxItem)CmbWithholdingCategory.SelectedItem).Tag.ToString() ?? "";
 
                 var (vat, withholding, netVat) = _taxService.CalculateVatWithholding(amount, category);
+
+                if (vat == 0 && withholding == 0)
+                {
+                    MessageBox.Show("Seçilen kategori için KDV tevkifat oranı bulunamadı.", "Uyarı", 
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
                 TxtWithholdingBase.Text = $"{amount:N2} TL";
                 TxtWithholdingVat.Text = $"{vat:N2} TL";

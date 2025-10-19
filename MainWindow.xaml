@@ -9,10 +9,11 @@
     mc:Ignorable="d"
     Title="Türk Çakısı"
     Height="720" Width="1200"
-    WindowStartupLocation="CenterScreen">
+    WindowStartupLocation="CenterScreen"
+    WindowState="Maximized">
 
     <mah:MetroWindow.Resources>
-        <!-- Menü buton stili -->
+        <!-- Menü buton stili + animasyon -->
         <Style x:Key="MenuButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="#2C3E50"/>
@@ -33,9 +34,20 @@
                                               Margin="{TemplateBinding Padding}"/>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#ECF0F1"/>
-                            </Trigger>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="#ECF0F1" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="border" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" To="Transparent" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="#BDC3C7"/>
                             </Trigger>
@@ -99,113 +111,42 @@
                                FontSize="16" 
                                FontWeight="Bold"
                                VerticalAlignment="Center"
-                               Margin="10,0"/>
+                               Margin="10,0"
+                               MouseLeftButtonDown="TextBlock_MouseLeftButtonDown"/>
                 </Grid>
 
                 <!-- Menü Öğeleri -->
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                     <StackPanel>
+                        <!-- Sık kullanılan ve metin tabanlı araçlar -->
                         <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="TextOperations">
                             <StackPanel Orientation="Horizontal">
                                 <iconPacks:PackIconMaterial Kind="FileDocumentOutline" Width="20" Height="20" Margin="0,0,15,0"/>
                                 <TextBlock Text="Metin İşlemleri" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-
-                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="UnitConverter">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,15,0"/>
-                                <TextBlock Text="Birim Dönüştürücü" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="PdfOperations">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="FilePdfBox" Width="20" Height="20" Margin="0,0,15,0"/>
-                                <TextBlock Text="PDF İşlemleri" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="PasswordTools">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="ShieldLockOutline" Width="20" Height="20" Margin="0,0,15,0"/>
-                                <TextBlock Text="Şifre Araçları" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="QrCode">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconFontAwesome Kind="QrcodeSolid" Width="20" Height="20" Margin="0,0,15,0"/>
-                                <TextBlock Text="QR Kod" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="SpeedTest">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Speedometer" Width="20" Height="20" Margin="0,0,15,0"/>
-                                <TextBlock Text="İnternet Hız Testi" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="ClipboardHistory">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconFontAwesome Kind="ClipboardSolid" Width="20" Height="20" Margin="0,0,15,0"/>
-                                <TextBlock Text="Clipboard Geçmişi" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="JsonXmlFormatter">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconFontAwesome Kind="CodeSolid" Width="20" Height="20" Margin="0,0,15,0"/>
-                                <TextBlock Text="JSON/XML Biçimlendirme" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="ImageConverter">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconModern Kind="Image" Width="20" Height="20" Margin="0,0,15,0"/>
-                                <TextBlock Text="Görüntü Dönüştürücü" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="MoneyToText">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconModern Kind="Money" Width="20" Height="20" Margin="0,0,15,0"/>
-                                <TextBlock Text="Para Yazıya Çevir" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="TaxCalculator">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,15,0"/>
-                                <TextBlock Text="Vergi Hesaplayıcı" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="FileManager">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconModern Kind="Folder" Width="20" Height="20" Margin="0,0,15,0"/>
-                                <TextBlock Text="Dosya Yöneticisi" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="DataAnalysis">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="ChartBar" Width="20" Height="20" Margin="0,0,15,0"/>
-                                <TextBlock Text="Veri Analiz Araçları" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
-
                         <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="TextSummarizer">
                             <StackPanel Orientation="Horizontal">
                                 <iconPacks:PackIconMaterial Kind="FileDocument" Width="20" Height="20" Margin="0,0,15,0"/>
                                 <TextBlock Text="Metin Özetleyici" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="ColorPicker">
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="UnitConverter">
                             <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Palette" Width="20" Height="20" Margin="0,0,15,0"/>
-                                <TextBlock Text="Renk Seçici" VerticalAlignment="Center"/>
+                                <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Birim Dönüştürücü" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="PdfOperations">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="FilePdfBox" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="PDF İşlemleri" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="ImageConverter">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconModern Kind="Image" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Görüntü Dönüştürücü" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
                         <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="PhotoCollage">
@@ -214,21 +155,79 @@
                                 <TextBlock Text="Fotoğraf Kolaj" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="QrCode">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome Kind="QrcodeSolid" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="QR Kod" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="ColorPicker">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="Palette" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Renk Seçici" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="MoneyToText">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconModern Kind="Money" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Para Yazıya Çevir" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="TaxCalculator">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Vergi Hesaplayıcı" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="ClipboardHistory">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome Kind="ClipboardSolid" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Clipboard Geçmişi" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="FileManager">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconModern Kind="Folder" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Dosya Yöneticisi" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="PasswordTools">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="ShieldLockOutline" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Şifre Araçları" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="SpeedTest">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="Speedometer" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="İnternet Hız Testi" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="DataAnalysis">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="ChartBar" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="Veri Analiz Araçları" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="JsonXmlFormatter">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconFontAwesome Kind="CodeSolid" Width="20" Height="20" Margin="0,0,15,0"/>
+                                <TextBlock Text="JSON/XML Biçimlendirme" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <!-- Medya ve yardımcı araçlar -->
                         <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="AudioTools">
                             <StackPanel Orientation="Horizontal">
                                 <iconPacks:PackIconMaterial Kind="Music" Width="20" Height="20" Margin="0,0,15,0"/>
                                 <TextBlock Text="Ses Araçları" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-
                         <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="VideoTools">
                             <StackPanel Orientation="Horizontal">
                                 <iconPacks:PackIconMaterial Kind="VideoBox" Width="20" Height="20" Margin="0,0,15,0"/>
                                 <TextBlock Text="Video Araçları" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
-
                         <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="YouTubeClipDownloader">
                             <StackPanel Orientation="Horizontal">
                                 <iconPacks:PackIconMaterial Kind="Youtube" Width="20" Height="20" Margin="0,0,15,0"/>

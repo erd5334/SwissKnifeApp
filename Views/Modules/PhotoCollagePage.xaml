@@ -5,6 +5,12 @@
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       Title="Fotoğraf Kolaj Yapıcı">
 
+    <!-- Sayfa özel vurgu renkleri (Kolaj: mavi tonları) -->
+    <Page.Resources>
+        <SolidColorBrush x:Key="AccentBrush" Color="#2196F3"/>
+        <SolidColorBrush x:Key="AccentBrush2" Color="#1565C0"/>
+    </Page.Resources>
+
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -13,14 +19,11 @@
 
         <!-- Başlık -->
         <StackPanel Grid.Row="0" Margin="0,0,0,20">
-            <TextBlock Text="📸 Fotoğraf Kolaj Yapıcı" 
-                       FontSize="24" 
-                       FontWeight="Bold" 
-                       Foreground="#2196F3"/>
-            <TextBlock Text="Fotoğraflarınızı birleştirin ve güzel kolajlar oluşturun" 
-                       FontSize="14" 
-                       Foreground="#666"
-                       Margin="0,5,0,0"/>
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconMaterial Kind="ImageMultiple" Width="32" Height="32" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+                <TextBlock Text="Fotoğraf Kolaj Yapıcı" FontSize="24" FontWeight="Bold" Foreground="#2C3E50" VerticalAlignment="Center"/>
+            </StackPanel>
+            <TextBlock Text="Fotoğraflarınızı birleştirin ve güzel kolajlar oluşturun" FontSize="14" Foreground="#666" Margin="0,5,0,0"/>
         </StackPanel>
 
         <!-- Ana İçerik -->
@@ -34,10 +37,13 @@
             <!-- Sol Panel - Ayarlar -->
             <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
                 <StackPanel>
-                    
                     <!-- Şablon Seçimi -->
-                    <GroupBox Header="📐 Kolaj Şablonu" Margin="0,0,0,15">
-                        <StackPanel Margin="10">
+                    <Border Style="{StaticResource Card}" Margin="0,0,0,15">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <iconPacks:PackIconMaterial Kind="TableLarge" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+                                <TextBlock Text="Kolaj Şablonu" Style="{StaticResource SectionHeader}"/>
+                            </StackPanel>
                             <TextBlock Text="Şablon:" FontWeight="SemiBold" Margin="0,0,0,5"/>
                             <ComboBox x:Name="CmbTemplate" SelectionChanged="CmbTemplate_SelectionChanged">
                                 <ComboBoxItem Content="2 Fotoğraf (Yatay)" Tag="2H"/>
@@ -53,102 +59,71 @@
                                 <ComboBoxItem Content="16 Fotoğraf (4x4)" Tag="16"/>
                             </ComboBox>
                         </StackPanel>
-                    </GroupBox>
+                    </Border>
 
                     <!-- Fotoğraf Yönetimi -->
-                    <GroupBox Header="🖼️ Fotoğraflar" Margin="0,0,0,15">
-                        <StackPanel Margin="10">
-                            <Button x:Name="BtnAddPhotos" 
-                                    Click="BtnAddPhotos_Click"
-                                    Padding="10,8"
-                                    Margin="0,0,0,10">
+                    <Border Style="{StaticResource Card}" Margin="0,0,0,15">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <iconPacks:PackIconMaterial Kind="ImageMultiple" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+                                <TextBlock Text="Fotoğraflar" Style="{StaticResource SectionHeader}"/>
+                            </StackPanel>
+                            <Button x:Name="BtnAddPhotos" Click="BtnAddPhotos_Click" Style="{StaticResource AccentButtonStyle}" Padding="10,8" Margin="0,0,0,10">
                                 <StackPanel Orientation="Horizontal">
-                                    <iconPacks:PackIconMaterial Kind="FolderMultipleImage" 
-                                                              Width="18" 
-                                                              Height="18"
-                                                              Margin="0,0,5,0"/>
+                                    <iconPacks:PackIconMaterial Kind="FolderMultipleImage" Width="18" Height="18" Margin="5,0,10,0"/>
                                     <TextBlock Text="Fotoğraf Ekle" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
-
-                            <Button x:Name="BtnClearPhotos" 
-                                    Click="BtnClearPhotos_Click"
-                                    Padding="10,8"
-                                    Background="#F44336">
+                            <Button x:Name="BtnClearPhotos" Click="BtnClearPhotos_Click" Style="{StaticResource OutlineButtonStyle}" Padding="10,8">
                                 <StackPanel Orientation="Horizontal">
-                                    <iconPacks:PackIconMaterial Kind="DeleteEmpty" 
-                                                              Width="18" 
-                                                              Height="18"
-                                                              Margin="0,0,5,0"/>
+                                    <iconPacks:PackIconMaterial Kind="DeleteEmpty" Width="18" Height="18" Margin="5,0,10,0"/>
                                     <TextBlock Text="Tümünü Temizle" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Button>
-
-                            <TextBlock x:Name="TxtPhotoCount" 
-                                       Text="Yüklenen: 0 fotoğraf" 
-                                       Margin="0,10,0,0"
-                                       FontSize="12"
-                                       Foreground="#666"/>
+                            <TextBlock x:Name="TxtPhotoCount" Text="Yüklenen: 0 fotoğraf" Margin="0,10,0,0" FontSize="12" Foreground="#666"/>
                         </StackPanel>
-                    </GroupBox>
+                    </Border>
 
                     <!-- Arka Plan -->
-                    <GroupBox Header="🎨 Arka Plan" Margin="0,0,0,15">
-                        <StackPanel Margin="10">
+                    <Border Style="{StaticResource Card}" Margin="0,0,0,15">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <iconPacks:PackIconMaterial Kind="Palette" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+                                <TextBlock Text="Arka Plan" Style="{StaticResource SectionHeader}"/>
+                            </StackPanel>
                             <TextBlock Text="Renk:" FontWeight="SemiBold" Margin="0,0,0,5"/>
                             <mah:ColorPicker x:Name="ColorPickerBackground" SelectedColorChanged="ColorPickerBackground_SelectedColorChanged" SelectedColor="#FFFFFF" Margin="0,0,0,10"/>
                         </StackPanel>
-                    </GroupBox>
+                    </Border>
 
                     <!-- Kenarlık Ayarları -->
-                    <GroupBox Header="🔲 Kenarlık" Margin="0,0,0,15">
-                        <StackPanel Margin="10">
+                    <Border Style="{StaticResource Card}" Margin="0,0,0,15">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <iconPacks:PackIconMaterial Kind="BorderAll" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+                                <TextBlock Text="Kenarlık" Style="{StaticResource SectionHeader}"/>
+                            </StackPanel>
                             <TextBlock Text="Kalınlık:" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                            <Slider x:Name="SliderBorderWidth" 
-                                    Minimum="0" 
-                                    Maximum="50" 
-                                    Value="10"
-                                    TickFrequency="5"
-                                    IsSnapToTickEnabled="True"
-                                    ValueChanged="SliderBorderWidth_ValueChanged"/>
-                            <TextBlock x:Name="TxtBorderWidth" 
-                                       Text="10 px" 
-                                       HorizontalAlignment="Center"
-                                       Margin="0,5,0,10"/>
-
+                            <Slider x:Name="SliderBorderWidth" Minimum="0" Maximum="50" Value="10" TickFrequency="5" IsSnapToTickEnabled="True" ValueChanged="SliderBorderWidth_ValueChanged"/>
+                            <TextBlock x:Name="TxtBorderWidth" Text="10 px" HorizontalAlignment="Center" Margin="0,5,0,10"/>
                             <TextBlock Text="Renk:" FontWeight="SemiBold" Margin="0,10,0,5"/>
                             <mah:ColorPicker x:Name="ColorPickerBorder" SelectedColorChanged="ColorPickerBorder_SelectedColorChanged" SelectedColor="#FFFFFF" Margin="0,0,0,10"/>
-
                             <TextBlock Text="Yuvarlaklık:" FontWeight="SemiBold" Margin="0,10,0,5"/>
-                            <Slider x:Name="SliderCornerRadius" 
-                                    Minimum="0" 
-                                    Maximum="30" 
-                                    Value="0"
-                                    TickFrequency="5"
-                                    IsSnapToTickEnabled="True"
-                                    ValueChanged="SliderCornerRadius_ValueChanged"/>
-                            <TextBlock x:Name="TxtCornerRadius" 
-                                       Text="0 px" 
-                                       HorizontalAlignment="Center"
-                                       Margin="0,5,0,0"/>
+                            <Slider x:Name="SliderCornerRadius" Minimum="0" Maximum="30" Value="0" TickFrequency="5" IsSnapToTickEnabled="True" ValueChanged="SliderCornerRadius_ValueChanged"/>
+                            <TextBlock x:Name="TxtCornerRadius" Text="0 px" HorizontalAlignment="Center" Margin="0,5,0,0"/>
                         </StackPanel>
-                    </GroupBox>
+                    </Border>
 
                     <!-- Metin Ekleme -->
-                    <GroupBox Header="✏️ Metin" Margin="0,0,0,15">
-                        <StackPanel Margin="10">
-                            <TextBox x:Name="TxtOverlayText" 
-                                     mah:TextBoxHelper.Watermark="Metin ekle (opsiyonel)"
-                                     TextChanged="TxtOverlayText_TextChanged"
-                                     Margin="0,0,0,10"/>
-
+                    <Border Style="{StaticResource Card}" Margin="0,0,0,15">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <iconPacks:PackIconMaterial Kind="FormatText" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+                                <TextBlock Text="Metin" Style="{StaticResource SectionHeader}"/>
+                            </StackPanel>
+                            <TextBox x:Name="TxtOverlayText" Style="{StaticResource RoundedTextBox}" mah:TextBoxHelper.Watermark="Metin ekle (opsiyonel)" TextChanged="TxtOverlayText_TextChanged" Margin="0,0,0,10"/>
                             <TextBlock Text="Boyut:" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                            <mah:NumericUpDown x:Name="NumFontSize" 
-                                             Value="24" 
-                                             Minimum="12" 
-                                             Maximum="72"
-                                             ValueChanged="NumFontSize_ValueChanged"
-                                             Margin="0,0,0,10"/>
+                            <mah:NumericUpDown x:Name="NumFontSize" Value="24" Minimum="12" Maximum="72" ValueChanged="NumFontSize_ValueChanged" Margin="0,0,0,10"/>
                             <TextBlock Text="Konum:" FontWeight="SemiBold" Margin="0,0,0,5"/>
                             <ComboBox x:Name="CmbTextPosition" SelectionChanged="CmbTextPosition_SelectionChanged" Margin="0,0,0,10">
                                 <ComboBoxItem Content="Sol Üst" Tag="TopLeft" IsSelected="True"/>
@@ -159,15 +134,18 @@
                                 <ComboBoxItem Content="Sağ Alt" Tag="BottomRight"/>
                                 <ComboBoxItem Content="Ortada" Tag="Center"/>
                             </ComboBox>
-
                             <TextBlock Text="Renk:" FontWeight="SemiBold" Margin="0,0,0,5"/>
                             <mah:ColorPicker x:Name="ColorPickerText" SelectedColorChanged="ColorPickerText_SelectedColorChanged" SelectedColor="#FFFFFF" Margin="0,0,0,10"/>
                         </StackPanel>
-                    </GroupBox>
+                    </Border>
 
                     <!-- Kaydetme -->
-                    <GroupBox Header="💾 Kaydet" Margin="0,0,0,15">
-                        <StackPanel Margin="10">
+                    <Border Style="{StaticResource Card}" Margin="0,0,0,15">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <iconPacks:PackIconMaterial Kind="ContentSave" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+                                <TextBlock Text="Kaydet" Style="{StaticResource SectionHeader}"/>
+                            </StackPanel>
                             <TextBlock Text="Boyut:" FontWeight="SemiBold" Margin="0,0,0,5"/>
                             <ComboBox x:Name="CmbOutputSize" SelectedIndex="1">
                                 <ComboBoxItem Content="800 x 800" Tag="800"/>
@@ -175,32 +153,19 @@
                                 <ComboBoxItem Content="1920 x 1920" Tag="1920"/>
                                 <ComboBoxItem Content="2400 x 2400" Tag="2400"/>
                             </ComboBox>
-
                             <TextBlock Text="Format:" FontWeight="SemiBold" Margin="0,10,0,5"/>
                             <ComboBox x:Name="CmbOutputFormat" SelectedIndex="0">
                                 <ComboBoxItem Content="PNG" Tag="png"/>
                                 <ComboBoxItem Content="JPG" Tag="jpg"/>
                             </ComboBox>
-
-                            <Button x:Name="BtnSaveCollage" 
-                                    Click="BtnSaveCollage_Click"
-                                    Padding="10,12"
-                                    Margin="0,15,0,0"
-                                    Background="#4CAF50">
+                            <Button x:Name="BtnSaveCollage" Click="BtnSaveCollage_Click" Style="{StaticResource AccentButtonStyle}" Padding="10,12" Margin="0,15,0,0">
                                 <StackPanel Orientation="Horizontal">
-                                    <iconPacks:PackIconMaterial Kind="ContentSave" 
-                                                              Width="20" 
-                                                              Height="20"
-                                                              Margin="0,0,8,0"/>
-                                    <TextBlock Text="Kolajı Kaydet" 
-                                               VerticalAlignment="Center"
-                                               FontWeight="SemiBold"
-                                               FontSize="14"/>
+                                    <iconPacks:PackIconMaterial Kind="ContentSave" Width="20" Height="20" Margin="5,0,10,0"/>
+                                    <TextBlock Text="Kolajı Kaydet" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="14"/>
                                 </StackPanel>
                             </Button>
                         </StackPanel>
-                    </GroupBox>
-
+                    </Border>
                 </StackPanel>
             </ScrollViewer>
 

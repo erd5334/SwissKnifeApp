@@ -3,46 +3,125 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       mc:Ignorable="d"
       Title="PDF İşlemleri">
 
+    <!-- Sayfa özel vurgu renkleri (PDF: kırmızı tonları) -->
+    <Page.Resources>
+        <SolidColorBrush x:Key="AccentBrush" Color="#E53935"/>
+        <SolidColorBrush x:Key="AccentBrush2" Color="#B71C1C"/>
+    </Page.Resources>
+
     <Grid Margin="0,10,0,0">
-        <TextBlock Text="📄 PDF İşlemleri"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   Margin="0,0,0,16"/>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="5,0,0,0">
+            <iconPacks:PackIconMaterial Kind="FilePdfBox" Width="32" Height="32" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+            <TextBlock Text="PDF İşlemleri" FontSize="24" FontWeight="Bold" Foreground="#2C3E50"/>
+        </StackPanel>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
             <StackPanel Orientation="Vertical">
+                <!-- Temel PDF İşlemleri -->
+                <Border Style="{StaticResource Card}" Margin="0,50,0,0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <iconPacks:PackIconMaterial Kind="Puzzle" Width="22" Height="22" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+                            <TextBlock Text="1. Temel PDF İşlemleri" Style="{StaticResource SectionHeader}"/>
+                        </StackPanel>
+                        <WrapPanel Margin="8" ItemWidth="220" ItemHeight="50">
+                            <Button Click="BtnMerge_Click" Style="{StaticResource AccentButtonStyle}" Margin="4">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="FilePlus" Width="20" Height="20" Margin="5,0,10,0"/>
+                                    <TextBlock Text="PDF Birleştir"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Click="BtnSplit_Click" Style="{StaticResource OutlineButtonStyle}" Margin="4">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="FileMinus" Width="20" Height="20" Margin="5,0,10,0"/>
+                                    <TextBlock Text="PDF Böl"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Click="BtnExtractImages_Click" Style="{StaticResource OutlineButtonStyle}" Margin="4">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="ImageMultiple" Width="20" Height="20" Margin="5,0,10,0"/>
+                                    <TextBlock Text="PDF’den Görsel Çıkar"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Click="BtnImagesToPdf_Click" Style="{StaticResource OutlineButtonStyle}" Margin="4">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="FileImage" Width="20" Height="20" Margin="5,0,10,0"/>
+                                    <TextBlock Text="Görsellerden PDF Oluştur"/>
+                                </StackPanel>
+                            </Button>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
 
-                <!-- 🧩 Temel PDF İşlemleri -->
-                <GroupBox Header="🧩 1. Temel PDF İşlemleri" Margin="0,40,0,0">
-                    <WrapPanel Margin="8" ItemWidth="220" ItemHeight="50">
-                        <Button Content="📄 PDF Birleştir" Click="BtnMerge_Click" Margin="4"/>
-                        <Button Content="✂️ PDF Böl" Click="BtnSplit_Click" Margin="4"/>
-                        <Button Content="🔄 PDF’den Görsel Çıkar" Click="BtnExtractImages_Click" Margin="4"/>
-                        <Button Content="🖼️ Görsellerden PDF Oluştur" Click="BtnImagesToPdf_Click" Margin="4"/>
-                    </WrapPanel>
-                </GroupBox>
+                <!-- Gelişmiş Düzenleme -->
+                <Border Style="{StaticResource Card}" Margin="0,20,0,0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <iconPacks:PackIconMaterial Kind="CogOutline" Width="22" Height="22" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+                            <TextBlock Text="2. Gelişmiş Düzenleme Özellikleri" Style="{StaticResource SectionHeader}"/>
+                        </StackPanel>
+                        <WrapPanel Margin="8" ItemWidth="220" ItemHeight="50">
+                            <Button Click="BtnAddContent_Click" Style="{StaticResource OutlineButtonStyle}" Margin="4">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="NotePlus" Width="20" Height="20" Margin="5,0,10,0"/>
+                                    <TextBlock Text="Metin/Görsel Ekle"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Click="BtnEncrypt_Click" Style="{StaticResource OutlineButtonStyle}" Margin="4">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Lock" Width="20" Height="20" Margin="5,0,10,0"/>
+                                    <TextBlock Text="PDF Şifrele/Kaldır"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Click="BtnWatermark_Click" Style="{StaticResource OutlineButtonStyle}" Margin="4">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Water" Width="20" Height="20" Margin="5,0,10,0"/>
+                                    <TextBlock Text="Filigran Ekle"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Click="BtnCompress_Click" Style="{StaticResource OutlineButtonStyle}" Margin="4">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="FileDocumentOutline" Width="20" Height="20" Margin="5,0,10,0"/>
+                                    <TextBlock Text="PDF Sıkıştır"/>
+                                </StackPanel>
+                            </Button>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
 
-                <!-- ⚙️ Gelişmiş Düzenleme -->
-                <GroupBox Header="⚙️ 2. Gelişmiş Düzenleme Özellikleri">
-                    <WrapPanel Margin="8" ItemWidth="220" ItemHeight="50">
-                        <Button Content="📝 Metin/Görsel Ekle" Click="BtnAddContent_Click" Margin="4"/>
-                        <Button Content="🔒 PDF Şifrele/Kaldır" Click="BtnEncrypt_Click" Margin="4"/>
-                        <Button Content="✍️ Filigran Ekle" Click="BtnWatermark_Click" Margin="4"/>
-                        <Button Content="🗜️ PDF Sıkıştır" Click="BtnCompress_Click" Margin="4"/>
-                    </WrapPanel>
-                </GroupBox>
-
-                <!-- 🧠 Profesyonel Mod -->
-                <GroupBox Header="🧠 3. Profesyonel Mod">
-                    <WrapPanel Margin="8" ItemWidth="220" ItemHeight="50">
-                        <Button Content="🧮 PDF’den Veri Oku" Click="BtnReadText_Click" Margin="4"/>
-                        <Button Content="🧰 Toplu PDF İşle" Click="BtnBatchProcess_Click" Margin="4"/>
-                    </WrapPanel>
-                </GroupBox>
-
+                <!-- Profesyonel Mod -->
+                <Border Style="{StaticResource Card}" Margin="0,20,0,0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <iconPacks:PackIconMaterial Kind="Brain" Width="22" Height="22" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+                            <TextBlock Text="3. Profesyonel Mod" Style="{StaticResource SectionHeader}"/>
+                        </StackPanel>
+                        <WrapPanel Margin="8" ItemWidth="220" ItemHeight="50">
+                            <Button Click="BtnReadText_Click" Style="{StaticResource OutlineButtonStyle}" Margin="4">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="TextBoxSearchOutline" Width="20" Height="20" Margin="5,0,10,0"/>
+                                    <TextBlock Text="PDF’den Veri Oku"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Click="BtnBatchProcess_Click" Style="{StaticResource OutlineButtonStyle}" Margin="4">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Tools" Width="20" Height="20" Margin="5,0,10,0"/>
+                                    <TextBlock Text="Toplu PDF İşle"/>
+                                </StackPanel>
+                            </Button>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
             </StackPanel>
         </ScrollViewer>
     </Grid>

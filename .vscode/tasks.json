@@ -90,6 +90,270 @@
 				"$msCompile"
 			],
 			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
+		},
+		{
+			"label": "build-dotnet",
+			"type": "shell",
+			"command": "dotnet",
+			"args": [
+				"build",
+				"--nologo",
+				"--verbosity",
+				"minimal"
+			],
+			"group": "build"
 		}
 	]
 }

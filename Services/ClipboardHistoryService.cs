@@ -203,6 +203,7 @@ namespace SwissKnifeApp.Services
             _allItems.Clear();
             _lastText = "";
             _lastImageHash = "";
+            Clipboard.Clear();
         }
 
         /// <summary>

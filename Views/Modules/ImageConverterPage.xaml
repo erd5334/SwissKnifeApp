@@ -4,21 +4,44 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:SwissKnifeApp.Views.Modules"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ImageConverterPage">
 
+  <!-- Page-level accent override (Image = Indigo) -->
+  <Page.Resources>
+    <SolidColorBrush x:Key="AccentBrush" Color="#5C6BC0"/>
+    <SolidColorBrush x:Key="AccentBrush2" Color="#3949AB"/>
+  </Page.Resources>
+
   <Grid Margin="24" AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop">
     <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
 
+    <!-- Header -->
+    <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,12">
+      <iconPacks:PackIconMaterial Kind="ImageMultiple" Width="28" Height="28" Foreground="{StaticResource AccentBrush}"/>
+      <TextBlock Text="Görsel Dönüştürücü" FontSize="20" FontWeight="Bold" Margin="8,0,0,0"/>
+      <TextBlock Text=" • Toplu dönüştürme ve filtreler" Foreground="#607D8B" Margin="6,4,0,0"/>
+    </StackPanel>
+    
+
     <!-- Üst Panel: Seçim ve Ayarlar -->
-  <StackPanel Orientation="Horizontal" Grid.Row="0" VerticalAlignment="Top" Margin="0,0,0,16">
-      <Button x:Name="btnSelectImages" Content="📂 Görselleri Seç" Width="120" Margin="0,0,8,0" Click="BtnSelectImages_Click"/>
-      <ComboBox x:Name="cmbFormat" Width="80" Margin="0,0,8,0" SelectedIndex="0">
+    <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,12">
+      <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+        <Button x:Name="btnSelectImages" Style="{StaticResource AccentButtonStyle}" Margin="0,0,8,0" Click="BtnSelectImages_Click" Padding="12,8">
+          <StackPanel Orientation="Horizontal">
+            <iconPacks:PackIconMaterial Kind="FolderImage" Width="16" Height="16" Margin="5,0,10,0"/>
+            <TextBlock Text="Görselleri Seç" Width="95"/>
+          </StackPanel>
+        </Button>
+        <ComboBox x:Name="cmbFormat" Width="90" Margin="0,0,8,0" SelectedIndex="0">
         <ComboBoxItem Content="JPG"/>
         <ComboBoxItem Content="PNG"/>
         <ComboBoxItem Content="BMP"/>
@@ -26,45 +49,60 @@
         <ComboBoxItem Content="WEBP"/>
         <ComboBoxItem Content="ICO"/>
         <ComboBoxItem Content="SVG"/>
-      </ComboBox>
-      <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-        <TextBlock Text="Kalite:" Margin="0,0,4,0" VerticalAlignment="Center"/>
-  <Slider x:Name="sliderQuality" Minimum="0" Maximum="100" Value="90" Width="80" TickFrequency="10" IsSnapToTickEnabled="True"/>
-        <TextBlock x:Name="txtQualityValue" Text="90" Margin="4,0,0,0" VerticalAlignment="Center"/>
-      </StackPanel>
+        </ComboBox>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+          <TextBlock Text="Kalite:" Margin="10,0,6,0" VerticalAlignment="Center" FontWeight="SemiBold"/>
+          <Slider x:Name="sliderQuality" Minimum="0" Maximum="100" Value="90" Width="120" TickFrequency="10" IsSnapToTickEnabled="True"/>
+          <TextBlock x:Name="txtQualityValue" Text="90" Margin="6,0,0,0" VerticalAlignment="Center"/>
+        </StackPanel>
       <!-- Yeniden boyutlandırma -->
-      <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-        <TextBlock Text="Boyut:" Margin="8,0,4,0"/>
-  <TextBox x:Name="txtWidth" Width="50" Text="800" TextChanged="OnSettingsChanged"/>
-        <TextBlock Text="x" Margin="4,0"/>
-  <TextBox x:Name="txtHeight" Width="50" Text="600" TextChanged="OnSettingsChanged"/>
-  <CheckBox x:Name="chkKeepAspect" Content="Oran Koru" Margin="8,0,0,0" IsChecked="True" Checked="OnSettingsChanged" Unchecked="OnSettingsChanged"/>
-        <TextBlock Text="%" Margin="8,0,4,0"/>
-  <TextBox x:Name="txtScalePercent" Width="50" Text="100" TextChanged="OnSettingsChanged"/>
-      </StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+          <TextBlock Text="Boyut:" Margin="12,0,6,0" FontWeight="SemiBold"/>
+          <TextBox x:Name="txtWidth" Style="{StaticResource RoundedTextBox}" Width="60" Height="32" Text="800" TextChanged="OnSettingsChanged"/>
+          <TextBlock Text="x" Margin="6,0"/>
+          <TextBox x:Name="txtHeight" Style="{StaticResource RoundedTextBox}" Width="60" Height="32" Text="600" TextChanged="OnSettingsChanged"/>
+          <CheckBox x:Name="chkKeepAspect" Content="Oran Koru" Margin="12,0,0,0" IsChecked="True" Checked="OnSettingsChanged" Unchecked="OnSettingsChanged"/>
+          <TextBlock Text="%" Margin="12,0,6,0"/>
+          <TextBox x:Name="txtScalePercent" Style="{StaticResource RoundedTextBox}" Width="60" Height="32" Text="100" TextChanged="OnSettingsChanged"/>
+        </StackPanel>
 
       <!-- Filtreler -->
-      <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-  <CheckBox x:Name="chkGrayscale" Content="Gri" Checked="OnSettingsChanged" Unchecked="OnSettingsChanged"/>
-  <CheckBox x:Name="chkInvert" Content="Ters" Margin="8,0,0,0" Checked="OnSettingsChanged" Unchecked="OnSettingsChanged"/>
-  <CheckBox x:Name="chkBW" Content="S/B" Margin="8,0,0,0" Checked="OnSettingsChanged" Unchecked="OnSettingsChanged"/>
-        <TextBlock Text="Doygunluk" Margin="8,0,4,0"/>
-  <Slider x:Name="sliderSaturation" Minimum="-100" Maximum="100" Value="0" Width="80" ValueChanged="OnSettingsChanged"/>
-        <TextBlock Text="Parlaklık" Margin="8,0,4,0"/>
-  <Slider x:Name="sliderBrightness" Minimum="-100" Maximum="100" Value="0" Width="80" ValueChanged="OnSettingsChanged"/>
-      </StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+          <CheckBox x:Name="chkGrayscale" Content="Gri" Checked="OnSettingsChanged" Unchecked="OnSettingsChanged"/>
+          <CheckBox x:Name="chkInvert" Content="Ters" Margin="8,0,0,0" Checked="OnSettingsChanged" Unchecked="OnSettingsChanged"/>
+          <CheckBox x:Name="chkBW" Content="S/B" Margin="8,0,0,0" Checked="OnSettingsChanged" Unchecked="OnSettingsChanged"/>
+          <TextBlock Text="Doygunluk" Margin="10,0,6,0"/>
+          <Slider x:Name="sliderSaturation" Minimum="-100" Maximum="100" Value="0" Width="120" ValueChanged="OnSettingsChanged"/>
+          <TextBlock Text="Parlaklık" Margin="10,0,6,0"/>
+          <Slider x:Name="sliderBrightness" Minimum="-100" Maximum="100" Value="0" Width="120" ValueChanged="OnSettingsChanged"/>
+        </StackPanel>
 
-      <Button x:Name="btnConvert" Content="Dönüştür" Width="80" Margin="12,0,0,0" Click="BtnConvert_Click"/>
-    </StackPanel>
+        <Button x:Name="btnConvert" Style="{StaticResource AccentButtonStyle}" Margin="12,0,0,0" Click="BtnConvert_Click" Padding="12,8">
+          <StackPanel Orientation="Horizontal">
+            <iconPacks:PackIconMaterial Kind="ImageFilterCenterFocus" Width="16" Height="16" Margin="5,0,10,0"/>
+            <TextBlock Text="Dönüştür" Width="65"/>
+          </StackPanel>
+        </Button>
+      </StackPanel>
+    </Border>
 
     <!-- Orta Panel: Görsel Listesi ve Önizleme -->
-    <Border Grid.Row="1" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="8" Padding="8">
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="2*"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-  <DataGrid x:Name="dgImages" Grid.Column="0" AutoGenerateColumns="False" CanUserAddRows="False" HeadersVisibility="Column" RowHeight="48" AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop">
+    <Grid Grid.Row="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="2*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <Border Grid.Column="0" Style="{StaticResource Card}" Margin="0,0,12,0">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+          </Grid.RowDefinitions>
+          <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+            <iconPacks:PackIconMaterial Kind="ViewList" Width="18" Height="18" Foreground="{StaticResource AccentBrush}" Margin="0,0,8,0"/>
+            <TextBlock Text="Görsel Listesi" Style="{StaticResource SectionHeader}"/>
+          </StackPanel>
+          <DataGrid x:Name="dgImages" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" HeadersVisibility="Column" RowHeight="48" AllowDrop="True" DragOver="OnDragOver" Drop="OnDrop">
         <DataGrid.Columns>
           <DataGridTemplateColumn Header="Önizleme" Width="60">
             <DataGridTemplateColumn.CellTemplate>
@@ -77,19 +115,51 @@
           <DataGridTextColumn Header="Yol" Binding="{Binding FilePath}" Width="2*"/>
           <DataGridTextColumn Header="Boyut" Binding="{Binding SizeText}" Width="70"/>
         </DataGrid.Columns>
-        </DataGrid>
-        <Border Grid.Column="1" Margin="8,0,0,0" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="6">
-          <Image x:Name="imgPreview" Stretch="Uniform"/>
-        </Border>
-      </Grid>
-    </Border>
+          </DataGrid>
+        </Grid>
+      </Border>
+      <Border Grid.Column="1" Style="{StaticResource Card}">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+          </Grid.RowDefinitions>
+          <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+            <iconPacks:PackIconMaterial Kind="Image" Width="18" Height="18" Foreground="{StaticResource AccentBrush}" Margin="0,0,8,0"/>
+            <TextBlock Text="Önizleme" Style="{StaticResource SectionHeader}"/>
+          </StackPanel>
+          <Image x:Name="imgPreview" Grid.Row="1" Stretch="Uniform"/>
+        </Grid>
+      </Border>
+    </Grid>
 
     <!-- Alt Panel: Hedef Klasör ve Kaydet -->
-    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
-      <TextBlock Text="Hedef Klasör:" VerticalAlignment="Center" Margin="0,0,6,0"/>
-      <TextBox x:Name="txtTargetFolder" Width="180" IsReadOnly="True" Margin="0,0,6,0"/>
-      <Button x:Name="btnSelectFolder" Content="Klasör Seç" Width="80" Margin="0,0,6,0" Click="BtnSelectFolder_Click"/>
-      <Button x:Name="btnSaveAll" Content="Tümünü Kaydet" Width="100" Click="BtnSaveAll_Click"/>
-    </StackPanel>
+    <Border Grid.Row="3" Style="{StaticResource Card}" Margin="0,12,0,0">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal">
+          <iconPacks:PackIconMaterial Kind="Folder" Width="18" Height="18" Foreground="{StaticResource AccentBrush}" Margin="0,0,8,0"/>
+          <TextBlock Text="Hedef Klasör:" VerticalAlignment="Center" Margin="0,0,8,0" FontWeight="SemiBold"/>
+          <TextBox x:Name="txtTargetFolder" Style="{StaticResource RoundedTextBox}" Width="260" Height="32" IsReadOnly="True" Margin="0,0,8,0"/>
+          <Button x:Name="btnSelectFolder" Style="{StaticResource OutlineButtonStyle}" Click="BtnSelectFolder_Click" Padding="12,8">
+            <StackPanel Orientation="Horizontal">
+              <iconPacks:PackIconMaterial Kind="FolderSearch" Width="16" Height="16" Margin="5,0,10,0"/>
+              <TextBlock Text="Klasör Seç" Width="65"/>
+            </StackPanel>
+          </Button>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Horizontal">
+          <Button x:Name="btnSaveAll" Style="{StaticResource AccentButtonStyle}" Click="BtnSaveAll_Click" Padding="12,8">
+            <StackPanel Orientation="Horizontal">
+              <iconPacks:PackIconMaterial Kind="ContentSave" Width="16" Height="16" Margin="5,0,10,0"/>
+              <TextBlock Text="Tümünü Kaydet" Width="85"/>
+            </StackPanel>
+          </Button>
+        </StackPanel>
+      </Grid>
+    </Border>
   </Grid>
 </Page>

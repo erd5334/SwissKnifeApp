@@ -26,9 +26,6 @@
     <Compile Update="Views\Modules\QrBarcodeToolsPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\Modules\SpeedTestPage.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\Modules\TextOperationsPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

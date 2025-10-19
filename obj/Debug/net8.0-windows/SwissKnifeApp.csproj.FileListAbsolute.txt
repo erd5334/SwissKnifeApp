@@ -1,42 +1,4 @@
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\SwissKnifeApp.csproj.AssemblyReference.cache
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\MainWindow.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Resources\Themes\CustomStyles.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\ClipboardHistoryPage.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\ColorPickerPage.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\DataAnalysisPage.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\EyedropperOverlayWindow.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\FileManagerPage.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\PasswordEntryDialog.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\PasswordToolsPage.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\PdfOperationsPage.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\PhotoCollagePage.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\QrBarcodeToolsPage.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\SpeedTestPage.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\TextOperationsPage.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\TextSummarizerPage.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\App.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\MainWindow.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\ClipboardHistoryPage.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\ColorPickerPage.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\DataAnalysisPage.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\EyedropperOverlayWindow.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\FileManagerPage.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\ImageConverterPage.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\JsonXmlFormatterPage.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\MoneyToTextPage.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\PasswordEntryDialog.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\PasswordToolsPage.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\PdfOperationsPage.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\PhotoCollagePage.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\QrBarcodeToolsPage.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\SpeedTestPage.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\TextOperationsPage.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\TextSummarizerPage.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\UnitConverterPage.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\App.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Türk Çakısı_Content.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Türk Çakısı_MarkupCompile.cache
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Türk Çakısı_MarkupCompile.lref
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\Data\tax-rates.json
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\Türk Çakısı.exe
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\Türk Çakısı.deps.json
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\Türk Çakısı.runtimeconfig.json
@@ -50,6 +12,7 @@ C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windo
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\EPPlus.Interfaces.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\ExCSS.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\HBMoneyToWords.dll
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\HtmlAgilityPack.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\itextsharp.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\LucideIcons.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\MahApps.Metro.dll
@@ -98,7 +61,6 @@ C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windo
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\MahApps.Metro.IconPacks.Zondicons.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\Microsoft.WindowsAPICodePack.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\Microsoft.WindowsAPICodePack.Shell.dll
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\Microsoft.AspNetCore.WebUtilities.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\Microsoft.Data.Sqlite.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\Microsoft.Extensions.Configuration.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\Microsoft.Extensions.Configuration.Abstractions.dll
@@ -114,7 +76,6 @@ C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windo
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\Microsoft.Extensions.Options.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\Microsoft.Extensions.Primitives.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\Microsoft.IO.RecyclableMemoryStream.dll
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\Microsoft.Net.Http.Headers.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\Microsoft.Xaml.Behaviors.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\Newtonsoft.Json.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\OxyPlot.dll
@@ -134,8 +95,6 @@ C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windo
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\SixLabors.Fonts.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\SixLabors.ImageSharp.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\SixLabors.ImageSharp.Drawing.dll
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\SpeedTest.dll
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\SpeedTest.Net.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\SQLitePCLRaw.batteries_v2.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\SQLitePCLRaw.core.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\SQLitePCLRaw.provider.e_sqlite3.dll
@@ -168,9 +127,57 @@ C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windo
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\runtimes\win-x64\native\e_sqlite3.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\runtimes\win-x86\native\e_sqlite3.dll
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\runtimes\win\lib\net8.0\System.Security.Cryptography.Pkcs.dll
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\SwissKnifeApp.csproj.AssemblyReference.cache
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\MainWindow.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\AudioToolsPage.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\ClipboardHistoryPage.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\ColorPickerPage.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\DataAnalysisPage.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\EyedropperOverlayWindow.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\FileManagerPage.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\MoneyToTextPage.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\PasswordEntryDialog.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\PasswordToolsPage.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\PdfOperationsPage.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\PhotoCollagePage.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\QrBarcodeToolsPage.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\TaxCalculatorPage.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\TaxSettingsWindow.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\TextOperationsPage.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\TextSummarizerPage.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\VideoToolsPage.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\YouTubeClipDownloaderPage.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\App.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\MainWindow.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\AudioToolsPage.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\ClipboardHistoryPage.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\ColorPickerPage.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\DataAnalysisPage.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\EyedropperOverlayWindow.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\FileManagerPage.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\ImageConverterPage.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\JsonXmlFormatterPage.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\MoneyToTextPage.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\PasswordEntryDialog.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\PasswordToolsPage.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\PdfOperationsPage.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\PhotoCollagePage.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\QrBarcodeToolsPage.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\TaxCalculatorPage.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\TaxSettingsWindow.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\TextOperationsPage.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\TextSummarizerPage.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\UnitConverterPage.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\VideoToolsPage.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\YouTubeClipDownloaderPage.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\App.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Türk Çakısı_Content.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Türk Çakısı_MarkupCompile.cache
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Türk Çakısı_MarkupCompile.lref
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Resources\Themes\CustomStyles.baml
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\ImageConverterPage.baml
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\JsonXmlFormatterPage.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\MoneyToTextPage.baml
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\UnitConverterPage.baml
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Türk Çakısı.g.resources
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\SwissKnifeApp.GeneratedMSBuildEditorConfig.editorconfig
@@ -184,12 +191,3 @@ C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windo
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Türk Çakısı.pdb
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\SwissKnifeApp.genruntimeconfig.cache
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\ref\Türk Çakısı.dll
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\TaxCalculatorPage.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\TaxCalculatorPage.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\bin\Debug\net8.0-windows\HtmlAgilityPack.dll
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\YouTubeClipDownloaderPage.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\YouTubeClipDownloaderPage.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\AudioToolsPage.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\AudioToolsPage.g.cs
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\VideoToolsPage.baml
-C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\VideoToolsPage.g.cs

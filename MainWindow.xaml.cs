@@ -64,9 +64,6 @@ namespace SwissKnifeApp
                     case "QrCode":
                         MainFrame.Navigate(new QrBarcodeToolsPage());
                         break;
-                    case "SpeedTest":
-                        MainFrame.Navigate(new SpeedTestPage());
-                        break;
                     case "ClipboardHistory":
                         MainFrame.Navigate(new ClipboardHistoryPage());
                         break;
@@ -112,6 +109,12 @@ namespace SwissKnifeApp
                         break;
                 }
             }
+        }
+
+        private void TextBlock_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            MainFrame.Content = null;
+        WelcomeGrid.Visibility = Visibility.Visible;
         }
     }
 }

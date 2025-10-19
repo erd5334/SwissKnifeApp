@@ -3,7 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:SwissKnifeApp.Views.Modules"
              xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             
              Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
+
+    <!-- Sayfa özel vurgu renkleri -->
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="AccentBrush" Color="#00BCD4"/>
+        <SolidColorBrush x:Key="AccentBrush2" Color="#0097A7"/>
+    </UserControl.Resources>
 
     <Grid Margin="20" Background="{Binding EditorBackground}">
         <Grid.RowDefinitions>
@@ -12,23 +21,29 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- 🧭 Başlık ve Tema Düğmesi -->
+        <!-- Başlık ve Tema Düğmesi -->
         <DockPanel Margin="0 0 0 10">
-            <TextBlock Text="🧩 JSON / XML Biçimlendirme, Dönüştürme ve Sorgulama"
-                       Foreground="{Binding ForegroundColor}"
-                       FontSize="20"
-                       FontWeight="Bold"
-                       DockPanel.Dock="Left"/>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" VerticalAlignment="Center">
+                <iconPacks:PackIconMaterial Kind="CodeJson" Width="28" Height="28" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+                <TextBlock Text="JSON / XML Biçimlendirme, Dönüştürme ve Sorgulama"
+                           Foreground="{Binding ForegroundColor}"
+                           FontSize="20"
+                           FontWeight="Bold"/>
+            </StackPanel>
 
             <ToggleButton x:Name="ThemeToggle"
-                          Width="120"
-                          Height="30"
+                          Width="150"
+                          Height="34"
                           Margin="10 0 0 0"
-                          Content="{Binding ThemeToggleText}"
                           HorizontalAlignment="Right"
                           DockPanel.Dock="Right"
                           Checked="ThemeToggle_Checked"
-                          Unchecked="ThemeToggle_Unchecked"/>
+                          Unchecked="ThemeToggle_Unchecked">
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="ThemeLightDark" Width="20" Height="20" Margin="5,0,10,0"/>
+                    <TextBlock Text="{Binding ThemeToggleText}"/>
+                </StackPanel>
+            </ToggleButton>
         </DockPanel>
 
         <!-- Ana Alan -->
@@ -38,41 +53,123 @@
                 <ColumnDefinition Width="1.2*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- ✏️ Kod Editörü -->
-            <Border Grid.Column="0" CornerRadius="10" BorderThickness="1" BorderBrush="#444">
-                <avalonedit:TextEditor Name="CodeEditor"
-                                       ShowLineNumbers="True"
-                                       FontFamily="Consolas"
-                                       FontSize="14"
-                                       TextChanged="CodeEditor_TextChanged"
-                                       VerticalScrollBarVisibility="Visible"/>
+            <!-- Kod Editörü -->
+            <Border Grid.Column="0" Style="{StaticResource Card}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
+                        <iconPacks:PackIconMaterial Kind="PencilBoxOutline" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+                        <TextBlock Text="Editör" Style="{StaticResource SectionHeader}"/>
+                    </StackPanel>
+                    <avalonedit:TextEditor Grid.Row="1"
+                                           Name="CodeEditor"
+                                           ShowLineNumbers="True"
+                                           FontFamily="Consolas"
+                                           FontSize="14"
+                                           TextChanged="CodeEditor_TextChanged"
+                                           VerticalScrollBarVisibility="Visible"/>
+                </Grid>
             </Border>
 
-            <!-- 🧰 Araçlar -->
-            <StackPanel Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="#2D2D30">
-                <Button Content="✨ Biçimlendir" Margin="0 5" Click="Format_Click"/>
-                <Button Content="📦 Sıkıştır" Margin="0 5" Click="Minify_Click"/>
-                <Button Content="✅ Doğrula" Margin="0 5" Click="Validate_Click"/>
-                <Separator Margin="0 10"/>
-                <Button Content="➡️ JSON → XML" Margin="0 5" Click="JsonToXml_Click"/>
-                <Button Content="⬅️ XML → JSON" Margin="0 5" Click="XmlToJson_Click"/>
-                <Separator Margin="0 10"/>
-                <Button Content="🧹 Temizle" Margin="0 5" Click="Clear_Click"/>
-            </StackPanel>
+            <!-- Araçlar -->
+            <Border Grid.Column="1" Style="{StaticResource Card}" Margin="10,0,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
+                        <iconPacks:PackIconMaterial Kind="WrenchOutline" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+                        <TextBlock Text="Araçlar" Style="{StaticResource SectionHeader}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1">
+                        <Button Style="{StaticResource OutlineButtonStyle}" Margin="0 5" Click="Format_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="FormatAlignLeft" Width="20" Height="20" Margin="5,0,10,0"/>
+                                <TextBlock Text="Biçimlendir"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource OutlineButtonStyle}" Margin="0 5" Click="Minify_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="Publish" Width="20" Height="20" Margin="5,0,10,0"/>
+                                <TextBlock Text="Sıkıştır"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource OutlineButtonStyle}" Margin="0 5" Click="Validate_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="CheckCircleOutline" Width="20" Height="20" Margin="5,0,10,0"/>
+                                <TextBlock Text="Doğrula"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Separator Margin="0 10"/>
+
+                        <Button Style="{StaticResource OutlineButtonStyle}" Margin="0 5" Click="JsonToXml_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="CodeJson" Width="20" Height="20" Margin="5,0,10,0"/>
+                                <TextBlock Text="JSON → XML"/>
+                            </StackPanel>
+                        </Button>
+                        <Button Style="{StaticResource OutlineButtonStyle}" Margin="0 5" Click="XmlToJson_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="CodeTags" Width="20" Height="20" Margin="5,0,10,0"/>
+                                <TextBlock Text="XML → JSON"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Separator Margin="0 10"/>
+
+                        <Button Style="{StaticResource OutlineButtonStyle}" Margin="0 5" Click="Clear_Click">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="Broom" Width="20" Height="20" Margin="5,0,10,0"/>
+                                <TextBlock Text="Temizle"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
         </Grid>
 
-        <!-- 🔍 Sorgulama Alanı -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 15 0 0" VerticalAlignment="Bottom">
-            <TextBox x:Name="QueryBox"
-                     Width="400"
-                     Height="35"
-                     FontSize="14"
-                     VerticalContentAlignment="Center"/>
-            <Button Content="🔍 Sorgula"
-                    Width="100"
-                    Height="35"
-                    Margin="10 0 0 0"
-                    Click="Query_Click"/>
-        </StackPanel>
+        <!-- Sorgulama Alanı -->
+        <Border Grid.Row="2" Style="{StaticResource Card}" Margin="0,15,0,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
+                    <iconPacks:PackIconMaterial Kind="TextSearch" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+                    <TextBlock Text="Sorgulama" Style="{StaticResource SectionHeader}"/>
+                </StackPanel>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox x:Name="QueryBox"
+                             Style="{StaticResource RoundedTextBox}"
+                             mah:TextBoxHelper.Watermark="JSONPath (JSON) veya XPath (XML) sorgusu yazın"
+                             Height="35"
+                             FontSize="14"
+                             VerticalContentAlignment="Center"
+                             Margin="0,0,10,0"/>
+
+                    <Button Grid.Column="1" Style="{StaticResource AccentButtonStyle}" Height="35" Click="Query_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconMaterial Kind="Magnify" Width="20" Height="20" Margin="5,0,10,0"/>
+                            <TextBlock Text="Sorgula" Width="40"/>
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

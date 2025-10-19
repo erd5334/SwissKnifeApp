@@ -568,11 +568,17 @@ Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır.
 ## 🎉 Son Güncelleme (v2.0.0 - 17 Ekim 2025)
 
 ### Yeni Özellikler
-- ✨ **Resim Kolaj Oluşturucu** eklendi (1-20 fotoğraf, özelleştirilebilir şablonlar)
-- ✨ **Vergi Hesaplayıcı** eklendi (13 farklı vergi türü, web scraping desteği)
-- 🎨 ColorPicker entegrasyonu (kolaj ve vergi modüllerinde)
-- 📊 JSON tabanlı vergi oranları cache sistemi
-- 🌐 HtmlAgilityPack ile web scraping altyapısı
+
+---
+#### 19 Ekim 2025 - Büyük UI ve Kod Temizliği
+
+- Tüm modüllerde modern, ikonlu, kart tabanlı tasarım
+- Video ve ses oynatıcıya ileri/geri sarma, zaman göstergesi ve slider eklendi
+- MainWindow menü sıralaması ve hover animasyonları güncellendi
+- ColorPickerPage modernleştirildi, accent renkler ve ikonlar eklendi, XAML hataları düzeltildi
+- SpeedTestPage modülü ve ilgili NuGet paketleri tamamen kaldırıldı
+- Tüm UI modülleri test edilip sadeleştirildi
+- Kod ve XAML uyumu sağlandı, derleme hataları giderildi
 
 ### İyileştirmeler
 - 🖼️ PDF servisleri genişletildi

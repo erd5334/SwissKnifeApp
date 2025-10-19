@@ -1,10 +1,11 @@
 <Page x:Class="SwissKnifeApp.Views.Modules.YouTubeClipDownloaderPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      mc:Ignorable="d"
-      Title="YouTube TXT Clip Downloader">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    mc:Ignorable="d"
+    Title="YouTube TXT Clip Downloader">
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -14,81 +15,142 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical" Margin="0,0,0,12" >
-            <TextBlock Text="YouTube URL" FontWeight="Bold"/>
-            <TextBox x:Name="TxtUrl" Height="28"/>
-        </StackPanel>
-
-        <StackPanel Orientation="Vertical" Margin="0,0,0,12" Grid.Row="1">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
-                <TextBlock Text="Aralık Girişi" FontWeight="Bold"/>
-                <RadioButton x:Name="RbTxt" Content="TXT" IsChecked="True" Margin="16,0,0,0"/>
-                <RadioButton x:Name="RbManual" Content="Manuel" Margin="8,0,0,0"/>
+        <!-- YouTube URL Kartı -->
+        <Border Grid.Row="0" Background="#e3f2fd" CornerRadius="12" Padding="16" Margin="0,0,0,12" BorderBrush="#90caf9" BorderThickness="1">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <iconPacks:PackIconMaterial Kind="Youtube" Width="24" Height="24" Foreground="#FFEC2121" Margin="0,0,8,0"/>
+                <TextBlock Text="YouTube URL" FontWeight="Bold" VerticalAlignment="Center"/>
+                <TextBox x:Name="TxtUrl" Height="28" Width="420" Margin="16,0,0,0"/>
             </StackPanel>
-            <Grid Margin="0,6,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <!-- TXT Mode -->
-                <DockPanel x:Name="PanelTxt" Grid.ColumnSpan="2">
-                    <TextBox x:Name="TxtTxtPath" Height="28"/>
-                    <Button Content="Seç" Margin="8,0,0,0" Padding="12,4" Click="BtnPickTxt_Click"/>
-                </DockPanel>
-                <!-- Manual Mode -->
-                <StackPanel x:Name="PanelManual" Grid.ColumnSpan="2" Visibility="Collapsed">
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                        <TextBox x:Name="TxtStart" Width="100" Height="28" />
-                        <TextBox x:Name="TxtEnd" Width="100" Height="28" Margin="8,0,0,0" />
-                        <Button Content="Ekle" Margin="8,0,0,0" Padding="12,4" Click="BtnAddInterval_Click"/>
-                        <Button Content="Sil" Margin="8,0,0,0" Padding="12,4" Click="BtnRemoveInterval_Click"/>
-                    </StackPanel>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="Başlangıçlar" FontWeight="Bold"/>
-                            <ListBox x:Name="LbStarts" Height="120"/>
-                        </StackPanel>
-                        <StackPanel Grid.Column="1" Margin="8,0,0,0">
-                            <TextBlock Text="Bitişler" FontWeight="Bold"/>
-                            <ListBox x:Name="LbEnds" Height="120"/>
-                        </StackPanel>
-                    </Grid>
+        </Border>
+
+        <!-- Aralık Girişi Kartı -->
+        <Border Grid.Row="1" Background="#e3f2fd" CornerRadius="12" Padding="16" Margin="0,0,0,12" BorderBrush="#90caf9" BorderThickness="1">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <iconPacks:PackIconMaterial Kind="Timeline" Width="22" Height="22" Foreground="#FFEC2121" Margin="0,0,8,0"/>
+                    <TextBlock Text="Aralık Girişi" FontWeight="Bold"/>
+                    <RadioButton x:Name="RbTxt" Content="TXT" IsChecked="True" Width="50" Margin="16,0,0,0"/>
+                    <RadioButton x:Name="RbManual" Content="Manuel" Margin="8,0,0,0" Width="70"/>
                 </StackPanel>
+                <Grid Margin="0,6,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <!-- TXT Mode -->
+                    <DockPanel x:Name="PanelTxt" Grid.ColumnSpan="2">
+                        <TextBox x:Name="TxtTxtPath" Height="28" Width="320"/>
+                        <Button Margin="8,0,0,0" Padding="12,4"  Click="BtnPickTxt_Click" Style="{StaticResource AccentButtonStyle}" Background="#FFEC2121">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="FileDocument" Width="18" Height="18" Foreground="White" Margin="0,0,6,0"/>
+                                <TextBlock Text="Seç"/>
+                            </StackPanel>
+                        </Button>
+                    </DockPanel>
+                    <!-- Manual Mode -->
+                    <StackPanel x:Name="PanelManual" Grid.ColumnSpan="2" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBox x:Name="TxtStart" Width="100" Height="28" />
+                            <TextBox x:Name="TxtEnd" Width="100" Height="28" Margin="8,0,0,0" />
+                            <Button Margin="8,0,0,0" Padding="12,4" Click="BtnAddInterval_Click" Style="{StaticResource AccentButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Plus" Width="16" Height="16" Foreground="#1976d2" Margin="0,0,4,0"/>
+                                    <TextBlock Text="Ekle"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Margin="8,0,0,0" Padding="12,4" Click="BtnRemoveInterval_Click" Style="{StaticResource AccentButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Delete" Width="16" Height="16" Foreground="#1976d2" Margin="0,0,4,0"/>
+                                    <TextBlock Text="Sil"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Başlangıçlar" FontWeight="Bold"/>
+                                <ListBox x:Name="LbStarts" Height="120"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
+                                <TextBlock Text="Bitişler" FontWeight="Bold"/>
+                                <ListBox x:Name="LbEnds" Height="120"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+        <!-- Çıkış Klasörü Kartı -->
+        <Border Grid.Row="2" Background="#e3f2fd" CornerRadius="12" Padding="16" Margin="0,0,0,12" BorderBrush="#90caf9" BorderThickness="1">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <iconPacks:PackIconMaterial Kind="Folder" Width="22" Height="22" Foreground="#1976d2" Margin="0,0,8,0"/>
+                <TextBlock Text="Çıkış Klasörü" FontWeight="Bold"/>
+                <TextBox x:Name="TxtOutput" Height="28" Width="320" Margin="16,0,0,0"/>
+                <Button Margin="8,0,0,0" Padding="12,4" Click="BtnPickFolder_Click" Style="{StaticResource AccentButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="FolderSearch" Width="18" Height="18" Foreground="White" Margin="5,0,6,0"/>
+                        <TextBlock Text="Seç" Width="20"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- Butonlar Kartı -->
+        <Border Grid.Row="3" Background="#e3f2fd" CornerRadius="12" Padding="16" Margin="0,0,0,12" BorderBrush="#90caf9" BorderThickness="1">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Button x:Name="BtnStart" Padding="16,6" Click="BtnStart_Click" Style="{StaticResource AccentButtonStyle}" Background="#FF6ACE6A">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="Download" Width="18" Height="18" Foreground="White" Margin="5,0,6,0"/>
+                        <TextBlock Text="İndirmeyi Başlat" Width="80"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="BtnCancel" Margin="8,0,0,0" Padding="16,6" Click="BtnCancel_Click" IsEnabled="False" Style="{StaticResource AccentButtonStyle}">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="Cancel" Width="18" Height="18" Foreground="#1976d2" Margin="5,0,6,0"/>
+                        <TextBlock Text="Durdur" Width="40"/>
+                    </StackPanel>
+                </Button>
+                <Button x:Name="BtnInstallTools" Margin="16,0,0,0" Padding="16,6" Click="BtnInstallTools_Click" Background="#FFA500" Foreground="White">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="Toolbox" Width="18" Height="18" Foreground="White" Margin="0,0,6,0"/>
+                        <TextBlock Text="Araçları Kur"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- İlerleme ve Log Kartı -->
+        <Border Grid.Row="4" Background="#e3f2fd" CornerRadius="12" Padding="16" BorderBrush="#90caf9" BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,-35,0,0">
+                    <iconPacks:PackIconMaterial Kind="ProgressClock" Width="20" Height="20" Foreground="#1976d2" Margin="0,0,8,0"/>
+                    <TextBlock Text="Toplam İlerleme" FontWeight="Bold"/>
+                </StackPanel>
+                <ProgressBar x:Name="PbTotal" Grid.Row="0" Height="18" Margin="0,10,0,0" Minimum="0" Maximum="100"/>
+                <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,10,0,0" VerticalAlignment="Center">
+                    <iconPacks:PackIconMaterial Kind="ProgressCheck" Width="18" Height="18" Foreground="#1976d2" Margin="0,0,8,0"/>
+                    <TextBlock Text="Parça İlerleme" FontWeight="Bold"/>
+                </StackPanel>
+                <ProgressBar x:Name="PbPart" Grid.Row="2" Height="18" Margin="0,10,0,0" Minimum="0" Maximum="100"/>
+                <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="0,-485,0,0" VerticalAlignment="Center">
+                    <iconPacks:PackIconMaterial Kind="TextBox" Width="18" Height="18" Foreground="#1976d2" Margin="0,0,8,0"/>
+                    <TextBlock Text="Log" FontWeight="Bold"/>
+                </StackPanel>
+                <ScrollViewer Grid.Row="4" Margin="0,35,0,0">
+                    <TextBox x:Name="TxtLog"  IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"/>
+                </ScrollViewer>
             </Grid>
-        </StackPanel>
-
-        <StackPanel Orientation="Vertical" Margin="0,0,0,12" Grid.Row="2">
-            <TextBlock Text="Çıkış Klasörü" FontWeight="Bold"/>
-            <DockPanel>
-                <TextBox x:Name="TxtOutput" Height="28"/>
-                <Button Content="Seç" Margin="8,0,0,0" Padding="12,4" Click="BtnPickFolder_Click"/>
-            </DockPanel>
-        </StackPanel>
-
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,12" Grid.Row="3">
-            <Button x:Name="BtnStart" Content="İndirmeyi Başlat" Padding="16,6" Click="BtnStart_Click"/>
-            <Button x:Name="BtnCancel" Content="Durdur" Margin="8,0,0,0" Padding="16,6" Click="BtnCancel_Click" IsEnabled="False"/>
-            <Button x:Name="BtnInstallTools" Content="Araçları Kur" Margin="16,0,0,0" Padding="16,6" Click="BtnInstallTools_Click" Background="#FFA500" Foreground="White"/>
-        </StackPanel>
-
-        <Grid Grid.Row="4">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <TextBlock Text="Toplam İlerleme" FontWeight="Bold"/>
-            <ProgressBar x:Name="PbTotal" Grid.Row="0" Height="18" Margin="0,20,0,0" Minimum="0" Maximum="100"/>
-            <TextBlock Text="Parça İlerleme" Grid.Row="1" FontWeight="Bold" Margin="0,8,0,0"/>
-            <ProgressBar x:Name="PbPart" Grid.Row="1" Height="18" Margin="0,28,0,0" Minimum="0" Maximum="100"/>
-            <TextBlock Text="Log" Grid.Row="2" FontWeight="Bold" Margin="0,8,0,0"/>
-            <ScrollViewer Grid.Row="2" Margin="0,24,0,0">
-                <TextBox x:Name="TxtLog" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"/>
-            </ScrollViewer>
-        </Grid>
+        </Border>
     </Grid>
 </Page>
