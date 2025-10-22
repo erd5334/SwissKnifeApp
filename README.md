@@ -630,3 +630,8 @@ Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır.
 - 1000+ satır XAML ve C# kodu eklendi
 
 ⭐ Beğendiyseniz yıldız vermeyi unutmayın!
+
+## 📷 Arayüz Görünümü
+![Uygulama Ekran Görüntüsü](Türk Çakısı 000.png)
+
+---
