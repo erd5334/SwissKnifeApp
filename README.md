@@ -444,57 +444,57 @@ Not: Bu araçlar portable olarak uygulama dizininde `Tools/` klasöründe veya s
 ### Metin İşlemleri
 ![Metin İşlemleri](gorsel/Gorsel-001.png)
 
-### Şifre ve Güvenlik Araçları
-![Şifre Üretici](gorsel/Gorsel-002.png)
-
-### QR Kod & Barkod Araçları
-![QR Kod Oluşturma](gorsel/Gorsel-003.png)
-![Barkod Oluşturma](gorsel/Gorsel-004.png)
-
-### Görsel Dönüştürücü
-![Görsel Dönüştürücü](gorsel/Gorsel-005.png)
-![Görsel Dönüştürücü - Filtreler](gorsel/Gorsel-006.png)
+### Metin ve Belge Özetleyici
+![Metin ve Belge Özetleyici](gorsel/Gorsel-002.png)
 
 ### PDF İşlemleri
-![PDF İşlemleri](gorsel/Gorsel-007.png)
+![PDF İşlemleri](gorsel/Gorsel-005.png)
 
-### Birim Dönüştürücü
-![Birim Dönüştürücü](gorsel/Gorsel-008.png)
+### Görsel Dönüştürücü
+![Görsel Dönüştürücü](gorsel/Gorsel-006.png)
 
-### JSON & XML Formatter
-![JSON Formatter](gorsel/Gorsel-009.png)
+### Fotoğraf Kolaj Yapıcı
+![Fotoğraf Kolaj Yapıcı](gorsel/Gorsel-007.png)
+
+### QR Kod ve Barcode Oluşturucu
+![QR Kod ve Barcode Oluşturucu](gorsel/Gorsel-008.png)
+
+### Renk Seçici
+![Renk Seçici](gorsel/Gorsel-009.png)
 
 ### Para Yazıya Çevirme
 ![Para Yazıya Çevirme](gorsel/Gorsel-010.png)
 
-### İnternet Hız Testi
-![Hız Testi](gorsel/Gorsel-011.png)
+### Vergi Hesaplayıcı
+![Vergi Hesaplayıcı](gorsel/Gorsel-011.png)
 
 ### Pano Geçmişi
 ![Pano Geçmişi](gorsel/Gorsel-012.png)
 
-### Resim Kolaj
-![Resim Kolaj](gorsel/Gorsel-013.png)
+### Dosya Yöneticisi
+![Dosya Yöneticisi](gorsel/Gorsel-013.png)
 
-### Vergi Hesaplayıcı
-![Vergi Hesaplayıcı - Gelir Vergisi](gorsel/Gorsel-014.png)
-![Vergi Hesaplayıcı - KDV](gorsel/Gorsel-015.png)
-![Vergi Hesaplayıcı - MTV](gorsel/Gorsel-016.png)
+### Şifre Araçları
+![Şifre Oluşturucu](gorsel/Gorsel-014.png)
+![Şifre Gücü Analizi](gorsel/Gorsel-015.png)
+![Hash Üretici](gorsel/Gorsel-016.png)
+![AES Şifreleme ve Çözme](gorsel/Gorsel-017.png)
+![Parola Yöneticisi](gorsel/Gorsel-018.png)
 
-### YouTube Klip İndirici
-![YouTube İndirici](gorsel/Gorsel-017.png)
-![YouTube - Cookie Desteği](gorsel/Gorsel-018.png)
-![Cookie Yardım Penceresi](gorsel/Gorsel-019.png)
+### Veri Analizi Araçları
+![Veri Analizi Araçları](gorsel/Gorsel-019.png)
+
+### JSON & XML Formatter
+![JSON Formatter](gorsel/Gorsel-020.png)
 
 ### Ses Araçları
-![Ses Dönüştürücü](gorsel/Gorsel-020.png)
+![Ses Dönüştürücü](gorsel/Gorsel-021.png)
 
 ### Video Araçları
-![Video Dönüştürücü](gorsel/Gorsel-021.png)
-![Video - Ses Çıkarma](gorsel/Gorsel-022.png)
+![Video Dönüştürücü](gorsel/Gorsel-022.png)
 
-### Veri Analizi
-![Veri Analizi](gorsel/Gorsel-023.png)
+### YouTube Klip İndirici
+![YouTube İndirici](gorsel/Gorsel-023.png)
 
 ## 🔧 Geliştirme
 
@@ -686,8 +686,3 @@ Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır.
 - 1000+ satır XAML ve C# kodu eklendi
 
 ⭐ Beğendiyseniz yıldız vermeyi unutmayın!
-
-## 📷 Arayüz Görünümü
-![Uygulama Ekran Görüntüsü] (Türk Çakısı 000.png)
-
----
