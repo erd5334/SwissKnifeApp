@@ -475,10 +475,16 @@ Not: Bu araçlar portable olarak uygulama dizininde `Tools/` klasöründe veya s
 ![Dosya Yöneticisi](gorsel/Gorsel-013.png)
 
 ### Şifre Araçları
+-----------------------
+### Şifre Oluşturucu
 ![Şifre Oluşturucu](gorsel/Gorsel-014.png)
+### Şifre Gücü Analizi
 ![Şifre Gücü Analizi](gorsel/Gorsel-015.png)
+### Hash Üretici
 ![Hash Üretici](gorsel/Gorsel-016.png)
+### AES Şifreleme ve Çözme
 ![AES Şifreleme ve Çözme](gorsel/Gorsel-017.png)
+### Parola Yöneticisi
 ![Parola Yöneticisi](gorsel/Gorsel-018.png)
 
 ### Veri Analizi Araçları
