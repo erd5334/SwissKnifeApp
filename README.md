@@ -438,7 +438,63 @@ Not: Bu araçlar portable olarak uygulama dizininde `Tools/` klasöründe veya s
 
 ## 📸 Ekran Görüntüleri
 
-*Ekran görüntüleri eklenecek*
+### Ana Ekran
+![Ana Ekran](gorsel/Gorsel-000.png)
+
+### Metin İşlemleri
+![Metin İşlemleri](gorsel/Gorsel-001.png)
+
+### Şifre ve Güvenlik Araçları
+![Şifre Üretici](gorsel/Gorsel-002.png)
+
+### QR Kod & Barkod Araçları
+![QR Kod Oluşturma](gorsel/Gorsel-003.png)
+![Barkod Oluşturma](gorsel/Gorsel-004.png)
+
+### Görsel Dönüştürücü
+![Görsel Dönüştürücü](gorsel/Gorsel-005.png)
+![Görsel Dönüştürücü - Filtreler](gorsel/Gorsel-006.png)
+
+### PDF İşlemleri
+![PDF İşlemleri](gorsel/Gorsel-007.png)
+
+### Birim Dönüştürücü
+![Birim Dönüştürücü](gorsel/Gorsel-008.png)
+
+### JSON & XML Formatter
+![JSON Formatter](gorsel/Gorsel-009.png)
+
+### Para Yazıya Çevirme
+![Para Yazıya Çevirme](gorsel/Gorsel-010.png)
+
+### İnternet Hız Testi
+![Hız Testi](gorsel/Gorsel-011.png)
+
+### Pano Geçmişi
+![Pano Geçmişi](gorsel/Gorsel-012.png)
+
+### Resim Kolaj
+![Resim Kolaj](gorsel/Gorsel-013.png)
+
+### Vergi Hesaplayıcı
+![Vergi Hesaplayıcı - Gelir Vergisi](gorsel/Gorsel-014.png)
+![Vergi Hesaplayıcı - KDV](gorsel/Gorsel-015.png)
+![Vergi Hesaplayıcı - MTV](gorsel/Gorsel-016.png)
+
+### YouTube Klip İndirici
+![YouTube İndirici](gorsel/Gorsel-017.png)
+![YouTube - Cookie Desteği](gorsel/Gorsel-018.png)
+![Cookie Yardım Penceresi](gorsel/Gorsel-019.png)
+
+### Ses Araçları
+![Ses Dönüştürücü](gorsel/Gorsel-020.png)
+
+### Video Araçları
+![Video Dönüştürücü](gorsel/Gorsel-021.png)
+![Video - Ses Çıkarma](gorsel/Gorsel-022.png)
+
+### Veri Analizi
+![Veri Analizi](gorsel/Gorsel-023.png)
 
 ## 🔧 Geliştirme
 
