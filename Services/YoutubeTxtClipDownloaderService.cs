@@ -27,6 +27,7 @@ namespace SwissKnifeApp.Services
     {
         private string? _ytDlpPath;
         private string? _ffmpegPath;
+        public string? CookieFilePath { get; set; } // Cookie dosyası yolu (opsiyonel)
 
         public async Task<List<ClipInterval>> ParseIntervalsAsync(string txtPath)
         {
@@ -77,6 +78,8 @@ namespace SwissKnifeApp.Services
             string youtubeUrl,
             string intervalsTxtPath,
             string outputFolder,
+            string format = "mp4",
+            string formatExt = "mp4",
             IProgress<ClipProgress>? progress = null,
             IProgress<string>? log = null,
             CancellationToken cancellationToken = default)
@@ -92,13 +95,15 @@ namespace SwissKnifeApp.Services
             var intervals = await ParseIntervalsAsync(intervalsTxtPath);
             if (intervals.Count == 0) throw new InvalidOperationException("TXT içinde geçerli aralık bulunamadı.");
 
-            await DownloadSegmentsAsync(youtubeUrl, intervals, outputFolder, progress, log, cancellationToken);
+            await DownloadSegmentsAsync(youtubeUrl, intervals, outputFolder, format, formatExt, progress, log, cancellationToken);
         }
 
         public async Task DownloadSegmentsAsync(
             string youtubeUrl,
             IList<ClipInterval> intervals,
             string outputFolder,
+            string format = "mp4",
+            string formatExt = "mp4",
             IProgress<ClipProgress>? progress = null,
             IProgress<string>? log = null,
             CancellationToken cancellationToken = default)
@@ -116,13 +121,39 @@ namespace SwissKnifeApp.Services
                 cancellationToken.ThrowIfCancellationRequested();
                 var clip = intervals[i];
                 var index = i + 1;
-                var outName = Path.Combine(outputFolder, $"kesit_{index:00}.mp4");
+                var outName = Path.Combine(outputFolder, $"kesit_{index:00}.{formatExt}");
                 var section = $"{FormatTs(clip.Start)}-{FormatTs(clip.End)}";
 
                 // Build yt-dlp command using download-sections with time ranges in seconds
                 var args = new StringBuilder();
-                args.Append("-f \"bestvideo[height<=1080]+bestaudio/best[height<=1080]\" ");
-                args.Append("--merge-output-format mp4 ");
+                
+                // Cookie desteği (opsiyonel - giriş yapmış hesap için)
+                if (!string.IsNullOrWhiteSpace(CookieFilePath) && File.Exists(CookieFilePath))
+                {
+                    args.Append($"--cookies \"{CookieFilePath}\" ");
+                    log?.Report($"🍪 Cookie dosyası kullanılıyor: {Path.GetFileName(CookieFilePath)}");
+                }
+                
+                // Anti-bot measures - Android client (daha az kısıtlamalı)
+                args.Append("--extractor-args \"youtube:player_client=android,web\" ");
+                args.Append("--user-agent \"com.google.android.youtube/19.09.37 (Linux; U; Android 13) gzip\" ");
+                args.Append("--add-header \"Accept-Language:en-US,en\" ");
+                
+                // Format-specific arguments
+                if (format == "mp4")
+                {
+                    // Video format - download video+audio
+                    args.Append("-f \"bestvideo[height<=1080]+bestaudio/best[height<=1080]\" ");
+                    args.Append("--merge-output-format mp4 ");
+                }
+                else
+                {
+                    // Audio only format - extract audio
+                    args.Append("-x ");  // Extract audio
+                    args.Append($"--audio-format {format} ");
+                    args.Append("--audio-quality 0 ");  // Best quality
+                }
+                
                 args.Append($"--download-sections \"*{section}\" ");  // '*' prefix indicates time-based range, not chapter name
                 args.Append("--force-keyframes-at-cuts ");  // Ensure clean cuts at exact timestamps
                 args.Append("--no-playlist ");

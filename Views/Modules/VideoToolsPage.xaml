@@ -12,6 +12,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -76,53 +77,61 @@
 
         <!-- Ayarlar Kartı -->
     <Border Grid.Row="3" Background="#fff3e0" CornerRadius="12" Padding="16" Margin="0,0,0,12" BorderBrush="#ffb74d" BorderThickness="1">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <iconPacks:PackIconMaterial Kind="Cog" Width="20" Height="20" Foreground="#e65100" Margin="0,0,8,0"/>
-                <TextBlock Text="İşlem:" VerticalAlignment="Center"/>
-                <ComboBox x:Name="CmbMode" Width="160" Margin="8,0,0,0">
-                    <ComboBoxItem Content="Dönüştür" IsSelected="True"/>
-                    <ComboBoxItem Content="Trim/Kırp"/>
-                </ComboBox>
-                <TextBlock Text="Format:" VerticalAlignment="Center" Margin="24,0,0,0"/>
-                <ComboBox x:Name="CmbFormat" Width="120" Margin="8,0,0,0">
-                    <ComboBoxItem Content="MP4" IsSelected="True"/>
-                    <ComboBoxItem Content="MKV"/>
-                    <ComboBoxItem Content="WEBM"/>
-                    <ComboBoxItem Content="MOV"/>
-                    <ComboBoxItem Content="TS"/>
-                    <ComboBoxItem Content="AVI"/>
-                    <ComboBoxItem Content="FLV"/>
-                </ComboBox>
-                <TextBlock Text="Codec:" VerticalAlignment="Center" Margin="24,0,0,0"/>
-                <ComboBox x:Name="CmbCodec" Width="140" Margin="8,0,0,0">
-                    <ComboBoxItem Content="H264" IsSelected="True"/>
-                    <ComboBoxItem Content="H265"/>
-                    <ComboBoxItem Content="VP9"/>
-                    <ComboBoxItem Content="COPY"/>
-                </ComboBox>
-                <TextBlock Text="Kalite:" VerticalAlignment="Center" Margin="24,0,0,0"/>
-                <ComboBox x:Name="CmbQuality" Width="140" Margin="8,0,0,0">
-                    <ComboBoxItem Content="Highest" IsSelected="True"/>
-                    <ComboBoxItem Content="High"/>
-                    <ComboBoxItem Content="Medium"/>
-                    <ComboBoxItem Content="Low"/>
-                    <ComboBoxItem Content="Lossless"/>
-                </ComboBox>
-                <TextBlock Text="Çözünürlük:" VerticalAlignment="Center" Margin="24,0,0,0"/>
-                <ComboBox x:Name="CmbResolution" Width="140" Margin="8,0,0,0">
-                    <ComboBoxItem Content="Original" IsSelected="True"/>
-                    <ComboBoxItem Content="2160p"/>
-                    <ComboBoxItem Content="1440p"/>
-                    <ComboBoxItem Content="1080p"/>
-                    <ComboBoxItem Content="720p"/>
-                    <ComboBoxItem Content="480p"/>
-                </ComboBox>
+            <StackPanel Orientation="Vertical">
+                <!-- Birinci satır -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <iconPacks:PackIconMaterial Kind="Cog" Width="20" Height="20" Foreground="#e65100" Margin="0,0,8,0"/>
+                    <TextBlock Text="İşlem:" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="CmbMode" Width="160" Margin="8,0,0,0" SelectionChanged="CmbMode_SelectionChanged">
+                        <ComboBoxItem Content="Dönüştür" IsSelected="True"/>
+                        <ComboBoxItem Content="Ses Çıkar"/>
+                        <ComboBoxItem Content="Trim/Kırp"/>
+                    </ComboBox>
+                    <TextBlock x:Name="LblFormat" Text="Format:" VerticalAlignment="Center" Margin="24,0,0,0"/>
+                    <ComboBox x:Name="CmbFormat" Width="120" Margin="8,0,0,0">
+                        <ComboBoxItem Content="MP4" IsSelected="True"/>
+                        <ComboBoxItem Content="MKV"/>
+                        <ComboBoxItem Content="WEBM"/>
+                        <ComboBoxItem Content="MOV"/>
+                        <ComboBoxItem Content="TS"/>
+                        <ComboBoxItem Content="AVI"/>
+                        <ComboBoxItem Content="FLV"/>
+                    </ComboBox>
+                    <TextBlock x:Name="LblCodec" Text="Codec:" VerticalAlignment="Center" Margin="24,0,0,0"/>
+                    <ComboBox x:Name="CmbCodec" Width="140" Margin="8,0,0,0">
+                        <ComboBoxItem Content="H264" IsSelected="True"/>
+                        <ComboBoxItem Content="H265"/>
+                        <ComboBoxItem Content="VP9"/>
+                        <ComboBoxItem Content="COPY"/>
+                    </ComboBox>
+                </StackPanel>
+                
+                <!-- İkinci satır -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="28,8,0,0">
+                    <TextBlock Text="Kalite:" VerticalAlignment="Center"/>
+                    <ComboBox x:Name="CmbQuality" Width="140" Margin="8,0,0,0">
+                        <ComboBoxItem Content="Highest" IsSelected="True"/>
+                        <ComboBoxItem Content="High"/>
+                        <ComboBoxItem Content="Medium"/>
+                        <ComboBoxItem Content="Low"/>
+                        <ComboBoxItem Content="Lossless"/>
+                    </ComboBox>
+                    <TextBlock x:Name="LblResolution" Text="Çözünürlük:" VerticalAlignment="Center" Margin="24,0,0,0"/>
+                    <ComboBox x:Name="CmbResolution" Width="140" Margin="8,0,0,0">
+                        <ComboBoxItem Content="Original" IsSelected="True"/>
+                        <ComboBoxItem Content="2160p"/>
+                        <ComboBoxItem Content="1440p"/>
+                        <ComboBoxItem Content="1080p"/>
+                        <ComboBoxItem Content="720p"/>
+                        <ComboBoxItem Content="480p"/>
+                    </ComboBox>
+                </StackPanel>
             </StackPanel>
         </Border>
 
         <!-- Kırpma ve Başlat/İptal Kartı -->
-    <Border Grid.Row="4" Background="#fff3e0" CornerRadius="12" Padding="16" Margin="0,0,0,12" BorderBrush="#ffb74d" BorderThickness="1">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+    <Border Grid.Row="4" Background="#fff3e0" CornerRadius="12" Padding="11" Margin="0,0,0,12" BorderBrush="#ffb74d" BorderThickness="1">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,0">
                 <iconPacks:PackIconMaterial Kind="ScissorsCutting" Width="20" Height="20" Foreground="#e65100" Margin="0,0,8,0"/>
                 <TextBlock Text="Başlangıç" VerticalAlignment="Center"/>
                 <TextBox x:Name="TxtStart" Width="100" Height="28" Margin="8,0,0,0"/>
@@ -133,7 +142,7 @@
                 <Button x:Name="BtnStart" Margin="24,0,0,0" Padding="16,6" Click="BtnStart_Click" Style="{StaticResource AccentButtonStyle}">
                     <StackPanel Orientation="Horizontal">
                         <iconPacks:PackIconMaterial Kind="Play" Width="18" Height="18" Foreground="#e65100" Margin="5,0,6,0"/>
-                        <TextBlock Text="Başlat" Width="30"/>
+                        <TextBlock Text="Başlat" Width="35"/>
                     </StackPanel>
                 </Button>
                 <Button x:Name="BtnCancel" Margin="8,0,0,0" Padding="16,6" Click="BtnCancel_Click" IsEnabled="False" Style="{StaticResource AccentButtonStyle}">
@@ -153,16 +162,16 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,-10,0,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,-40,0,0">
                     <iconPacks:PackIconMaterial Kind="ProgressClock" Width="20" Height="20" Foreground="#e65100" Margin="0,0,8,0"/>
                     <TextBlock Text="İlerleme" FontWeight="Bold"/>
                 </StackPanel>
-                <ProgressBar x:Name="PbTotal" Grid.Row="0" Height="18" Margin="0,45,0,0" Minimum="0" Maximum="100"/>
-                <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,12,0,0" VerticalAlignment="Center">
+                <ProgressBar x:Name="PbTotal" Grid.Row="0" Height="18" Margin="0,35,0,0" Minimum="0" Maximum="100"/>
+                <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,15,0,0" VerticalAlignment="Center">
                     <iconPacks:PackIconMaterial Kind="TextBox" Width="18" Height="18" Foreground="#e65100" Margin="0,0,8,0"/>
                     <TextBlock Text="Log" FontWeight="Bold"/>
                 </StackPanel>
-                <ScrollViewer Grid.Row="2" Margin="0,24,0,0">
+                <ScrollViewer Grid.Row="2" Margin="0,14,0,0">
                     <TextBox x:Name="TxtLog" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"/>
                 </ScrollViewer>
             </Grid>

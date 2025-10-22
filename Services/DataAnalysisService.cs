@@ -444,5 +444,703 @@ namespace SwissKnifeApp.Services
         }
 
         #endregion
+
+        #region Advanced Statistics (Median, Mode, Quartiles)
+
+        public class AdvancedStatisticsResult
+        {
+            public string ColumnName { get; set; } = "";
+            public double Average { get; set; }
+            public double Median { get; set; }
+            public double Mode { get; set; }
+            public double Min { get; set; }
+            public double Max { get; set; }
+            public double Q1 { get; set; }
+            public double Q3 { get; set; }
+            public double IQR { get; set; }
+            public double StandardDeviation { get; set; }
+            public int Count { get; set; }
+        }
+
+        public AdvancedStatisticsResult? CalculateAdvancedStatistics(DataTable dataTable, string columnName)
+        {
+            var values = dataTable.AsEnumerable()
+                .Select(r => r[columnName])
+                .Where(v => double.TryParse(v?.ToString(), out _))
+                .Select(v => Convert.ToDouble(v))
+                .OrderBy(x => x)
+                .ToList();
+
+            if (values.Count == 0)
+                return null;
+
+            double avg = values.Average();
+            double min = values.Min();
+            double max = values.Max();
+            double sd = Math.Sqrt(values.Sum(v => Math.Pow(v - avg, 2)) / values.Count);
+
+            // Median
+            double median = values.Count % 2 == 0
+                ? (values[values.Count / 2 - 1] + values[values.Count / 2]) / 2.0
+                : values[values.Count / 2];
+
+            // Mode
+            var grouped = values.GroupBy(x => x).OrderByDescending(g => g.Count());
+            double mode = grouped.First().Key;
+
+            // Quartiles
+            double q1 = GetPercentile(values, 25);
+            double q3 = GetPercentile(values, 75);
+            double iqr = q3 - q1;
+
+            return new AdvancedStatisticsResult
+            {
+                ColumnName = columnName,
+                Average = avg,
+                Median = median,
+                Mode = mode,
+                Min = min,
+                Max = max,
+                Q1 = q1,
+                Q3 = q3,
+                IQR = iqr,
+                StandardDeviation = sd,
+                Count = values.Count
+            };
+        }
+
+        private double GetPercentile(List<double> sortedValues, double percentile)
+        {
+            int n = sortedValues.Count;
+            double index = (percentile / 100.0) * (n - 1);
+            int lower = (int)Math.Floor(index);
+            int upper = (int)Math.Ceiling(index);
+
+            if (lower == upper)
+                return sortedValues[lower];
+
+            return sortedValues[lower] + (index - lower) * (sortedValues[upper] - sortedValues[lower]);
+        }
+
+        #endregion
+
+        #region Data Cleaning
+
+        public class DataCleaningResult
+        {
+            public int MissingValuesCount { get; set; }
+            public int OutliersCount { get; set; }
+            public List<int> OutlierRowIndices { get; set; } = new();
+            public string Report { get; set; } = "";
+        }
+
+        public DataCleaningResult AnalyzeDataQuality(DataTable dataTable, string columnName)
+        {
+            var result = new DataCleaningResult();
+            var sb = new StringBuilder();
+
+            // Missing values
+            int missingCount = 0;
+            foreach (DataRow row in dataTable.Rows)
+            {
+                if (string.IsNullOrWhiteSpace(row[columnName]?.ToString()))
+                    missingCount++;
+            }
+            result.MissingValuesCount = missingCount;
+            sb.AppendLine($"📊 Eksik Değer: {missingCount} satır");
+
+            // Outliers (IQR method)
+            var values = dataTable.AsEnumerable()
+                .Select((r, idx) => new { Value = r[columnName], Index = idx })
+                .Where(x => double.TryParse(x.Value?.ToString(), out _))
+                .Select(x => new { Value = Convert.ToDouble(x.Value), x.Index })
+                .ToList();
+
+            if (values.Count > 0)
+            {
+                var sortedValues = values.Select(x => x.Value).OrderBy(x => x).ToList();
+                double q1 = GetPercentile(sortedValues, 25);
+                double q3 = GetPercentile(sortedValues, 75);
+                double iqr = q3 - q1;
+                double lowerBound = q1 - 1.5 * iqr;
+                double upperBound = q3 + 1.5 * iqr;
+
+                var outliers = values.Where(x => x.Value < lowerBound || x.Value > upperBound).ToList();
+                result.OutliersCount = outliers.Count;
+                result.OutlierRowIndices = outliers.Select(x => x.Index).ToList();
+                
+                sb.AppendLine($"🔍 Aykırı Değer: {outliers.Count} satır");
+                sb.AppendLine($"   Alt Sınır: {lowerBound:F2}, Üst Sınır: {upperBound:F2}");
+            }
+
+            result.Report = sb.ToString();
+            return result;
+        }
+
+        public DataTable FillMissingValues(DataTable dataTable, string columnName, string method = "mean")
+        {
+            var values = dataTable.AsEnumerable()
+                .Select(r => r[columnName])
+                .Where(v => double.TryParse(v?.ToString(), out _))
+                .Select(v => Convert.ToDouble(v))
+                .ToList();
+
+            if (values.Count == 0)
+                return dataTable;
+
+            double fillValue = method.ToLower() switch
+            {
+                "mean" => values.Average(),
+                "median" => values.OrderBy(x => x).ElementAt(values.Count / 2),
+                _ => values.Average()
+            };
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                if (string.IsNullOrWhiteSpace(row[columnName]?.ToString()))
+                    row[columnName] = fillValue;
+            }
+
+            return dataTable;
+        }
+
+        public DataTable RemoveOutliers(DataTable dataTable, string columnName)
+        {
+            var analysis = AnalyzeDataQuality(dataTable, columnName);
+            
+            // Remove rows with outliers (in reverse order to maintain indices)
+            foreach (var idx in analysis.OutlierRowIndices.OrderByDescending(x => x))
+            {
+                if (idx < dataTable.Rows.Count)
+                    dataTable.Rows.RemoveAt(idx);
+            }
+
+            return dataTable;
+        }
+
+        #endregion
+
+        #region Box Plot
+
+        public PlotModel CreateBoxPlot(DataTable dataTable, string columnName)
+        {
+            var values = dataTable.AsEnumerable()
+                .Select(r => r[columnName])
+                .Where(v => double.TryParse(v?.ToString(), out _))
+                .Select(v => Convert.ToDouble(v))
+                .OrderBy(x => x)
+                .ToList();
+
+            if (values.Count == 0)
+                return new PlotModel { Title = "Veri bulunamadı" };
+
+            var model = new PlotModel { Title = $"{columnName} - Box Plot" };
+
+            double min = values.Min();
+            double max = values.Max();
+            double q1 = GetPercentile(values, 25);
+            double median = GetPercentile(values, 50);
+            double q3 = GetPercentile(values, 75);
+            double iqr = q3 - q1;
+            double lowerWhisker = Math.Max(min, q1 - 1.5 * iqr);
+            double upperWhisker = Math.Min(max, q3 + 1.5 * iqr);
+
+            var categoryAxis = new CategoryAxis { Position = AxisPosition.Bottom };
+            categoryAxis.Labels.Add(columnName);
+            model.Axes.Add(categoryAxis);
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left });
+
+            var boxSeries = new BoxPlotSeries
+            {
+                Title = columnName,
+                BoxWidth = 0.3
+            };
+
+            var item = new BoxPlotItem(0, lowerWhisker, q1, median, q3, upperWhisker);
+            
+            // Add outliers
+            var outliers = values.Where(v => v < lowerWhisker || v > upperWhisker).ToList();
+            item.Outliers = outliers;
+
+            boxSeries.Items.Add(item);
+            model.Series.Add(boxSeries);
+
+            return model;
+        }
+
+        #endregion
+
+        #region Export Functions
+
+        public void ExportToExcel(DataTable dataTable, string outputPath)
+        {
+            using var package = new ExcelPackage();
+            var ws = package.Workbook.Worksheets.Add("Data");
+
+            // Headers
+            for (int i = 0; i < dataTable.Columns.Count; i++)
+                ws.Cells[1, i + 1].Value = dataTable.Columns[i].ColumnName;
+
+            // Data
+            for (int i = 0; i < dataTable.Rows.Count; i++)
+            {
+                for (int j = 0; j < dataTable.Columns.Count; j++)
+                    ws.Cells[i + 2, j + 1].Value = dataTable.Rows[i][j];
+            }
+
+            // Style headers
+            using (var range = ws.Cells[1, 1, 1, dataTable.Columns.Count])
+            {
+                range.Style.Font.Bold = true;
+                range.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightBlue);
+            }
+
+            ws.Cells.AutoFitColumns();
+            package.SaveAs(new FileInfo(outputPath));
+        }
+
+        public void ExportToJson(DataTable dataTable, string outputPath)
+        {
+            var rows = new List<Dictionary<string, object>>();
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                var dict = new Dictionary<string, object>();
+                foreach (DataColumn col in dataTable.Columns)
+                    dict[col.ColumnName] = row[col] ?? DBNull.Value;
+                rows.Add(dict);
+            }
+
+            string json = JsonConvert.SerializeObject(rows, Formatting.Indented);
+            File.WriteAllText(outputPath, json);
+        }
+
+        public void ExportChartToPng(PlotModel plotModel, string outputPath, int width = 800, int height = 600)
+        {
+            using var stream = File.Create(outputPath);
+            var pngExporter = new OxyPlot.Wpf.PngExporter { Width = width, Height = height };
+            pngExporter.Export(plotModel, stream);
+        }
+
+        #endregion
+
+        #region Time Series Analysis
+
+        public class TimeSeriesResult
+        {
+            public List<double> Values { get; set; } = new();
+            public List<double> Trend { get; set; } = new();
+            public List<double> MovingAverage { get; set; } = new();
+            public List<double> Forecast { get; set; } = new();
+            public double AverageTrend { get; set; }
+            public string Summary { get; set; } = "";
+        }
+
+        public TimeSeriesResult AnalyzeTimeSeries(DataTable dataTable, string columnName, int movingAverageWindow = 3, int forecastSteps = 5)
+        {
+            var values = dataTable.AsEnumerable()
+                .Select(r => r[columnName])
+                .Where(v => double.TryParse(v?.ToString(), out _))
+                .Select(v => Convert.ToDouble(v))
+                .ToList();
+
+            if (values.Count < movingAverageWindow)
+                return new TimeSeriesResult { Summary = "Yeterli veri yok" };
+
+            var result = new TimeSeriesResult { Values = values };
+
+            // Trend Analysis (Linear regression on time)
+            var trend = new List<double>();
+            double avgX = (values.Count - 1) / 2.0;
+            double avgY = values.Average();
+            double numerator = 0, denominator = 0;
+
+            for (int i = 0; i < values.Count; i++)
+            {
+                numerator += (i - avgX) * (values[i] - avgY);
+                denominator += Math.Pow(i - avgX, 2);
+            }
+
+            double slope = numerator / denominator;
+            double intercept = avgY - slope * avgX;
+            result.AverageTrend = slope;
+
+            for (int i = 0; i < values.Count; i++)
+                trend.Add(slope * i + intercept);
+            result.Trend = trend;
+
+            // Moving Average
+            var movingAvg = new List<double>();
+            for (int i = 0; i < values.Count; i++)
+            {
+                if (i < movingAverageWindow - 1)
+                {
+                    movingAvg.Add(double.NaN);
+                }
+                else
+                {
+                    double sum = 0;
+                    for (int j = 0; j < movingAverageWindow; j++)
+                        sum += values[i - j];
+                    movingAvg.Add(sum / movingAverageWindow);
+                }
+            }
+            result.MovingAverage = movingAvg;
+
+            // Simple Forecast (using trend)
+            var forecast = new List<double>();
+            for (int i = 0; i < forecastSteps; i++)
+            {
+                int futureIndex = values.Count + i;
+                forecast.Add(slope * futureIndex + intercept);
+            }
+            result.Forecast = forecast;
+
+            result.Summary = $"Trend: {(slope > 0 ? "Artış" : slope < 0 ? "Azalış" : "Sabit")} ({slope:F4})\n" +
+                            $"Hareketli Ortalama Penceresi: {movingAverageWindow}\n" +
+                            $"Tahmin Adımları: {forecastSteps}";
+
+            return result;
+        }
+
+        public PlotModel CreateTimeSeriesChart(TimeSeriesResult timeSeriesResult, string columnName)
+        {
+            var model = new PlotModel { Title = $"{columnName} - Zaman Serisi Analizi" };
+
+            // Actual values
+            var actualSeries = new LineSeries { Title = "Gerçek Değerler", Color = OxyColors.Blue };
+            for (int i = 0; i < timeSeriesResult.Values.Count; i++)
+                actualSeries.Points.Add(new DataPoint(i, timeSeriesResult.Values[i]));
+            model.Series.Add(actualSeries);
+
+            // Trend
+            var trendSeries = new LineSeries { Title = "Trend", Color = OxyColors.Red, StrokeThickness = 2 };
+            for (int i = 0; i < timeSeriesResult.Trend.Count; i++)
+                trendSeries.Points.Add(new DataPoint(i, timeSeriesResult.Trend[i]));
+            model.Series.Add(trendSeries);
+
+            // Moving Average
+            var maSeries = new LineSeries { Title = "Hareketli Ortalama", Color = OxyColors.Green };
+            for (int i = 0; i < timeSeriesResult.MovingAverage.Count; i++)
+            {
+                if (!double.IsNaN(timeSeriesResult.MovingAverage[i]))
+                    maSeries.Points.Add(new DataPoint(i, timeSeriesResult.MovingAverage[i]));
+            }
+            model.Series.Add(maSeries);
+
+            // Forecast
+            var forecastSeries = new LineSeries { Title = "Tahmin", Color = OxyColors.Orange, LineStyle = LineStyle.Dash };
+            for (int i = 0; i < timeSeriesResult.Forecast.Count; i++)
+                forecastSeries.Points.Add(new DataPoint(timeSeriesResult.Values.Count + i, timeSeriesResult.Forecast[i]));
+            model.Series.Add(forecastSeries);
+
+            return model;
+        }
+
+        #endregion
+
+        #region Heatmap (Correlation Matrix)
+
+        public PlotModel CreateCorrelationHeatmap(DataTable dataTable)
+        {
+            var numericCols = dataTable.Columns.Cast<DataColumn>()
+                .Where(c => dataTable.AsEnumerable()
+                    .All(r => double.TryParse(r[c].ToString(), out _) || string.IsNullOrEmpty(r[c].ToString())))
+                .ToList();
+
+            if (numericCols.Count < 2)
+                return new PlotModel { Title = "Yeterli sayısal sütun yok" };
+
+            var model = new PlotModel { Title = "Korelasyon Isı Haritası" };
+
+            var heatMapSeries = new HeatMapSeries
+            {
+                X0 = 0,
+                X1 = numericCols.Count,
+                Y0 = 0,
+                Y1 = numericCols.Count,
+                Interpolate = false,
+                RenderMethod = HeatMapRenderMethod.Rectangles
+            };
+
+            var data = new double[numericCols.Count, numericCols.Count];
+            for (int i = 0; i < numericCols.Count; i++)
+            {
+                for (int j = 0; j < numericCols.Count; j++)
+                {
+                    double corr = CalculatePearsonCorrelation(dataTable, numericCols[i], numericCols[j]);
+                    data[i, j] = corr;
+                }
+            }
+
+            heatMapSeries.Data = data;
+
+            model.Series.Add(heatMapSeries);
+            model.Axes.Add(new LinearColorAxis { Position = AxisPosition.Right, Palette = OxyPalettes.BlueWhiteRed(256), Minimum = -1, Maximum = 1 });
+
+            var xAxis = new CategoryAxis { Position = AxisPosition.Bottom, Angle = -45 };
+            var yAxis = new CategoryAxis { Position = AxisPosition.Left };
+            
+            foreach (var col in numericCols)
+            {
+                xAxis.Labels.Add(col.ColumnName);
+                yAxis.Labels.Add(col.ColumnName);
+            }
+
+            model.Axes.Add(xAxis);
+            model.Axes.Add(yAxis);
+
+            return model;
+        }
+
+        #endregion
+
+        #region Pivot Table and Grouping
+
+        public DataTable CreatePivotTable(DataTable dataTable, string rowColumn, string columnColumn, string valueColumn, string aggregation = "sum")
+        {
+            var pivot = new DataTable();
+            
+            var rowValues = dataTable.AsEnumerable()
+                .Select(r => r[rowColumn]?.ToString())
+                .Distinct()
+                .OrderBy(x => x)
+                .ToList();
+
+            var colValues = dataTable.AsEnumerable()
+                .Select(r => r[columnColumn]?.ToString())
+                .Distinct()
+                .OrderBy(x => x)
+                .ToList();
+
+            pivot.Columns.Add(rowColumn, typeof(string));
+            foreach (var col in colValues)
+                pivot.Columns.Add(col ?? "NULL", typeof(double));
+
+            foreach (var row in rowValues)
+            {
+                var newRow = pivot.NewRow();
+                newRow[rowColumn] = row;
+
+                foreach (var col in colValues)
+                {
+                    var filteredRows = dataTable.AsEnumerable()
+                        .Where(r => r[rowColumn]?.ToString() == row && r[columnColumn]?.ToString() == col);
+
+                    var values = filteredRows
+                        .Select(r => r[valueColumn])
+                        .Where(v => double.TryParse(v?.ToString(), out _))
+                        .Select(v => Convert.ToDouble(v))
+                        .ToList();
+
+                    if (values.Count > 0)
+                    {
+                        double result = aggregation.ToLower() switch
+                        {
+                            "sum" => values.Sum(),
+                            "avg" => values.Average(),
+                            "count" => values.Count,
+                            "min" => values.Min(),
+                            "max" => values.Max(),
+                            _ => values.Sum()
+                        };
+                        newRow[col ?? "NULL"] = result;
+                    }
+                    else
+                    {
+                        newRow[col ?? "NULL"] = 0;
+                    }
+                }
+
+                pivot.Rows.Add(newRow);
+            }
+
+            return pivot;
+        }
+
+        public DataTable GroupByAndAggregate(DataTable dataTable, string groupColumn, string valueColumn, string aggregation = "sum")
+        {
+            var result = new DataTable();
+            result.Columns.Add(groupColumn, typeof(string));
+            result.Columns.Add($"{aggregation}({valueColumn})", typeof(double));
+
+            var grouped = dataTable.AsEnumerable()
+                .GroupBy(r => r[groupColumn]?.ToString())
+                .OrderBy(g => g.Key);
+
+            foreach (var group in grouped)
+            {
+                var values = group
+                    .Select(r => r[valueColumn])
+                    .Where(v => double.TryParse(v?.ToString(), out _))
+                    .Select(v => Convert.ToDouble(v))
+                    .ToList();
+
+                if (values.Count > 0)
+                {
+                    double aggValue = aggregation.ToLower() switch
+                    {
+                        "sum" => values.Sum(),
+                        "avg" => values.Average(),
+                        "count" => values.Count,
+                        "min" => values.Min(),
+                        "max" => values.Max(),
+                        _ => values.Sum()
+                    };
+
+                    var newRow = result.NewRow();
+                    newRow[groupColumn] = group.Key ?? "NULL";
+                    newRow[$"{aggregation}({valueColumn})"] = aggValue;
+                    result.Rows.Add(newRow);
+                }
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region Data Comparison and Merge
+
+        public class DataComparisonResult
+        {
+            public int Table1Rows { get; set; }
+            public int Table2Rows { get; set; }
+            public int CommonRows { get; set; }
+            public int DifferentRows { get; set; }
+            public List<string> OnlyInTable1 { get; set; } = new();
+            public List<string> OnlyInTable2 { get; set; } = new();
+            public string Summary { get; set; } = "";
+        }
+
+        public DataComparisonResult CompareDataTables(DataTable table1, DataTable table2, string keyColumn)
+        {
+            var result = new DataComparisonResult
+            {
+                Table1Rows = table1.Rows.Count,
+                Table2Rows = table2.Rows.Count
+            };
+
+            if (!table1.Columns.Contains(keyColumn) || !table2.Columns.Contains(keyColumn))
+            {
+                result.Summary = "Key sütunu her iki tabloda da mevcut değil.";
+                return result;
+            }
+
+            var keys1 = table1.AsEnumerable().Select(r => r[keyColumn]?.ToString() ?? "").Where(k => !string.IsNullOrEmpty(k)).ToHashSet();
+            var keys2 = table2.AsEnumerable().Select(r => r[keyColumn]?.ToString() ?? "").Where(k => !string.IsNullOrEmpty(k)).ToHashSet();
+
+            result.OnlyInTable1 = keys1.Except(keys2).ToList();
+            result.OnlyInTable2 = keys2.Except(keys1).ToList();
+            result.CommonRows = keys1.Intersect(keys2).Count();
+            result.DifferentRows = result.OnlyInTable1.Count + result.OnlyInTable2.Count;
+
+            result.Summary = $"📊 Karşılaştırma Sonucu:\n" +
+                            $"• Tablo 1 Satırları: {result.Table1Rows}\n" +
+                            $"• Tablo 2 Satırları: {result.Table2Rows}\n" +
+                            $"• Ortak Satırlar: {result.CommonRows}\n" +
+                            $"• Sadece Tablo 1'de: {result.OnlyInTable1.Count}\n" +
+                            $"• Sadece Tablo 2'de: {result.OnlyInTable2.Count}";
+
+            return result;
+        }
+
+        public DataTable MergeDataTables(DataTable table1, DataTable table2, string keyColumn, string mergeType = "inner")
+        {
+            var result = new DataTable();
+
+            // Add columns from both tables
+            foreach (DataColumn col in table1.Columns)
+                result.Columns.Add($"T1_{col.ColumnName}", col.DataType);
+
+            foreach (DataColumn col in table2.Columns)
+            {
+                if (col.ColumnName != keyColumn)
+                    result.Columns.Add($"T2_{col.ColumnName}", col.DataType);
+            }
+
+            var keys1 = table1.AsEnumerable().ToDictionary(r => r[keyColumn]?.ToString() ?? "", r => r);
+            var keys2 = table2.AsEnumerable().ToDictionary(r => r[keyColumn]?.ToString() ?? "", r => r);
+
+            switch (mergeType.ToLower())
+            {
+                case "inner":
+                    foreach (var key in keys1.Keys.Intersect(keys2.Keys))
+                    {
+                        var newRow = result.NewRow();
+                        foreach (DataColumn col in table1.Columns)
+                            newRow[$"T1_{col.ColumnName}"] = keys1[key][col.ColumnName];
+                        foreach (DataColumn col in table2.Columns)
+                            if (col.ColumnName != keyColumn)
+                                newRow[$"T2_{col.ColumnName}"] = keys2[key][col.ColumnName];
+                        result.Rows.Add(newRow);
+                    }
+                    break;
+
+                case "left":
+                    foreach (var key in keys1.Keys)
+                    {
+                        var newRow = result.NewRow();
+                        foreach (DataColumn col in table1.Columns)
+                            newRow[$"T1_{col.ColumnName}"] = keys1[key][col.ColumnName];
+                        if (keys2.ContainsKey(key))
+                        {
+                            foreach (DataColumn col in table2.Columns)
+                                if (col.ColumnName != keyColumn)
+                                    newRow[$"T2_{col.ColumnName}"] = keys2[key][col.ColumnName];
+                        }
+                        result.Rows.Add(newRow);
+                    }
+                    break;
+
+                case "outer":
+                    var allKeys = keys1.Keys.Union(keys2.Keys);
+                    foreach (var key in allKeys)
+                    {
+                        var newRow = result.NewRow();
+                        if (keys1.ContainsKey(key))
+                        {
+                            foreach (DataColumn col in table1.Columns)
+                                newRow[$"T1_{col.ColumnName}"] = keys1[key][col.ColumnName];
+                        }
+                        if (keys2.ContainsKey(key))
+                        {
+                            foreach (DataColumn col in table2.Columns)
+                                if (col.ColumnName != keyColumn)
+                                    newRow[$"T2_{col.ColumnName}"] = keys2[key][col.ColumnName];
+                        }
+                        result.Rows.Add(newRow);
+                    }
+                    break;
+            }
+
+            return result;
+        }
+
+        #endregion
+
+        #region Pagination
+
+        public DataTable GetPagedData(DataTable dataTable, int pageNumber, int pageSize)
+        {
+            var pagedTable = dataTable.Clone();
+            int startIndex = (pageNumber - 1) * pageSize;
+            int endIndex = Math.Min(startIndex + pageSize, dataTable.Rows.Count);
+
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                pagedTable.ImportRow(dataTable.Rows[i]);
+            }
+
+            return pagedTable;
+        }
+
+        public int GetTotalPages(DataTable dataTable, int pageSize)
+        {
+            return (int)Math.Ceiling((double)dataTable.Rows.Count / pageSize);
+        }
+
+        #endregion
     }
 }

@@ -196,13 +196,7 @@
                                 <iconPacks:PackIconMaterial Kind="ShieldLockOutline" Width="20" Height="20" Margin="0,0,15,0"/>
                                 <TextBlock Text="Şifre Araçları" VerticalAlignment="Center"/>
                             </StackPanel>
-                        </Button>
-                        <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="SpeedTest">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Speedometer" Width="20" Height="20" Margin="0,0,15,0"/>
-                                <TextBlock Text="İnternet Hız Testi" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Button>
+                        </Button>                     
                         <Button Style="{StaticResource MenuButton}" Click="MenuButton_Click" Tag="DataAnalysis">
                             <StackPanel Orientation="Horizontal">
                                 <iconPacks:PackIconMaterial Kind="ChartBar" Width="20" Height="20" Margin="0,0,15,0"/>

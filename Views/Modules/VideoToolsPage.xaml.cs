@@ -167,10 +167,7 @@ namespace SwissKnifeApp.Views.Modules
             }
 
             var mode = (CmbMode.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "Dönüştür";
-            var format = ParseFormat((CmbFormat.SelectedItem as ComboBoxItem)?.Content?.ToString());
-            var codec = ParseCodec((CmbCodec.SelectedItem as ComboBoxItem)?.Content?.ToString());
             var quality = ParseQuality((CmbQuality.SelectedItem as ComboBoxItem)?.Content?.ToString());
-            var resolution = ParseResolution((CmbResolution.SelectedItem as ComboBoxItem)?.Content?.ToString());
 
             _cts?.Cancel();
             _cts = new CancellationTokenSource();
@@ -191,12 +188,27 @@ namespace SwissKnifeApp.Views.Modules
 
             try
             {
-                if (mode.StartsWith("Dön", StringComparison.OrdinalIgnoreCase))
+                if (mode.Contains("Ses", StringComparison.OrdinalIgnoreCase))
                 {
+                    // Ses çıkarma modu
+                    var audioFormat = ParseAudioFormat((CmbFormat.SelectedItem as ComboBoxItem)?.Content?.ToString());
+                    await _service.ExtractAudioAsync(_selectedFiles, TxtOutput.Text!, audioFormat, quality, prog, log, _cts.Token);
+                }
+                else if (mode.StartsWith("Dön", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Video dönüştürme modu
+                    var format = ParseFormat((CmbFormat.SelectedItem as ComboBoxItem)?.Content?.ToString());
+                    var codec = ParseCodec((CmbCodec.SelectedItem as ComboBoxItem)?.Content?.ToString());
+                    var resolution = ParseResolution((CmbResolution.SelectedItem as ComboBoxItem)?.Content?.ToString());
                     await _service.ConvertAsync(_selectedFiles, TxtOutput.Text!, format, codec, quality, resolution, prog, log, _cts.Token);
                 }
                 else
                 {
+                    // Trim/Kırp modu
+                    var format = ParseFormat((CmbFormat.SelectedItem as ComboBoxItem)?.Content?.ToString());
+                    var codec = ParseCodec((CmbCodec.SelectedItem as ComboBoxItem)?.Content?.ToString());
+                    var resolution = ParseResolution((CmbResolution.SelectedItem as ComboBoxItem)?.Content?.ToString());
+                    
                     if (!TryParseTs(TxtStart.Text, out var start) && !string.IsNullOrWhiteSpace(TxtStart.Text))
                     {
                         MessageBox.Show("Başlangıç formatı geçersiz. Örn: 00:15 veya 01:02:03");
@@ -274,6 +286,71 @@ namespace SwissKnifeApp.Views.Modules
                 "VP9" => SwissKnifeApp.Services.VideoCodec.Vp9,
                 "COPY" => SwissKnifeApp.Services.VideoCodec.Copy,
                 _ => SwissKnifeApp.Services.VideoCodec.H264
+            };
+        }
+
+        // Yeni: Mode değişikliğinde UI'yi güncelle
+        private void CmbMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CmbFormat == null || CmbCodec == null || LblFormat == null || LblCodec == null || LblResolution == null || CmbResolution == null) return;
+            
+            var mode = (CmbMode.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "Dönüştür";
+            
+            if (mode.Contains("Ses", StringComparison.OrdinalIgnoreCase))
+            {
+                // Ses çıkarma modu - Format ComboBox'ı ses formatlarıyla doldur
+                CmbFormat.Items.Clear();
+                CmbFormat.Items.Add(new ComboBoxItem { Content = "MP3", IsSelected = true });
+                CmbFormat.Items.Add(new ComboBoxItem { Content = "WAV" });
+                CmbFormat.Items.Add(new ComboBoxItem { Content = "FLAC" });
+                CmbFormat.Items.Add(new ComboBoxItem { Content = "M4A" });
+                CmbFormat.Items.Add(new ComboBoxItem { Content = "OGG" });
+                CmbFormat.Items.Add(new ComboBoxItem { Content = "OPUS" });
+                CmbFormat.Items.Add(new ComboBoxItem { Content = "AAC" });
+                CmbFormat.SelectedIndex = 0;
+                
+                // Codec ve Resolution'ı gizle
+                LblCodec.Visibility = Visibility.Collapsed;
+                CmbCodec.Visibility = Visibility.Collapsed;
+                LblResolution.Visibility = Visibility.Collapsed;
+                CmbResolution.Visibility = Visibility.Collapsed;
+                LblFormat.Text = "Ses Formatı:";
+            }
+            else
+            {
+                // Video modu - Format ComboBox'ı video formatlarıyla doldur
+                CmbFormat.Items.Clear();
+                CmbFormat.Items.Add(new ComboBoxItem { Content = "MP4", IsSelected = true });
+                CmbFormat.Items.Add(new ComboBoxItem { Content = "MKV" });
+                CmbFormat.Items.Add(new ComboBoxItem { Content = "WEBM" });
+                CmbFormat.Items.Add(new ComboBoxItem { Content = "MOV" });
+                CmbFormat.Items.Add(new ComboBoxItem { Content = "TS" });
+                CmbFormat.Items.Add(new ComboBoxItem { Content = "AVI" });
+                CmbFormat.Items.Add(new ComboBoxItem { Content = "FLV" });
+                CmbFormat.SelectedIndex = 0;
+                
+                // Codec ve Resolution'ı göster
+                LblCodec.Visibility = Visibility.Visible;
+                CmbCodec.Visibility = Visibility.Visible;
+                LblResolution.Visibility = Visibility.Visible;
+                CmbResolution.Visibility = Visibility.Visible;
+                LblFormat.Text = "Format:";
+            }
+        }
+
+        // Yeni: Ses formatı parse
+        private static SwissKnifeApp.Services.AudioFormat ParseAudioFormat(string? s)
+        {
+            return (s ?? "MP3").ToUpperInvariant() switch
+            {
+                "MP3" => SwissKnifeApp.Services.AudioFormat.Mp3,
+                "WAV" => SwissKnifeApp.Services.AudioFormat.Wav,
+                "FLAC" => SwissKnifeApp.Services.AudioFormat.Flac,
+                "M4A" => SwissKnifeApp.Services.AudioFormat.M4a,
+                "OGG" => SwissKnifeApp.Services.AudioFormat.Ogg,
+                "OPUS" => SwissKnifeApp.Services.AudioFormat.Opus,
+                "AAC" => SwissKnifeApp.Services.AudioFormat.Aac,
+                _ => SwissKnifeApp.Services.AudioFormat.Mp3
             };
         }
 

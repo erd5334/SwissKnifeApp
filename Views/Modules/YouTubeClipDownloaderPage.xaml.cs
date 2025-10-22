@@ -66,6 +66,13 @@ namespace SwissKnifeApp.Views.Modules
                 TxtOutput.Text = dlg.SelectedPath;
         }
 
+        private void BtnPickCookie_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new OpenFileDialog { Filter = "Cookie Dosyası (*.txt)|*.txt|Tüm Dosyalar|*.*" };
+            if (dlg.ShowDialog() == true)
+                TxtCookie.Text = dlg.FileName;
+        }
+
         private async void BtnStart_Click(object sender, RoutedEventArgs e)
         {
             var url = TxtUrl.Text?.Trim();
@@ -76,12 +83,42 @@ namespace SwissKnifeApp.Views.Modules
                 return;
             }
 
+            // Format seçimi
+            string format = "mp4";
+            string formatExt = "mp4";
+            if (CmbFormat.SelectedIndex > 0)
+            {
+                var selectedFormat = (CmbFormat.SelectedItem as ComboBoxItem)?.Content.ToString();
+                format = selectedFormat?.ToLower() switch
+                {
+                    "mp3" => "mp3",
+                    "wav" => "wav",
+                    "flac" => "flac",
+                    "m4a" => "m4a",
+                    "ogg" => "ogg",
+                    "opus" => "opus",
+                    _ => "mp4"
+                };
+                formatExt = format;
+            }
+
             _cts?.Cancel();
             _cts = new CancellationTokenSource();
             BtnStart.IsEnabled = false;
             BtnCancel.IsEnabled = true;
             TxtLog.Clear();
             PbPart.Value = 0; PbTotal.Value = 0;
+
+            // Cookie dosyası set et (opsiyonel)
+            var cookiePath = TxtCookie.Text?.Trim();
+            if (!string.IsNullOrWhiteSpace(cookiePath) && File.Exists(cookiePath))
+            {
+                _service.CookieFilePath = cookiePath;
+            }
+            else
+            {
+                _service.CookieFilePath = null;
+            }
 
             IProgress<string> log = new Progress<string>(s =>
             {
@@ -105,7 +142,7 @@ namespace SwissKnifeApp.Views.Modules
                         MessageBox.Show("TXT dosyası seçin veya Manuel modunu kullanın.");
                         return;
                     }
-                    await _service.DownloadSegmentsAsync(url!, txtPath!, output!, prog, log, _cts.Token);
+                    await _service.DownloadSegmentsAsync(url!, txtPath!, output!, format, formatExt, prog, log, _cts.Token);
                 }
                 else
                 {
@@ -126,7 +163,7 @@ namespace SwissKnifeApp.Views.Modules
                         MessageBox.Show("Lütfen en az bir geçerli aralık ekleyin.");
                         return;
                     }
-                    await _service.DownloadSegmentsAsync(url!, list, output!, prog, log, _cts.Token);
+                    await _service.DownloadSegmentsAsync(url!, list, output!, format, formatExt, prog, log, _cts.Token);
                 }
                 MessageBox.Show("İndirme tamamlandı.");
             }
@@ -245,6 +282,15 @@ namespace SwissKnifeApp.Views.Modules
                 BtnInstallTools.IsEnabled = true;
                 PbTotal.Value = 0;
             }
+        }
+
+        private void BtnCookieHelp_Click(object sender, RoutedEventArgs e)
+        {
+            var helpWindow = new CookieHelpWindow
+            {
+                Owner = Window.GetWindow(this)
+            };
+            helpWindow.ShowDialog();
         }
     }
 }

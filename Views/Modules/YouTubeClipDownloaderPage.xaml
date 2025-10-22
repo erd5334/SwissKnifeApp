@@ -27,12 +27,32 @@
         <!-- Aralık Girişi Kartı -->
         <Border Grid.Row="1" Background="#e3f2fd" CornerRadius="12" Padding="16" Margin="0,0,0,12" BorderBrush="#90caf9" BorderThickness="1">
             <StackPanel Orientation="Vertical">
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <iconPacks:PackIconMaterial Kind="Timeline" Width="22" Height="22" Foreground="#FFEC2121" Margin="0,0,8,0"/>
-                    <TextBlock Text="Aralık Girişi" FontWeight="Bold"/>
-                    <RadioButton x:Name="RbTxt" Content="TXT" IsChecked="True" Width="50" Margin="16,0,0,0"/>
-                    <RadioButton x:Name="RbManual" Content="Manuel" Margin="8,0,0,0" Width="70"/>
-                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <iconPacks:PackIconMaterial Kind="Timeline" Width="22" Height="22" Foreground="#FFEC2121" Margin="0,0,8,0"/>
+                        <TextBlock Text="Aralık Girişi" FontWeight="Bold"/>
+                        <RadioButton x:Name="RbTxt" Content="TXT" IsChecked="True" Width="50" Margin="16,0,0,0"/>
+                        <RadioButton x:Name="RbManual" Content="Manuel" Margin="8,0,0,0" Width="70"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <iconPacks:PackIconMaterial Kind="FileMusic" Width="20" Height="20" Foreground="#1976d2" Margin="0,0,8,0"/>
+                        <TextBlock Text="Format:" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <ComboBox x:Name="CmbFormat" Width="100" SelectedIndex="0">
+                            <ComboBoxItem Content="Video (MP4)"/>
+                            <ComboBoxItem Content="MP3"/>
+                            <ComboBoxItem Content="WAV"/>
+                            <ComboBoxItem Content="FLAC"/>
+                            <ComboBoxItem Content="M4A"/>
+                            <ComboBoxItem Content="OGG"/>
+                            <ComboBoxItem Content="OPUS"/>
+                        </ComboBox>
+                    </StackPanel>
+                </Grid>
                 <Grid Margin="0,6,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -55,14 +75,14 @@
                             <TextBox x:Name="TxtEnd" Width="100" Height="28" Margin="8,0,0,0" />
                             <Button Margin="8,0,0,0" Padding="12,4" Click="BtnAddInterval_Click" Style="{StaticResource AccentButtonStyle}">
                                 <StackPanel Orientation="Horizontal">
-                                    <iconPacks:PackIconMaterial Kind="Plus" Width="16" Height="16" Foreground="#1976d2" Margin="0,0,4,0"/>
-                                    <TextBlock Text="Ekle"/>
+                                    <iconPacks:PackIconMaterial Kind="Plus" Width="16" Height="16" Foreground="#1976d2" Margin="5,0,4,0"/>
+                                    <TextBlock Text="Ekle" Width="25"/>
                                 </StackPanel>
                             </Button>
                             <Button Margin="8,0,0,0" Padding="12,4" Click="BtnRemoveInterval_Click" Style="{StaticResource AccentButtonStyle}">
                                 <StackPanel Orientation="Horizontal">
-                                    <iconPacks:PackIconMaterial Kind="Delete" Width="16" Height="16" Foreground="#1976d2" Margin="0,0,4,0"/>
-                                    <TextBlock Text="Sil"/>
+                                    <iconPacks:PackIconMaterial Kind="Delete" Width="16" Height="16" Foreground="#1976d2" Margin="5,0,4,0"/>
+                                    <TextBlock Text="Sil" Width="25"/>
                                 </StackPanel>
                             </Button>
                         </StackPanel>
@@ -87,16 +107,36 @@
 
         <!-- Çıkış Klasörü Kartı -->
         <Border Grid.Row="2" Background="#e3f2fd" CornerRadius="12" Padding="16" Margin="0,0,0,12" BorderBrush="#90caf9" BorderThickness="1">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <iconPacks:PackIconMaterial Kind="Folder" Width="22" Height="22" Foreground="#1976d2" Margin="0,0,8,0"/>
-                <TextBlock Text="Çıkış Klasörü" FontWeight="Bold"/>
-                <TextBox x:Name="TxtOutput" Height="28" Width="320" Margin="16,0,0,0"/>
-                <Button Margin="8,0,0,0" Padding="12,4" Click="BtnPickFolder_Click" Style="{StaticResource AccentButtonStyle}">
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="FolderSearch" Width="18" Height="18" Foreground="White" Margin="5,0,6,0"/>
-                        <TextBlock Text="Seç" Width="20"/>
-                    </StackPanel>
-                </Button>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <iconPacks:PackIconMaterial Kind="Folder" Width="22" Height="22" Foreground="#1976d2" Margin="0,0,8,0"/>
+                    <TextBlock Text="Çıkış Klasörü" FontWeight="Bold"/>
+                    <TextBox x:Name="TxtOutput" Height="28" Width="320" Margin="16,0,0,0"/>
+                    <Button Margin="8,0,0,0" Padding="12,4" Click="BtnPickFolder_Click" Style="{StaticResource AccentButtonStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconMaterial Kind="FolderSearch" Width="18" Height="18" Foreground="White" Margin="5,0,6,0"/>
+                            <TextBlock Text="Seç" Width="20"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                
+                <!-- Cookie Dosyası (Opsiyonel) -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,10,0,0">
+                    <iconPacks:PackIconMaterial Kind="Cookie" Width="20" Height="20" Foreground="#ff6f00" Margin="0,0,8,0"/>
+                    <TextBlock Text="Cookie (Opsiyonel)" FontWeight="Bold" Foreground="#555"/>
+                    <TextBox x:Name="TxtCookie" Height="28" Width="250" Margin="16,0,0,0" ToolTip="Giriş yapmış hesabınızın cookie'sini kullanmak için"/>
+                    <Button Margin="8,0,0,0" Padding="12,4" Click="BtnPickCookie_Click" Style="{StaticResource AccentButtonStyle}" Background="#ff9800">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconMaterial Kind="FileSearch" Width="18" Height="18" Foreground="White" Margin="5,0,6,0"/>
+                            <TextBlock Text="Seç" Width="25"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Margin="8,0,0,0" Padding="8,4" Click="BtnCookieHelp_Click" 
+                            ToolTip="Cookie nasıl alınır ve kullanılır?"
+                            Style="{StaticResource AccentButtonStyle}" Background="#2196F3">
+                        <iconPacks:PackIconMaterial Kind="HelpCircle" Width="18" Height="18" Foreground="White"/>
+                    </Button>
+                </StackPanel>
             </StackPanel>
         </Border>
 
@@ -143,7 +183,7 @@
                     <TextBlock Text="Parça İlerleme" FontWeight="Bold"/>
                 </StackPanel>
                 <ProgressBar x:Name="PbPart" Grid.Row="2" Height="18" Margin="0,10,0,0" Minimum="0" Maximum="100"/>
-                <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="0,-485,0,0" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="0,-448,0,0" VerticalAlignment="Center">
                     <iconPacks:PackIconMaterial Kind="TextBox" Width="18" Height="18" Foreground="#1976d2" Margin="0,0,8,0"/>
                     <TextBlock Text="Log" FontWeight="Bold"/>
                 </StackPanel>

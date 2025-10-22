@@ -191,3 +191,5 @@ C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windo
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Türk Çakısı.pdb
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\SwissKnifeApp.genruntimeconfig.cache
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\ref\Türk Çakısı.dll
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\CookieHelpWindow.baml
+C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\obj\Debug\net8.0-windows\Views\Modules\CookieHelpWindow.g.cs

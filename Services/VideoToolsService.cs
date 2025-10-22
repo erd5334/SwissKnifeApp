@@ -98,6 +98,58 @@ namespace SwissKnifeApp.Services
             }
         }
 
+        // Yeni: Videodan ses çıkarma metodu
+        public async Task ExtractAudioAsync(
+            IList<string> inputFiles,
+            string outputFolder,
+            AudioFormat audioFormat,
+            VideoQuality quality,
+            IProgress<VideoJobProgress>? progress = null,
+            IProgress<string>? log = null,
+            CancellationToken cancellationToken = default)
+        {
+            if (inputFiles is null || inputFiles.Count == 0)
+                throw new ArgumentException("En az bir dosya seçin", nameof(inputFiles));
+
+            Directory.CreateDirectory(outputFolder);
+            await EnsureFfmpegAsync(log, cancellationToken);
+
+            for (int i = 0; i < inputFiles.Count; i++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                var input = inputFiles[i];
+                if (!File.Exists(input))
+                    throw new FileNotFoundException("Girdi dosyası bulunamadı", input);
+
+                var outPath = Path.Combine(outputFolder, Path.GetFileNameWithoutExtension(input) + "." + GetAudioExtension(audioFormat));
+
+                await ExtractAudioInternalAsync(
+                    input,
+                    outPath,
+                    audioFormat,
+                    quality,
+                    fileProgress: new Progress<double>(p =>
+                    {
+                        progress?.Report(new VideoJobProgress
+                        {
+                            TotalFiles = inputFiles.Count,
+                            CurrentFileIndex = i + 1,
+                            CurrentFilePercent = p
+                        });
+                    }),
+                    log: log,
+                    cancellationToken);
+
+                progress?.Report(new VideoJobProgress
+                {
+                    TotalFiles = inputFiles.Count,
+                    CurrentFileIndex = i + 1,
+                    CurrentFilePercent = 100,
+                    Message = $"{Path.GetFileName(outPath)} tamamlandı"
+                });
+            }
+        }
+
         public async Task TrimCropAsync(
             string inputFile,
             string outputFile,
@@ -352,6 +404,112 @@ namespace SwissKnifeApp.Services
             }
         }
 
+        // Yeni: Ses çıkarma için codec ve kalite ayarları
+        private static void AppendAudioExtractionArgs(StringBuilder args, AudioFormat audioFormat, VideoQuality quality)
+        {
+            args.Append("-vn "); // Video stream'i atla
+            
+            switch (audioFormat)
+            {
+                case AudioFormat.Mp3:
+                    args.Append("-c:a libmp3lame ");
+                    args.Append(GetAudioBitrate(quality, "mp3"));
+                    break;
+                case AudioFormat.Wav:
+                    args.Append("-c:a pcm_s16le "); // 16-bit PCM
+                    break;
+                case AudioFormat.Flac:
+                    args.Append("-c:a flac ");
+                    args.Append(GetFlacCompression(quality));
+                    break;
+                case AudioFormat.M4a:
+                    args.Append("-c:a aac ");
+                    args.Append(GetAudioBitrate(quality, "aac"));
+                    break;
+                case AudioFormat.Ogg:
+                    args.Append("-c:a libvorbis ");
+                    args.Append(GetAudioBitrate(quality, "vorbis"));
+                    break;
+                case AudioFormat.Opus:
+                    args.Append("-c:a libopus ");
+                    args.Append(GetAudioBitrate(quality, "opus"));
+                    break;
+                case AudioFormat.Aac:
+                    args.Append("-c:a aac ");
+                    args.Append(GetAudioBitrate(quality, "aac"));
+                    break;
+                default:
+                    args.Append("-c:a libmp3lame -b:a 192k ");
+                    break;
+            }
+        }
+
+        private static string GetAudioBitrate(VideoQuality quality, string codec)
+        {
+            if (quality == VideoQuality.Lossless)
+            {
+                return codec switch
+                {
+                    "mp3" => "-b:a 320k ",
+                    "aac" => "-b:a 256k ",
+                    "vorbis" => "-q:a 10 ",
+                    "opus" => "-b:a 256k ",
+                    _ => "-b:a 320k "
+                };
+            }
+
+            return codec switch
+            {
+                "mp3" => quality switch
+                {
+                    VideoQuality.Highest => "-b:a 320k ",
+                    VideoQuality.High => "-b:a 256k ",
+                    VideoQuality.Medium => "-b:a 192k ",
+                    VideoQuality.Low => "-b:a 128k ",
+                    _ => "-b:a 192k "
+                },
+                "aac" => quality switch
+                {
+                    VideoQuality.Highest => "-b:a 256k ",
+                    VideoQuality.High => "-b:a 192k ",
+                    VideoQuality.Medium => "-b:a 128k ",
+                    VideoQuality.Low => "-b:a 96k ",
+                    _ => "-b:a 192k "
+                },
+                "vorbis" => quality switch
+                {
+                    VideoQuality.Highest => "-q:a 10 ",
+                    VideoQuality.High => "-q:a 8 ",
+                    VideoQuality.Medium => "-q:a 6 ",
+                    VideoQuality.Low => "-q:a 4 ",
+                    _ => "-q:a 6 "
+                },
+                "opus" => quality switch
+                {
+                    VideoQuality.Highest => "-b:a 256k ",
+                    VideoQuality.High => "-b:a 192k ",
+                    VideoQuality.Medium => "-b:a 128k ",
+                    VideoQuality.Low => "-b:a 96k ",
+                    _ => "-b:a 160k "
+                },
+                _ => "-b:a 192k "
+            };
+        }
+
+        private static string GetFlacCompression(VideoQuality quality)
+        {
+            int level = quality switch
+            {
+                VideoQuality.Highest => 8,
+                VideoQuality.High => 5,
+                VideoQuality.Medium => 5,
+                VideoQuality.Low => 0,
+                VideoQuality.Lossless => 8,
+                _ => 5
+            };
+            return $"-compression_level {level} ";
+        }
+
         private static string GetExtension(VideoFormat format) => format switch
         {
             VideoFormat.Mp4 => "mp4",
@@ -362,6 +520,19 @@ namespace SwissKnifeApp.Services
             VideoFormat.Avi => "avi",
             VideoFormat.Flv => "flv",
             _ => "mp4"
+        };
+
+        // Yeni: Ses formatı uzantısı
+        private static string GetAudioExtension(AudioFormat format) => format switch
+        {
+            AudioFormat.Mp3 => "mp3",
+            AudioFormat.Wav => "wav",
+            AudioFormat.Flac => "flac",
+            AudioFormat.M4a => "m4a",
+            AudioFormat.Ogg => "ogg",
+            AudioFormat.Opus => "opus",
+            AudioFormat.Aac => "aac",
+            _ => "mp3"
         };
 
         private static string GetScaleExpression(ResolutionPreset preset)
@@ -431,6 +602,47 @@ namespace SwissKnifeApp.Services
             catch { }
 
             return null;
+        }
+
+        // Yeni: Ses çıkarma internal metodu
+        private async Task ExtractAudioInternalAsync(
+            string input,
+            string output,
+            AudioFormat audioFormat,
+            VideoQuality quality,
+            IProgress<double>? fileProgress,
+            IProgress<string>? log,
+            CancellationToken ct)
+        {
+            double? duration = await ProbeDurationSecondsAsync(input, ct);
+
+            var args = new StringBuilder();
+            args.Append("-y ");
+            args.Append($"-i \"{input}\" ");
+            
+            // Ses çıkarma için codec ve parametreler
+            AppendAudioExtractionArgs(args, audioFormat, quality);
+            
+            args.Append($"\"{output}\"");
+
+            var finalArgs = args.ToString();
+            log?.Report($"ffmpeg {finalArgs}");
+
+            await RunProcessAsync(
+                fileName: _ffmpegPath!,
+                arguments: finalArgs,
+                workingDir: Path.GetDirectoryName(output)!,
+                onStdOut: line => { if (!string.IsNullOrWhiteSpace(line)) log?.Report(line); },
+                onStdErr: line =>
+                {
+                    if (!string.IsNullOrWhiteSpace(line))
+                    {
+                        log?.Report(line);
+                        var p = TryParseFfmpegProgress(line, duration);
+                        if (p.HasValue) fileProgress?.Report(Math.Max(0, Math.Min(100, p.Value)));
+                    }
+                },
+                cancellationToken: ct);
         }
 
         private async Task EnsureFfmpegAsync(IProgress<string>? log, CancellationToken ct)

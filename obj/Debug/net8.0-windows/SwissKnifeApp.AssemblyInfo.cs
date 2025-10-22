@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Türk Çakısı")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a7fed877647e1a826aff7edafaf3ae5a275c2622")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d9f10ee8b6f1c2ef88754b5b7e276460ce8d0714")]
 [assembly: System.Reflection.AssemblyProductAttribute("Türk Çakısı")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Türk Çakısı")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SwissKnifeApp.Services
 {
-    public enum AudioFormat { Mp3, Aac, Wav, Flac, Opus }
+    public enum AudioFormat { Mp3, Aac, Wav, Flac, Opus, M4a, Ogg }
     public enum QualityPreset { Highest, High, Medium, Low, Lossless }
 
     public class AudioJobProgress
