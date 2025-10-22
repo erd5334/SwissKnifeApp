@@ -632,6 +632,6 @@ Bu proje [MIT Lisansı](LICENSE) altında lisanslanmıştır.
 ⭐ Beğendiyseniz yıldız vermeyi unutmayın!
 
 ## 📷 Arayüz Görünümü
-[Uygulama Ekran Görüntüsü](Türk Çakısı 000.png)
+![Uygulama Ekran Görüntüsü] (Türk Çakısı 000.png)
 
 ---
