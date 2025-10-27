@@ -8,6 +8,9 @@
     <Compile Update="Views\Modules\DataAnalysisPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Modules\FileCopyPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\Modules\ImageConverterPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

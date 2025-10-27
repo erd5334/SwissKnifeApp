@@ -3,7 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-      Title="Dosya Yöneticisi">
+    xmlns:vm="clr-namespace:SwissKnifeApp.ViewModels"
+    Title="Dosya Yöneticisi">
 
     <!-- Page-level accent override (FileManager = Deep Orange) -->
     <Page.Resources>
@@ -422,7 +423,7 @@
                         </Button>
                     </StackPanel>
                 </Grid>
-            </TabItem>
+            </TabItem>       
 
         </TabControl>
     </Grid>

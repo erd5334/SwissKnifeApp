@@ -13,7 +13,9 @@ namespace SwissKnifeApp.Views.Modules
 {
     public partial class FileManagerPage : Page
     {
-        private readonly FileManagerService _service = new();
+    private readonly FileManagerService _service = new();
+    private readonly CopyService _copyService = new();
+    private System.Threading.CancellationTokenSource? _copyCts;
         private string? _file1Content;
         private string? _file2Content;
         private ObservableCollection<FileRenameItem> _files = new();
@@ -23,7 +25,9 @@ namespace SwissKnifeApp.Views.Modules
             InitializeComponent();
             DgFiles.ItemsSource = _files;
             TxtCustomTemplate.Text = "{name}_{date}";
+            // ...existing code...
         }
+        
         // =============================
         // DOSYA ŞİFRELEME/ÇÖZME EVENT HANDLER STUB'LARI
         // =============================

@@ -82,6 +82,9 @@ namespace SwissKnifeApp
                     case "FileManager":
                         MainFrame.Navigate(new FileManagerPage());
                         break;
+                    case "FileCopy":
+                        MainFrame.Navigate(new FileCopyPage());
+                        break;
                     case "DataAnalysis":
                         MainFrame.Navigate(new DataAnalysisPage());
                         break;
