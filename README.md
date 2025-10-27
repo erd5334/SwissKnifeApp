@@ -258,31 +258,18 @@ Not: Bu araçlar portable olarak uygulama dizininde `Tools/` klasöründe veya s
 ### 2. PasswordToolsPage
 **Dosya**: `Views/Modules/PasswordToolsPage.xaml`
 - Şifre üretici
-- Hash hesaplama
-- AES şifreleme/çözme
 
 ### 3. QrBarcodeToolsPage
 **Dosya**: `Views/Modules/QrBarcodeToolsPage.xaml`
-- QR kod oluşturma (6 farklı tip)
-- Barkod oluşturma (3 format)
-- QR/Barkod okuma
-
-### 4. ImageConverterPage
-**Dosya**: `Views/Modules/ImageConverterPage.xaml`
-- 7 format desteği (JPG, PNG, BMP, GIF, WEBP, ICO, SVG)
 - Toplu dönüşüm
 - Gelişmiş filtreleme
+
 - Sürükle-bırak özelliği
 
 ### 5. PdfOperationsPage
 **Dosya**: `Views/Modules/PdfOperationsPage.xaml`
 - PDF birleştirme
 - PDF bölme
-- Görüntüden PDF
-
-### 6. UnitConverterPage
-**Dosya**: `Views/Modules/UnitConverterPage.xaml`
-- 5 farklı birim kategorisi
 - Çift yönlü dönüşüm
 - Gerçek zamanlı hesaplama
 
@@ -455,8 +442,12 @@ Not: Bu araçlar portable olarak uygulama dizininde `Tools/` klasöründe veya s
 
 ### Fotoğraf Kolaj Yapıcı
 ![Fotoğraf Kolaj Yapıcı](gorsel/Gorsel-007.png)
+│   ├── CopyItem.cs           # Dosya kopyalama işlemi modeli
+│   ├── FileListItem.cs       # Dosya listesi ve seçim modeli
+│   ├── AppConfig.cs          # Uygulama ayarları modeli
 
 ### QR Kod ve Barcode Oluşturucu
+│   └── FileCopyViewModel.cs  # Dosya kopyalama modülü ViewModel'i
 ![QR Kod ve Barcode Oluşturucu](gorsel/Gorsel-008.png)
 
 ### Renk Seçici
@@ -471,6 +462,7 @@ Not: Bu araçlar portable olarak uygulama dizininde `Tools/` klasöründe veya s
 ### Pano Geçmişi
 ![Pano Geçmişi](gorsel/Gorsel-012.png)
 
+│       ├── FileCopyPage.xaml         # Dosya kopyalama modülü
 ### Dosya Yöneticisi
 ![Dosya Yöneticisi](gorsel/Gorsel-013.png)
 
@@ -481,7 +473,15 @@ Not: Bu araçlar portable olarak uygulama dizininde `Tools/` klasöründe veya s
 ### Şifre Gücü Analizi
 ![Şifre Gücü Analizi](gorsel/Gorsel-015.png)
 ### Hash Üretici
+│   ├── CopyService.cs               # Dosya kopyalama servisi
+│   ├── ICopyService.cs              # Dosya kopyalama servis arayüzü
+│   ├── FolderDialogService.cs       # Klasör seçici servis
+│   ├── IFolderDialogService.cs      # Klasör seçici servis arayüzü
+│   ├── ConfigService.cs             # Ayar kaydetme/yükleme servisi
+│   ├── IConfigService.cs            # Ayar servis arayüzü
 ![Hash Üretici](gorsel/Gorsel-016.png)
+│   ├── RelayCommand.cs              # MVVM komut sınıfı
+│   ├── Converters.cs                # WPF veri bağlama converter'ları
 ### AES Şifreleme ve Çözme
 ![AES Şifreleme ve Çözme](gorsel/Gorsel-017.png)
 ### Parola Yöneticisi
