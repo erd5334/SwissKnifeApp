@@ -201,12 +201,27 @@ namespace SwissKnifeApp.Services
 
                         case RenameMode.CustomTemplate:
                             var originalNameNoExt = Path.GetFileNameWithoutExtension(file.OriginalName);
-                            newName = (options.Template ?? "{name}_{date}_{n}")
+                            var rawTemplate = options.Template ?? "{name}_{date}_{n}";
+                            var baseNumber = options.StartNumber + counter;
+                            // Değişkenleri sırayla işle (name/date/ext)
+                            var processed = rawTemplate
                                 .Replace("{name}", originalNameNoExt)
                                 .Replace("{date}", options.DateNow.ToString("yyyy-MM-dd"))
-                                .Replace("{n}", counter.ToString("D3"))
                                 .Replace("{ext}", file.Extension.TrimStart('.'));
-                            newName += file.Extension;
+                            // {n}, {n1}, {n2}, {n3} ...
+                            processed = System.Text.RegularExpressions.Regex.Replace(processed, @"\{n(\d*)\}", m =>
+                            {
+                                var suf = m.Groups[1].Value; // "", "1", "2" ...
+                                if (string.IsNullOrEmpty(suf))
+                                    return baseNumber.ToString(); // {n} => 1,2,3
+                                if (int.TryParse(suf, out var s))
+                                {
+                                    var width = s + 1; // n1=>width2, n2=>width3
+                                    return baseNumber.ToString("D" + width);
+                                }
+                                return baseNumber.ToString();
+                            });
+                            newName = processed + file.Extension;
                             counter++;
                             break;
                     }

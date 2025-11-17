@@ -9,6 +9,8 @@
 	  <Title>Türk Çakısı</Title>
 	  <AssemblyName>Türk Çakısı</AssemblyName>
     <ApplicationIcon>Resources\Icons\icon.ico</ApplicationIcon>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

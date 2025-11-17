@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 using SwissKnifeApp.Services;
 using SwissKnifeApp.Models;
 
@@ -19,6 +21,8 @@ namespace SwissKnifeApp.Views.Modules
         private string? _file1Content;
         private string? _file2Content;
         private ObservableCollection<FileRenameItem> _files = new();
+        private Point _dragStartPoint;
+        private bool _isDragging = false;
 
         public FileManagerPage()
         {
@@ -328,7 +332,9 @@ namespace SwissKnifeApp.Views.Modules
             try
             {
                 var files = Directory.GetFiles(TxtFolderPath.Text, filter, searchOption);
-                foreach (var file in files)
+                var ordered = files
+                    .OrderBy(f => NaturalSortKey(Path.GetFileName(f))); // Doğal (insan) sıralama
+                foreach (var file in ordered)
                 {
                     _files.Add(new FileRenameItem
                     {
@@ -346,6 +352,111 @@ namespace SwissKnifeApp.Views.Modules
             {
                 MessageBox.Show($"Dosyalar yüklenirken hata oluştu: {ex.Message}", "Hata", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private static string NaturalSortKey(string input)
+        {
+            return Regex.Replace(input, "\\d+", m => m.Value.PadLeft(10, '0'));
+        }
+
+        private void BtnSelectAll_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in _files) item.IsSelected = true;
+            DgFiles.Items.Refresh();
+        }
+
+        private void BtnClearSelection_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var item in _files) item.IsSelected = false;
+            DgFiles.Items.Refresh();
+        }
+
+        private void BtnMoveUp_Click(object sender, RoutedEventArgs e)
+        {
+            if (DgFiles.SelectedItem is FileRenameItem item)
+            {
+                var index = _files.IndexOf(item);
+                if (index > 0)
+                {
+                    _files.Move(index, index - 1);
+                }
+            }
+        }
+
+        private void BtnMoveDown_Click(object sender, RoutedEventArgs e)
+        {
+            if (DgFiles.SelectedItem is FileRenameItem item)
+            {
+                var index = _files.IndexOf(item);
+                if (index < _files.Count - 1 && index >= 0)
+                {
+                    _files.Move(index, index + 1);
+                }
+            }
+        }
+
+        // Drag & Drop reorder handlers
+        private void DgFiles_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _dragStartPoint = e.GetPosition(null);
+            _isDragging = false;
+        }
+
+        private void DgFiles_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && !_isDragging)
+            {
+                var position = e.GetPosition(null);
+                if (Math.Abs(position.X - _dragStartPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                    Math.Abs(position.Y - _dragStartPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
+                {
+                    var dataGrid = (DataGrid)sender;
+                    var row = FindAncestor<DataGridRow>((DependencyObject)e.OriginalSource);
+                    if (row != null)
+                    {
+                        _isDragging = true;
+                        DragDrop.DoDragDrop(row, row.Item, DragDropEffects.Move);
+                    }
+                }
+            }
+        }
+
+        private void DgFiles_DragOver(object sender, DragEventArgs e)
+        {
+            e.Effects = DragDropEffects.Move;
+            e.Handled = true;
+        }
+
+        private void DgFiles_Drop(object sender, DragEventArgs e)
+        {
+            if (!_isDragging) return;
+            _isDragging = false;
+            var sourceItem = e.Data.GetData(typeof(FileRenameItem)) as FileRenameItem;
+            if (sourceItem == null) return;
+
+            var targetRow = FindAncestor<DataGridRow>((DependencyObject)e.OriginalSource);
+            if (targetRow == null) return;
+            var targetItem = targetRow.Item as FileRenameItem;
+            if (targetItem == null || ReferenceEquals(sourceItem, targetItem)) return;
+
+            var sourceIndex = _files.IndexOf(sourceItem);
+            var targetIndex = _files.IndexOf(targetItem);
+            if (sourceIndex >= 0 && targetIndex >= 0 && sourceIndex != targetIndex)
+            {
+                _files.Move(sourceIndex, targetIndex);
+                DgFiles.SelectedItem = sourceItem;
+            }
+        }
+
+        private static T? FindAncestor<T>(DependencyObject current) where T : DependencyObject
+        {
+            while (current != null)
+            {
+                if (current is T match)
+                    return match;
+                current = VisualTreeHelper.GetParent(current);
+            }
+            return null;
         }
 
         private void CmbRenameMode_SelectionChanged(object sender, SelectionChangedEventArgs e)

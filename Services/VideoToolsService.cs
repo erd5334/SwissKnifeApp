@@ -65,6 +65,7 @@ namespace SwissKnifeApp.Services
                     throw new FileNotFoundException("Girdi dosyası bulunamadı", input);
 
                 var outPath = Path.Combine(outputFolder, Path.GetFileNameWithoutExtension(input) + "." + GetExtension(format));
+                outPath = MakeUniquePath(outPath);
 
                 await ConvertOrTrimCropInternalAsync(
                     input,
@@ -168,7 +169,31 @@ namespace SwissKnifeApp.Services
             Directory.CreateDirectory(Path.GetDirectoryName(outputFile)!);
             await EnsureFfmpegAsync(log, cancellationToken);
 
-            await ConvertOrTrimCropInternalAsync(inputFile, outputFile, format, codec, quality, resolution, start, end, crop, fileProgress, log, cancellationToken);
+            // Çıkış yolunun üzerine yazmamak için benzersiz hale getir
+            var uniqueOutput = MakeUniquePath(outputFile);
+
+            await ConvertOrTrimCropInternalAsync(inputFile, uniqueOutput, format, codec, quality, resolution, start, end, crop, fileProgress, log, cancellationToken);
+            if (!string.Equals(uniqueOutput, outputFile, StringComparison.OrdinalIgnoreCase))
+            {
+                log?.Report($"Var olan dosya üzerine yazılmadı, farklı adla kaydedildi: {Path.GetFileName(uniqueOutput)}");
+            }
+        }
+
+        public static string MakeUniquePath(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path)) return path;
+            var dir = Path.GetDirectoryName(path);
+            var name = Path.GetFileNameWithoutExtension(path);
+            var ext = Path.GetExtension(path);
+            if (string.IsNullOrEmpty(dir)) return path;
+            var candidate = path;
+            int i = 1;
+            while (File.Exists(candidate))
+            {
+                candidate = Path.Combine(dir!, $"{name} ({i}){ext}");
+                i++;
+            }
+            return candidate;
         }
 
         private async Task ConvertOrTrimCropInternalAsync(

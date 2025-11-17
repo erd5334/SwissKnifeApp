@@ -320,12 +320,45 @@
                     <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,12">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/> <!-- Header -->
+                                <RowDefinition Height="Auto"/> <!-- Controls -->
+                                <RowDefinition Height="*"/>   <!-- DataGrid -->
                             </Grid.RowDefinitions>
-                            <TextBlock Text="Dosya Listesi" Style="{StaticResource SectionHeader}"/>
-                            <DataGrid x:Name="DgFiles" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" 
-                                      SelectionMode="Extended" IsReadOnly="True">
+                            <TextBlock Grid.Row="0" Text="Dosya Listesi" Style="{StaticResource SectionHeader}"/>
+                            <!-- Toplu seçim ve sıralama kontrol butonları -->
+                            <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,6,0,6">
+                                <Button Style="{StaticResource OutlineButtonStyle}" Padding="8,4" Click="BtnSelectAll_Click" Margin="0,0,8,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="CheckboxMarked" Width="16" Height="16" Margin="4,0,6,0"/>
+                                        <TextBlock Text="Hepsini Seç" Width="80"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource OutlineButtonStyle}" Padding="8,4" Click="BtnClearSelection_Click" Margin="0,0,16,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="CloseBox" Width="16" Height="16" Margin="4,0,6,0"/>
+                                        <TextBlock Text="Seçimleri Kaldır" Width="110"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource AccentButtonStyle}" Padding="8,4" Click="BtnMoveUp_Click" Margin="0,0,8,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="ArrowUpBold" Width="16" Height="16" Margin="4,0,6,0"/>
+                                        <TextBlock Text="Yukarı" Width="50"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Style="{StaticResource AccentButtonStyle}" Padding="8,4" Click="BtnMoveDown_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="ArrowDownBold" Width="16" Height="16" Margin="4,0,6,0"/>
+                                        <TextBlock Text="Aşağı" Width="50"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                            <DataGrid x:Name="DgFiles" Grid.Row="2" AutoGenerateColumns="False" CanUserAddRows="False" 
+                                      SelectionMode="Extended" IsReadOnly="True"
+                                      AllowDrop="True"
+                                      PreviewMouseLeftButtonDown="DgFiles_PreviewMouseLeftButtonDown"
+                                      MouseMove="DgFiles_MouseMove"
+                                      DragOver="DgFiles_DragOver"
+                                      Drop="DgFiles_Drop">
                                 <DataGrid.Columns>
                                     <DataGridCheckBoxColumn Header="✓" Binding="{Binding IsSelected}" Width="40"/>
                                     <DataGridTextColumn Header="Mevcut Dosya Adı" Binding="{Binding OriginalName}" Width="*"/>

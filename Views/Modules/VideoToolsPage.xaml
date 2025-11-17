@@ -4,8 +4,17 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:local="clr-namespace:SwissKnifeApp.Views.Modules"
     mc:Ignorable="d"
     Title="Video Araçları">
+    <Page.InputBindings>
+        <KeyBinding Command="{x:Static local:VideoToolsPage.PlayCommand}" Key="Z"/>
+        <KeyBinding Command="{x:Static local:VideoToolsPage.PauseCommand}" Key="X"/>
+        <KeyBinding Command="{x:Static local:VideoToolsPage.SetStartCommand}" Key="C"/>
+        <KeyBinding Command="{x:Static local:VideoToolsPage.SetEndCommand}"  Key="V"/>
+        <!--<KeyBinding Command="{x:Static local:VideoToolsPage.SetEndCommand}" Modifiers="Control" Key="E"/>-->
+        <KeyBinding Command="{x:Static local:VideoToolsPage.StartProcessCommand}" Key="B"/>
+    </Page.InputBindings>
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -39,10 +48,25 @@
                     </Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
-                    <TextBlock x:Name="TxtCurrentTime" Text="00:00" FontWeight="Bold" Foreground="#e65100" Margin="0,0,8,0"/>
+                    <TextBlock x:Name="TxtCurrentTime" Text="00:00.000" FontWeight="Bold" Foreground="#e65100" Margin="0,0,8,0"/>
                     <Slider x:Name="SliderPosition" Minimum="0" Maximum="100" Value="0" Height="24" Width="220" ToolTip="Zaman Çubuğu"/>
-                    <TextBlock x:Name="TxtTotalTime" Text="00:00" FontWeight="Bold" Foreground="#e65100" Margin="8,0,0,0"/>
+                    <TextBlock x:Name="TxtTotalTime" Text="00:00.000" FontWeight="Bold" Foreground="#e65100" Margin="8,0,0,0"/>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
+                    <Button Padding="10,6" Click="BtnSetStart_Click" ToolTip="Başlangıç zamanını yakala (Ctrl+B)" Style="{StaticResource AccentButtonStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconMaterial Kind="ClockStart" Width="18" Height="18" Foreground="#e65100" Margin="0,0,6,0"/>
+                            <TextBlock Text="Başlangıç" FontSize="12"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Padding="10,6" Margin="8,0,0,0" Click="BtnSetEnd_Click" ToolTip="Bitiş zamanını yakala (Ctrl+E)" Style="{StaticResource AccentButtonStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconMaterial Kind="ClockEnd" Width="18" Height="18" Foreground="#e65100" Margin="0,0,6,0"/>
+                            <TextBlock Text="Bitiş" FontSize="12"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                
             </StackPanel>
         </Border>
 

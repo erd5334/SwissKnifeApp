@@ -7,11 +7,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using SwissKnifeApp.Services;
 
 namespace SwissKnifeApp.Views.Modules
 {
     public partial class VideoToolsPage : Page
     {
+        // Kısayol komutları
+        public static readonly RoutedUICommand PlayCommand = new RoutedUICommand("Oynat", nameof(PlayCommand), typeof(VideoToolsPage));
+        public static readonly RoutedUICommand PauseCommand = new RoutedUICommand("Duraklat", nameof(PauseCommand), typeof(VideoToolsPage));
+        public static readonly RoutedUICommand SetStartCommand = new RoutedUICommand("Başlangıç", nameof(SetStartCommand), typeof(VideoToolsPage));
+        public static readonly RoutedUICommand SetEndCommand = new RoutedUICommand("Bitiş", nameof(SetEndCommand), typeof(VideoToolsPage));
+        public static readonly RoutedUICommand StartProcessCommand = new RoutedUICommand("Başlat", nameof(StartProcessCommand), typeof(VideoToolsPage));
         private readonly SwissKnifeApp.Services.VideoToolsService _service = new SwissKnifeApp.Services.VideoToolsService();
         private CancellationTokenSource? _cts;
         private readonly List<string> _selectedFiles = new();
@@ -30,6 +38,13 @@ namespace SwissKnifeApp.Views.Modules
             VideoPlayer.MediaEnded += VideoPlayer_MediaEnded;
             SliderPosition.AddHandler(Slider.PreviewMouseDownEvent, new System.Windows.Input.MouseButtonEventHandler(Slider_MouseDown), true);
             SliderPosition.AddHandler(Slider.PreviewMouseUpEvent, new System.Windows.Input.MouseButtonEventHandler(Slider_MouseUp), true);
+
+            // Komut bağlamaları
+            CommandBindings.Add(new CommandBinding(PlayCommand, (s, e) => BtnPlay_Click(s, e)));
+            CommandBindings.Add(new CommandBinding(PauseCommand, (s, e) => BtnPause_Click(s, e)));
+            CommandBindings.Add(new CommandBinding(SetStartCommand, (s, e) => BtnSetStart_Click(s, e)));
+            CommandBindings.Add(new CommandBinding(SetEndCommand, (s, e) => BtnSetEnd_Click(s, e)));
+            CommandBindings.Add(new CommandBinding(StartProcessCommand, (s, e) => BtnStart_Click(s, e)));
         }
 
         private void BtnPickFiles_Click(object sender, RoutedEventArgs e)
@@ -107,7 +122,7 @@ namespace SwissKnifeApp.Views.Modules
             SliderPosition.Maximum = VideoPlayer.NaturalDuration.TimeSpan.TotalSeconds;
             SliderPosition.Value = 0;
             TxtTotalTime.Text = FormatTime(VideoPlayer.NaturalDuration.TimeSpan);
-            TxtCurrentTime.Text = "00:00";
+            TxtCurrentTime.Text = "00:00.000";
         }
 
         private void VideoPlayer_MediaEnded(object? sender, RoutedEventArgs e)
@@ -126,10 +141,29 @@ namespace SwissKnifeApp.Views.Modules
         }
         private string FormatTime(TimeSpan ts)
         {
+            // Salise (milisaniye) dahil format: mm:ss.fff
             if (ts.TotalHours >= 1)
-                return ts.ToString(@"hh\:mm\:ss");
+                return ts.ToString(@"hh\:mm\:ss\.fff");
             else
-                return ts.ToString(@"mm\:ss");
+                return ts.ToString(@"mm\:ss\.fff");
+        }
+
+        
+
+        private void BtnSetStart_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isMediaOpened)
+            {
+                TxtStart.Text = FormatTime(VideoPlayer.Position);
+            }
+        }
+
+        private void BtnSetEnd_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isMediaOpened)
+            {
+                TxtEnd.Text = FormatTime(VideoPlayer.Position);
+            }
         }
 
         private void Slider_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -208,7 +242,7 @@ namespace SwissKnifeApp.Views.Modules
                     var format = ParseFormat((CmbFormat.SelectedItem as ComboBoxItem)?.Content?.ToString());
                     var codec = ParseCodec((CmbCodec.SelectedItem as ComboBoxItem)?.Content?.ToString());
                     var resolution = ParseResolution((CmbResolution.SelectedItem as ComboBoxItem)?.Content?.ToString());
-                    
+
                     if (!TryParseTs(TxtStart.Text, out var start) && !string.IsNullOrWhiteSpace(TxtStart.Text))
                     {
                         MessageBox.Show("Başlangıç formatı geçersiz. Örn: 00:15 veya 01:02:03");
@@ -225,10 +259,14 @@ namespace SwissKnifeApp.Views.Modules
                         return;
                     }
 
-                    if (!SwissKnifeApp.Services.VideoToolsService.TryParseCrop(TxtCrop.Text, out var crop))
+                    CropRect? crop = null;
+                    if (!string.IsNullOrWhiteSpace(TxtCrop.Text))
                     {
-                        MessageBox.Show("Kırpma formatı geçersiz. Örn: 100,200,1280,720");
-                        return;
+                        if (!VideoToolsService.TryParseCrop(TxtCrop.Text, out crop))
+                        {
+                            MessageBox.Show("Kırpma formatı geçersiz. Örn: 100,200,1280,720");
+                            return;
+                        }
                     }
 
                     foreach (var file in _selectedFiles)
@@ -236,7 +274,20 @@ namespace SwissKnifeApp.Views.Modules
                         var name = Path.GetFileNameWithoutExtension(file);
                         var outPath = Path.Combine(TxtOutput.Text!, $"{name}_edit.{GetExt(format)}");
                         var singleProg = new Progress<double>(v => { PbTotal.Value = v; });
-                        await _service.TrimCropAsync(file, outPath, format, codec, quality, resolution, start, end, crop, singleProg, log, _cts.Token);
+                        await _service.TrimCropAsync(
+                            file,
+                            outPath,
+                            format,
+                            codec,
+                            quality,
+                            resolution,
+                            start,
+                            end,
+                            crop, // crop null ise sadece zaman aralığı kırpılır!
+                            singleProg,
+                            log,
+                            _cts.Token
+                        );
                     }
                 }
 
@@ -385,17 +436,30 @@ namespace SwissKnifeApp.Views.Modules
         {
             ts = null;
             if (string.IsNullOrWhiteSpace(text)) return true;
-            var parts = text.Trim().Split(':');
+            
+            text = text.Trim();
+            
+            // Salise destekli format: mm:ss.fff veya hh:mm:ss.fff
+            var parts = text.Split(':');
             try
             {
-                if (parts.Length == 2)
+                if (parts.Length == 2) // mm:ss veya mm:ss.fff
                 {
-                    ts = new TimeSpan(0, int.Parse(parts[0]), int.Parse(parts[1]));
+                    var secParts = parts[1].Split('.');
+                    int minutes = int.Parse(parts[0]);
+                    int seconds = int.Parse(secParts[0]);
+                    int milliseconds = secParts.Length > 1 ? int.Parse(secParts[1].PadRight(3, '0').Substring(0, 3)) : 0;
+                    ts = new TimeSpan(0, 0, minutes, seconds, milliseconds);
                     return true;
                 }
-                if (parts.Length == 3)
+                if (parts.Length == 3) // hh:mm:ss veya hh:mm:ss.fff
                 {
-                    ts = new TimeSpan(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]));
+                    var secParts = parts[2].Split('.');
+                    int hours = int.Parse(parts[0]);
+                    int minutes = int.Parse(parts[1]);
+                    int seconds = int.Parse(secParts[0]);
+                    int milliseconds = secParts.Length > 1 ? int.Parse(secParts[1].PadRight(3, '0').Substring(0, 3)) : 0;
+                    ts = new TimeSpan(0, hours, minutes, seconds, milliseconds);
                     return true;
                 }
             }
