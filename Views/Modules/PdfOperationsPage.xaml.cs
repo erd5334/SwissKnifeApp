@@ -207,5 +207,247 @@ namespace SwissKnifeApp.Views.Modules
                 MessageBox.Show($"Toplu işlem sırasında hata: {ex.Message}");
             }
         }
+
+        #region Form & Annotation & Table Operations
+
+        private void BtnFillForm_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog { Filter = "PDF Dosyaları|*.pdf" };
+            if (ofd.ShowDialog() != true) return;
+
+            try
+            {
+                // Form alanlarını oku
+                var fields = _pdfService.GetFormFields(ofd.FileName);
+                
+                if (fields.Count == 0)
+                {
+                    MessageBox.Show("Bu PDF'de doldurulabilir form alanı bulunamadı.");
+                    return;
+                }
+
+                // Form alanlarını göster
+                var sb = new StringBuilder();
+                sb.AppendLine("Bulunan form alanları:");
+                foreach (var field in fields)
+                {
+                    sb.AppendLine($"  {field.Key}: {field.Value}");
+                }
+
+                string fieldName = Microsoft.VisualBasic.Interaction.InputBox(
+                    sb.ToString() + "\n\nDoldurmak istediğiniz alan adını girin:",
+                    "Form Doldur", fields.Keys.FirstOrDefault() ?? "");
+                
+                if (string.IsNullOrWhiteSpace(fieldName)) return;
+
+                string fieldValue = Microsoft.VisualBasic.Interaction.InputBox(
+                    $"'{fieldName}' alanı için değer girin:",
+                    "Form Değeri", "");
+
+                SaveFileDialog sfd = new SaveFileDialog { Filter = "PDF Dosyaları|*.pdf" };
+                if (sfd.ShowDialog() != true) return;
+
+                var values = new Dictionary<string, string> { { fieldName, fieldValue } };
+                _pdfService.FillPdfForm(ofd.FileName, sfd.FileName, values);
+                MessageBox.Show("Form başarıyla dolduruldu!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Form doldurma hatası: {ex.Message}");
+            }
+        }
+
+        private void BtnAddAnnotation_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog { Filter = "PDF Dosyaları|*.pdf" };
+            if (ofd.ShowDialog() != true) return;
+
+            string noteTitle = Microsoft.VisualBasic.Interaction.InputBox(
+                "Not başlığını girin:",
+                "Not Ekle", "Not");
+            
+            if (string.IsNullOrWhiteSpace(noteTitle)) return;
+
+            string noteContent = Microsoft.VisualBasic.Interaction.InputBox(
+                "Not içeriğini girin:",
+                "Not İçeriği", "");
+
+            string pageStr = Microsoft.VisualBasic.Interaction.InputBox(
+                "Hangi sayfaya eklensin? (1 = ilk sayfa):",
+                "Sayfa Numarası", "1");
+
+            if (!int.TryParse(pageStr, out int pageNumber) || pageNumber < 1)
+                pageNumber = 1;
+
+            SaveFileDialog sfd = new SaveFileDialog { Filter = "PDF Dosyaları|*.pdf" };
+            if (sfd.ShowDialog() != true) return;
+
+            try
+            {
+                _pdfService.AddTextAnnotation(ofd.FileName, sfd.FileName, pageNumber, 50, 700, noteTitle, noteContent);
+                MessageBox.Show("Not başarıyla eklendi!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Not ekleme hatası: {ex.Message}");
+            }
+        }
+
+        private void BtnExtractTables_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog { Filter = "PDF Dosyaları|*.pdf" };
+            if (ofd.ShowDialog() != true) return;
+
+            var dialog = new CommonOpenFileDialog
+            {
+                IsFolderPicker = true,
+                Title = "CSV dosyalarını kaydetmek için klasör seçin"
+            };
+            if (dialog.ShowDialog() != CommonFileDialogResult.Ok) return;
+
+            try
+            {
+                _pdfService.ExportTablesToCsv(ofd.FileName, dialog.FileName);
+                
+                var tables = _pdfService.ExtractTables(ofd.FileName);
+                if (tables.Count == 0)
+                {
+                    MessageBox.Show("PDF'de tablo bulunamadı.");
+                }
+                else
+                {
+                    MessageBox.Show($"{tables.Count} adet tablo CSV olarak dışa aktarıldı!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Tablo çıkarma hatası: {ex.Message}");
+            }
+        }
+
+        #endregion
+
+        #region OCR Operations
+
+        private async void BtnOcrPdf_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog { Filter = "PDF Dosyaları|*.pdf" };
+            if (ofd.ShowDialog() != true) return;
+
+            var language = (CmbOcrLanguage.SelectedItem as ComboBoxItem)?.Tag?.ToString() ?? "tr";
+            
+            BtnOcrPdf.IsEnabled = false;
+            BtnOcrImage.IsEnabled = false;
+            PbOcr.Visibility = Visibility.Visible;
+            PbOcr.IsIndeterminate = true;
+            TxtOcrResult.Text = "OCR işlemi yapılıyor...";
+
+            try
+            {
+                var progress = new Progress<(int current, int total)>(p =>
+                {
+                    PbOcr.IsIndeterminate = false;
+                    PbOcr.Value = (double)p.current / p.total * 100;
+                    TxtOcrResult.Text = $"Sayfa {p.current}/{p.total} işleniyor...";
+                });
+
+                string result = await _pdfService.OcrPdfAsync(ofd.FileName, language, progress);
+                TxtOcrResult.Text = result;
+                MessageBox.Show("OCR işlemi tamamlandı!");
+            }
+            catch (Exception ex)
+            {
+                TxtOcrResult.Text = $"HATA: {ex.Message}";
+                MessageBox.Show($"OCR sırasında hata: {ex.Message}");
+            }
+            finally
+            {
+                BtnOcrPdf.IsEnabled = true;
+                BtnOcrImage.IsEnabled = true;
+                PbOcr.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private async void BtnOcrImage_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog 
+            { 
+                Filter = "Görüntü Dosyaları|*.png;*.jpg;*.jpeg;*.bmp;*.tiff;*.gif",
+                Multiselect = true
+            };
+            if (ofd.ShowDialog() != true) return;
+
+            var language = (CmbOcrLanguage.SelectedItem as ComboBoxItem)?.Tag?.ToString() ?? "tr";
+            var ocrService = new WindowsOcrService();
+            ocrService.SetLanguage(language);
+
+            BtnOcrPdf.IsEnabled = false;
+            BtnOcrImage.IsEnabled = false;
+            PbOcr.Visibility = Visibility.Visible;
+            TxtOcrResult.Text = "OCR işlemi yapılıyor...";
+
+            try
+            {
+                var sb = new StringBuilder();
+                for (int i = 0; i < ofd.FileNames.Length; i++)
+                {
+                    PbOcr.Value = (double)(i + 1) / ofd.FileNames.Length * 100;
+                    
+                    string text = await ocrService.RecognizeFromImageAsync(ofd.FileNames[i]);
+                    sb.AppendLine($"--- {System.IO.Path.GetFileName(ofd.FileNames[i])} ---");
+                    sb.AppendLine(text);
+                    sb.AppendLine();
+                }
+
+                TxtOcrResult.Text = sb.ToString();
+                MessageBox.Show("OCR işlemi tamamlandı!");
+            }
+            catch (Exception ex)
+            {
+                TxtOcrResult.Text = $"HATA: {ex.Message}";
+                MessageBox.Show($"OCR sırasında hata: {ex.Message}");
+            }
+            finally
+            {
+                BtnOcrPdf.IsEnabled = true;
+                BtnOcrImage.IsEnabled = true;
+                PbOcr.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void BtnCopyOcr_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(TxtOcrResult.Text))
+            {
+                Clipboard.SetText(TxtOcrResult.Text);
+                MessageBox.Show("OCR sonucu panoya kopyalandı!");
+            }
+        }
+
+        private void BtnSaveOcr_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(TxtOcrResult.Text)) return;
+
+            SaveFileDialog sfd = new SaveFileDialog 
+            { 
+                Filter = "Metin Dosyası|*.txt|Word Belgesi|*.docx",
+                DefaultExt = ".txt"
+            };
+            
+            if (sfd.ShowDialog() == true)
+            {
+                try
+                {
+                    File.WriteAllText(sfd.FileName, TxtOcrResult.Text);
+                    MessageBox.Show("OCR sonucu kaydedildi!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Kaydetme hatası: {ex.Message}");
+                }
+            }
+        }
+
+        #endregion
     }
 }

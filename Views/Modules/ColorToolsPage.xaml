@@ -1,0 +1,232 @@
+<Page x:Class="SwissKnifeApp.Views.Modules.ColorToolsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:local="clr-namespace:SwissKnifeApp.Views.Modules"
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="1100"
+      Title="Gelişmiş Renk Araçları">
+
+    <Grid Background="{DynamicResource AppBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Border Grid.Row="0" Padding="20,15" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
+            <StackPanel Orientation="Horizontal">
+                <iconPacks:PackIconMaterial Kind="PaletteAdvanced" Width="24" Height="24" VerticalAlignment="Center" Foreground="{DynamicResource AccentBrush}"/>
+                <TextBlock Text="Gelişmiş Renk Araçları" FontSize="20" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Content -->
+        <mah:MetroAnimatedSingleRowTabControl Grid.Row="1" Margin="20" mah:HeaderedControlHelper.HeaderFontSize="15">
+            
+            <!-- Harmony & Palette -->
+            <TabItem Header="Renk Uyumu &amp; Palet">
+                <Grid Margin="10,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="350"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Left: Color Selection -->
+                    <StackPanel Grid.Column="0" Margin="0,0,30,0">
+                        <TextBlock Text="Ana Renk Seçimi" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,15"/>
+                        
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="TxtBaseColor" Height="40" FontSize="16" VerticalContentAlignment="Center" 
+                                     mah:TextBoxHelper.Watermark="#7C4DFF" TextChanged="TxtBaseColor_TextChanged"/>
+                            <Border Grid.Column="1" Width="40" Height="40" Margin="10,0,0,0" CornerRadius="4" BorderBrush="Gray" BorderThickness="1">
+                                <Rectangle x:Name="RectBaseColorPreview" Fill="#7C4DFF"/>
+                            </Border>
+                        </Grid>
+
+                        <TextBlock Text="Uyum Kuralı" Foreground="Gray" Margin="0,0,0,5"/>
+                        <ComboBox x:Name="CmbHarmonyRule" Margin="0,0,0,20" SelectionChanged="CmbHarmonyRule_SelectionChanged">
+                            <ComboBoxItem Content="Tamamlayıcı (Complementary)" Tag="Complementary"/>
+                            <ComboBoxItem Content="Üçlü (Triadic)" Tag="Triadic"/>
+                            <ComboBoxItem Content="Benzer (Analogous)" Tag="Analogous"/>
+                            <ComboBoxItem Content="Bölünmüş Tamamlayıcı (Split)" Tag="Split"/>
+                            <ComboBoxItem Content="Dörtlü (Tetradic)" Tag="Tetradic"/>
+                            <ComboBoxItem Content="Monokromatik" Tag="Monochromatic"/>
+                        </ComboBox>
+
+                        <Button Click="BtnRandomPalette_Click" Style="{StaticResource OutlineButtonStyle}" Height="40">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="Refresh" Width="14" Height="14" Margin="0,0,8,0"/>
+                                <TextBlock Text="Rastgele Palet Üret"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                    <!-- Right: Palette Display -->
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <ItemsControl x:Name="IcPalette">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Rows="1"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="5">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <Border CornerRadius="8" Background="{Binding Brush}" MouseLeftButtonDown="PaletteColor_Click">
+                                            <TextBlock Text="Kopyala" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                       FontSize="12" Opacity="0" x:Name="TxtCopyHint"/>
+                                        </Border>
+                                        <StackPanel Grid.Row="1" HorizontalAlignment="Center" Margin="0,10">
+                                            <TextBlock Text="{Binding Hex}" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                            <TextBlock Text="{Binding Label}" FontSize="10" Foreground="Gray" HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <!-- Gradient Generator -->
+            <TabItem Header="Gradyan Oluşturucu">
+                <Grid Margin="10,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="350"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0,0,30,0">
+                        <TextBlock Text="Gradyan Ayarları" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,15"/>
+                        
+                        <TextBlock Text="Renk 1" Foreground="Gray" Margin="0,0,0,5"/>
+                        <TextBox x:Name="TxtGrad1" mah:TextBoxHelper.Watermark="#FF0000" Text="#7C4DFF" TextChanged="UpdateGradientPreview"/>
+                        
+                        <TextBlock Text="Renk 2" Foreground="Gray" Margin="0,15,0,5"/>
+                        <TextBox x:Name="TxtGrad2" mah:TextBoxHelper.Watermark="#0000FF" Text="#18FFFF" TextChanged="UpdateGradientPreview"/>
+
+                        <TextBlock Text="Açı (Derece)" Foreground="Gray" Margin="0,15,0,5"/>
+                        <Slider x:Name="SldGradAngle" Minimum="0" Maximum="360" Value="90" ValueChanged="UpdateGradientPreview"/>
+                        
+                        <Button Margin="0,20,0,0" Content="CSS Olarak Kopyala" Click="BtnCopyGradientCss_Click" Style="{StaticResource AccentButtonStyle}"/>
+                    </StackPanel>
+
+                    <Border Grid.Column="1" CornerRadius="12" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
+                        <Grid>
+                            <Rectangle x:Name="RectGradientPreview" RadiusX="12" RadiusY="12"/>
+                            <Border x:Name="BrdGradientCss" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="20" 
+                                    Background="#80000000" CornerRadius="4" Padding="15,8">
+                                <TextBlock x:Name="TxtGradientCss" Foreground="White" Text="background: ..."/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <!-- Contrast Checker -->
+            <TabItem Header="Kontrast (WCAG)">
+                <Grid Margin="10,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="350"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="0,0,30,0">
+                        <TextBlock Text="Erişilebilirlik Testi" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,15"/>
+                        
+                        <TextBlock Text="Metin Rengi (Foreground)" Foreground="Gray" Margin="0,0,0,5"/>
+                        <TextBox x:Name="TxtContrastFore" Text="#000000" TextChanged="UpdateContrastCheck"/>
+                        
+                        <TextBlock Text="Arka Plan Rengi (Background)" Foreground="Gray" Margin="0,15,0,5"/>
+                        <TextBox x:Name="TxtContrastBack" Text="#FFFFFF" TextChanged="UpdateContrastCheck"/>
+
+                        <Border Margin="0,25,0,0" Padding="15" CornerRadius="8" Background="#F8F9FA">
+                            <StackPanel>
+                                <TextBlock Text="Kontrast Oranı:" Foreground="Gray"/>
+                                <TextBlock x:Name="TxtContrastRatio" Text="21.0:1" FontSize="32" FontWeight="Bold" Margin="0,5"/>
+                                
+                                <Grid Margin="0,10,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Normal Metin" FontSize="12" Foreground="Gray"/>
+                                        <TextBlock x:Name="TxtWcagNormal" Text="BAŞARILI" FontWeight="Bold" Foreground="Green"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="Büyük Metin" FontSize="12" Foreground="Gray"/>
+                                        <TextBlock x:Name="TxtWcagLarge" Text="BAŞARILI" FontWeight="Bold" Foreground="Green"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <Border Grid.Column="1" x:Name="BrdContrastPreview" Background="White" CornerRadius="12" BorderBrush="#EEE" BorderThickness="1">
+                        <Grid>
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock x:Name="TxtContrastPreviewMain" Text="Aa" FontSize="72" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                <TextBlock x:Name="TxtContrastPreviewSub" Text="Bu bir erişilebilirlik örneğidir." FontSize="18" HorizontalAlignment="Center" Margin="0,10"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <!-- Color Blindness Simulator -->
+            <TabItem Header="Renk Körlüğü Simülatörü">
+                <Grid Margin="10,20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
+                        <TextBlock Text="Simüle Edilecek Renk:" VerticalAlignment="Center" Margin="0,0,15,0"/>
+                        <TextBox x:Name="TxtSimulatorColor" Width="120" Text="#7C4DFF" TextChanged="UpdateSimulation"/>
+                        <Border Width="30" Height="30" Margin="10,0" CornerRadius="4" x:Name="BrdSimSourceColor"/>
+                    </StackPanel>
+
+                    <ItemsControl Grid.Row="1" x:Name="IcSimulation">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="4"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="10" Padding="15" Background="#F8F9FA" CornerRadius="8" BorderBrush="#EEE" BorderThickness="1">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Margin="0,0,10,0" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding Description}" FontSize="10" Foreground="Gray" HorizontalAlignment="Center" Margin="0,0,0,10" TextAlignment="Center"/>
+                                        <Ellipse Width="80" Height="80" Fill="{Binding Brush}" Stroke="#CCC" StrokeThickness="1"/>
+                                        <TextBlock Text="{Binding Hex}" Margin="0,10,0,0" HorizontalAlignment="Center" FontFamily="Consolas"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
+            </TabItem>
+
+        </mah:MetroAnimatedSingleRowTabControl>
+    </Grid>
+</Page>

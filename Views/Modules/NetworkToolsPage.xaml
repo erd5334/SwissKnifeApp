@@ -1,0 +1,360 @@
+<Page x:Class="SwissKnifeApp.Views.Modules.NetworkToolsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:vm="clr-namespace:SwissKnifeApp.ViewModels"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      mc:Ignorable="d" 
+      d:DesignHeight="700" d:DesignWidth="900"
+      Background="{DynamicResource AppBackground}"
+      xmlns:h="clr-namespace:SwissKnifeApp.Helpers">
+
+    <Page.Resources>
+        <h:BoolNegationConverter x:Key="BoolNegationConverter"/>
+    </Page.Resources>
+
+    <Page.DataContext>
+        <vm:NetworkToolsViewModel/>
+    </Page.DataContext>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="20">
+        <StackPanel MaxWidth="1200">
+            <!-- Header -->
+            <TextBlock Text="🌐 Network Araçları" 
+                       FontSize="28" 
+                       FontWeight="Bold" 
+                       Foreground="{DynamicResource HeaderText}"
+                       Margin="0,0,0,10"/>
+            <TextBlock Text="Ping, Port Scanner, IP ve DNS Lookup araçları" 
+                       FontSize="14" 
+                       Foreground="{DynamicResource SecondaryText}"
+                       Margin="0,0,0,30"/>
+
+            <!-- Ping Tool -->
+            <Border Background="{DynamicResource CardBackground}" 
+                    BorderBrush="{DynamicResource CardBorderBrush}" 
+                    BorderThickness="1" 
+                    CornerRadius="8" 
+                    Padding="20" 
+                    Margin="0,0,0,20">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                        <iconPacks:PackIconMaterial Kind="SignalVariant" 
+                                                    Width="24" Height="24" 
+                                                    Foreground="{DynamicResource AccentBrush}"
+                                                    VerticalAlignment="Center"
+                                                    Margin="0,0,10,0"/>
+                        <TextBlock Text="Ping Test" 
+                                   FontSize="20" 
+                                   FontWeight="SemiBold" 
+                                   Foreground="{DynamicResource HeaderText}"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <TextBlock Text="Host Adresi:" 
+                               FontSize="13" 
+                               Foreground="{DynamicResource AppForeground}"
+                               Margin="0,0,0,5"/>
+                    <Grid Margin="0,0,0,15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox Grid.Column="0" 
+                                 Text="{Binding PingHost, UpdateSourceTrigger=PropertyChanged}" 
+                                 FontSize="14"
+                                 Padding="10"
+                                 Background="{DynamicResource InputBackground}"
+                                 Foreground="{DynamicResource InputForeground}"
+                                 BorderBrush="{DynamicResource InputBorderBrush}"
+                                 Margin="0,0,10,0"/>
+
+                        <Button Grid.Column="1" 
+                                Content="🔍 Ping Gönder" 
+                                Command="{Binding PingHostCommand}" 
+                                IsEnabled="{Binding IsPinging, Converter={StaticResource BoolNegationConverter}}"
+                                FontSize="14"
+                                Padding="20,10"
+                                Background="{DynamicResource ButtonBackground}"
+                                Foreground="{DynamicResource ButtonForeground}"
+                                BorderThickness="0"
+                                Cursor="Hand"/>
+                    </Grid>
+
+                    <TextBlock Text="Sonuç:" 
+                               FontSize="13" 
+                               Foreground="{DynamicResource AppForeground}"
+                               Margin="0,0,0,5"/>
+                    <Border Background="{DynamicResource InputBackground}"
+                            BorderBrush="{DynamicResource InputBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="10">
+                        <ScrollViewer Height="150" VerticalScrollBarVisibility="Auto">
+                            <TextBlock Text="{Binding PingResult}" 
+                                       FontFamily="Consolas" 
+                                       FontSize="12"
+                                       Foreground="{DynamicResource AppForeground}"
+                                       TextWrapping="Wrap"/>
+                        </ScrollViewer>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!-- Port Scanner -->
+            <Border Background="{DynamicResource CardBackground}" 
+                    BorderBrush="{DynamicResource CardBorderBrush}" 
+                    BorderThickness="1" 
+                    CornerRadius="8" 
+                    Padding="20" 
+                    Margin="0,0,0,20">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                        <iconPacks:PackIconMaterial Kind="LanConnect" 
+                                                    Width="24" Height="24" 
+                                                    Foreground="{DynamicResource AccentBrush}"
+                                                    VerticalAlignment="Center"
+                                                    Margin="0,0,10,0"/>
+                        <TextBlock Text="Port Scanner" 
+                                   FontSize="20" 
+                                   FontWeight="SemiBold" 
+                                   Foreground="{DynamicResource HeaderText}"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                            <TextBlock Text="Host:" 
+                                       FontSize="13" 
+                                       Foreground="{DynamicResource AppForeground}"
+                                       Margin="0,0,0,5"/>
+                            <TextBox Text="{Binding PortScanHost, UpdateSourceTrigger=PropertyChanged}" 
+                                     Padding="10"
+                                     Background="{DynamicResource InputBackground}"
+                                     Foreground="{DynamicResource InputForeground}"
+                                     BorderBrush="{DynamicResource InputBorderBrush}"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Margin="0,0,10,0">
+                            <TextBlock Text="Başlangıç:" 
+                                       FontSize="13" 
+                                       Foreground="{DynamicResource AppForeground}"
+                                       Margin="0,0,0,5"/>
+                            <TextBox Text="{Binding StartPort, UpdateSourceTrigger=PropertyChanged}" 
+                                     Padding="10"
+                                     Background="{DynamicResource InputBackground}"
+                                     Foreground="{DynamicResource InputForeground}"
+                                     BorderBrush="{DynamicResource InputBorderBrush}"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2" Margin="0,0,10,0">
+                            <TextBlock Text="Bitiş:" 
+                                       FontSize="13" 
+                                       Foreground="{DynamicResource AppForeground}"
+                                       Margin="0,0,0,5"/>
+                            <TextBox Text="{Binding EndPort, UpdateSourceTrigger=PropertyChanged}" 
+                                     Padding="10"
+                                     Background="{DynamicResource InputBackground}"
+                                     Foreground="{DynamicResource InputForeground}"
+                                     BorderBrush="{DynamicResource InputBorderBrush}"/>
+                        </StackPanel>
+
+                        <Button Grid.Column="3" 
+                                Content="🔍 Tara" 
+                                Command="{Binding ScanPortsCommand}" 
+                                IsEnabled="{Binding IsScanning, Converter={StaticResource BoolNegationConverter}}"
+                                VerticalAlignment="Bottom"
+                                Padding="20,10"
+                                Background="{DynamicResource ButtonBackground}"
+                                Foreground="{DynamicResource ButtonForeground}"
+                                BorderThickness="0"
+                                Cursor="Hand"/>
+                    </Grid>
+
+                    <TextBlock Text="Açık Portlar:" 
+                               FontSize="13" 
+                               Foreground="{DynamicResource AppForeground}"
+                               Margin="0,10,0,5"/>
+                    <Border Background="{DynamicResource InputBackground}"
+                            BorderBrush="{DynamicResource InputBorderBrush}"
+                            BorderThickness="1"
+                            CornerRadius="4"
+                            Padding="10">
+                        <ScrollViewer Height="200" VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding OpenPorts}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" 
+                                                   FontFamily="Consolas" 
+                                                   FontSize="12"
+                                                   Foreground="{DynamicResource AppForeground}"
+                                                   Margin="0,2"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!-- IP Lookup & DNS Lookup Side by Side -->
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- IP Lookup -->
+                <Border Grid.Column="0"
+                        Background="{DynamicResource CardBackground}" 
+                        BorderBrush="{DynamicResource CardBorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="20">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                            <iconPacks:PackIconMaterial Kind="Ip" 
+                                                        Width="24" Height="24" 
+                                                        Foreground="{DynamicResource AccentBrush}"
+                                                        VerticalAlignment="Center"
+                                                        Margin="0,0,10,0"/>
+                            <TextBlock Text="IP Lookup" 
+                                       FontSize="20" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="{DynamicResource HeaderText}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <TextBlock Text="IP / Domain:" 
+                                   FontSize="13" 
+                                   Foreground="{DynamicResource AppForeground}"
+                                   Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding IpLookupAddress, UpdateSourceTrigger=PropertyChanged}" 
+                                 Padding="10"
+                                 Margin="0,0,0,10"
+                                 Background="{DynamicResource InputBackground}"
+                                 Foreground="{DynamicResource InputForeground}"
+                                 BorderBrush="{DynamicResource InputBorderBrush}"/>
+
+                        <Button Content="🔍 Sorgula" 
+                                Command="{Binding LookupIPCommand}" 
+                                HorizontalAlignment="Stretch"
+                                Padding="0,10"
+                                Margin="0,0,0,15"
+                                Background="{DynamicResource ButtonBackground}"
+                                Foreground="{DynamicResource ButtonForeground}"
+                                BorderThickness="0"
+                                Cursor="Hand"/>
+
+                        <Border Background="{DynamicResource InputBackground}"
+                                BorderBrush="{DynamicResource InputBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Padding="10">
+                            <ScrollViewer Height="180" VerticalScrollBarVisibility="Auto">
+                                <TextBlock Text="{Binding IpLookupResult}" 
+                                           FontFamily="Consolas" 
+                                           FontSize="12"
+                                           Foreground="{DynamicResource AppForeground}"
+                                           TextWrapping="Wrap"/>
+                            </ScrollViewer>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+                <!-- DNS Lookup -->
+                <Border Grid.Column="2"
+                        Background="{DynamicResource CardBackground}" 
+                        BorderBrush="{DynamicResource CardBorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="20">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                            <iconPacks:PackIconMaterial Kind="DnsOutline" 
+                                                        Width="24" Height="24" 
+                                                        Foreground="{DynamicResource AccentBrush}"
+                                                        VerticalAlignment="Center"
+                                                        Margin="0,0,10,0"/>
+                            <TextBlock Text="DNS Lookup" 
+                                       FontSize="20" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="{DynamicResource HeaderText}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <TextBlock Text="Domain:" 
+                                   FontSize="13" 
+                                   Foreground="{DynamicResource AppForeground}"
+                                   Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding DnsHost, UpdateSourceTrigger=PropertyChanged}" 
+                                 Padding="10"
+                                 Margin="0,0,0,10"
+                                 Background="{DynamicResource InputBackground}"
+                                 Foreground="{DynamicResource InputForeground}"
+                                 BorderBrush="{DynamicResource InputBorderBrush}"/>
+
+                        <Button Content="🔍 Sorgula" 
+                                Command="{Binding DnsLookupCommand}" 
+                                HorizontalAlignment="Stretch"
+                                Padding="0,10"
+                                Margin="0,0,0,15"
+                                Background="{DynamicResource ButtonBackground}"
+                                Foreground="{DynamicResource ButtonForeground}"
+                                BorderThickness="0"
+                                Cursor="Hand"/>
+
+                        <Border Background="{DynamicResource InputBackground}"
+                                BorderBrush="{DynamicResource InputBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Padding="10">
+                            <ScrollViewer Height="180" VerticalScrollBarVisibility="Auto">
+                                <TextBlock Text="{Binding DnsResult}" 
+                                           FontFamily="Consolas" 
+                                           FontSize="12"
+                                           Foreground="{DynamicResource AppForeground}"
+                                           TextWrapping="Wrap"/>
+                            </ScrollViewer>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Info Section -->
+            <Border Background="{DynamicResource CardBackground}" 
+                    BorderBrush="{DynamicResource CardBorderBrush}" 
+                    BorderThickness="1" 
+                    CornerRadius="8" 
+                    Padding="15" 
+                    Margin="0,0,0,20">
+                <StackPanel>
+                    <TextBlock FontSize="12" 
+                               Foreground="{DynamicResource SecondaryText}"
+                               TextWrapping="Wrap">
+                        <Run Text="💡" FontSize="14"/>
+                        <Run Text=" İpuçları:" FontWeight="SemiBold"/>
+                        <LineBreak/>
+                        <Run Text="• Ping: 4 paket gönderilir, ortalama süre ve başarı oranı görüntülenir"/>
+                        <LineBreak/>
+                        <Run Text="• Port Scanner: Geniş aralıklarda tarama yavaş olabilir (1-1000 önerilir)"/>
+                        <LineBreak/>
+                        <Run Text="• IP Lookup: Hem IP adresi hem domain adı kabul eder"/>
+                        <LineBreak/>
+                        <Run Text="• DNS Lookup: A, CNAME ve diğer DNS kayıtlarını gösterir"/>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

@@ -1,8 +1,10 @@
 using System.Collections.Concurrent;
 using System.IO;
-using System.Runtime.InteropServices;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentFTP;
+using Renci.SshNet;
 using SwissKnifeApp.Models;
 
 namespace SwissKnifeApp.Services;
@@ -49,8 +51,51 @@ public class CopyService : ICopyService
         return new(list.Select(x => x.StartsWith('.') ? x.ToLowerInvariant() : "." + x.ToLowerInvariant()));
     }
 
+    public async Task<bool> TestConnectionAsync(ConnectionOptions options, Action<string> onLog)
+    {
+        return await Task.Run(() =>
+        {
+            try
+            {
+                if (options.Protocol == "FTP" || options.Protocol == "FTPS")
+                {
+                    using var client = new FtpClient(options.Host, options.Username, options.Password);
+                    client.Port = options.Port > 0 ? options.Port : 21;
+                    if (options.Protocol == "FTPS")
+                    {
+                        client.Config.EncryptionMode = FtpEncryptionMode.Explicit;
+                        client.Config.ValidateAnyCertificate = true;
+                    }
+                    client.Connect();
+                    onLog?.Invoke($"{options.Protocol} bağlantısı başarılı: {options.Host}");
+                    client.Disconnect();
+                    return true;
+                }
+                else if (options.Protocol == "SFTP")
+                {
+                    using var client = new SftpClient(options.Host, options.Port > 0 ? options.Port : 22, options.Username, options.Password);
+                    client.Connect();
+                    onLog?.Invoke($"SFTP bağlantısı başarılı: {options.Host}");
+                    client.Disconnect();
+                    return true;
+                }
+                else
+                {
+                    onLog?.Invoke("Yerel dosya sistemi kullanılıyor (Test gerekmez).");
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                onLog?.Invoke($"Bağlantı hatası: {ex.Message}");
+                return false;
+            }
+        });
+    }
+
     public async Task CopyAsync(
         IEnumerable<CopyItem> items,
+        ConnectionOptions connectionOptions,
         int maxDegreeOfParallelism,
         bool overwrite,
         TimeSpan retryWindow,
@@ -71,6 +116,21 @@ public class CopyService : ICopyService
 
         var exceptions = new ConcurrentBag<(string file, Exception ex)>();
 
+        // For FTP/SFTP, we might want to reuse the client or create one per thread.
+        // Creating one per thread is safer for parallelism if the client isn't thread-safe.
+        // FluentFTP FtpClient is NOT thread-safe for concurrent operations.
+        // SSH.NET SftpClient is also not thread-safe for concurrent operations.
+        // So we will create a client inside the loop or use a pool.
+        // Given Parallel.ForEach, we can use thread-local storage or just create/dispose per file (expensive)
+        // or create per partition. For simplicity and robustness, let's try creating per file first, 
+        // but that might be too slow for many small files. 
+        // Better: Use a custom partitioner or just accept the overhead for now.
+        // Actually, for FTP/SFTP, opening a connection for every file is very bad.
+        // We should group items or use a limited number of long-lived connections.
+        // But implementing a connection pool here is complex.
+        // Let's stick to per-file for now as a baseline, or maybe reuse if possible.
+        // Optimization: We can use a ThreadLocal<Client> if we ensure we dispose them.
+        
         await Task.Run(() =>
         {
             Parallel.ForEach(items, options, item =>
@@ -78,22 +138,21 @@ public class CopyService : ICopyService
                 options.CancellationToken.ThrowIfCancellationRequested();
                 try
                 {
-                    CopyWithRetry(item, overwrite, retryWindow, options.CancellationToken, onLog);
+                    ProcessItem(item, connectionOptions, overwrite, retryWindow, options.CancellationToken, onLog);
+                    
                     Interlocked.Increment(ref copied);
                     try
                     {
-                        var fi = new FileInfo(item.TargetPath);
-                        var len = fi.Length;
+                        var len = new FileInfo(item.SourcePath).Length;
                         Interlocked.Add(ref copiedBytes, len);
                         var fileName = Path.GetFileName(item.TargetPath);
-                        onLog?.Invoke($"Kopyalandı: {fileName} ({FormatBytes(len)})");
+                        // onLog?.Invoke($"Kopyalandı: {fileName} ({FormatBytes(len)})");
                     }
                     catch { }
                     onProgress?.Invoke(copied, copiedBytes, item.TargetPath);
                 }
                 catch (OperationCanceledException)
                 {
-                    // bubble up
                     throw;
                 }
                 catch (Exception ex)
@@ -113,44 +172,33 @@ public class CopyService : ICopyService
         }
     }
 
-    private static void CopyWithRetry(CopyItem item, bool overwrite, TimeSpan retryWindow, CancellationToken ct, Action<string>? onLog)
+    private void ProcessItem(CopyItem item, ConnectionOptions options, bool overwrite, TimeSpan retryWindow, CancellationToken ct, Action<string>? onLog)
     {
         var start = DateTime.UtcNow;
-        var dir = Path.GetDirectoryName(item.TargetPath);
-        if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
-
         while (true)
         {
             ct.ThrowIfCancellationRequested();
             try
             {
-                var destExists = File.Exists(item.TargetPath);
-                if (destExists && !overwrite)
+                if (options.Protocol == "FTP" || options.Protocol == "FTPS")
                 {
-                    // Skip if no overwrite
-                    onLog?.Invoke($"Atlandı (mevcut): {item.TargetPath}");
-                    return;
+                    UploadFtp(item, options, overwrite, onLog);
                 }
-
-                // Use CopyTo for metadata preserve similar to copy2
-                File.Copy(item.SourcePath, item.TargetPath, overwrite);
-                // Preserve timestamps
-                try
+                else if (options.Protocol == "SFTP")
                 {
-                    var srcInfo = new FileInfo(item.SourcePath);
-                    File.SetCreationTime(item.TargetPath, srcInfo.CreationTime);
-                    File.SetLastWriteTime(item.TargetPath, srcInfo.LastWriteTime);
+                    UploadSftp(item, options, overwrite, onLog);
                 }
-                catch { }
+                else
+                {
+                    CopyLocal(item, overwrite, onLog);
+                }
                 return;
             }
-            catch (OperationCanceledException) { throw; }
             catch (Exception)
             {
                 if (DateTime.UtcNow - start > retryWindow)
-                    throw; // Give up
+                    throw;
 
-                // Sleep in small slices to be cancellation responsive
                 var until = DateTime.UtcNow + TimeSpan.FromSeconds(1);
                 while (DateTime.UtcNow < until)
                 {
@@ -159,6 +207,119 @@ public class CopyService : ICopyService
                 }
             }
         }
+    }
+
+    private void CopyLocal(CopyItem item, bool overwrite, Action<string>? onLog)
+    {
+        var dir = Path.GetDirectoryName(item.TargetPath);
+        if (!string.IsNullOrEmpty(dir)) Directory.CreateDirectory(dir);
+
+        if (File.Exists(item.TargetPath) && !overwrite)
+        {
+            onLog?.Invoke($"Atlandı (mevcut): {item.TargetPath}");
+            return;
+        }
+
+        File.Copy(item.SourcePath, item.TargetPath, overwrite);
+        try
+        {
+            var srcInfo = new FileInfo(item.SourcePath);
+            File.SetCreationTime(item.TargetPath, srcInfo.CreationTime);
+            File.SetLastWriteTime(item.TargetPath, srcInfo.LastWriteTime);
+        }
+        catch { }
+        onLog?.Invoke($"Kopyalandı (Yerel): {Path.GetFileName(item.TargetPath)}");
+    }
+
+    private void UploadFtp(CopyItem item, ConnectionOptions options, bool overwrite, Action<string>? onLog)
+    {
+        using var client = new FtpClient(options.Host, options.Username, options.Password);
+        client.Port = options.Port > 0 ? options.Port : 21;
+        if (options.Protocol == "FTPS")
+        {
+            client.Config.EncryptionMode = FtpEncryptionMode.Explicit;
+            client.Config.ValidateAnyCertificate = true;
+        }
+        client.Connect();
+
+        // TargetPath is likely a full local path if we came from the UI logic, 
+        // but for FTP it should be relative to the FTP root or absolute FTP path.
+        // The UI logic currently sets TargetPath as "TargetFolder + RelativePath".
+        // If TargetFolder is a URL, we need to handle it.
+        // Assuming the ViewModel handles the path construction correctly for FTP.
+        // But wait, the ViewModel constructs TargetPath using Path.Combine which uses backslashes on Windows.
+        // FTP needs forward slashes.
+        
+        string remotePath = item.TargetPath.Replace("\\", "/");
+        // If the path starts with a drive letter (e.g. C:/...), strip it or handle it?
+        // The user enters a target path. If it's FTP, they might enter "/var/www".
+        // The item.TargetPath will be "/var/www/subdir/file.ext".
+        // If they entered "ftp://...", we need to parse it. 
+        // But ConnectionOptions has the host. The TargetFolder in UI might be just the path.
+        
+        // Let's assume item.TargetPath is the full remote path.
+        
+        if (client.FileExists(remotePath) && !overwrite)
+        {
+            onLog?.Invoke($"Atlandı (mevcut): {remotePath}");
+            return;
+        }
+
+        // Ensure directory exists
+        string remoteDir = Path.GetDirectoryName(remotePath)?.Replace("\\", "/") ?? "/";
+        if (!client.DirectoryExists(remoteDir))
+        {
+            client.CreateDirectory(remoteDir);
+        }
+
+        var status = client.UploadFile(item.SourcePath, remotePath, FtpRemoteExists.Overwrite, false, FtpVerify.None);
+        if (status == FtpStatus.Failed) throw new Exception("FTP Upload failed");
+        
+        onLog?.Invoke($"Kopyalandı (FTP): {Path.GetFileName(remotePath)}");
+    }
+
+    private void UploadSftp(CopyItem item, ConnectionOptions options, bool overwrite, Action<string>? onLog)
+    {
+        using var client = new SftpClient(options.Host, options.Port > 0 ? options.Port : 22, options.Username, options.Password);
+        client.Connect();
+
+        string remotePath = item.TargetPath.Replace("\\", "/");
+
+        if (client.Exists(remotePath) && !overwrite)
+        {
+            onLog?.Invoke($"Atlandı (mevcut): {remotePath}");
+            return;
+        }
+
+        // Ensure directory
+        string remoteDir = Path.GetDirectoryName(remotePath)?.Replace("\\", "/") ?? "/";
+        EnsureSftpDirectory(client, remoteDir);
+
+        using (var fs = File.OpenRead(item.SourcePath))
+        {
+            client.UploadFile(fs, remotePath, true);
+        }
+        onLog?.Invoke($"Kopyalandı (SFTP): {Path.GetFileName(remotePath)}");
+    }
+
+    private void EnsureSftpDirectory(SftpClient client, string path)
+    {
+        if (string.IsNullOrEmpty(path) || path == "." || path == "/") return;
+        
+        if (client.Exists(path)) return;
+
+        // Recursive create
+        var parent = Path.GetDirectoryName(path)?.Replace("\\", "/");
+        if (!string.IsNullOrEmpty(parent) && parent != "/" && parent != path)
+        {
+            EnsureSftpDirectory(client, parent);
+        }
+        
+        try
+        {
+            client.CreateDirectory(path);
+        }
+        catch { /* ignore if exists now */ }
     }
 
     private static string FormatBytes(long bytes)

@@ -6,6 +6,7 @@
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:SwissKnifeApp.Views.Modules"
     mc:Ignorable="d"
+    Background="{DynamicResource AppBackground}"
     Title="Video Araçları">
     <Page.InputBindings>
         <KeyBinding Command="{x:Static local:VideoToolsPage.PlayCommand}" Key="Z"/>
@@ -14,6 +15,8 @@
         <KeyBinding Command="{x:Static local:VideoToolsPage.SetEndCommand}"  Key="V"/>
         <!--<KeyBinding Command="{x:Static local:VideoToolsPage.SetEndCommand}" Modifiers="Control" Key="E"/>-->
         <KeyBinding Command="{x:Static local:VideoToolsPage.StartProcessCommand}" Key="B"/>
+        <KeyBinding Command="{x:Static local:VideoToolsPage.BackwardCommand}" Key="A"/>
+        <KeyBinding Command="{x:Static local:VideoToolsPage.ForwardCommand}" Key="S"/>
     </Page.InputBindings>
     <Grid Margin="16">
         <Grid.RowDefinitions>
@@ -110,6 +113,12 @@
                         <ComboBoxItem Content="Dönüştür" IsSelected="True"/>
                         <ComboBoxItem Content="Ses Çıkar"/>
                         <ComboBoxItem Content="Trim/Kırp"/>
+                        <ComboBoxItem Content="Video Stabilize Et"/>
+                        <ComboBoxItem Content="GIF Oluştur"/>
+                        <ComboBoxItem Content="Hız Ayarla"/>
+                        <ComboBoxItem Content="Videoları Birleştir"/>
+                        <ComboBoxItem Content="Altyazı Göm"/>
+                        <ComboBoxItem Content="Senkron Düzelt"/>
                     </ComboBox>
                     <TextBlock x:Name="LblFormat" Text="Format:" VerticalAlignment="Center" Margin="24,0,0,0"/>
                     <ComboBox x:Name="CmbFormat" Width="120" Margin="8,0,0,0">
@@ -153,28 +162,67 @@
             </StackPanel>
         </Border>
 
-        <!-- Kırpma ve Başlat/İptal Kartı -->
-    <Border Grid.Row="4" Background="#fff3e0" CornerRadius="12" Padding="11" Margin="0,0,0,12" BorderBrush="#ffb74d" BorderThickness="1">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,0">
-                <iconPacks:PackIconMaterial Kind="ScissorsCutting" Width="20" Height="20" Foreground="#e65100" Margin="0,0,8,0"/>
-                <TextBlock Text="Başlangıç" VerticalAlignment="Center"/>
-                <TextBox x:Name="TxtStart" Width="100" Height="28" Margin="8,0,0,0"/>
-                <TextBlock Text="Bitiş" VerticalAlignment="Center" Margin="24,0,0,0"/>
-                <TextBox x:Name="TxtEnd" Width="100" Height="28" Margin="8,0,0,0"/>
-                <TextBlock Text="Kırp (x,y,w,h)" VerticalAlignment="Center" Margin="24,0,0,0"/>
-                <TextBox x:Name="TxtCrop" Width="160" Height="28" Margin="8,0,0,0"/>
-                <Button x:Name="BtnStart" Margin="24,0,0,0" Padding="16,6" Click="BtnStart_Click" Style="{StaticResource AccentButtonStyle}">
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="Play" Width="18" Height="18" Foreground="#e65100" Margin="5,0,6,0"/>
-                        <TextBlock Text="Başlat" Width="35"/>
+        <!-- Gelişmiş Ayarlar (Yeni) -->
+        <Border Grid.Row="4" Background="#fff3e0" CornerRadius="12" Padding="11" Margin="0,0,0,12" BorderBrush="#ffb74d" BorderThickness="1">
+            <StackPanel x:Name="PanelAdvanced">
+                <!-- Row 1: Trim/Crop -->
+                <StackPanel x:Name="PanelTrimCrop" Orientation="Horizontal" Visibility="Visible" Margin="0,0,0,5">
+                    <iconPacks:PackIconMaterial Kind="ScissorsCutting" Width="20" Height="20" Foreground="#e65100" Margin="0,0,8,0"/>
+                    <TextBlock Text="Başlangıç" VerticalAlignment="Center"/>
+                    <TextBox x:Name="TxtStart" Width="90" Height="28" Margin="8,0,0,0"/>
+                    <TextBlock Text="Bitiş" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                    <TextBox x:Name="TxtEnd" Width="90" Height="28" Margin="8,0,0,0"/>
+                    <TextBlock Text="Kırp (x,y,w,h)" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                    <TextBox x:Name="TxtCrop" Width="120" Height="28" Margin="8,0,0,0"/>
+                </StackPanel>
+
+                <!-- Row 2: Speed / Subtitles / GIF Params -->
+                <StackPanel x:Name="PanelSpecialParams" Orientation="Horizontal">
+                    <!-- Speed -->
+                    <StackPanel x:Name="PanelSpeed" Orientation="Horizontal" Visibility="Collapsed">
+                        <iconPacks:PackIconMaterial Kind="Speedometer" Width="20" Height="20" Foreground="#e65100" Margin="0,0,8,0"/>
+                        <TextBlock Text="Hız Çarpanı (Örn: 2.0 veya 0.5):" VerticalAlignment="Center"/>
+                        <TextBox x:Name="TxtSpeedMultiplier" Width="60" Text="1.0" Margin="8,0,0,0"/>
                     </StackPanel>
-                </Button>
-                <Button x:Name="BtnCancel" Margin="8,0,0,0" Padding="16,6" Click="BtnCancel_Click" IsEnabled="False" Style="{StaticResource AccentButtonStyle}">
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="Cancel" Width="18" Height="18" Foreground="#e65100" Margin="5,0,6,0"/>
-                        <TextBlock Text="İptal" Width="30"/>
+
+                    <!-- Subtitles -->
+                    <StackPanel x:Name="PanelSubtitles" Orientation="Horizontal" Visibility="Collapsed">
+                        <iconPacks:PackIconMaterial Kind="FileDocumentEdit" Width="20" Height="20" Foreground="#e65100" Margin="20,0,8,0"/>
+                        <TextBlock Text="Altyazı Dosyası (.srt):" VerticalAlignment="Center"/>
+                        <TextBox x:Name="TxtSubPath" Width="250" Margin="8,0,0,0"/>
+                        <Button Content="Seç" Click="BtnPickSubs_Click" Margin="5,0,0,0" Width="60"/>
                     </StackPanel>
-                </Button>
+
+                    <!-- GIF -->
+                    <StackPanel x:Name="PanelGif" Orientation="Horizontal" Visibility="Collapsed">
+                        <iconPacks:PackIconMaterial Kind="FileGifBox" Width="20" Height="20" Foreground="#e65100" Margin="20,0,8,0"/>
+                        <TextBlock Text="FPS:" VerticalAlignment="Center"/>
+                        <TextBox x:Name="TxtGifFps" Width="40" Text="15" Margin="8,0,0,0"/>
+                        <TextBlock Text="Genişlik:" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                        <TextBox x:Name="TxtGifWidth" Width="60" Text="480" Margin="8,0,0,0"/>
+                    </StackPanel>
+
+                    <!-- Sync -->
+                    <StackPanel x:Name="PanelSync" Orientation="Horizontal" Visibility="Collapsed">
+                        <iconPacks:PackIconMaterial Kind="Sync" Width="20" Height="20" Foreground="#e65100" Margin="20,0,8,0"/>
+                        <TextBlock Text="Ses Kayması (sn):" VerticalAlignment="Center"/>
+                        <TextBox x:Name="TxtSyncOffset" Width="60" Text="0.0" Margin="8,0,0,0"/>
+                        <TextBlock Text="(+/-, örn: 0.5 veya -1.2)" FontSize="10" VerticalAlignment="Center" Margin="5,0,0,0" Foreground="Gray"/>
+                    </StackPanel>
+                    
+                    <Button x:Name="BtnStart" Margin="24,0,0,0" Padding="16,6" Click="BtnStart_Click" Style="{StaticResource AccentButtonStyle}" HorizontalAlignment="Right">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconMaterial Kind="Play" Width="18" Height="18" Foreground="#e65100" Margin="5,0,6,0"/>
+                            <TextBlock Text="Başlat" Width="35"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="BtnCancel" Margin="8,0,0,0" Padding="16,6" Click="BtnCancel_Click" IsEnabled="False" Style="{StaticResource AccentButtonStyle}">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconMaterial Kind="Cancel" Width="18" Height="18" Foreground="#e65100" Margin="5,0,6,0"/>
+                            <TextBlock Text="İptal" Width="30"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
             </StackPanel>
         </Border>
 

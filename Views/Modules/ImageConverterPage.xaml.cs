@@ -15,6 +15,7 @@ using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Formats.Bmp;
 using SixLabors.ImageSharp.Formats.Gif;
+using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using ImageSharpImage = SixLabors.ImageSharp.Image;
@@ -93,7 +94,7 @@ namespace SwissKnifeApp.Views.Modules
             var dlg = new OpenFileDialog
             {
                 Multiselect = true,
-                Filter = "Resim Dosyaları|*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.webp;*.svg;*.ico"
+                Filter = "Resim Dosyaları|*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.webp;*.svg;*.ico;*.heic;*.heif"
             };
             if (dlg.ShowDialog() == true)
             {
@@ -212,6 +213,15 @@ namespace SwissKnifeApp.Views.Modules
                     if (pngBytes == null) return;
                     image = SixLabors.ImageSharp.Image.Load<Rgba32>(pngBytes);
                 }
+
+                else if (Path.GetExtension(img.FilePath).Equals(".heic", StringComparison.OrdinalIgnoreCase) || Path.GetExtension(img.FilePath).Equals(".heif", StringComparison.OrdinalIgnoreCase))
+                {
+                    // HEIC/HEIF dosyalarını Magick.NET ile PNG'ye çevir, sonra ImageSharp ile işle
+                    var pngBytes = SwissKnifeApp.Services.MagickHeicHelper.ConvertHeicToPngBytes(img.FilePath);
+                    if (pngBytes == null)
+                        throw new NotSupportedException("HEIC/HEIF dosyası dönüştürülemedi. Magick.NET veya gerekli native kütüphaneler eksik olabilir.");
+                    image = SixLabors.ImageSharp.Image.Load<Rgba32>(pngBytes);
+                }
                 else
                 {
                     image = SixLabors.ImageSharp.Image.Load<Rgba32>(img.FilePath);
@@ -255,7 +265,7 @@ namespace SwissKnifeApp.Views.Modules
                         using var msIco = new MemoryStream();
                         image.SaveAsPng(msIco);
                         img.TargetExtension = ".ico";
-                        img.ConvertedBytes = ConvertToIco(msIco.ToArray());
+                        img.ConvertedBytes = ConvertToIco(msIco.ToArray(), image.Width, image.Height);
                     }
                     else if (format == "SVG")
                     {
@@ -278,12 +288,12 @@ namespace SwissKnifeApp.Views.Modules
                             "PNG" => new PngEncoder { CompressionLevel = PngCompressionLevel.BestCompression },
                             "BMP" => new BmpEncoder(),
                             "GIF" => new GifEncoder(),
-                            "WEBP" => new PngEncoder { CompressionLevel = PngCompressionLevel.BestCompression },
+                            "WEBP" => new WebpEncoder { Quality = Math.Clamp(quality, 0, 100) },
                             _ => new JpegEncoder { Quality = Math.Clamp(quality, 0, 100) }
                         };
                         if (format == "WEBP")
                         {
-                            outExt = ".png";
+                            outExt = ".webp";
                         }
 
                         using var ms = new MemoryStream();
@@ -351,7 +361,7 @@ namespace SwissKnifeApp.Views.Modules
             };
         }
 
-        private byte[] ConvertToIco(byte[] pngBytes)
+        private byte[] ConvertToIco(byte[] pngBytes, int width, int height)
         {
             try
             {
@@ -365,13 +375,11 @@ namespace SwissKnifeApp.Views.Modules
                 bw.Write((short)1);     // Image count
                 
                 // Image directory entry
-                using var pngMs = new MemoryStream(pngBytes);
-                using var img = System.Drawing.Image.FromStream(pngMs);
-                byte width = (byte)(img.Width >= 256 ? 0 : img.Width);
-                byte height = (byte)(img.Height >= 256 ? 0 : img.Height);
+                byte w = (byte)(width >= 256 ? 0 : width);
+                byte h = (byte)(height >= 256 ? 0 : height);
                 
-                bw.Write(width);        // Width
-                bw.Write(height);       // Height
+                bw.Write(w);            // Width
+                bw.Write(h);            // Height
                 bw.Write((byte)0);      // Color palette
                 bw.Write((byte)0);      // Reserved
                 bw.Write((short)1);     // Color planes

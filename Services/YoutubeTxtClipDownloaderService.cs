@@ -23,11 +23,21 @@ namespace SwissKnifeApp.Services
         public string? Message { get; init; }
     }
 
+    public enum YouTubeQuality
+    {
+        Best,
+        P1080,
+        P720,
+        P480,
+        AudioOnly
+    }
+
     public class YoutubeTxtClipDownloaderService
     {
         private string? _ytDlpPath;
         private string? _ffmpegPath;
         public string? CookieFilePath { get; set; } // Cookie dosyası yolu (opsiyonel)
+        public string? BrowserCookie { get; set; } // Tarayıcı adı: chrome, firefox, edge, brave, opera
 
         public async Task<List<ClipInterval>> ParseIntervalsAsync(string txtPath)
         {
@@ -96,6 +106,132 @@ namespace SwissKnifeApp.Services
             if (intervals.Count == 0) throw new InvalidOperationException("TXT içinde geçerli aralık bulunamadı.");
 
             await DownloadSegmentsAsync(youtubeUrl, intervals, outputFolder, format, formatExt, progress, log, cancellationToken);
+        }
+
+        public async Task DownloadVideosAsync(
+            string url,
+            string outputFolder,
+            YouTubeQuality quality = YouTubeQuality.Best,
+            string format = "mp4",
+            bool downloadSubs = false,
+            bool downloadThumb = false,
+            bool exportMetadata = false,
+            IProgress<ClipProgress>? progress = null,
+            IProgress<string>? log = null,
+            CancellationToken cancellationToken = default)
+        {
+            if (string.IsNullOrWhiteSpace(url)) throw new ArgumentException("URL boş", nameof(url));
+            Directory.CreateDirectory(outputFolder);
+
+            _ytDlpPath ??= await FindToolPath("yt-dlp", log, cancellationToken);
+            _ffmpegPath ??= await FindToolPath("ffmpeg", log, cancellationToken);
+
+            var args = new StringBuilder();
+            
+            // Temel ayarlar - basit ve stabil
+            args.Append("--no-warnings ");
+            args.Append("--no-check-certificate ");
+            
+            // Cookie kullanımı (opsiyonel - sadece dosya varsa)
+            if (!string.IsNullOrWhiteSpace(CookieFilePath) && File.Exists(CookieFilePath))
+            {
+                // Cookie dosyasının ilk satırını kontrol et
+                try
+                {
+                    var firstLine = File.ReadLines(CookieFilePath).FirstOrDefault() ?? "";
+                    if (firstLine.StartsWith("# Netscape") || firstLine.StartsWith("# HTTP Cookie"))
+                    {
+                        args.Append($"--cookies \"{CookieFilePath}\" ");
+                        log?.Report($"🍪 Cookie dosyası kullanılıyor: {Path.GetFileName(CookieFilePath)}");
+                    }
+                    else
+                    {
+                        log?.Report("⚠️ Cookie dosyası Netscape formatında değil, cookie olmadan devam ediliyor.");
+                    }
+                }
+                catch { }
+            }
+
+            // Ses formatları listesi
+            var audioFormats = new[] { "mp3", "m4a", "wav", "flac", "ogg", "opus", "aac" };
+            bool isAudioFormat = audioFormats.Contains(format.ToLower());
+
+            // YouTube 403 bypass - Android client ÇALIŞIYOR!
+            args.Append("--force-ipv4 ");
+            args.Append("--geo-bypass ");
+            args.Append("--retries 5 ");
+            args.Append("--extractor-args \"youtube:player_client=android\" ");
+
+            // Quality ayarı - 22 (720p) ve 18 (360p) fallback
+            string qualityArg = quality switch
+            {
+                YouTubeQuality.P1080 => "bestvideo[height<=1080]+bestaudio/22/18/best",
+                YouTubeQuality.P720 => "bestvideo[height<=720]+bestaudio/22/18/best",
+                YouTubeQuality.P480 => "bestvideo[height<=480]+bestaudio/18/best",
+                YouTubeQuality.AudioOnly => "bestaudio/best",
+                _ => "bestvideo+bestaudio/22/18/best"
+            };
+
+            if (quality == YouTubeQuality.AudioOnly || isAudioFormat)
+            {
+                // Ses indirme modu
+                args.Append("-x ");
+                string audioFmt = isAudioFormat ? format.ToLower() : "mp3";
+                args.Append($"--audio-format {audioFmt} ");
+                args.Append("--audio-quality 0 ");
+            }
+            else
+            {
+                // Video indirme modu
+                args.Append($"-f \"{qualityArg}\" ");
+                string videoFmt = format.ToLower();
+                if (videoFmt == "mp4" || videoFmt == "mkv" || videoFmt == "webm")
+                    args.Append($"--merge-output-format {videoFmt} ");
+                else
+                    args.Append("--merge-output-format mp4 ");
+            }
+
+            // Subtitles
+            if (downloadSubs)
+            {
+                args.Append("--write-subs --write-auto-subs --embed-subs --sub-lang \"tr,en.*\" ");
+            }
+
+            // Thumbnail
+            if (downloadThumb)
+            {
+                args.Append("--write-thumbnail --embed-thumbnail ");
+            }
+
+            // Metadata
+            if (exportMetadata)
+            {
+                args.Append("--write-info-json ");
+            }
+
+            // Output template (Auto-organize)
+            // %(uploader)s / %(playlist_title)s / %(title)s.%(ext)s
+            // If it's a playlist, it will create a folder.
+            args.Append($"-o \"{outputFolder}/%(uploader)s/%(playlist_title,NoPlaylist)s/%(title)s.%(ext)s\" ");
+            
+            args.Append("--no-mtime "); // Don't use server mtime
+            args.Append($"\"{url}\"");
+
+            await RunProcessAsync(
+                fileName: _ytDlpPath!,
+                arguments: args.ToString(),
+                workingDir: outputFolder,
+                onStdOut: line =>
+                {
+                    log?.Report(line);
+                    var pct = ParseYtDlpProgress(line);
+                    if (pct.HasValue)
+                    {
+                        progress?.Report(new ClipProgress { CurrentClipPercent = pct.Value, Message = line });
+                    }
+                },
+                onStdErr: line => log?.Report(line),
+                cancellationToken: cancellationToken);
         }
 
         public async Task DownloadSegmentsAsync(

@@ -776,5 +776,379 @@ namespace SwissKnifeApp.Services
         {
             return _taxRates?.OzelTuketimVergisi.Akaryakit.Select(f => f.Tanim).ToList() ?? new List<string>();
         }
+
+        #region Multi-Year Comparison
+
+        /// <summary>
+        /// Yıllara göre vergi karşılaştırması yapar
+        /// </summary>
+        public List<TaxComparisonResult> CompareMultiYear(decimal matrah, List<int> years, bool ucretGeliri)
+        {
+            var results = new List<TaxComparisonResult>();
+
+            foreach (var year in years)
+            {
+                try
+                {
+                    var result = CalculateIncomeTax(matrah, year, ucretGeliri);
+                    var efektifOran = matrah > 0 ? (result.VergiTutari / matrah * 100) : 0;
+
+                    results.Add(new TaxComparisonResult
+                    {
+                        Year = year,
+                        Matrah = matrah,
+                        VergiTutari = result.VergiTutari,
+                        NetTutar = result.NetTutar,
+                        EfektifVergiOrani = efektifOran,
+                        DilimSayisi = result.Dilimler.Count
+                    });
+                }
+                catch
+                {
+                    // Yıl verileri yoksa atla
+                }
+            }
+
+            return results;
+        }
+
+        /// <summary>
+        /// Tüm mevcut yıllar için karşılaştırma yapar
+        /// </summary>
+        public List<TaxComparisonResult> CompareAllYears(decimal matrah, bool ucretGeliri)
+        {
+            var years = GetAvailableYears("gelir");
+            return CompareMultiYear(matrah, years, ucretGeliri);
+        }
+
+        #endregion
+
+        #region Tax Planning Calculator
+
+        /// <summary>
+        /// Vergi planlaması - optimum gelir dağılımı önerir
+        /// </summary>
+        public TaxPlanningResult PlanTax(decimal yillikGelir, int year)
+        {
+            var result = new TaxPlanningResult
+            {
+                YillikGelir = yillikGelir,
+                Year = year
+            };
+
+            // Normal vergi hesabı
+            var normalTax = CalculateIncomeTax(yillikGelir, year, true);
+            result.NormalVergi = normalTax.VergiTutari;
+            result.NormalNetGelir = normalTax.NetTutar;
+
+            // Geliri 2 yıla bölme senaryosu
+            var halfIncome = yillikGelir / 2;
+            var splitTax = CalculateIncomeTax(halfIncome, year, true);
+            result.BolunmusVergi = splitTax.VergiTutari * 2;
+            result.BolunmusTasarruf = result.NormalVergi - result.BolunmusVergi;
+
+            // Vergi optimizasyonu önerileri
+            result.Recommendations = new List<string>();
+
+            if (_taxRates != null && _taxRates.GelirVergisi.ContainsKey(year.ToString()))
+            {
+                var brackets = _taxRates.GelirVergisi[year.ToString()].Ucret;
+                var currentBracket = brackets.FirstOrDefault(b => yillikGelir > b.Alt && yillikGelir <= b.Ust);
+                var lowerBracket = brackets.Where(b => b.Ust < yillikGelir).OrderByDescending(b => b.Ust).FirstOrDefault();
+
+                if (currentBracket != null && lowerBracket != null)
+                {
+                    var savingsAtLowerBracket = yillikGelir - lowerBracket.Ust;
+                    if (savingsAtLowerBracket > 0)
+                    {
+                        result.Recommendations.Add($"💡 {savingsAtLowerBracket:N0} TL'lik geliri erteleyerek %{currentBracket.Oran - lowerBracket.Oran} daha az vergi ödeyebilirsiniz.");
+                    }
+                }
+            }
+
+            result.Recommendations.Add("📌 BES katkı payları ile vergi matrahını düşürebilirsiniz.");
+            result.Recommendations.Add("📌 Eğitim ve sağlık giderleri matrahtan düşülebilir.");
+            result.Recommendations.Add("📌 Bağış ve yardımlar vergi avantajı sağlar.");
+
+            return result;
+        }
+
+        #endregion
+
+        #region Export Functions
+
+        /// <summary>
+        /// Vergi hesaplamalarını Excel'e aktarır
+        /// </summary>
+        public void ExportToExcel(TaxCalculationResult result, string vergiTuru, string outputPath)
+        {
+            using var package = new OfficeOpenXml.ExcelPackage();
+            var ws = package.Workbook.Worksheets.Add("Vergi Hesaplaması");
+
+            // Başlık
+            ws.Cells["A1"].Value = $"{vergiTuru} - Vergi Hesaplama Raporu";
+            ws.Cells["A1:D1"].Merge = true;
+            ws.Cells["A1"].Style.Font.Bold = true;
+            ws.Cells["A1"].Style.Font.Size = 16;
+
+            // Özet
+            ws.Cells["A3"].Value = "Matrah:";
+            ws.Cells["B3"].Value = result.Matrah;
+            ws.Cells["B3"].Style.Numberformat.Format = "#,##0 TL";
+
+            ws.Cells["A4"].Value = "Toplam Vergi:";
+            ws.Cells["B4"].Value = result.VergiTutari;
+            ws.Cells["B4"].Style.Numberformat.Format = "#,##0 TL";
+
+            ws.Cells["A5"].Value = "Net Tutar:";
+            ws.Cells["B5"].Value = result.NetTutar;
+            ws.Cells["B5"].Style.Numberformat.Format = "#,##0 TL";
+
+            // Dilim detayları
+            ws.Cells["A7"].Value = "Dilim";
+            ws.Cells["B7"].Value = "Matrah";
+            ws.Cells["C7"].Value = "Oran";
+            ws.Cells["D7"].Value = "Vergi";
+            ws.Cells["A7:D7"].Style.Font.Bold = true;
+
+            int row = 8;
+            foreach (var dilim in result.Dilimler)
+            {
+                ws.Cells[$"A{row}"].Value = dilim.Aciklama;
+                ws.Cells[$"B{row}"].Value = dilim.Matrah;
+                ws.Cells[$"C{row}"].Value = $"%{dilim.Oran}";
+                ws.Cells[$"D{row}"].Value = dilim.VergiTutari;
+                row++;
+            }
+
+            ws.Cells.AutoFitColumns();
+            package.SaveAs(new FileInfo(outputPath));
+        }
+
+        /// <summary>
+        /// Vergi hesaplamalarını PDF'e aktarır
+        /// </summary>
+        public void ExportToPdf(TaxCalculationResult result, string vergiTuru, string outputPath)
+        {
+            var pdf = new PdfSharp.Pdf.PdfDocument();
+            var page = pdf.AddPage();
+            var gfx = PdfSharp.Drawing.XGraphics.FromPdfPage(page);
+
+            var titleFont = new PdfSharp.Drawing.XFont("Verdana", 18);
+            var headerFont = new PdfSharp.Drawing.XFont("Verdana", 12);
+            var normalFont = new PdfSharp.Drawing.XFont("Verdana", 10);
+
+            double y = 50;
+
+            // Başlık
+            gfx.DrawString($"{vergiTuru} - Vergi Hesaplama Raporu", titleFont, PdfSharp.Drawing.XBrushes.SteelBlue, new PdfSharp.Drawing.XPoint(50, y));
+            y += 40;
+
+            gfx.DrawString($"Tarih: {DateTime.Now:dd.MM.yyyy HH:mm}", normalFont, PdfSharp.Drawing.XBrushes.Gray, new PdfSharp.Drawing.XPoint(50, y));
+            y += 30;
+
+            // Özet bilgiler
+            gfx.DrawString($"Matrah: {result.Matrah:N0} TL", headerFont, PdfSharp.Drawing.XBrushes.Black, new PdfSharp.Drawing.XPoint(50, y));
+            y += 25;
+            gfx.DrawString($"Toplam Vergi: {result.VergiTutari:N0} TL", headerFont, PdfSharp.Drawing.XBrushes.Red, new PdfSharp.Drawing.XPoint(50, y));
+            y += 25;
+            gfx.DrawString($"Net Tutar: {result.NetTutar:N0} TL", headerFont, PdfSharp.Drawing.XBrushes.Green, new PdfSharp.Drawing.XPoint(50, y));
+            y += 40;
+
+            // Dilimler
+            gfx.DrawString("Vergi Dilimleri", headerFont, PdfSharp.Drawing.XBrushes.Black, new PdfSharp.Drawing.XPoint(50, y));
+            y += 25;
+
+            foreach (var dilim in result.Dilimler)
+            {
+                gfx.DrawString($"• {dilim.Aciklama}: {dilim.VergiTutari:N0} TL", normalFont, PdfSharp.Drawing.XBrushes.DarkGray, new PdfSharp.Drawing.XPoint(60, y));
+                y += 20;
+            }
+
+            pdf.Save(outputPath);
+        }
+
+        #endregion
+
+        #region Tax Deadline Reminders
+
+        /// <summary>
+        /// Vergi takvimini ve son ödeme tarihlerini döndürür
+        /// </summary>
+        public List<TaxDeadline> GetTaxDeadlines(int year)
+        {
+            return new List<TaxDeadline>
+            {
+                // Gelir Vergisi
+                new TaxDeadline { VergiTuru = "Gelir Vergisi Beyannamesi", SonTarih = new DateTime(year, 3, 31), Aciklama = "Yıllık gelir vergisi beyannamesi" },
+                new TaxDeadline { VergiTuru = "Gelir Vergisi 1. Taksit", SonTarih = new DateTime(year, 3, 31), Aciklama = "1. taksit ödeme" },
+                new TaxDeadline { VergiTuru = "Gelir Vergisi 2. Taksit", SonTarih = new DateTime(year, 7, 31), Aciklama = "2. taksit ödeme" },
+                
+                // Kurumlar Vergisi
+                new TaxDeadline { VergiTuru = "Kurumlar Vergisi Beyannamesi", SonTarih = new DateTime(year, 4, 30), Aciklama = "Yıllık kurumlar vergisi beyannamesi" },
+                
+                // KDV
+                new TaxDeadline { VergiTuru = "Aylık KDV Beyannamesi", SonTarih = new DateTime(year, 2, 28), Aciklama = "Her ayın 28'ine kadar" },
+                
+                // Geçici Vergi
+                new TaxDeadline { VergiTuru = "1. Dönem Geçici Vergi", SonTarih = new DateTime(year, 5, 17), Aciklama = "Ocak-Şubat-Mart dönemi" },
+                new TaxDeadline { VergiTuru = "2. Dönem Geçici Vergi", SonTarih = new DateTime(year, 8, 17), Aciklama = "Nisan-Mayıs-Haziran dönemi" },
+                new TaxDeadline { VergiTuru = "3. Dönem Geçici Vergi", SonTarih = new DateTime(year, 11, 17), Aciklama = "Temmuz-Ağustos-Eylül dönemi" },
+                new TaxDeadline { VergiTuru = "4. Dönem Geçici Vergi", SonTarih = new DateTime(year + 1, 2, 17), Aciklama = "Ekim-Kasım-Aralık dönemi" },
+                
+                // MTV
+                new TaxDeadline { VergiTuru = "MTV 1. Taksit", SonTarih = new DateTime(year, 1, 31), Aciklama = "Motorlu Taşıtlar Vergisi 1. taksit" },
+                new TaxDeadline { VergiTuru = "MTV 2. Taksit", SonTarih = new DateTime(year, 7, 31), Aciklama = "Motorlu Taşıtlar Vergisi 2. taksit" },
+                
+                // Emlak Vergisi
+                new TaxDeadline { VergiTuru = "Emlak Vergisi 1. Taksit", SonTarih = new DateTime(year, 5, 31), Aciklama = "Emlak Vergisi 1. taksit" },
+                new TaxDeadline { VergiTuru = "Emlak Vergisi 2. Taksit", SonTarih = new DateTime(year, 11, 30), Aciklama = "Emlak Vergisi 2. taksit" },
+                
+                // Damga Vergisi
+                new TaxDeadline { VergiTuru = "Damga Vergisi Beyannamesi", SonTarih = new DateTime(year, 2, 28), Aciklama = "Aylık damga vergisi beyannamesi" }
+            };
+        }
+
+        /// <summary>
+        /// Yaklaşan vergi tarihlerini döndürür
+        /// </summary>
+        public List<TaxDeadline> GetUpcomingDeadlines(int daysAhead = 30)
+        {
+            var today = DateTime.Today;
+            var currentYear = today.Year;
+            var allDeadlines = GetTaxDeadlines(currentYear);
+            
+            return allDeadlines
+                .Where(d => d.SonTarih >= today && d.SonTarih <= today.AddDays(daysAhead))
+                .OrderBy(d => d.SonTarih)
+                .ToList();
+        }
+
+        #endregion
+
+        #region Historical Data Archive
+
+        private readonly string _historyPath;
+
+        /// <summary>
+        /// Vergi hesaplamasını arşive kaydeder
+        /// </summary>
+        public void SaveToHistory(TaxCalculationResult result, string vergiTuru, string aciklama = "")
+        {
+            var historyDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "TaxHistory");
+            Directory.CreateDirectory(historyDir);
+
+            var entry = new TaxHistoryEntry
+            {
+                Id = Guid.NewGuid().ToString(),
+                Tarih = DateTime.Now,
+                VergiTuru = vergiTuru,
+                Matrah = result.Matrah,
+                VergiTutari = result.VergiTutari,
+                NetTutar = result.NetTutar,
+                Aciklama = aciklama,
+                DilimlerJson = System.Text.Json.JsonSerializer.Serialize(result.Dilimler)
+            };
+
+            var historyFile = Path.Combine(historyDir, $"{DateTime.Now:yyyy-MM}.json");
+            var entries = new List<TaxHistoryEntry>();
+
+            if (File.Exists(historyFile))
+            {
+                var existing = File.ReadAllText(historyFile);
+                entries = System.Text.Json.JsonSerializer.Deserialize<List<TaxHistoryEntry>>(existing) ?? new List<TaxHistoryEntry>();
+            }
+
+            entries.Add(entry);
+            File.WriteAllText(historyFile, System.Text.Json.JsonSerializer.Serialize(entries, new JsonSerializerOptions { WriteIndented = true }));
+        }
+
+        /// <summary>
+        /// Vergi geçmişini getirir
+        /// </summary>
+        public List<TaxHistoryEntry> GetHistory(int? year = null, int? month = null)
+        {
+            var historyDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "TaxHistory");
+            if (!Directory.Exists(historyDir))
+                return new List<TaxHistoryEntry>();
+
+            var allEntries = new List<TaxHistoryEntry>();
+            var files = Directory.GetFiles(historyDir, "*.json");
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    var fileName = Path.GetFileNameWithoutExtension(file);
+                    if (year.HasValue && !fileName.StartsWith(year.Value.ToString())) continue;
+                    if (month.HasValue && year.HasValue && fileName != $"{year.Value}-{month.Value:D2}") continue;
+
+                    var content = File.ReadAllText(file);
+                    var entries = System.Text.Json.JsonSerializer.Deserialize<List<TaxHistoryEntry>>(content);
+                    if (entries != null)
+                        allEntries.AddRange(entries);
+                }
+                catch { }
+            }
+
+            return allEntries.OrderByDescending(e => e.Tarih).ToList();
+        }
+
+        /// <summary>
+        /// Belirli tarih aralığındaki geçmişi getirir
+        /// </summary>
+        public List<TaxHistoryEntry> GetHistoryByDateRange(DateTime start, DateTime end)
+        {
+            var all = GetHistory();
+            return all.Where(e => e.Tarih >= start && e.Tarih <= end).ToList();
+        }
+
+        #endregion
     }
+
+    #region Supporting Classes
+
+    public class TaxComparisonResult
+    {
+        public int Year { get; set; }
+        public decimal Matrah { get; set; }
+        public decimal VergiTutari { get; set; }
+        public decimal NetTutar { get; set; }
+        public decimal EfektifVergiOrani { get; set; }
+        public int DilimSayisi { get; set; }
+    }
+
+    public class TaxPlanningResult
+    {
+        public decimal YillikGelir { get; set; }
+        public int Year { get; set; }
+        public decimal NormalVergi { get; set; }
+        public decimal NormalNetGelir { get; set; }
+        public decimal BolunmusVergi { get; set; }
+        public decimal BolunmusTasarruf { get; set; }
+        public List<string> Recommendations { get; set; } = new();
+    }
+
+    public class TaxDeadline
+    {
+        public string VergiTuru { get; set; } = "";
+        public DateTime SonTarih { get; set; }
+        public string Aciklama { get; set; } = "";
+        public int KalanGun => (SonTarih - DateTime.Today).Days;
+        public bool IsUrgent => KalanGun <= 7;
+    }
+
+    public class TaxHistoryEntry
+    {
+        public string Id { get; set; } = "";
+        public DateTime Tarih { get; set; }
+        public string VergiTuru { get; set; } = "";
+        public decimal Matrah { get; set; }
+        public decimal VergiTutari { get; set; }
+        public decimal NetTutar { get; set; }
+        public string Aciklama { get; set; } = "";
+        public string DilimlerJson { get; set; } = "";
+    }
+
+    #endregion
 }

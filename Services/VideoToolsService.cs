@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 
 namespace SwissKnifeApp.Services
 {
-    public enum VideoFormat { Mp4, Mkv, WebM, Mov, Ts, Avi, Flv }
-    public enum VideoCodec { H264, H265, Vp9, Copy }
+    public enum VideoFormat { Mp4, Mkv, WebM, Mov, Ts, Avi, Flv, Gif }
+    public enum VideoCodec { H264, H265, Vp9, Copy, Gif }
     public enum VideoQuality { Highest, High, Medium, Low, Lossless }
     public enum ResolutionPreset { Original, P2160, P1440, P1080, P720, P480 }
 
@@ -99,7 +99,171 @@ namespace SwissKnifeApp.Services
             }
         }
 
-        // Yeni: Videodan ses çıkarma metodu
+        // ... existing methods ...
+
+        // 1. Video Stabilizasyonu
+        public async Task StabilizeAsync(
+            string input,
+            string output,
+            IProgress<double>? progress = null,
+            IProgress<string>? log = null,
+            CancellationToken ct = default)
+        {
+            await EnsureFfmpegAsync(log, ct);
+            double? duration = await ProbeDurationSecondsAsync(input, ct);
+
+            // Phase 1: Detect shakes
+            var transformFile = Path.Combine(Path.GetDirectoryName(output)!, "transforms.trf");
+            log?.Report("Sarsıntılar analiz ediliyor (Aşama 1)...");
+            await RunProcessAsync(_ffmpegPath!, $"-y -i \"{input}\" -vf vidstabdetect=result=\"{transformFile}\" -f null -", Path.GetDirectoryName(output)!, _ => {}, log!.Report, ct);
+
+            // Phase 2: Apply stabilization
+            log?.Report("Stabilizasyon uygulanıyor (Aşama 2)...");
+            var args = $"-y -i \"{input}\" -vf vidstabtransform=input=\"{transformFile}\",unsharp=5:5:0.8:3:3:0.4 -c:v libx264 -preset medium -crf 23 -c:a copy \"{output}\"";
+            await RunProcessAsync(_ffmpegPath!, args, Path.GetDirectoryName(output)!, _ => {}, line => {
+                log.Report(line);
+                var p = TryParseFfmpegProgress(line, duration);
+                if (p.HasValue) progress?.Report(p.Value);
+            }, ct);
+
+            if (File.Exists(transformFile)) File.Delete(transformFile);
+        }
+
+        // 2. GIF Oluşturucu
+        public async Task CreateGifAsync(
+            string input,
+            string output,
+            int fps = 15,
+            int width = 480,
+            IProgress<double>? progress = null,
+            IProgress<string>? log = null,
+            CancellationToken ct = default)
+        {
+            await EnsureFfmpegAsync(log, ct);
+            double? duration = await ProbeDurationSecondsAsync(input, ct);
+
+            // High quality GIF generation using a palette
+            var palette = Path.Combine(Path.GetDirectoryName(output)!, "palette.png");
+            var filters = $"fps={fps},scale={width}:-1:flags=lanczos";
+
+            log?.Report("Renk paleti oluşturuluyor...");
+            await RunProcessAsync(_ffmpegPath!, $"-y -i \"{input}\" -vf \"{filters},palettegen\" \"{palette}\"", Path.GetDirectoryName(output)!, _ => {}, log!.Report, ct);
+
+            log?.Report("GIF oluşturuluyor...");
+            var args = $"-y -i \"{input}\" -i \"{palette}\" -lavfi \"{filters} [x]; [x][1:v] paletteuse\" \"{output}\"";
+            await RunProcessAsync(_ffmpegPath!, args, Path.GetDirectoryName(output)!, _ => {}, line => {
+                log.Report(line);
+                var p = TryParseFfmpegProgress(line, duration);
+                if (p.HasValue) progress?.Report(p.Value);
+            }, ct);
+
+            if (File.Exists(palette)) File.Delete(palette);
+        }
+
+        // 3. Hız Kontrolü (Slow-mo, Timelapse)
+        public async Task ChangeSpeedAsync(
+            string input,
+            string output,
+            double multiplier, // 0.5 (slow), 2.0 (fast)
+            IProgress<double>? progress = null,
+            IProgress<string>? log = null,
+            CancellationToken ct = default)
+        {
+            await EnsureFfmpegAsync(log, ct);
+            double? duration = await ProbeDurationSecondsAsync(input, ct);
+            
+            // Video filter: setpts (inverse of multiplier)
+            // Audio filter: atempo (multiplier, but limited to 0.5-2.0, needs chaining)
+            double setpts = 1.0 / multiplier;
+            string atempo = multiplier switch {
+                < 0.5 => "atempo=0.5,atempo=" + (multiplier / 0.5).ToString("F2", CultureInfo.InvariantCulture),
+                > 2.0 => "atempo=2.0,atempo=" + (multiplier / 2.0).ToString("F2", CultureInfo.InvariantCulture),
+                _ => "atempo=" + multiplier.ToString("F2", CultureInfo.InvariantCulture)
+            };
+
+            var args = $"-y -i \"{input}\" -filter_complex \"[0:v]setpts={setpts.ToString("F2", CultureInfo.InvariantCulture)}*PTS[v];[0:a]{atempo}[a]\" -map \"[v]\" -map \"[a]\" -c:v libx264 -crf 23 \"{output}\"";
+            await RunProcessAsync(_ffmpegPath!, args, Path.GetDirectoryName(output)!, _ => {}, line => {
+                log?.Report(line);
+                var p = TryParseFfmpegProgress(line, duration / multiplier);
+                if (p.HasValue) progress?.Report(p.Value);
+            }, ct);
+        }
+
+        // 4. Video Birleştirme (Joiner)
+        public async Task ConcatenateAsync(
+            IList<string> inputs,
+            string output,
+            IProgress<double>? progress = null,
+            IProgress<string>? log = null,
+            CancellationToken ct = default)
+        {
+            await EnsureFfmpegAsync(log, ct);
+            var listFile = Path.Combine(Path.GetDirectoryName(output)!, "concat_list.txt");
+            var sb = new StringBuilder();
+            foreach (var f in inputs) sb.AppendLine($"file '{f.Replace("'", "'\\''")}'");
+            await File.WriteAllTextAsync(listFile, sb.ToString(), ct);
+
+            log?.Report("Videolar birleştiriliyor...");
+            // Use concat demuxer for same-codec videos (fastest)
+            var args = $"-y -f concat -safe 0 -i \"{listFile}\" -c copy \"{output}\"";
+            await RunProcessAsync(_ffmpegPath!, args, Path.GetDirectoryName(output)!, _ => {}, log!.Report, ct);
+
+            if (File.Exists(listFile)) File.Delete(listFile);
+        }
+        
+        // 6. Ses/Video Senkronu Düzeltme
+        public async Task FixAudioSyncAsync(
+            string input,
+            string output,
+            double offsetSeconds, // Pozitif: Ses geciktirilir, Negatif: Video geciktirilir (pratikte genellikle ses ayarlanır)
+            IProgress<double>? progress = null,
+            IProgress<string>? log = null,
+            CancellationToken ct = default)
+        {
+            await EnsureFfmpegAsync(log, ct);
+            double? duration = await ProbeDurationSecondsAsync(input, ct);
+
+            // Audio delay: -itsoffset before one of the inputs
+            string args;
+            if (offsetSeconds >= 0)
+            {
+                // Delay audio by offsetSeconds
+                args = $"-y -i \"{input}\" -itsoffset {offsetSeconds.ToString("F3", CultureInfo.InvariantCulture)} -i \"{input}\" -map 0:v -map 1:a -c copy \"{output}\"";
+            }
+            else
+            {
+                // Delay video by abs(offsetSeconds)
+                var absOffset = Math.Abs(offsetSeconds);
+                args = $"-y -itsoffset {absOffset.ToString("F3", CultureInfo.InvariantCulture)} -i \"{input}\" -i \"{input}\" -map 0:v -map 1:a -c copy \"{output}\"";
+            }
+            
+            log?.Report($"Senkron düzeltiliyor ({offsetSeconds}s kaydırma)...");
+            await RunProcessAsync(_ffmpegPath!, args, Path.GetDirectoryName(output)!, _ => {}, line => {
+                log?.Report(line);
+                var p = TryParseFfmpegProgress(line, duration);
+                if (p.HasValue) progress?.Report(p.Value);
+            }, ct);
+        }
+        public async Task BurnSubtitlesAsync(
+            string input,
+            string subFile,
+            string output,
+            IProgress<double>? progress = null,
+            IProgress<string>? log = null,
+            CancellationToken ct = default)
+        {
+            await EnsureFfmpegAsync(log, ct);
+            double? duration = await ProbeDurationSecondsAsync(input, ct);
+
+            // FFmpeg requires subtitle path to be escaped specially on Windows
+            string escapedSub = subFile.Replace("\\", "/").Replace(":", "\\:");
+            var args = $"-y -i \"{input}\" -vf \"subtitles='{escapedSub}'\" -c:v libx264 -crf 23 -c:a copy \"{output}\"";
+            await RunProcessAsync(_ffmpegPath!, args, Path.GetDirectoryName(output)!, _ => {}, line => {
+                log?.Report(line);
+                var p = TryParseFfmpegProgress(line, duration);
+                if (p.HasValue) progress?.Report(p.Value);
+            }, ct);
+        }
         public async Task ExtractAudioAsync(
             IList<string> inputFiles,
             string outputFolder,

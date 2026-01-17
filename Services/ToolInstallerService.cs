@@ -23,59 +23,41 @@ namespace SwissKnifeApp.Services
             CancellationToken cancellationToken = default)
         {
             Directory.CreateDirectory(targetDirectory);
+            bool ytdlp = await InstallYtDlpAsync(log, targetDirectory, progress, cancellationToken);
+            bool ffmpeg = await InstallFfmpegAsync(log, targetDirectory, progress, cancellationToken);
+            return ytdlp && ffmpeg;
+        }
 
-            var ytdlpPath = Path.Combine(targetDirectory, "yt-dlp.exe");
-            var ffmpegPath = Path.Combine(targetDirectory, "ffmpeg.exe");
+        public async Task<bool> InstallYtDlpAsync(IProgress<string>? log = null, string? targetDir = null, IProgress<double>? progress = null, CancellationToken ct = default)
+        {
+            targetDir ??= Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tools");
+            Directory.CreateDirectory(targetDir);
+            var path = Path.Combine(targetDir, "yt-dlp.exe");
+            
+            if (File.Exists(path)) { log?.Report("✓ yt-dlp zaten kurulu."); return true; }
 
-            bool ytdlpExists = File.Exists(ytdlpPath);
-            bool ffmpegExists = File.Exists(ffmpegPath);
-
-            if (ytdlpExists && ffmpegExists)
-            {
-                log?.Report("✓ Tüm araçlar zaten kurulu.");
+            log?.Report("yt-dlp indiriliyor...");
+            try {
+                await DownloadFileAsync("https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe", path, progress, ct);
+                log?.Report("✓ yt-dlp başarıyla kuruldu.");
                 return true;
-            }
+            } catch (Exception ex) { log?.Report($"❌ yt-dlp hatası: {ex.Message}"); return false; }
+        }
 
-            log?.Report("Gerekli araçlar indiriliyor...");
+        public async Task<bool> InstallFfmpegAsync(IProgress<string>? log = null, string? targetDir = null, IProgress<double>? progress = null, CancellationToken ct = default)
+        {
+            targetDir ??= Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Tools");
+            Directory.CreateDirectory(targetDir);
+            var path = Path.Combine(targetDir, "ffmpeg.exe");
 
-            // yt-dlp indir
-            if (!ytdlpExists)
-            {
-                log?.Report("yt-dlp indiriliyor... (~10 MB)");
-                try
-                {
-                    await DownloadFileAsync(
-                        "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe",
-                        ytdlpPath,
-                        progress,
-                        cancellationToken);
-                    log?.Report("✓ yt-dlp indirildi");
-                }
-                catch (Exception ex)
-                {
-                    log?.Report($"❌ yt-dlp indirilemedi: {ex.Message}");
-                    return false;
-                }
-            }
+            if (File.Exists(path)) { log?.Report("✓ ffmpeg zaten kurulu."); return true; }
 
-            // ffmpeg indir
-            if (!ffmpegExists)
-            {
-                log?.Report("ffmpeg indiriliyor... (~120 MB, biraz sürebilir)");
-                try
-                {
-                    await DownloadAndExtractFFmpegAsync(ffmpegPath, log, progress, cancellationToken);
-                    log?.Report("✓ ffmpeg indirildi");
-                }
-                catch (Exception ex)
-                {
-                    log?.Report($"❌ ffmpeg indirilemedi: {ex.Message}");
-                    return false;
-                }
-            }
-
-            log?.Report("✅ Kurulum tamamlandı!");
-            return true;
+            log?.Report("ffmpeg indiriliyor...");
+            try {
+                await DownloadAndExtractFFmpegAsync(path, log, progress, ct);
+                log?.Report("✓ ffmpeg başarıyla kuruldu.");
+                return true;
+            } catch (Exception ex) { log?.Report($"❌ ffmpeg hatası: {ex.Message}"); return false; }
         }
 
         private async Task DownloadFileAsync(

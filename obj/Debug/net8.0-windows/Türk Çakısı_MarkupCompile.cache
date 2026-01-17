@@ -1,5 +1,5 @@
 ﻿Türk Çakısı
-
+1.0.0.1
 
 winexe
 C#
@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WİNDOWS7_0_OR_GREATER
 C:\Users\erd5334\source\repos\SwissKnifeApp\SwissKnifeApp\App.xaml
-24465627601
+35-1991904612
 1-1562078898
-54-194603441
-3041253133081
-MainWindow.xaml;Resources\Themes\CustomStyles.xaml;Views\Modules\AudioToolsPage.xaml;Views\Modules\ClipboardHistoryPage.xaml;Views\Modules\ColorPickerPage.xaml;Views\Modules\CookieHelpWindow.xaml;Views\Modules\DataAnalysisPage.xaml;Views\Modules\EyedropperOverlayWindow.xaml;Views\Modules\FileManagerPage.xaml;Views\Modules\ImageConverterPage.xaml;Views\Modules\JsonXmlFormatterPage.xaml;Views\Modules\MoneyToTextPage.xaml;Views\Modules\PasswordEntryDialog.xaml;Views\Modules\PasswordToolsPage.xaml;Views\Modules\PdfOperationsPage.xaml;Views\Modules\PhotoCollagePage.xaml;Views\Modules\QrBarcodeToolsPage.xaml;Views\Modules\TaxCalculatorPage.xaml;Views\Modules\TaxSettingsWindow.xaml;Views\Modules\TextOperationsPage.xaml;Views\Modules\TextSummarizerPage.xaml;Views\Modules\UnitConverterPage.xaml;Views\Modules\VideoToolsPage.xaml;Views\Modules\YouTubeClipDownloaderPage.xaml;
+881832586235
+318944910531
+MainWindow.xaml;Resources\Themes\CustomStyles.xaml;Views\Modules\AudioToolsPage.xaml;Views\Modules\ClipboardHistoryPage.xaml;Views\Modules\ColorPickerPage.xaml;Views\Modules\ColorToolsPage.xaml;Views\Modules\CookieHelpWindow.xaml;Views\Modules\DataAnalysisPage.xaml;Views\Modules\DeveloperToolsPage.xaml;Views\Modules\DuplicateFileFinderPage.xaml;Views\Modules\EyedropperOverlayWindow.xaml;Views\Modules\FileCopyPage.xaml;Views\Modules\FileManagerPage.xaml;Views\Modules\ImageConverterPage.xaml;Views\Modules\ImageToolsPage.xaml;Views\Modules\JsonXmlFormatterPage.xaml;Views\Modules\MoneyToTextPage.xaml;Views\Modules\NetworkToolsPage.xaml;Views\Modules\PasswordEntryDialog.xaml;Views\Modules\PasswordToolsPage.xaml;Views\Modules\PdfOperationsPage.xaml;Views\Modules\PhotoCollagePage.xaml;Views\Modules\QrBarcodeToolsPage.xaml;Views\Modules\RegexTesterPage.xaml;Views\Modules\RestClientPage.xaml;Views\Modules\ScreenCapturePage.xaml;Views\Modules\SqlToolsPage.xaml;Views\Modules\TaxCalculatorPage.xaml;Views\Modules\TaxSettingsWindow.xaml;Views\Modules\TextOperationsPage.xaml;Views\Modules\TextSummarizerPage.xaml;Views\Modules\UnitConverterPage.xaml;Views\Modules\VideoToolsPage.xaml;Views\Modules\YouTubeClipDownloaderPage.xaml;Views\RegionSelectionWindow.xaml;
 
 False
 

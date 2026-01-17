@@ -406,9 +406,9 @@
                             <StackPanel x:Name="PnlDateTime" Grid.Row="2" Orientation="Horizontal" Margin="0,0,0,8" Visibility="Collapsed">
                                 <TextBlock Text="Format:" VerticalAlignment="Center" Width="100" FontWeight="SemiBold"/>
                                 <ComboBox x:Name="CmbDateFormat" Width="250" Margin="0,0,16,0" SelectedIndex="0">
-                                    <ComboBoxItem Content="yyyy-MM-dd (2025-10-16)"/>
-                                    <ComboBoxItem Content="yyyyMMdd (20251016)"/>
-                                    <ComboBoxItem Content="dd-MM-yyyy (16-10-2025)"/>
+                                    <ComboBoxItem Content="yyyy-MM-dd (2026-10-16)"/>
+                                    <ComboBoxItem Content="yyyyMMdd (20261016)"/>
+                                    <ComboBoxItem Content="dd-MM-yyyy (16-10-2026)"/>
                                     <ComboBoxItem Content="yyyy-MM-dd_HH-mm-ss"/>
                                 </ComboBox>
                                 <CheckBox x:Name="ChkDatePrefix" Content="Önüne Ekle" VerticalAlignment="Center" IsChecked="True"/>
@@ -458,6 +458,128 @@
                 </Grid>
             </TabItem>       
 
+            <!-- 4️⃣ DOSYA AYIRICI / BİRLEŞTİRİCİ -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="FileTree" Width="16" Height="16" Margin="0,0,6,0"/>
+                        <TextBlock Text="Ayırıcı/Birleştirici"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Style="{StaticResource Card}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="Dosya Seçimi" Style="{StaticResource SectionHeader}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                <TextBox x:Name="TxtSplitFilePath" Style="{StaticResource RoundedTextBox}" Width="450" Height="32" Margin="0,0,10,0" IsReadOnly="True"/>
+                                <Button Style="{StaticResource OutlineButtonStyle}" Click="BtnSelectSplitFile_Click" Content="Dosya Seç" Padding="10,5"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,12">
+                        <StackPanel Orientation="Horizontal">
+                            <Button Style="{StaticResource AccentButtonStyle}" Click="BtnSplitFile_Click" Content="Dosyayı Ayır" Margin="0,0,10,0" Padding="15,8"/>
+                            <Button Style="{StaticResource OutlineButtonStyle}" Click="BtnJoinFiles_Click" Content="Dosyaları Birleştir" Padding="15,8"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="2" Style="{StaticResource Card}">
+                        <TextBlock x:Name="TxtSplitStatus" Text="Hazır." Foreground="Gray" VerticalAlignment="Top"/>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <!-- 5️⃣ HASH DOĞRULAYICI -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="Fingerprint" Width="16" Height="16" Margin="0,0,6,0"/>
+                        <TextBlock Text="Hash Doğrulayıcı"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Style="{StaticResource Card}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="Dosya Seçimi" Style="{StaticResource SectionHeader}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox x:Name="TxtHashFilePath" Style="{StaticResource RoundedTextBox}" Width="450" Height="32" Margin="0,0,10,0" IsReadOnly="True"/>
+                                <Button Style="{StaticResource OutlineButtonStyle}" Click="BtnSelectHashFile_Click" Content="Dosya Seç" Padding="10,5"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="Algoritma Seçimi" Style="{StaticResource SectionHeader}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox x:Name="CmbHashAlgo" Width="120" SelectedIndex="1" Margin="0,0,10,0">
+                                    <ComboBoxItem Content="MD5"/>
+                                    <ComboBoxItem Content="SHA256" IsSelected="True"/>
+                                    <ComboBoxItem Content="SHA512"/>
+                                </ComboBox>
+                                <Button Style="{StaticResource AccentButtonStyle}" Click="BtnCalculateHash_Click" Content="Hash Hesapla" Padding="15,5"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="2" Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock Text="Hesaplanan Hash:" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <TextBox x:Name="TxtCalculatedHash" IsReadOnly="True" Margin="0,0,0,15"/>
+                            <TextBlock Text="Doğrulanacak Hash (Karşılaştır):" FontWeight="Bold" Margin="0,0,0,5"/>
+                            <TextBox x:Name="TxtVerifyHash" mah:TextBoxHelper.Watermark="Karşılaştırılacak kodu buraya yapıştırın..." Margin="0,0,0,10" TextChanged="TxtVerifyHash_TextChanged"/>
+                            <TextBlock x:Name="TxtHashResult" Text="Bekleniyor..." FontWeight="Bold" FontSize="14"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <!-- 6️⃣ BOŞ KLASÖR VE BÜYÜK DOSYA BULUCU -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="FileSearch" Width="16" Height="16" Margin="0,0,6,0"/>
+                        <TextBlock Text="Temizlik Araçları"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="15">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Style="{StaticResource Card}" Margin="0,0,0,12">
+                        <StackPanel>
+                            <TextBlock Text="Klasör Analizi" Style="{StaticResource SectionHeader}"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                <TextBox x:Name="TxtCleanupPath" Style="{StaticResource RoundedTextBox}" Width="450" Height="32" Margin="0,0,10,0" IsReadOnly="True"/>
+                                <Button Style="{StaticResource OutlineButtonStyle}" Click="BtnSelectCleanupFolder_Click" Content="Klasör Seç" Padding="10,5"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Style="{StaticResource AccentButtonStyle}" Click="BtnFindEmptyFolders_Click" Content="Boş Klasörleri Bul" Margin="0,0,10,0" Padding="12,7"/>
+                                <Button Style="{StaticResource AccentButtonStyle}" Click="BtnFindLargeFiles_Click" Content="Büyük Dosyaları Bul (>100MB)" Padding="12,7"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Row="1" Style="{StaticResource Card}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <ListBox x:Name="LstCleanupResults" BorderThickness="0" MaxHeight="400"/>
+                            <Button Grid.Row="1" x:Name="BtnDeleteSelectedCleanup" Style="{StaticResource OutlineButtonStyle}" Content="Seçili Boş Klasörleri Sil" 
+                                    HorizontalAlignment="Right" Margin="0,10,0,0" Click="BtnDeleteSelectedCleanup_Click" Visibility="Collapsed"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Page>

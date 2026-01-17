@@ -95,6 +95,24 @@
                                     <TextBlock Text="PDF Sıkıştır"/>
                                 </StackPanel>
                             </Button>
+                            <Button Click="BtnFillForm_Click" Style="{StaticResource OutlineButtonStyle}" Margin="4">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="FormTextbox" Width="20" Height="20" Margin="5,0,10,0"/>
+                                    <TextBlock Text="Form Doldur"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Click="BtnAddAnnotation_Click" Style="{StaticResource OutlineButtonStyle}" Margin="4">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="CommentTextOutline" Width="20" Height="20" Margin="5,0,10,0"/>
+                                    <TextBlock Text="Not Ekle"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Click="BtnExtractTables_Click" Style="{StaticResource OutlineButtonStyle}" Margin="4">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Table" Width="20" Height="20" Margin="5,0,10,0"/>
+                                    <TextBlock Text="Tablo Çıkar"/>
+                                </StackPanel>
+                            </Button>
                         </WrapPanel>
                     </StackPanel>
                 </Border>
@@ -110,7 +128,7 @@
                             <Button Click="BtnReadText_Click" Style="{StaticResource OutlineButtonStyle}" Margin="4">
                                 <StackPanel Orientation="Horizontal">
                                     <iconPacks:PackIconMaterial Kind="TextBoxSearchOutline" Width="20" Height="20" Margin="5,0,10,0"/>
-                                    <TextBlock Text="PDF’den Veri Oku"/>
+                                    <TextBlock Text="PDF'den Veri Oku"/>
                                 </StackPanel>
                             </Button>
                             <Button Click="BtnBatchProcess_Click" Style="{StaticResource OutlineButtonStyle}" Margin="4">
@@ -120,6 +138,54 @@
                                 </StackPanel>
                             </Button>
                         </WrapPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- OCR (Görüntüden Metin Çıkarma) -->
+                <Border Style="{StaticResource Card}" Margin="0,20,0,0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <iconPacks:PackIconMaterial Kind="TextRecognition" Width="22" Height="22" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
+                            <TextBlock Text="4. OCR (Görüntüden Metin Çıkarma)" Style="{StaticResource SectionHeader}"/>
+                        </StackPanel>
+                        
+                        <StackPanel Orientation="Horizontal" Margin="8,0,0,10">
+                            <TextBlock Text="OCR Dili:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                            <ComboBox x:Name="CmbOcrLanguage" Width="150" SelectedIndex="0">
+                                <ComboBoxItem Content="Türkçe" Tag="tr"/>
+                                <ComboBoxItem Content="English" Tag="en"/>
+                                <ComboBoxItem Content="Deutsch" Tag="de"/>
+                                <ComboBoxItem Content="Français" Tag="fr"/>
+                            </ComboBox>
+                        </StackPanel>
+                        
+                        <WrapPanel Margin="8" ItemWidth="220" ItemHeight="50">
+                            <Button x:Name="BtnOcrPdf" Click="BtnOcrPdf_Click" Style="{StaticResource AccentButtonStyle}" Margin="4">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="FilePdfBox" Width="20" Height="20" Margin="5,0,10,0"/>
+                                    <TextBlock Text="PDF'den OCR"/>
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="BtnOcrImage" Click="BtnOcrImage_Click" Style="{StaticResource OutlineButtonStyle}" Margin="4">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Image" Width="20" Height="20" Margin="5,0,10,0"/>
+                                    <TextBlock Text="Görüntüden OCR"/>
+                                </StackPanel>
+                            </Button>
+                        </WrapPanel>
+                        
+                        <!-- OCR Sonuç Alanı -->
+                        <TextBlock Text="OCR Sonucu:" FontWeight="Bold" Margin="8,10,0,5"/>
+                        <TextBox x:Name="TxtOcrResult" Height="120" IsReadOnly="True" AcceptsReturn="True" 
+                                 VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" Margin="8,0,8,8"
+                                 Background="#F5F5F5" FontFamily="Consolas"/>
+                        
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,8,8">
+                            <Button Content="Kopyala" Click="BtnCopyOcr_Click" Margin="0,0,5,0" Width="80"/>
+                            <Button Content="Kaydet" Click="BtnSaveOcr_Click" Width="80"/>
+                        </StackPanel>
+                        
+                        <ProgressBar x:Name="PbOcr" Height="5" Margin="8,0,8,5" Visibility="Collapsed"/>
                     </StackPanel>
                 </Border>
             </StackPanel>

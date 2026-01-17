@@ -1,0 +1,465 @@
+<Page x:Class="SwissKnifeApp.Views.Modules.RegexTesterPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:vm="clr-namespace:SwissKnifeApp.ViewModels"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:h="clr-namespace:SwissKnifeApp.Helpers"
+      mc:Ignorable="d" 
+      d:DesignHeight="750" d:DesignWidth="1200"
+      Background="{DynamicResource AppBackground}">
+
+    <Page.Resources>
+        <h:BoolNegationConverter x:Key="BoolNegationConverter"/>
+    </Page.Resources>
+
+    <Page.DataContext>
+        <vm:RegexTesterViewModel/>
+    </Page.DataContext>
+
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Left Panel - Main Tester -->
+        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Header -->
+                <TextBlock Text="📝 Regex Tester &amp; Builder" 
+                           FontSize="28" 
+                           FontWeight="Bold" 
+                           Foreground="{DynamicResource HeaderText}"
+                           Margin="0,0,0,10"/>
+                <TextBlock Text="Test, build ve debug regex patterns" 
+                           FontSize="14" 
+                           Foreground="{DynamicResource SecondaryText}"
+                           Margin="0,0,0,30"/>
+
+                <!-- Pattern Input -->
+                <Border Background="{DynamicResource CardBackground}" 
+                        BorderBrush="{DynamicResource CardBorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="20" 
+                        Margin="0,0,0,15">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <iconPacks:PackIconMaterial Kind="CodeBraces" 
+                                                        Width="20" Height="20" 
+                                                        Foreground="{DynamicResource AccentBrush}"
+                                                        VerticalAlignment="Center"
+                                                        Margin="0,0,8,0"/>
+                            <TextBlock Text="Regex Pattern" 
+                                       FontSize="16" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="{DynamicResource HeaderText}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <TextBox Text="{Binding RegexPattern, UpdateSourceTrigger=PropertyChanged}" 
+                                 FontFamily="Consolas"
+                                 FontSize="14"
+                                 Padding="10"
+                                 MinHeight="40"
+                                 Background="{DynamicResource InputBackground}"
+                                 Foreground="{DynamicResource InputForeground}"
+                                 BorderBrush="{DynamicResource InputBorderBrush}"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"/>
+
+                        <!-- Options -->
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <CheckBox Content="Case Insensitive" 
+                                      IsChecked="{Binding IsMatchCase, Converter={StaticResource BoolNegationConverter}}"
+                                      Foreground="{DynamicResource AppForeground}"
+                                      Margin="0,0,15,0"/>
+                            <CheckBox Content="Multiline" 
+                                      IsChecked="{Binding IsMultiline}"
+                                      Foreground="{DynamicResource AppForeground}"
+                                      Margin="0,0,15,0"/>
+                            <CheckBox Content="Singleline" 
+                                      IsChecked="{Binding IsSingleline}"
+                                      Foreground="{DynamicResource AppForeground}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Test Text -->
+                <Border Background="{DynamicResource CardBackground}" 
+                        BorderBrush="{DynamicResource CardBorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="20" 
+                        Margin="0,0,0,15">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <iconPacks:PackIconMaterial Kind="TextBox" 
+                                                        Width="20" Height="20" 
+                                                        Foreground="{DynamicResource AccentBrush}"
+                                                        VerticalAlignment="Center"
+                                                        Margin="0,0,8,0"/>
+                            <TextBlock Text="Test Text" 
+                                       FontSize="16" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="{DynamicResource HeaderText}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <TextBox Text="{Binding TestText, UpdateSourceTrigger=PropertyChanged}" 
+                                 FontFamily="Consolas"
+                                 FontSize="13"
+                                 Padding="10"
+                                 Height="150"
+                                 Background="{DynamicResource InputBackground}"
+                                 Foreground="{DynamicResource InputForeground}"
+                                 BorderBrush="{DynamicResource InputBorderBrush}"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"
+                                 VerticalScrollBarVisibility="Auto"/>
+
+                        <Button Content="🔍 Test Pattern" 
+                                Command="{Binding TestRegexCommand}"
+                                FontSize="14"
+                                FontWeight="SemiBold"
+                                Padding="0,10"
+                                Margin="0,10,0,0"
+                                Background="{DynamicResource AccentBrush}"
+                                Foreground="White"
+                                BorderThickness="0"
+                                Cursor="Hand"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Results Stats -->
+                <Grid Margin="0,0,0,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" 
+                            Background="{DynamicResource CardBackground}" 
+                            BorderBrush="{DynamicResource CardBorderBrush}" 
+                            BorderThickness="1" 
+                            CornerRadius="8" 
+                            Padding="15"
+                            Margin="0,0,5,0">
+                        <StackPanel>
+                            <TextBlock Text="Eşleşme" 
+                                       FontSize="12" 
+                                       Foreground="{DynamicResource SecondaryText}"/>
+                            <TextBlock Text="{Binding MatchCount}" 
+                                       FontSize="24" 
+                                       FontWeight="Bold" 
+                                       Foreground="#4CAF50"
+                                       Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="1" 
+                            Background="{DynamicResource CardBackground}" 
+                            BorderBrush="{DynamicResource CardBorderBrush}" 
+                            BorderThickness="1" 
+                            CornerRadius="8" 
+                            Padding="15"
+                            Margin="5,0">
+                        <StackPanel>
+                            <TextBlock Text="Süre (ms)" 
+                                       FontSize="12" 
+                                       Foreground="{DynamicResource SecondaryText}"/>
+                            <TextBlock Text="{Binding ExecutionTime}" 
+                                       FontSize="24" 
+                                       FontWeight="Bold" 
+                                       Foreground="{DynamicResource AccentBrush}"
+                                       Margin="0,5,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="2" 
+                            Background="{DynamicResource CardBackground}" 
+                            BorderBrush="{DynamicResource CardBorderBrush}" 
+                            BorderThickness="1" 
+                            CornerRadius="8" 
+                            Padding="15"
+                            Margin="5,0,0,0">
+                        <StackPanel>
+                            <Button Content="🧹 Temizle" 
+                                    Command="{Binding ClearAllCommand}"
+                                    FontSize="12"
+                                    Padding="10,8"
+                                    Background="{DynamicResource InputBorderBrush}"
+                                    Foreground="{DynamicResource AppForeground}"
+                                    BorderThickness="0"
+                                    Cursor="Hand"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- Error Message -->
+                <Border Background="#FFF3E0" 
+                        BorderBrush="#FF9800" 
+                        BorderThickness="1" 
+                        CornerRadius="4" 
+                        Padding="10"
+                        Margin="0,0,0,15">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ErrorMessage}" Value="">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <TextBlock Text="{Binding ErrorMessage}" 
+                               FontSize="12"
+                               Foreground="#E65100"
+                               TextWrapping="Wrap"/>
+                </Border>
+
+                <!-- Matches -->
+                <Border Background="{DynamicResource CardBackground}" 
+                        BorderBrush="{DynamicResource CardBorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="20" 
+                        Margin="0,0,0,15">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                            <iconPacks:PackIconMaterial Kind="CheckboxMarkedCircle" 
+                                                        Width="20" Height="20" 
+                                                        Foreground="#4CAF50"
+                                                        VerticalAlignment="Center"
+                                                        Margin="0,0,8,0"/>
+                            <TextBlock Text="Matches &amp; Groups" 
+                                       FontSize="16" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="{DynamicResource HeaderText}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <ScrollViewer MaxHeight="300" VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding Matches}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{DynamicResource InputBackground}"
+                                                BorderBrush="{DynamicResource InputBorderBrush}"
+                                                BorderThickness="1"
+                                                CornerRadius="4"
+                                                Padding="10"
+                                                Margin="0,0,0,10">
+                                            <StackPanel>
+                                                <TextBlock FontFamily="Consolas" 
+                                                           FontSize="13"
+                                                           Foreground="{DynamicResource HeaderText}">
+                                                    <Run Text="Match: " FontWeight="SemiBold"/>
+                                                    <Run Text="{Binding Value}" Foreground="#4CAF50"/>
+                                                    <Run Text=" @ "/>
+                                                    <Run Text="{Binding Index}"/>
+                                                    <Run Text=" ("/>
+                                                    <Run Text="{Binding Length}"/>
+                                                    <Run Text=" chars)"/>
+                                                </TextBlock>
+
+                                                <ItemsControl ItemsSource="{Binding Groups}" Margin="10,5,0,0">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock FontFamily="Consolas" 
+                                                                       FontSize="11"
+                                                                       Foreground="{DynamicResource SecondaryText}"
+                                                                       Margin="0,2">
+                                                                <Run Text="  Group "/>
+                                                                <Run Text="{Binding Index}"/>
+                                                                <Run Text=": "/>
+                                                                <Run Text="{Binding Value}" Foreground="{DynamicResource AccentBrush}"/>
+                                                            </TextBlock>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Border>
+
+                <!-- Replace -->
+                <Border Background="{DynamicResource CardBackground}" 
+                        BorderBrush="{DynamicResource CardBorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="20">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <iconPacks:PackIconMaterial Kind="FindReplace" 
+                                                        Width="20" Height="20" 
+                                                        Foreground="{DynamicResource AccentBrush}"
+                                                        VerticalAlignment="Center"
+                                                        Margin="0,0,8,0"/>
+                            <TextBlock Text="Replace Preview" 
+                                       FontSize="16" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="{DynamicResource HeaderText}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <TextBlock Text="Replacement String:" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource AppForeground}"
+                                   Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding ReplacementText, UpdateSourceTrigger=PropertyChanged}" 
+                                 FontFamily="Consolas"
+                                 FontSize="13"
+                                 Padding="10"
+                                 Background="{DynamicResource InputBackground}"
+                                 Foreground="{DynamicResource InputForeground}"
+                                 BorderBrush="{DynamicResource InputBorderBrush}"
+                                 Margin="0,0,0,10"/>
+
+                        <Button Content="🔄 Preview Replace" 
+                                Command="{Binding TestReplaceCommand}"
+                                FontSize="13"
+                                Padding="0,8"
+                                Background="{DynamicResource AccentBrush}"
+                                Foreground="White"
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                Margin="0,0,0,10"/>
+
+                        <TextBlock Text="Result:" 
+                                   FontSize="12" 
+                                   Foreground="{DynamicResource AppForeground}"
+                                   Margin="0,0,0,5"/>
+                        <Border Background="{DynamicResource InputBackground}"
+                                BorderBrush="{DynamicResource InputBorderBrush}"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Padding="10">
+                            <TextBlock Text="{Binding ReplaceResult}" 
+                                       FontFamily="Consolas"
+                                       FontSize="13"
+                                       Foreground="{DynamicResource AppForeground}"
+                                       TextWrapping="Wrap"
+                                       MaxHeight="150"/>
+                        </Border>
+                        
+                        <Button Content="📋 Sonucu Kopyala" 
+                                Command="{Binding CopyReplaceResultCommand}"
+                                FontSize="12"
+                                Padding="10,8"
+                                Margin="0,10,0,0"
+                                Background="{DynamicResource InputBorderBrush}"
+                                Foreground="{DynamicResource AppForeground}"
+                                BorderThickness="0"
+                                Cursor="Hand"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Right Panel - Reference -->
+        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Common Patterns -->
+                <Border Background="{DynamicResource CardBackground}" 
+                        BorderBrush="{DynamicResource CardBorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="15" 
+                        Margin="0,0,0,15">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <iconPacks:PackIconMaterial Kind="LibraryShelves" 
+                                                        Width="18" Height="18" 
+                                                        Foreground="{DynamicResource AccentBrush}"
+                                                        VerticalAlignment="Center"
+                                                        Margin="0,0,6,0"/>
+                            <TextBlock Text="Patterns" 
+                                       FontSize="14" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="{DynamicResource HeaderText}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <ItemsControl ItemsSource="{Binding CommonPatterns}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Command="{Binding DataContext.LoadPatternCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                            CommandParameter="{Binding}"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            HorizontalAlignment="Stretch"
+                                            HorizontalContentAlignment="Left"
+                                            Padding="8"
+                                            Margin="0,2"
+                                            Cursor="Hand">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        Padding="{TemplateBinding Padding}"
+                                                        CornerRadius="4">
+                                                    <TextBlock Text="{Binding Name}" 
+                                                               FontSize="12"
+                                                               Foreground="{DynamicResource AppForeground}"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="{DynamicResource InputBackground}"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!-- Cheat Sheet -->
+                <Border Background="{DynamicResource CardBackground}" 
+                        BorderBrush="{DynamicResource CardBorderBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="15">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <iconPacks:PackIconMaterial Kind="BookOpenPageVariant" 
+                                                        Width="18" Height="18" 
+                                                        Foreground="{DynamicResource AccentBrush}"
+                                                        VerticalAlignment="Center"
+                                                        Margin="0,0,6,0"/>
+                            <TextBlock Text="Cheat Sheet" 
+                                       FontSize="14" 
+                                       FontWeight="SemiBold" 
+                                       Foreground="{DynamicResource HeaderText}"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <ScrollViewer MaxHeight="500" VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding CheatSheet}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" 
+                                                   FontFamily="Consolas"
+                                                   FontSize="11"
+                                                   Foreground="{DynamicResource SecondaryText}"
+                                                   Margin="0,3"
+                                                   TextWrapping="Wrap"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

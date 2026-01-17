@@ -577,5 +577,115 @@ namespace SwissKnifeApp.Views.Modules
             }
         }
 
+        // ======================= YENİ CHART TİPLERİ ==========================
+
+        private void BtnViolinPlot_Click(object sender, RoutedEventArgs e)
+        {
+            if (cmbColumns.SelectedItem == null)
+            {
+                MessageBox.Show("Bir sütun seçiniz.");
+                return;
+            }
+
+            string column = cmbColumns.SelectedItem.ToString()!;
+            var model = _service.CreateViolinPlot(_dataTable, column);
+            oxyChart.Model = model;
+
+            txtStatsResult.Text = $"🎻 Violin Plot oluşturuldu: {column}\nGrafik, veri yoğunluğunu ve dağılımı gösterir. Geniş bölgeler daha fazla veriyi temsil eder.";
+        }
+
+        // ======================= TEKRAR EDEN VERİ TEMİZLEME ==========================
+
+        private void BtnRemoveDuplicates_Click(object sender, RoutedEventArgs e)
+        {
+            if (cmbCleaningColumn.SelectedItem == null)
+            {
+                MessageBox.Show("Bir sütun seçiniz.");
+                return;
+            }
+
+            try
+            {
+                string column = cmbCleaningColumn.SelectedItem.ToString()!;
+                int beforeCount = _dataTable.Rows.Count;
+                _dataTable = _service.RemoveDuplicates(_dataTable, column);
+                int afterCount = _dataTable.Rows.Count;
+
+                dataGrid.ItemsSource = null;
+                dataGrid.ItemsSource = _dataTable.DefaultView;
+
+                txtCleaningResult.Text = $"✅ Tekrar eden satırlar silindi: {column}\n" +
+                                        $"Silinen satır sayısı: {beforeCount - afterCount}\n" +
+                                        $"Kalan satır sayısı: {afterCount}";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("İşlem başarısız:\n" + ex.Message);
+            }
+        }
+
+        // ======================= İNTERAKTİF HTML EXPORT ==========================
+
+        private void BtnExportHtml_Click(object sender, RoutedEventArgs e)
+        {
+            if (cmbCleaningColumn.SelectedItem == null)
+            {
+                MessageBox.Show("Önce bir sütun seçin.");
+                return;
+            }
+
+            try
+            {
+                string column = cmbCleaningColumn.SelectedItem.ToString()!;
+                string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), 
+                    $"InteraktifGrafik_{DateTime.Now:yyyyMMdd_HHmmss}.html");
+                
+                _service.ExportToInteractiveHtml(_dataTable, column, "line", file);
+                
+                MessageBox.Show($"İnteraktif HTML dosyası oluşturuldu:\n{file}\n\nTarayıcıda açılacak...");
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(file) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("HTML dışa aktarılamadı:\n" + ex.Message);
+            }
+        }
+
+        private void BtnCreateDashboard_Click(object sender, RoutedEventArgs e)
+        {
+            if (_dataTable == null || _dataTable.Columns.Count == 0)
+            {
+                MessageBox.Show("Önce veri yükleyin.");
+                return;
+            }
+
+            try
+            {
+                var numericColumns = _dataTable.Columns.Cast<DataColumn>()
+                    .Where(c => _dataTable.AsEnumerable()
+                        .Any(r => double.TryParse(r[c].ToString(), out _)))
+                    .Select(c => c.ColumnName)
+                    .ToList();
+
+                if (numericColumns.Count == 0)
+                {
+                    MessageBox.Show("Sayısal sütun bulunamadı.");
+                    return;
+                }
+
+                string file = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
+                    $"Dashboard_{DateTime.Now:yyyyMMdd_HHmmss}.html");
+
+                _service.CreateDashboardHtml(_dataTable, numericColumns, file);
+
+                MessageBox.Show($"Dashboard oluşturuldu:\n{file}\n\nTarayıcıda açılacak...");
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(file) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Dashboard oluşturulamadı:\n" + ex.Message);
+            }
+        }
+
     }
 }

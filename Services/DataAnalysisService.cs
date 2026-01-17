@@ -1120,6 +1120,387 @@ namespace SwissKnifeApp.Services
 
         #endregion
 
+        #region Remove Duplicates
+
+        /// <summary>
+        /// Tekrar eden satırları belirli bir sütuna göre temizler
+        /// </summary>
+        public DataTable RemoveDuplicates(DataTable dataTable, string keyColumn)
+        {
+            var seen = new HashSet<string>();
+            var rowsToRemove = new List<DataRow>();
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                var key = row[keyColumn]?.ToString() ?? "";
+                if (seen.Contains(key))
+                {
+                    rowsToRemove.Add(row);
+                }
+                else
+                {
+                    seen.Add(key);
+                }
+            }
+
+            foreach (var row in rowsToRemove)
+            {
+                dataTable.Rows.Remove(row);
+            }
+
+            return dataTable;
+        }
+
+        /// <summary>
+        /// Tüm sütunlara göre tam duplicate satırları temizler
+        /// </summary>
+        public DataTable RemoveAllDuplicates(DataTable dataTable)
+        {
+            var seen = new HashSet<string>();
+            var rowsToRemove = new List<DataRow>();
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                var key = string.Join("|", row.ItemArray.Select(x => x?.ToString() ?? ""));
+                if (seen.Contains(key))
+                {
+                    rowsToRemove.Add(row);
+                }
+                else
+                {
+                    seen.Add(key);
+                }
+            }
+
+            foreach (var row in rowsToRemove)
+            {
+                dataTable.Rows.Remove(row);
+            }
+
+            return dataTable;
+        }
+
+        #endregion
+
+        #region Candlestick Chart (for Financial Data)
+
+        public class CandlestickData
+        {
+            public DateTime Date { get; set; }
+            public double Open { get; set; }
+            public double High { get; set; }
+            public double Low { get; set; }
+            public double Close { get; set; }
+        }
+
+        public PlotModel CreateCandlestickChart(List<CandlestickData> data, string title = "Candlestick Chart")
+        {
+            var model = new PlotModel { Title = title };
+
+            var candleSeries = new CandleStickSeries
+            {
+                Title = "OHLC",
+                IncreasingColor = OxyColors.Green,
+                DecreasingColor = OxyColors.Red,
+                DataFieldX = "Date",
+                DataFieldOpen = "Open",
+                DataFieldHigh = "High",
+                DataFieldLow = "Low",
+                DataFieldClose = "Close"
+            };
+
+            foreach (var item in data)
+            {
+                candleSeries.Items.Add(new HighLowItem(
+                    DateTimeAxis.ToDouble(item.Date),
+                    item.High,
+                    item.Low,
+                    item.Open,
+                    item.Close
+                ));
+            }
+
+            model.Series.Add(candleSeries);
+            model.Axes.Add(new DateTimeAxis { Position = AxisPosition.Bottom, Title = "Tarih" });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Fiyat" });
+
+            return model;
+        }
+
+        public PlotModel CreateCandlestickChartFromTable(DataTable dataTable, 
+            string dateColumn, string openColumn, string highColumn, string lowColumn, string closeColumn)
+        {
+            var data = new List<CandlestickData>();
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                if (DateTime.TryParse(row[dateColumn]?.ToString(), out var date) &&
+                    double.TryParse(row[openColumn]?.ToString(), out var open) &&
+                    double.TryParse(row[highColumn]?.ToString(), out var high) &&
+                    double.TryParse(row[lowColumn]?.ToString(), out var low) &&
+                    double.TryParse(row[closeColumn]?.ToString(), out var close))
+                {
+                    data.Add(new CandlestickData { Date = date, Open = open, High = high, Low = low, Close = close });
+                }
+            }
+
+            return CreateCandlestickChart(data, "Fiyat Grafiği");
+        }
+
+        #endregion
+
+        #region Violin Plot (Simulated with Box + Density)
+
+        /// <summary>
+        /// Violin plot simülasyonu - Box plot + yoğunluk çizgisi
+        /// </summary>
+        public PlotModel CreateViolinPlot(DataTable dataTable, string columnName)
+        {
+            var values = dataTable.AsEnumerable()
+                .Select(r => r[columnName])
+                .Where(v => double.TryParse(v?.ToString(), out _))
+                .Select(v => Convert.ToDouble(v))
+                .OrderBy(x => x)
+                .ToList();
+
+            if (values.Count == 0)
+                return new PlotModel { Title = "Veri bulunamadı" };
+
+            var model = new PlotModel { Title = $"{columnName} - Violin Plot" };
+
+            // Box plot kısmı
+            double min = values.Min();
+            double max = values.Max();
+            double q1 = GetPercentile(values, 25);
+            double median = GetPercentile(values, 50);
+            double q3 = GetPercentile(values, 75);
+            double iqr = q3 - q1;
+            double lowerWhisker = Math.Max(min, q1 - 1.5 * iqr);
+            double upperWhisker = Math.Min(max, q3 + 1.5 * iqr);
+
+            // Kernel Density Estimation (basit histogram bazlı)
+            int bins = 30;
+            double binSize = (max - min) / bins;
+            var density = new double[bins];
+            foreach (var v in values)
+            {
+                int idx = Math.Min((int)((v - min) / binSize), bins - 1);
+                if (idx >= 0) density[idx]++;
+            }
+
+            // Normalize density
+            double maxDensity = density.Max();
+            for (int i = 0; i < bins; i++)
+                density[i] = density[i] / maxDensity * 0.4; // Width of violin
+
+            // Sol taraf (violin shape)
+            var leftArea = new AreaSeries { Title = "Yoğunluk", Fill = OxyColor.FromAColor(100, OxyColors.SteelBlue) };
+            for (int i = 0; i < bins; i++)
+            {
+                double y = min + i * binSize + binSize / 2;
+                leftArea.Points.Add(new DataPoint(-density[i], y));
+            }
+            for (int i = bins - 1; i >= 0; i--)
+            {
+                double y = min + i * binSize + binSize / 2;
+                leftArea.Points.Add(new DataPoint(density[i], y));
+            }
+            model.Series.Add(leftArea);
+
+            // Box overlay
+            var boxLine = new LineSeries { Color = OxyColors.Black, StrokeThickness = 2 };
+            boxLine.Points.Add(new DataPoint(-0.1, q1));
+            boxLine.Points.Add(new DataPoint(0.1, q1));
+            boxLine.Points.Add(new DataPoint(0.1, q3));
+            boxLine.Points.Add(new DataPoint(-0.1, q3));
+            boxLine.Points.Add(new DataPoint(-0.1, q1));
+            model.Series.Add(boxLine);
+
+            // Median line
+            var medianLine = new LineSeries { Color = OxyColors.White, StrokeThickness = 3 };
+            medianLine.Points.Add(new DataPoint(-0.1, median));
+            medianLine.Points.Add(new DataPoint(0.1, median));
+            model.Series.Add(medianLine);
+
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Minimum = -0.6, Maximum = 0.6, IsAxisVisible = false });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = columnName });
+
+            return model;
+        }
+
+        #endregion
+
+        #region Interactive HTML Export (Plotly.js)
+
+        /// <summary>
+        /// Plotly.js kullanarak interaktif HTML chart oluşturur
+        /// </summary>
+        public void ExportToInteractiveHtml(DataTable dataTable, string columnName, string chartType, string outputPath)
+        {
+            var values = dataTable.AsEnumerable()
+                .Select(r => r[columnName])
+                .Where(v => double.TryParse(v?.ToString(), out _))
+                .Select(v => Convert.ToDouble(v))
+                .ToList();
+
+            var labels = Enumerable.Range(1, values.Count).Select(i => i.ToString()).ToList();
+
+            string plotlyType = chartType.ToLower() switch
+            {
+                "bar" or "bar grafiği" => "bar",
+                "line" or "çizgi grafiği" => "scatter",
+                "pie" or "pasta grafiği" => "pie",
+                "histogram" => "histogram",
+                _ => "scatter"
+            };
+
+            string traceData = plotlyType == "pie"
+                ? $"labels: [{string.Join(",", labels.Select(l => $"'{l}'"))}], values: [{string.Join(",", values)}]"
+                : $"x: [{string.Join(",", labels.Select(l => $"'{l}'"))}], y: [{string.Join(",", values)}]";
+
+            string html = $@"
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{columnName} - Interaktif Grafik</title>
+    <script src='https://cdn.plot.ly/plotly-2.27.0.min.js'></script>
+    <style>
+        body {{ font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }}
+        h1 {{ color: #333; }}
+        #chart {{ width: 100%; height: 600px; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }}
+    </style>
+</head>
+<body>
+    <h1>📊 {columnName}</h1>
+    <div id='chart'></div>
+    <script>
+        var trace = {{
+            {traceData},
+            type: '{plotlyType}',
+            mode: 'lines+markers',
+            marker: {{ color: '#3498db' }}
+        }};
+        var layout = {{
+            title: '{columnName} Analizi',
+            xaxis: {{ title: 'Sıra' }},
+            yaxis: {{ title: 'Değer' }},
+            hovermode: 'closest'
+        }};
+        Plotly.newPlot('chart', [trace], layout, {{responsive: true}});
+    </script>
+</body>
+</html>";
+
+            File.WriteAllText(outputPath, html);
+        }
+
+        #endregion
+
+        #region Dashboard Creator
+
+        /// <summary>
+        /// Birden fazla grafik içeren HTML dashboard oluşturur
+        /// </summary>
+        public void CreateDashboardHtml(DataTable dataTable, List<string> numericColumns, string outputPath)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine(@"
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Analysis Dashboard</title>
+    <script src='https://cdn.plot.ly/plotly-2.27.0.min.js'></script>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; padding: 20px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); min-height: 100vh; }
+        h1 { color: #fff; text-align: center; margin-bottom: 30px; }
+        .dashboard { display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 20px; }
+        .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .card h3 { margin: 0 0 15px 0; color: #333; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .chart { height: 300px; }
+        .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+        .stat { background: #f8f9fa; padding: 10px; border-radius: 8px; text-align: center; }
+        .stat-value { font-size: 24px; font-weight: bold; color: #3498db; }
+        .stat-label { font-size: 12px; color: #666; }
+    </style>
+</head>
+<body>
+    <h1>📊 Data Analysis Dashboard</h1>
+    <div class='dashboard'>");
+
+            int chartId = 0;
+            foreach (var column in numericColumns.Take(6)) // Max 6 charts
+            {
+                var values = dataTable.AsEnumerable()
+                    .Select(r => r[column])
+                    .Where(v => double.TryParse(v?.ToString(), out _))
+                    .Select(v => Convert.ToDouble(v))
+                    .ToList();
+
+                if (values.Count == 0) continue;
+
+                double avg = values.Average();
+                double min = values.Min();
+                double max = values.Max();
+
+                sb.AppendLine($@"
+        <div class='card'>
+            <h3>{column}</h3>
+            <div id='chart{chartId}' class='chart'></div>
+            <div class='stats'>
+                <div class='stat'><div class='stat-value'>{avg:F2}</div><div class='stat-label'>Ortalama</div></div>
+                <div class='stat'><div class='stat-value'>{min:F2}</div><div class='stat-label'>Min</div></div>
+                <div class='stat'><div class='stat-value'>{max:F2}</div><div class='stat-label'>Max</div></div>
+            </div>
+        </div>");
+
+                chartId++;
+            }
+
+            sb.AppendLine(@"
+    </div>
+    <script>");
+
+            chartId = 0;
+            foreach (var column in numericColumns.Take(6))
+            {
+                var values = dataTable.AsEnumerable()
+                    .Select(r => r[column])
+                    .Where(v => double.TryParse(v?.ToString(), out _))
+                    .Select(v => Convert.ToDouble(v))
+                    .ToList();
+
+                if (values.Count == 0) continue;
+
+                string valuesStr = string.Join(",", values);
+
+                sb.AppendLine($@"
+        Plotly.newPlot('chart{chartId}', [{{
+            y: [{valuesStr}],
+            type: 'scatter',
+            mode: 'lines',
+            fill: 'tozeroy',
+            line: {{ color: 'rgba(52, 152, 219, 0.8)' }},
+            fillcolor: 'rgba(52, 152, 219, 0.2)'
+        }}], {{
+            margin: {{ t: 10, r: 10, b: 30, l: 40 }},
+            xaxis: {{ showgrid: false }},
+            yaxis: {{ showgrid: true, gridcolor: '#eee' }}
+        }}, {{ responsive: true }});");
+
+                chartId++;
+            }
+
+            sb.AppendLine(@"
+    </script>
+</body>
+</html>");
+
+            File.WriteAllText(outputPath, sb.ToString());
+        }
+
+        #endregion
+
         #region Pagination
 
         public DataTable GetPagedData(DataTable dataTable, int pageNumber, int pageSize)

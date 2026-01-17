@@ -342,7 +342,7 @@
                                  Margin="0,0,0,5"/>
                         
                         <TextBlock x:Name="TxtRentExemptionAmount" 
-                                  Text="(2025: 47.000 TL)" 
+                                  Text="(2026: 50.000 TL)" 
                                   FontSize="11" 
                                   Foreground="{DynamicResource MahApps.Brushes.Gray2}"
                                   Margin="25,0,0,15"/>
@@ -484,7 +484,8 @@
                         <ComboBox x:Name="CmbMtvYear" 
                                  mah:TextBoxHelper.Watermark="Vergi Yılı"
                                  Margin="0,0,0,15">
-                            <ComboBoxItem Content="2025" Tag="2025" IsSelected="True"/>
+                            <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
+                            <ComboBoxItem Content="2025" Tag="2025"/>
                         </ComboBox>
 
                         <ComboBox x:Name="CmbVehicleType" 
@@ -620,7 +621,8 @@
                         <ComboBox x:Name="CmbCapitalGainYear" 
                                  mah:TextBoxHelper.Watermark="Vergi Yılı"
                                  Margin="0,0,0,15">
-                            <ComboBoxItem Content="2025" Tag="2025" IsSelected="True"/>
+                            <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
+                            <ComboBoxItem Content="2025" Tag="2025"/>
                         </ComboBox>
 
                         <ComboBox x:Name="CmbAssetType" 
@@ -709,7 +711,8 @@
                         <ComboBox x:Name="CmbLuxuryYear" 
                                  mah:TextBoxHelper.Watermark="Vergi Yılı"
                                  Margin="0,0,0,15">
-                            <ComboBoxItem Content="2025" Tag="2025" IsSelected="True"/>
+                            <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
+                            <ComboBoxItem Content="2025" Tag="2025"/>
                         </ComboBox>
 
                         <mah:NumericUpDown x:Name="NumHouseValue"
@@ -720,7 +723,7 @@
                                           mah:TextBoxHelper.Watermark="Konut Değeri (TL)"
                                           Margin="0,0,0,15"/>
 
-                        <TextBlock Text="💡 2025 yılı için eşik değer: 12.500.000 TL" 
+                        <TextBlock Text="💡 2026 yılı için eşik değer: 13.000.000 TL" 
                                   FontSize="11" 
                                   Foreground="{DynamicResource MahApps.Brushes.Gray2}"
                                   TextWrapping="Wrap"
@@ -803,7 +806,8 @@
                         <ComboBox x:Name="CmbPropertyYear" 
                                  mah:TextBoxHelper.Watermark="Vergi Yılı"
                                  Margin="0,0,0,15">
-                            <ComboBoxItem Content="2025" Tag="2025" IsSelected="True"/>
+                            <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
+                            <ComboBoxItem Content="2025" Tag="2025"/>
                         </ComboBox>
 
                         <ComboBox x:Name="CmbPropertyType" 
@@ -891,7 +895,7 @@
                                   Foreground="{DynamicResource MahApps.Brushes.Gray2}"
                                   TextWrapping="Wrap"
                                   Margin="0,0,0,15">
-                            <Run Text="💡 2025 ÖTV Oranları:"/>
+                            <Run Text="💡 2026 ÖTV Oranları:"/>
                             <LineBreak/>
                             <Run Text="Benzin: 5.17 TL/litre"/>
                             <LineBreak/>
@@ -948,7 +952,8 @@
                         <ComboBox x:Name="CmbInheritanceYear" 
                                  mah:TextBoxHelper.Watermark="Vergi Yılı"
                                  Margin="0,0,0,15">
-                            <ComboBoxItem Content="2025" Tag="2025" IsSelected="True"/>
+                            <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
+                            <ComboBoxItem Content="2025" Tag="2025"/>
                         </ComboBox>
 
                         <ComboBox x:Name="CmbHeirType" 
@@ -970,7 +975,7 @@
                                   Foreground="{DynamicResource MahApps.Brushes.Gray2}"
                                   TextWrapping="Wrap"
                                   Margin="0,0,0,15">
-                            <Run Text="💡 2025 İstisna Tutarları:"/>
+                            <Run Text="💡 2026 İstisna Tutarları:"/>
                             <LineBreak/>
                             <Run Text="Eş ve Çocuklar: 440.000 TL"/>
                             <LineBreak/>
@@ -1058,7 +1063,8 @@
                         <ComboBox x:Name="CmbDelayYear" 
                                  mah:TextBoxHelper.Watermark="Yıl"
                                  Margin="0,0,0,15">
-                            <ComboBoxItem Content="2025" Tag="2025" IsSelected="True"/>
+                            <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
+                            <ComboBoxItem Content="2025" Tag="2025"/>
                             <ComboBoxItem Content="2024" Tag="2024"/>
                         </ComboBox>
 
@@ -1111,6 +1117,229 @@
                                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Toplam Borç:" FontSize="16" FontWeight="Bold" Margin="0,10,0,5"/>
                                 <TextBlock x:Name="TxtDelayTotal" Grid.Row="2" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#DC3545" Margin="0,10,0,5"/>
                             </Grid>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- YIL KARŞILAŞTIRMA -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="ChartBoxPlusOutline" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
+                        <TextBlock Text="Yıl Karşılaştırma"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="20">
+                        <mah:NumericUpDown x:Name="NumCompareMatrah"
+                                          Minimum="0"
+                                          Maximum="999999999"
+                                          Interval="10000"
+                                          StringFormat="N2"
+                                          mah:TextBoxHelper.Watermark="Vergi Matrahı (TL)"
+                                          Margin="0,0,0,15"/>
+
+                        <CheckBox x:Name="ChkCompareWage" 
+                                 Content="Ücret Geliri"
+                                 IsChecked="True"
+                                 Margin="0,0,0,15"/>
+
+                        <Button Click="BtnCompareYears_Click" Style="{StaticResource AccentButtonStyle}" Height="40" Margin="0,0,0,20">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="ChartBoxPlusOutline" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
+                                <TextBlock Text="Yılları Karşılaştır"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Border x:Name="CompareResult" 
+                               Visibility="Collapsed"
+                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
+                               BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
+                               BorderThickness="2"
+                               CornerRadius="8"
+                               Padding="20">
+                            <StackPanel>
+                                <TextBlock Text="Yıllara Göre Vergi Karşılaştırması" 
+                                          FontSize="18" 
+                                          FontWeight="Bold"
+                                          Margin="0,0,0,15"/>
+                                <DataGrid x:Name="CompareGrid" 
+                                         AutoGenerateColumns="False"
+                                         CanUserAddRows="False"
+                                         IsReadOnly="True"
+                                         MaxHeight="300">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="Yıl" Binding="{Binding Year}" Width="80"/>
+                                        <DataGridTextColumn Header="Matrah" Binding="{Binding Matrah, StringFormat=N0}" Width="120"/>
+                                        <DataGridTextColumn Header="Vergi" Binding="{Binding VergiTutari, StringFormat=N0}" Width="120"/>
+                                        <DataGridTextColumn Header="Net" Binding="{Binding NetTutar, StringFormat=N0}" Width="120"/>
+                                        <DataGridTextColumn Header="Efektif Oran %" Binding="{Binding EfektifVergiOrani, StringFormat=N2}" Width="100"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- VERGİ PLANLAMA -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="Lightbulb" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
+                        <TextBlock Text="Vergi Planlama"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="20">
+                        <ComboBox x:Name="CmbPlanYear" 
+                                 mah:TextBoxHelper.Watermark="Vergi Yılı"
+                                 Margin="0,0,0,15">
+                            <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
+                            <ComboBoxItem Content="2025" Tag="2025"/>
+                            <ComboBoxItem Content="2024" Tag="2024"/>
+                        </ComboBox>
+
+                        <mah:NumericUpDown x:Name="NumPlanIncome"
+                                          Minimum="0"
+                                          Maximum="999999999"
+                                          Interval="10000"
+                                          StringFormat="N2"
+                                          mah:TextBoxHelper.Watermark="Yıllık Brüt Gelir (TL)"
+                                          Margin="0,0,0,15"/>
+
+                        <Button Click="BtnPlanTax_Click" Style="{StaticResource AccentButtonStyle}" Height="40" Margin="0,0,0,20">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="Lightbulb" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
+                                <TextBlock Text="Planlama Analizi Yap"/>
+                            </StackPanel>
+                        </Button>
+
+                        <Border x:Name="PlanResult" 
+                               Visibility="Collapsed"
+                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
+                               BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
+                               BorderThickness="2"
+                               CornerRadius="8"
+                               Padding="20">
+                            <StackPanel>
+                                <TextBlock Text="Vergi Planlama Sonuçları" 
+                                          FontSize="18" 
+                                          FontWeight="Bold"
+                                          Margin="0,0,0,15"/>
+                                
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Yıllık Gelir:" FontSize="14" Margin="0,5"/>
+                                    <TextBlock x:Name="TxtPlanIncome" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
+
+                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Normal Vergi:" FontSize="14" Margin="0,5"/>
+                                    <TextBlock x:Name="TxtPlanNormalTax" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#DC3545" Margin="0,5"/>
+
+                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Gelir Bölünerek Vergi:" FontSize="14" Margin="0,5"/>
+                                    <TextBlock x:Name="TxtPlanSplitTax" Grid.Row="2" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
+
+                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="💰 Potansiyel Tasarruf:" FontSize="16" FontWeight="Bold" Margin="0,10,0,5"/>
+                                    <TextBlock x:Name="TxtPlanSavings" Grid.Row="3" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#28A745" Margin="0,10,0,5"/>
+                                </Grid>
+
+                                <Separator Margin="0,15"/>
+
+                                <TextBlock Text="💡 Öneriler:" FontSize="14" FontWeight="Bold" Margin="0,10,0,10"/>
+                                <ItemsControl x:Name="PlanRecommendations">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}" TextWrapping="Wrap" Foreground="{DynamicResource MahApps.Brushes.Gray2}" Margin="0,3"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- VERGİ TAKVİMİ -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="CalendarAlert" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
+                        <TextBlock Text="Vergi Takvimi"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="20">
+                        <TextBlock Text="📅 Yaklaşan Vergi Tarihleri" FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
+                        
+                        <ItemsControl x:Name="DeadlineList">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="0,5" Padding="15" CornerRadius="8">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Gray10}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsUrgent}" Value="True">
+                                                        <Setter Property="Background" Value="#FFEBEE"/>
+                                                        <Setter Property="BorderBrush" Value="#DC3545"/>
+                                                        <Setter Property="BorderThickness" Value="2"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="{Binding VergiTuru}" FontSize="14" FontWeight="SemiBold"/>
+                                                <TextBlock Text="{Binding Aciklama}" FontSize="12" Foreground="{DynamicResource MahApps.Brushes.Gray2}"/>
+                                                <TextBlock FontSize="11" Foreground="{DynamicResource MahApps.Brushes.Gray4}">
+                                                    <Run Text="Son Tarih: "/>
+                                                    <Run Text="{Binding SonTarih, StringFormat=dd.MM.yyyy}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                                <TextBlock FontSize="24" FontWeight="Bold" HorizontalAlignment="Center">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock">
+                                                            <Setter Property="Text" Value="{Binding KalanGun}"/>
+                                                            <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Gray2}"/>
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsUrgent}" Value="True">
+                                                                    <Setter Property="Foreground" Value="#DC3545"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                                <TextBlock Text="gün" FontSize="11" Foreground="{DynamicResource MahApps.Brushes.Gray4}" HorizontalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <Border Margin="0,20,0,0" Background="#E8F5E9" CornerRadius="8" Padding="15">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="FileExcel" Width="24" Height="24" Foreground="#28A745" Margin="0,0,15,0"/>
+                                <Button Click="BtnExportTaxReport_Click" Style="{StaticResource AccentButtonStyle}" Height="35">
+                                    <TextBlock Text="Vergi Raporunu Excel'e Aktar"/>
+                                </Button>
+                            </StackPanel>
                         </Border>
                     </StackPanel>
                 </ScrollViewer>

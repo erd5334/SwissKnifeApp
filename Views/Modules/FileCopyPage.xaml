@@ -13,6 +13,7 @@
     <Page.Resources>
         <SolidColorBrush x:Key="AccentBrush" Color="#FF5722"/>
         <SolidColorBrush x:Key="AccentBrush2" Color="#E64A19"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Page.Resources>
 
     <Grid Margin="20">
@@ -24,7 +25,7 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,12">
             <iconPacks:PackIconMaterial Kind="ContentCopy" Width="28" Height="28" Foreground="{StaticResource AccentBrush}"/>
             <TextBlock Text="Dosya Kopyalayıcısı" FontSize="20" FontWeight="Bold" Margin="8,0,0,0"/>
-            <TextBlock Text=" • Dosyalarınızı Kopyalayın" Foreground="#607D8B" Margin="6,4,0,0"/>
+            <TextBlock Text=" • Dosyalarınızı Kopyalayın (FTP/SFTP Destekli)" Foreground="#607D8B" Margin="6,4,0,0"/>
         </StackPanel>
         <TabControl>
             <!-- Toplu Kopya Modu -->
@@ -43,15 +44,34 @@
                     <!-- Source -->
                     <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,8">
                         <Label Content="Kaynak:" Width="80" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding SourceFolder, UpdateSourceTrigger=PropertyChanged}" MinWidth="600"/>
+                        <TextBox Text="{Binding SourceFolder, UpdateSourceTrigger=PropertyChanged}" MinWidth="500"/>
                         <Button Content="Gözat" Command="{Binding BrowseSourceCommand}" Margin="8,0,0,0"/>
                     </StackPanel>
 
-                    <!-- Target -->
-                    <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,0,0,8">
-                        <Label Content="Hedef:" Width="80" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding TargetFolder, UpdateSourceTrigger=PropertyChanged}" MinWidth="600"/>
-                        <Button Content="Gözat" Command="{Binding BrowseTargetCommand}" Margin="8,0,0,0"/>
+                    <!-- Target & Protocol -->
+                    <StackPanel Grid.Row="1" Margin="0,0,0,8">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                            <Label Content="Hedef:" Width="80" VerticalAlignment="Center"/>
+                            <TextBox Text="{Binding TargetFolder, UpdateSourceTrigger=PropertyChanged}" MinWidth="500"/>
+                            <Button Content="Gözat" Command="{Binding BrowseTargetCommand}" Margin="8,0,0,0"/>
+                        </StackPanel>
+                        
+                        <StackPanel Orientation="Horizontal" Margin="80,4,0,0">
+                            <Label Content="Protokol:" VerticalAlignment="Center"/>
+                            <ComboBox ItemsSource="{Binding Protocols}" SelectedItem="{Binding Protocol}" Width="80" Margin="4,0"/>
+                            
+                            <StackPanel Orientation="Horizontal" Visibility="{Binding IsNetworkProtocol, Converter={StaticResource BoolToVis}}"> 
+                                <Label Content="Host:" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                <TextBox Text="{Binding FtpHost}" Width="120" Margin="4,0"/>
+                                <Label Content="Port:" VerticalAlignment="Center"/>
+                                <TextBox Text="{Binding FtpPort}" Width="40" Margin="4,0"/>
+                                <Label Content="User:" VerticalAlignment="Center"/>
+                                <TextBox Text="{Binding FtpUser}" Width="80" Margin="4,0"/>
+                                <Label Content="Pass:" VerticalAlignment="Center"/>
+                                <TextBox Text="{Binding FtpPassword}" Width="80" Margin="4,0"/>
+                                <Button Content="Test Et" Command="{Binding TestConnectionCommand}" Margin="8,0,0,0"/>
+                            </StackPanel>
+                        </StackPanel>
                     </StackPanel>
 
                     <!-- Extensions -->
@@ -75,7 +95,7 @@
                             <CheckBox Content="Son klasörleri hatırla" IsChecked="{Binding RememberLast}" Margin="8,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                            <Button Content="Başlat" Command="{Binding StartCommand}" Margin="0,0,8,0"/>
+                            <Button Content="Başlat" Command="{Binding StartCommand}" Margin="0,0,8,0" Style="{StaticResource AccentButtonStyle}"/>
                             <Button Content="Durdur" Command="{Binding CancelCommand}"/>
                         </StackPanel>
                     </DockPanel>
@@ -83,7 +103,9 @@
                     <!-- Progress -->
                     <StackPanel Grid.Row="4" Margin="0,0,0,8">
                         <ProgressBar Minimum="0" Maximum="{Binding TotalFiles}" Value="{Binding CopiedFiles}" Height="18"/>
-                        <TextBlock>
+                        <TextBlock HorizontalAlignment="Center" Margin="0,4,0,0">
+                     <Run Text="{Binding StatusMessage}"/>
+                     <Run Text=" | "/>
                      <Run Text="Dosyalar: "/>
                      <Run Text="{Binding CopiedFiles}"/>
                      <Run Text=" / "/>
@@ -109,7 +131,7 @@
                     <!-- Status Bar -->
                     <StatusBar Grid.Row="6">
                         <StatusBarItem>
-                            <TextBlock Text="{Binding IsBusy}"/>
+                            <TextBlock Text="{Binding IsBusy, StringFormat='Meşgul: {0}'}"/>
                         </StatusBarItem>
                     </StatusBar>
                 </Grid>
@@ -128,21 +150,20 @@
                     <!-- Kaynak Satırı -->
                     <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,8">
                         <Label Content="Kaynak:" Width="80" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding SourceFolder, UpdateSourceTrigger=PropertyChanged}" MinWidth="600"/>
+                        <TextBox Text="{Binding SourceFolder, UpdateSourceTrigger=PropertyChanged}" MinWidth="500"/>
                         <Button Content="Gözat" Command="{Binding BrowseSourceCommand}" Margin="8,0,0,0"/>
                         <Button Content="Listele" Command="{Binding LoadListCommand}" Margin="8,0,0,0"/>
                         <Label Content="Filtre:" VerticalAlignment="Center" Margin="20,0,0,0"/>
-                        <TextBox Text="{Binding FileFilter, UpdateSourceTrigger=PropertyChanged}" Width="200" Margin="4,0,0,0" ToolTip="Dosya adı veya yoluna göre filtrele"/>
+                        <TextBox Text="{Binding FileFilter, UpdateSourceTrigger=PropertyChanged}" Width="150" Margin="4,0,0,0" ToolTip="Dosya adı veya yoluna göre filtrele"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,0,0,8">
                         <Label Content="Hedef:" Width="80" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding TargetFolder, UpdateSourceTrigger=PropertyChanged}" MinWidth="600"/>
+                        <TextBox Text="{Binding TargetFolder, UpdateSourceTrigger=PropertyChanged}" MinWidth="500"/>
                         <Button Content="Gözat" Command="{Binding BrowseTargetCommand}" Margin="8,0,0,0"/>
-                        <CheckBox Content="Üzerine yaz" IsChecked="{Binding Overwrite}" Margin="8,0"/>
-                        <Label Content="İş parçacığı:" VerticalAlignment="Center" Margin="12,0,0,0"/>
-                        <TextBox Text="{Binding WorkerCount}" Width="60" Margin="4,0"/>
-                        <Button Content="Seçilenleri Kopyala" Command="{Binding CopySelectedCommand}" Margin="12,0,0,0"/>
+                        <Button Content="Eksikleri Bul" Command="{Binding ShowMissingFilesCommand}" Margin="8,0,0,0" ToolTip="Hedefte olmayan dosyaları seçer"/>
+                        
+                        <Button Content="Seçilenleri Kopyala" Command="{Binding CopySelectedCommand}" Margin="20,0,0,0" Style="{StaticResource AccentButtonStyle}"/>
                         <Button Content="Durdur" Command="{Binding CancelCommand}" Margin="8,0,0,0"/>
                     </StackPanel>
 
@@ -159,7 +180,9 @@
                     <!-- Durum / İlerleme -->
                     <StackPanel Grid.Row="3" Margin="0,8,0,0">
                         <ProgressBar Minimum="0" Maximum="{Binding TotalFiles}" Value="{Binding CopiedFiles}" Height="18"/>
-                        <TextBlock>
+                        <TextBlock HorizontalAlignment="Center">
+                     <Run Text="{Binding StatusMessage}"/>
+                     <Run Text=" | "/>
                      <Run Text="Dosyalar: "/>
                      <Run Text="{Binding CopiedFiles}"/>
                      <Run Text=" / "/>

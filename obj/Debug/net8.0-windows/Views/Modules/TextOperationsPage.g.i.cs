@@ -74,7 +74,7 @@ namespace SwissKnifeApp.Views.Modules {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/Türk Çakısı;component/views/modules/textoperationspage.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/Türk Çakısı;V1.0.0.1;component/views/modules/textoperationspage.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Views\Modules\TextOperationsPage.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

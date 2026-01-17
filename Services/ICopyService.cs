@@ -9,8 +9,11 @@ public interface ICopyService
 {
     Task<(long totalFiles, long totalBytes)> CountAsync(string sourceRoot, IEnumerable<string> extensionsOrAll, CancellationToken ct);
 
+    Task<bool> TestConnectionAsync(ConnectionOptions options, Action<string> onLog);
+
     Task CopyAsync(
         IEnumerable<CopyItem> items,
+        ConnectionOptions connectionOptions,
         int maxDegreeOfParallelism,
         bool overwrite,
         TimeSpan retryWindow,

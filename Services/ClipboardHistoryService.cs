@@ -11,9 +11,6 @@ using System.Windows.Media.Imaging;
 
 namespace SwissKnifeApp.Services
 {
-    /// <summary>
-    /// Pano geçmişi yönetimi için servis
-    /// </summary>
     public class ClipboardHistoryService
     {
         private readonly ObservableCollection<ClipboardItem> _allItems;
@@ -21,21 +18,14 @@ namespace SwissKnifeApp.Services
         private string _lastText = "";
         private string _lastImageHash = "";
 
-        public ClipboardHistoryService(string saveFileName = "clipboard_history.json")
+        public ClipboardHistoryService(string saveFileName = "clipboard_history_pro.json")
         {
             _allItems = new ObservableCollection<ClipboardItem>();
             _saveFilePath = saveFileName;
         }
 
-        /// <summary>
-        /// Tüm clipboard öğelerini döndürür
-        /// </summary>
         public ObservableCollection<ClipboardItem> GetAllItems() => _allItems;
 
-        /// <summary>
-        /// Clipboard'u kontrol eder ve yeni öğeler varsa ekler
-        /// </summary>
-        /// <returns>Yeni öğe eklendiyse true</returns>
         public bool CheckAndAddClipboardContent()
         {
             try
@@ -55,7 +45,7 @@ namespace SwissKnifeApp.Services
             }
             catch
             {
-                // Clipboard erişim hataları sessizce yoksayılır
+                // Silently ignore
             }
 
             return false;
@@ -64,11 +54,13 @@ namespace SwissKnifeApp.Services
         private bool HandleTextClipboard()
         {
             string text = Clipboard.GetText();
+            if (string.IsNullOrWhiteSpace(text)) return false;
+            
             if (text != _lastText)
             {
                 _lastText = text;
-                string preview = text.Length > 100 ? text[..100] + "..." : text;
-                AddClipboardItem("Text", text, preview);
+                string preview = text.Length > 100 ? text[..100].Replace("\r\n", " ") + "..." : text.Replace("\r\n", " ");
+                AddClipboardItem("Text", text, preview, text);
                 return true;
             }
             return false;
@@ -83,7 +75,7 @@ namespace SwissKnifeApp.Services
                 if (hash != _lastImageHash)
                 {
                     _lastImageHash = hash;
-                    AddClipboardItem("Image", img, "[Görsel]");
+                    AddClipboardItem("Image", img, "[Görsel]", "");
                     return true;
                 }
             }
@@ -93,34 +85,23 @@ namespace SwissKnifeApp.Services
         private bool HandleFileDropListClipboard()
         {
             var files = Clipboard.GetFileDropList();
+            if (files.Count == 0) return false;
+
             string joined = string.Join(", ", files.Cast<string>());
             if (joined != _lastText)
             {
                 _lastText = joined;
-                AddClipboardItem("File", files, joined);
+                AddClipboardItem("File", files, joined, joined);
                 return true;
             }
             return false;
         }
 
-        /// <summary>
-        /// Görsel için basit hash hesaplar (benzersizlik kontrolü için)
-        /// </summary>
         private string CalculateImageHash(BitmapSource image)
         {
             try
             {
-                int stride = image.PixelWidth * (image.Format.BitsPerPixel / 8);
-                byte[] pixels = new byte[stride * image.PixelHeight];
-                image.CopyPixels(pixels, stride, 0);
-
-                // İlk birkaç pikselin ortalamasını alarak basit bir hash
-                int sampleSize = Math.Min(pixels.Length, 5000);
-                int sum = 0;
-                for (int i = 0; i < sampleSize; i++)
-                    sum += pixels[i];
-
-                return $"{image.PixelWidth}x{image.PixelHeight}_{sum % 100000}";
+                return $"{image.PixelWidth}x{image.PixelHeight}_{image.Format}";
             }
             catch
             {
@@ -128,150 +109,163 @@ namespace SwissKnifeApp.Services
             }
         }
 
-        /// <summary>
-        /// Clipboard öğesi ekler
-        /// </summary>
-        private void AddClipboardItem(string type, object data, string preview)
+        private void AddClipboardItem(string type, object data, string preview, string fullText)
         {
             var item = new ClipboardItem
             {
+                Id = Guid.NewGuid().ToString(),
                 Time = DateTime.Now,
                 Type = type,
                 Data = data,
-                Preview = preview
+                Preview = preview,
+                FullText = fullText,
+                IsPinned = false
             };
+            
+            // Eğer aynı içerik varsa (pinned değilse) eskisini silebiliriz veya üste taşıyabiliriz
+            var existing = _allItems.FirstOrDefault(x => x.Type == type && x.FullText == fullText && !x.IsPinned);
+            if (existing != null) _allItems.Remove(existing);
+
             _allItems.Insert(0, item);
+            
+            // Limit history size to 100 items (excluding pinned)
+            if (_allItems.Count(x => !x.IsPinned) > 100)
+            {
+                var last = _allItems.LastOrDefault(x => !x.IsPinned);
+                if (last != null) _allItems.Remove(last);
+            }
         }
 
-        /// <summary>
-        /// Seçilen öğeyi panoya kopyalar
-        /// </summary>
+        public void TogglePin(ClipboardItem item)
+        {
+            if (item == null) return;
+            item.IsPinned = !item.IsPinned;
+            
+            // Pinlendiğinde en üste al, unpinlendiğinde zaman sırasına göre kalsın
+            _allItems.Remove(item);
+            if (item.IsPinned)
+                _allItems.Insert(0, item);
+            else
+            {
+                // Zaman sırasına göre uygun yere koy
+                int index = 0;
+                while (index < _allItems.Count && (_allItems[index].IsPinned || _allItems[index].Time > item.Time))
+                {
+                    index++;
+                }
+                _allItems.Insert(index, item);
+            }
+            SaveToFile();
+        }
+
         public bool CopyItemToClipboard(ClipboardItem item)
         {
             if (item == null) return false;
-
             try
             {
                 switch (item.Type)
                 {
                     case "Text":
-                        Clipboard.SetText(item.Data?.ToString() ?? "");
+                        _lastText = item.FullText; // Kendi eklediğimizi tekrar yakalamamak için
+                        Clipboard.SetText(item.FullText);
                         return true;
-
                     case "Image":
-                        if (item.Data is BitmapSource bitmapSource)
-                        {
-                            Clipboard.SetImage(bitmapSource);
-                            return true;
-                        }
-                        break;
-
+                        _lastImageHash = CalculateImageHash((BitmapSource)item.Data);
+                        Clipboard.SetImage((BitmapSource)item.Data);
+                        return true;
                     case "File":
-                        if (item.Data is StringCollection files)
-                        {
-                            Clipboard.SetFileDropList(files);
-                            return true;
-                        }
-                        break;
+                        Clipboard.SetFileDropList((StringCollection)item.Data);
+                        return true;
                 }
             }
-            catch
-            {
-                return false;
-            }
-
+            catch { return false; }
             return false;
         }
 
-        /// <summary>
-        /// Arama sorgusuna göre filtreler
-        /// </summary>
-        public IEnumerable<ClipboardItem> FilterItems(string query)
+        public IEnumerable<ClipboardItem> FilterItems(string query, bool onlyPinned = false, bool onlyTemplates = false)
         {
-            if (string.IsNullOrWhiteSpace(query))
-                return _allItems;
+            var items = _allItems.AsEnumerable();
+            
+            if (onlyPinned) items = items.Where(x => x.IsPinned);
+            if (onlyTemplates) items = items.Where(x => x.IsTemplate);
 
-            return _allItems.Where(item => 
-                item.Preview?.Contains(query, StringComparison.OrdinalIgnoreCase) == true);
+            if (string.IsNullOrWhiteSpace(query))
+                return items;
+
+            return items.Where(item => 
+                (item.Preview?.Contains(query, StringComparison.OrdinalIgnoreCase) == true) ||
+                (item.FullText?.Contains(query, StringComparison.OrdinalIgnoreCase) == true));
         }
 
-        /// <summary>
-        /// Tüm öğeleri temizler
-        /// </summary>
-        public void ClearAll()
+        public void ClearHistory()
         {
-            _allItems.Clear();
+            var toRemove = _allItems.Where(x => !x.IsPinned && !x.IsTemplate).ToList();
+            foreach (var item in toRemove) _allItems.Remove(item);
             _lastText = "";
             _lastImageHash = "";
-            Clipboard.Clear();
         }
 
-        /// <summary>
-        /// Geçmişi JSON dosyasına kaydeder
-        /// </summary>
         public bool SaveToFile()
         {
             try
             {
-                // Sadece Text tipindeki öğeleri kaydet (Image ve File serileştirilemez)
-                var textItems = _allItems
-                    .Where(item => item.Type == "Text")
-                    .Select(item => new ClipboardItem
+                // Sadece Pinned, Template ve son 20 Text itemi kaydet
+                var saveList = _allItems
+                    .Where(x => x.IsPinned || x.IsTemplate || x.Type == "Text")
+                    .Take(100)
+                    .Select(x => new ClipboardItem
                     {
-                        Time = item.Time,
-                        Type = item.Type,
-                        Preview = item.Preview,
-                        Data = item.Data
-                    })
-                    .ToList();
+                        Id = x.Id,
+                        Time = x.Time,
+                        Type = x.Type,
+                        Preview = x.Preview,
+                        FullText = x.FullText,
+                        IsPinned = x.IsPinned,
+                        IsTemplate = x.IsTemplate,
+                        Data = x.Type == "Text" ? x.FullText : null // Sadece metin verisini sakla
+                    }).ToList();
 
-                var json = JsonSerializer.Serialize(textItems, new JsonSerializerOptions
-                {
-                    WriteIndented = true
-                });
-
+                var json = JsonSerializer.Serialize(saveList, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(_saveFilePath, json);
                 return true;
             }
-            catch
-            {
-                return false;
-            }
+            catch { return false; }
         }
 
-        /// <summary>
-        /// JSON dosyasından geçmişi yükler
-        /// </summary>
         public bool LoadFromFile()
         {
             try
             {
-                if (!File.Exists(_saveFilePath))
-                    return false;
-
+                if (!File.Exists(_saveFilePath)) return false;
                 var json = File.ReadAllText(_saveFilePath);
                 var items = JsonSerializer.Deserialize<List<ClipboardItem>>(json);
-
-                if (items == null)
-                    return false;
+                if (items == null) return false;
 
                 _allItems.Clear();
                 foreach (var item in items)
                 {
+                    if (item.Type == "Text") item.Data = item.FullText;
                     _allItems.Add(item);
                 }
-
                 return true;
             }
-            catch
-            {
-                return false;
-            }
+            catch { return false; }
         }
 
-        /// <summary>
-        /// Toplam öğe sayısını döndürür
-        /// </summary>
-        public int GetItemCount() => _allItems.Count;
+        public void AddTemplate(string name, string content)
+        {
+            var item = new ClipboardItem
+            {
+                Id = Guid.NewGuid().ToString(),
+                Time = DateTime.Now,
+                Type = "Text",
+                Preview = name,
+                FullText = content,
+                Data = content,
+                IsTemplate = true
+            };
+            _allItems.Insert(0, item);
+            SaveToFile();
+        }
     }
 }

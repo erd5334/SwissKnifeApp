@@ -54,7 +54,7 @@ namespace SwissKnifeApp.Views.Modules
                     InitializeDefaultKdvTevkifat();
                 }
 
-                if (_taxRates.MotorluTasitlarVergisi == null || !_taxRates.MotorluTasitlarVergisi.ContainsKey("2025"))
+                if (_taxRates.MotorluTasitlarVergisi == null || !_taxRates.MotorluTasitlarVergisi.ContainsKey("2026"))
                 {
                     InitializeDefaultMtv();
                 }
@@ -64,12 +64,12 @@ namespace SwissKnifeApp.Views.Modules
                     InitializeDefaultFuel();
                 }
 
-                if (_taxRates.EmlakVergisi == null || !_taxRates.EmlakVergisi.ContainsKey("2025"))
+                if (_taxRates.EmlakVergisi == null || !_taxRates.EmlakVergisi.ContainsKey("2026"))
                 {
                     InitializeDefaultProperty();
                 }
 
-                if (_taxRates.VergiGecikme == null || !_taxRates.VergiGecikme.ContainsKey("2025"))
+                if (_taxRates.VergiGecikme == null || !_taxRates.VergiGecikme.ContainsKey("2026"))
                 {
                     InitializeDefaultDelayInterest();
                 }
@@ -115,6 +115,25 @@ namespace SwissKnifeApp.Views.Modules
 
         private void InitializeDefaultMtv()
         {
+            if (!_taxRates.MotorluTasitlarVergisi.ContainsKey("2026"))
+            {
+                _taxRates.MotorluTasitlarVergisi["2026"] = new MotorVehicleTaxData
+                {
+                    Otomobil = new List<CarTaxBracket>
+                    {
+                        new CarTaxBracket { Alt = 0, Ust = 1300, Yil1 = 3574, Yil2 = 2516, Yil3 = 1879, Yil4 = 1413, Yil5Plus = 1059 },
+                        new CarTaxBracket { Alt = 1301, Ust = 1600, Yil1 = 6440, Yil2 = 4533, Yil3 = 3383, Yil4 = 2542, Yil5Plus = 1907 },
+                        new CarTaxBracket { Alt = 1601, Ust = 1800, Yil1 = 9304, Yil2 = 6546, Yil3 = 4887, Yil4 = 3670, Yil5Plus = 2754 },
+                        new CarTaxBracket { Alt = 1801, Ust = 2000, Yil1 = 11454, Yil2 = 8058, Yil3 = 6014, Yil4 = 4517, Yil5Plus = 3389 },
+                        new CarTaxBracket { Alt = 2001, Ust = 2500, Yil1 = 17181, Yil2 = 12088, Yil3 = 9020, Yil4 = 6774, Yil5Plus = 5082 },
+                        new CarTaxBracket { Alt = 2501, Ust = 3000, Yil1 = 28635, Yil2 = 20148, Yil3 = 15034, Yil4 = 11294, Yil5Plus = 8472 },
+                        new CarTaxBracket { Alt = 3001, Ust = 3500, Yil1 = 44235, Yil2 = 31124, Yil3 = 23226, Yil4 = 17445, Yil5Plus = 13089 },
+                        new CarTaxBracket { Alt = 3501, Ust = 4000, Yil1 = 68863, Yil2 = 48444, Yil3 = 36152, Yil4 = 27149, Yil5Plus = 20372 },
+                        new CarTaxBracket { Alt = 4001, Ust = 999999, Yil1 = 91817, Yil2 = 64589, Yil3 = 48202, Yil4 = 36199, Yil5Plus = 27162 }
+                    }
+                };
+            }
+
             if (!_taxRates.MotorluTasitlarVergisi.ContainsKey("2025"))
             {
                 _taxRates.MotorluTasitlarVergisi["2025"] = new MotorVehicleTaxData
@@ -150,6 +169,14 @@ namespace SwissKnifeApp.Views.Modules
 
         private void InitializeDefaultProperty()
         {
+            if (!_taxRates.EmlakVergisi.ContainsKey("2026"))
+            {
+                _taxRates.EmlakVergisi["2026"] = new PropertyTaxData
+                {
+                    BinaOran = 0.2m,
+                    AraziOran = 0.1m
+                };
+            }
             if (!_taxRates.EmlakVergisi.ContainsKey("2025"))
             {
                 _taxRates.EmlakVergisi["2025"] = new PropertyTaxData
@@ -162,6 +189,10 @@ namespace SwissKnifeApp.Views.Modules
 
         private void InitializeDefaultDelayInterest()
         {
+            if (!_taxRates.VergiGecikme.ContainsKey("2026"))
+            {
+                _taxRates.VergiGecikme["2026"] = new TaxDelayInterestData { AylikOran = 4.5m };
+            }
             if (!_taxRates.VergiGecikme.ContainsKey("2025"))
             {
                 _taxRates.VergiGecikme["2025"] = new TaxDelayInterestData { AylikOran = 3.5m };
@@ -184,9 +215,10 @@ namespace SwissKnifeApp.Views.Modules
 
             // MTV Otomobil
             _mtvCarList.Clear();
-            if (_taxRates.MotorluTasitlarVergisi.ContainsKey("2025"))
+            string displayYear = _taxRates.MotorluTasitlarVergisi.ContainsKey("2026") ? "2026" : "2025";
+            if (_taxRates.MotorluTasitlarVergisi.ContainsKey(displayYear))
             {
-                foreach (var bracket in _taxRates.MotorluTasitlarVergisi["2025"].Otomobil)
+                foreach (var bracket in _taxRates.MotorluTasitlarVergisi[displayYear].Otomobil)
                 {
                     _mtvCarList.Add(bracket);
                 }
@@ -202,13 +234,18 @@ namespace SwissKnifeApp.Views.Modules
             DgAkaryakit.ItemsSource = _fuelList;
 
             // Property Tax
-            if (_taxRates.EmlakVergisi.ContainsKey("2025"))
+            string propYear = _taxRates.EmlakVergisi.ContainsKey("2026") ? "2026" : "2025";
+            if (_taxRates.EmlakVergisi.ContainsKey(propYear))
             {
-                NumBinaOran.Value = (double)_taxRates.EmlakVergisi["2025"].BinaOran;
-                NumAraziOran.Value = (double)_taxRates.EmlakVergisi["2025"].AraziOran;
+                NumBinaOran.Value = (double)_taxRates.EmlakVergisi[propYear].BinaOran;
+                NumAraziOran.Value = (double)_taxRates.EmlakVergisi[propYear].AraziOran;
             }
 
             // Delay Interest
+            if (_taxRates.VergiGecikme.ContainsKey("2026"))
+            {
+                NumDelay2026.Value = (double)_taxRates.VergiGecikme["2026"].AylikOran;
+            }
             if (_taxRates.VergiGecikme.ContainsKey("2025"))
             {
                 NumDelay2025.Value = (double)_taxRates.VergiGecikme["2025"].AylikOran;
@@ -358,20 +395,26 @@ namespace SwissKnifeApp.Views.Modules
                 // Update from UI to model
                 _taxRates.KdvTevkifat.Oranlar = _kdvTevkifatList.ToList();
                 
-                if (!_taxRates.MotorluTasitlarVergisi.ContainsKey("2025"))
+                if (!_taxRates.MotorluTasitlarVergisi.ContainsKey("2026"))
                 {
-                    _taxRates.MotorluTasitlarVergisi["2025"] = new MotorVehicleTaxData();
+                    _taxRates.MotorluTasitlarVergisi["2026"] = new MotorVehicleTaxData();
                 }
-                _taxRates.MotorluTasitlarVergisi["2025"].Otomobil = _mtvCarList.ToList();
+                _taxRates.MotorluTasitlarVergisi["2026"].Otomobil = _mtvCarList.ToList();
 
                 _taxRates.OzelTuketimVergisi.Akaryakit = _fuelList.Select(f => new FuelTaxRate { Tanim = f.Tanim, Oran = f.Oran }).ToList();
 
-                if (!_taxRates.EmlakVergisi.ContainsKey("2025"))
+                if (!_taxRates.EmlakVergisi.ContainsKey("2026"))
                 {
-                    _taxRates.EmlakVergisi["2025"] = new PropertyTaxData();
+                    _taxRates.EmlakVergisi["2026"] = new PropertyTaxData();
                 }
-                _taxRates.EmlakVergisi["2025"].BinaOran = (decimal)NumBinaOran.Value;
-                _taxRates.EmlakVergisi["2025"].AraziOran = (decimal)NumAraziOran.Value;
+                _taxRates.EmlakVergisi["2026"].BinaOran = (decimal)NumBinaOran.Value;
+                _taxRates.EmlakVergisi["2026"].AraziOran = (decimal)NumAraziOran.Value;
+
+                if (!_taxRates.VergiGecikme.ContainsKey("2026"))
+                {
+                    _taxRates.VergiGecikme["2026"] = new TaxDelayInterestData();
+                }
+                _taxRates.VergiGecikme["2026"].AylikOran = (decimal)NumDelay2026.Value;
 
                 if (!_taxRates.VergiGecikme.ContainsKey("2025"))
                 {

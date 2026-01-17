@@ -6,6 +6,26 @@
     <Application.Resources>
         <ResourceDictionary>
             <h:BoolNegationConverter x:Key="BoolNegationConverter" />
+            <h:BooleanToIconConverter x:Key="BooleanToIconConverter" />
+            <h:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+            <h:IntToVisibilityConverter x:Key="IntToVisibilityConverter" />
+            <h:ComparisonConverter x:Key="ComparisonConverter" />
+            <h:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            
+            <!-- Global Theme Colors (Dynamic for Dark Mode) -->
+            <SolidColorBrush x:Key="AppBackground" Color="White"/>
+            <SolidColorBrush x:Key="AppForeground" Color="#2C3E50"/>
+            <SolidColorBrush x:Key="CardBackground" Color="White"/>
+            <SolidColorBrush x:Key="CardBorderBrush" Color="#E0E0E0"/>
+            <SolidColorBrush x:Key="InputBackground" Color="White"/>
+            <SolidColorBrush x:Key="InputForeground" Color="#2C3E50"/>
+            <SolidColorBrush x:Key="InputBorderBrush" Color="#BDC3C7"/>
+            <SolidColorBrush x:Key="ButtonBackground" Color="#2196F3"/>
+            <SolidColorBrush x:Key="ButtonForeground" Color="White"/>
+            <SolidColorBrush x:Key="AccentBrush" Color="#2196F3"/>
+            <SolidColorBrush x:Key="HeaderText" Color="#2C3E50"/>
+            <SolidColorBrush x:Key="SecondaryText" Color="#7F8C8D"/>
+            
             <ResourceDictionary.MergedDictionaries>
                 <!-- MahApps.Metro temel sözlükleri -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />

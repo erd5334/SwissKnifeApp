@@ -4,6 +4,7 @@ using SixLabors.ImageSharp.Formats.Bmp;
 using SixLabors.ImageSharp.Formats.Gif;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using Svg;
@@ -41,7 +42,7 @@ namespace SwissKnifeApp.Services
 
     public class ImageConverterService
     {
-        private static readonly string[] ImageExtensions = new[] { ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".webp", ".svg", ".ico" };
+        private static readonly string[] ImageExtensions = new[] { ".jpg", ".jpeg", ".png", ".bmp", ".gif", ".webp", ".svg", ".ico", ".heic", ".heif" };
         public string[] SupportedExtensions => ImageExtensions;
 
         public async Task<ImageConversionResult?> ConvertAsync(string sourcePath, ImageConversionOptions options)
@@ -54,6 +55,26 @@ namespace SwissKnifeApp.Services
                 sourceBytes = await ConvertSvgToPng(sourcePath, options.Width, options.Height);
                 if (sourceBytes == null) return null;
                 return await ConvertFromBytesAsync(sourceBytes, options, originalIsSvg: true);
+            }
+            else if (ext == ".heic" || ext == ".heif")
+            {
+                // Önce Magick.NET ile HEIC/HEIF'i PNG'ye çevir, sonra ImageSharp ile işle
+                try
+                {
+                    var pngBytes = MagickHeicHelper.ConvertHeicToPngBytes(sourcePath);
+                    if (pngBytes != null)
+                    {
+                        return await ConvertFromBytesAsync(pngBytes, options);
+                    }
+                    else
+                    {
+                        throw new NotSupportedException("HEIC/HEIF dosyası dönüştürülemedi. Magick.NET veya gerekli native kütüphaneler eksik olabilir.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new NotSupportedException("HEIC/HEIF desteği için Magick.NET ve gerekli native kütüphaneler yüklü olmalı.", ex);
+                }
             }
             else
             {
@@ -113,7 +134,7 @@ namespace SwissKnifeApp.Services
                 using var msPng = new MemoryStream();
                 image.SaveAsPng(msPng);
                 result.TargetExtension = ".ico";
-                result.Bytes = ConvertToIco(msPng.ToArray());
+                result.Bytes = ConvertToIco(msPng.ToArray(), image.Width, image.Height);
                 return result;
             }
             else if (options.Format == "SVG")
@@ -136,12 +157,12 @@ namespace SwissKnifeApp.Services
                     "PNG" => new PngEncoder { CompressionLevel = PngCompressionLevel.BestCompression },
                     "BMP" => new BmpEncoder(),
                     "GIF" => new GifEncoder(),
-                    "WEBP" => new PngEncoder { CompressionLevel = PngCompressionLevel.BestCompression }, // placeholder
+                    "WEBP" => new WebpEncoder { Quality = Math.Clamp(options.Quality, 0, 100) },
                     _ => new JpegEncoder { Quality = Math.Clamp(options.Quality, 0, 100) }
                 };
                 if (options.Format == "WEBP")
                 {
-                    outExt = ".png";
+                    outExt = ".webp";
                 }
 
                 using var ms = new MemoryStream();
@@ -164,7 +185,7 @@ namespace SwissKnifeApp.Services
             _ => ".jpg"
         };
 
-        private static byte[] ConvertToIco(byte[] pngBytes)
+        private static byte[] ConvertToIco(byte[] pngBytes, int width, int height)
         {
             try
             {
@@ -177,13 +198,11 @@ namespace SwissKnifeApp.Services
                 bw.Write((short)1);
 
                 // Directory entry
-                using var pngMs = new MemoryStream(pngBytes);
-                using var img = SDImage.FromStream(pngMs);
-                byte width = (byte)(img.Width >= 256 ? 0 : img.Width);
-                byte height = (byte)(img.Height >= 256 ? 0 : img.Height);
+                byte w = (byte)(width >= 256 ? 0 : width);
+                byte h = (byte)(height >= 256 ? 0 : height);
 
-                bw.Write(width);
-                bw.Write(height);
+                bw.Write(w);
+                bw.Write(h);
                 bw.Write((byte)0);
                 bw.Write((byte)0);
                 bw.Write((short)1);

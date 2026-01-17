@@ -11,6 +11,8 @@ namespace SwissKnifeApp.Models
         public int CategoryId { get; set; }
         public DateTime? ExpiryDate { get; set; }
         public string Strength { get; set; } = string.Empty;
+        public string TotpSecret { get; set; } = string.Empty;
+        public bool IsSecureNote { get; set; } = false;
         public DateTime CreatedDate { get; set; } = DateTime.Now;
         public DateTime ModifiedDate { get; set; } = DateTime.Now;
 

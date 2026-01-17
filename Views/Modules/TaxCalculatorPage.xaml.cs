@@ -66,6 +66,9 @@ namespace SwissKnifeApp.Views.Modules
                     }
                     if (CmbWithholdingCategory.Items.Count > 0) CmbWithholdingCategory.SelectedIndex = 0;
                 }
+
+                // Vergi takvimini yükle
+                LoadTaxDeadlines();
             }
             catch (Exception ex)
             {
@@ -621,6 +624,119 @@ namespace SwissKnifeApp.Views.Modules
             {
                 MessageBox.Show($"Hesaplama hatası: {ex.Message}", "Hata", 
                     MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // ======================= YENİ ÖZELLİKLER ==========================
+
+        // Yıl Karşılaştırma
+        private void BtnCompareYears_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (NumCompareMatrah.Value == null || NumCompareMatrah.Value == 0)
+                {
+                    MessageBox.Show("Lütfen vergi matrahını girin!", "Uyarı", 
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                decimal matrah = (decimal)NumCompareMatrah.Value.Value;
+                bool ucretGeliri = ChkCompareWage.IsChecked == true;
+
+                var results = _taxService.CompareAllYears(matrah, ucretGeliri);
+
+                if (results.Count == 0)
+                {
+                    MessageBox.Show("Karşılaştırma için yeterli yıl verisi bulunamadı.", "Uyarı", 
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                CompareGrid.ItemsSource = results;
+                CompareResult.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Karşılaştırma hatası: {ex.Message}", "Hata", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // Vergi Planlama
+        private void BtnPlanTax_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (NumPlanIncome.Value == null || NumPlanIncome.Value == 0)
+                {
+                    MessageBox.Show("Lütfen yıllık geliri girin!", "Uyarı", 
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                int year = int.Parse(((ComboBoxItem)CmbPlanYear.SelectedItem).Tag.ToString() ?? "2025");
+                decimal income = (decimal)NumPlanIncome.Value.Value;
+
+                var result = _taxService.PlanTax(income, year);
+
+                TxtPlanIncome.Text = $"{result.YillikGelir:N0} TL";
+                TxtPlanNormalTax.Text = $"{result.NormalVergi:N0} TL";
+                TxtPlanSplitTax.Text = $"{result.BolunmusVergi:N0} TL";
+                TxtPlanSavings.Text = result.BolunmusTasarruf > 0 
+                    ? $"{result.BolunmusTasarruf:N0} TL" 
+                    : "Tasarruf yok";
+
+                PlanRecommendations.ItemsSource = result.Recommendations;
+                PlanResult.Visibility = Visibility.Visible;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Planlama hatası: {ex.Message}", "Hata", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // Vergi Raporu Excel'e Aktar
+        private void BtnExportTaxReport_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var saveDialog = new Microsoft.Win32.SaveFileDialog
+                {
+                    Filter = "Excel Dosyası|*.xlsx",
+                    FileName = $"VergiRaporu_{DateTime.Now:yyyyMMdd_HHmmss}"
+                };
+
+                if (saveDialog.ShowDialog() == true)
+                {
+                    // Örnek bir hesaplama yap ve kaydet
+                    var matrah = 500000m;
+                    var result = _taxService.CalculateIncomeTax(matrah, DateTime.Now.Year, true);
+                    _taxService.ExportToExcel(result, "Gelir Vergisi", saveDialog.FileName);
+                    
+                    MessageBox.Show($"Vergi raporu başarıyla kaydedildi:\n{saveDialog.FileName}", 
+                        "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Rapor kaydetme hatası: {ex.Message}", "Hata", 
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        // Vergi Takvimi yükleme (sayfa açıldığında çağrılır)
+        private void LoadTaxDeadlines()
+        {
+            try
+            {
+                var deadlines = _taxService.GetUpcomingDeadlines(60);
+                DeadlineList.ItemsSource = deadlines;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Vergi takvimi yüklenemedi: {ex.Message}");
             }
         }
     }

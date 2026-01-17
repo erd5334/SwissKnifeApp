@@ -20,6 +20,8 @@ namespace SwissKnifeApp.Views.Modules
         public static readonly RoutedUICommand SetStartCommand = new RoutedUICommand("Başlangıç", nameof(SetStartCommand), typeof(VideoToolsPage));
         public static readonly RoutedUICommand SetEndCommand = new RoutedUICommand("Bitiş", nameof(SetEndCommand), typeof(VideoToolsPage));
         public static readonly RoutedUICommand StartProcessCommand = new RoutedUICommand("Başlat", nameof(StartProcessCommand), typeof(VideoToolsPage));
+        public static readonly RoutedUICommand BackwardCommand = new RoutedUICommand("Geri", nameof(BackwardCommand), typeof(VideoToolsPage));
+        public static readonly RoutedUICommand ForwardCommand = new RoutedUICommand("Geri", nameof(ForwardCommand), typeof(VideoToolsPage));
         private readonly SwissKnifeApp.Services.VideoToolsService _service = new SwissKnifeApp.Services.VideoToolsService();
         private CancellationTokenSource? _cts;
         private readonly List<string> _selectedFiles = new();
@@ -45,6 +47,8 @@ namespace SwissKnifeApp.Views.Modules
             CommandBindings.Add(new CommandBinding(SetStartCommand, (s, e) => BtnSetStart_Click(s, e)));
             CommandBindings.Add(new CommandBinding(SetEndCommand, (s, e) => BtnSetEnd_Click(s, e)));
             CommandBindings.Add(new CommandBinding(StartProcessCommand, (s, e) => BtnStart_Click(s, e)));
+            CommandBindings.Add(new CommandBinding(BackwardCommand, (s, e) => BtnBackward_Click(s, e)));
+            CommandBindings.Add(new CommandBinding(ForwardCommand, (s, e) => BtnForward_Click(s, e)));
         }
 
         private void BtnPickFiles_Click(object sender, RoutedEventArgs e)
@@ -99,7 +103,7 @@ namespace SwissKnifeApp.Views.Modules
         {
             if (_isMediaOpened)
             {
-                var pos = VideoPlayer.Position + TimeSpan.FromSeconds(5);
+                var pos = VideoPlayer.Position + TimeSpan.FromSeconds(3);
                 if (pos > VideoPlayer.NaturalDuration.TimeSpan)
                     pos = VideoPlayer.NaturalDuration.TimeSpan;
                 VideoPlayer.Position = pos;
@@ -110,7 +114,7 @@ namespace SwissKnifeApp.Views.Modules
         {
             if (_isMediaOpened)
             {
-                var pos = VideoPlayer.Position - TimeSpan.FromSeconds(5);
+                var pos = VideoPlayer.Position - TimeSpan.FromSeconds(3);
                 if (pos < TimeSpan.Zero) pos = TimeSpan.Zero;
                 VideoPlayer.Position = pos;
             }
@@ -182,9 +186,17 @@ namespace SwissKnifeApp.Views.Modules
 
         private void BtnPickFolder_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new System.Windows.Forms.FolderBrowserDialog();
-            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                TxtOutput.Text = dlg.SelectedPath;
+            var dlg = new Microsoft.WindowsAPICodePack.Dialogs.CommonOpenFileDialog { IsFolderPicker = true };
+            if (dlg.ShowDialog() == Microsoft.WindowsAPICodePack.Dialogs.CommonFileDialogResult.Ok)
+            {
+                TxtOutput.Text = dlg.FileName;
+            }
+        }
+
+        private void BtnPickSubs_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new OpenFileDialog { Filter = "Subtitle Files|*.srt;*.ass;*.ssa|All files|*.*" };
+            if (dlg.ShowDialog() == true) TxtSubPath.Text = dlg.FileName;
         }
 
         private async void BtnStart_Click(object sender, RoutedEventArgs e)
@@ -220,9 +232,67 @@ namespace SwissKnifeApp.Views.Modules
                 PbTotal.Value = p.CurrentFilePercent;
             });
 
+            var progDouble = new Progress<double>(v => { PbTotal.Value = v; });
+
             try
             {
-                if (mode.Contains("Ses", StringComparison.OrdinalIgnoreCase))
+                if (mode == "Video Stabilize Et")
+                {
+                    foreach (var file in _selectedFiles)
+                    {
+                        var outPath = Path.Combine(TxtOutput.Text, Path.GetFileNameWithoutExtension(file) + "_stable.mp4");
+                        await _service.StabilizeAsync(file, outPath, progDouble, log, _cts.Token);
+                    }
+                }
+                else if (mode == "GIF Oluştur")
+                {
+                    int fps = int.TryParse(TxtGifFps.Text, out var f) ? f : 15;
+                    int width = int.TryParse(TxtGifWidth.Text, out var w) ? w : 480;
+                    foreach (var file in _selectedFiles)
+                    {
+                        var outPath = Path.Combine(TxtOutput.Text, Path.GetFileNameWithoutExtension(file) + ".gif");
+                        await _service.CreateGifAsync(file, outPath, fps, width, progDouble, log, _cts.Token);
+                    }
+                }
+                else if (mode == "Hız Ayarla")
+                {
+                    if (!double.TryParse(TxtSpeedMultiplier.Text, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var mult))
+                    {
+                        MessageBox.Show("Geçersiz hız çarpanı."); return;
+                    }
+                    foreach (var file in _selectedFiles)
+                    {
+                        var outPath = Path.Combine(TxtOutput.Text, Path.GetFileNameWithoutExtension(file) + "_speed.mp4");
+                        await _service.ChangeSpeedAsync(file, outPath, mult, progDouble, log, _cts.Token);
+                    }
+                }
+                else if (mode == "Videoları Birleştir")
+                {
+                    var outPath = Path.Combine(TxtOutput.Text, "combined_video.mp4");
+                    await _service.ConcatenateAsync(_selectedFiles, outPath, progDouble, log, _cts.Token);
+                }
+                else if (mode == "Altyazı Göm")
+                {
+                    if (string.IsNullOrEmpty(TxtSubPath.Text)) { MessageBox.Show("Altyazı dosyası seçin."); return; }
+                    foreach (var file in _selectedFiles)
+                    {
+                        var outPath = Path.Combine(TxtOutput.Text, Path.GetFileNameWithoutExtension(file) + "_subs.mp4");
+                        await _service.BurnSubtitlesAsync(file, TxtSubPath.Text, outPath, progDouble, log, _cts.Token);
+                    }
+                }
+                else if (mode == "Senkron Düzelt")
+                {
+                    if (!double.TryParse(TxtSyncOffset.Text, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var offset))
+                    {
+                        MessageBox.Show("Geçersiz senkron kayması."); return;
+                    }
+                    foreach (var file in _selectedFiles)
+                    {
+                        var outPath = Path.Combine(TxtOutput.Text, Path.GetFileNameWithoutExtension(file) + "_sync.mp4");
+                        await _service.FixAudioSyncAsync(file, outPath, offset, progDouble, log, _cts.Token);
+                    }
+                }
+                else if (mode.Contains("Ses", StringComparison.OrdinalIgnoreCase))
                 {
                     // Ses çıkarma modu
                     var audioFormat = ParseAudioFormat((CmbFormat.SelectedItem as ComboBoxItem)?.Content?.ToString());
@@ -236,7 +306,7 @@ namespace SwissKnifeApp.Views.Modules
                     var resolution = ParseResolution((CmbResolution.SelectedItem as ComboBoxItem)?.Content?.ToString());
                     await _service.ConvertAsync(_selectedFiles, TxtOutput.Text!, format, codec, quality, resolution, prog, log, _cts.Token);
                 }
-                else
+                else if (mode == "Trim/Kırp")
                 {
                     // Trim/Kırp modu
                     var format = ParseFormat((CmbFormat.SelectedItem as ComboBoxItem)?.Content?.ToString());
@@ -251,11 +321,6 @@ namespace SwissKnifeApp.Views.Modules
                     if (!TryParseTs(TxtEnd.Text, out var end) && !string.IsNullOrWhiteSpace(TxtEnd.Text))
                     {
                         MessageBox.Show("Bitiş formatı geçersiz. Örn: 02:45 veya 01:02:59");
-                        return;
-                    }
-                    if (start.HasValue && end.HasValue && end <= start)
-                    {
-                        MessageBox.Show("Bitiş, başlangıçtan büyük olmalı.");
                         return;
                     }
 
@@ -273,21 +338,7 @@ namespace SwissKnifeApp.Views.Modules
                     {
                         var name = Path.GetFileNameWithoutExtension(file);
                         var outPath = Path.Combine(TxtOutput.Text!, $"{name}_edit.{GetExt(format)}");
-                        var singleProg = new Progress<double>(v => { PbTotal.Value = v; });
-                        await _service.TrimCropAsync(
-                            file,
-                            outPath,
-                            format,
-                            codec,
-                            quality,
-                            resolution,
-                            start,
-                            end,
-                            crop, // crop null ise sadece zaman aralığı kırpılır!
-                            singleProg,
-                            log,
-                            _cts.Token
-                        );
+                        await _service.TrimCropAsync(file, outPath, format, codec, quality, resolution, start, end, crop, progDouble, log, _cts.Token);
                     }
                 }
 
@@ -344,9 +395,37 @@ namespace SwissKnifeApp.Views.Modules
         private void CmbMode_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (CmbFormat == null || CmbCodec == null || LblFormat == null || LblCodec == null || LblResolution == null || CmbResolution == null) return;
+            if (PanelTrimCrop == null || PanelSpeed == null || PanelSubtitles == null || PanelGif == null) return;
             
             var mode = (CmbMode.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "Dönüştür";
             
+            // Default visibility
+            PanelTrimCrop.Visibility = Visibility.Collapsed;
+            PanelSpeed.Visibility = Visibility.Collapsed;
+            PanelSubtitles.Visibility = Visibility.Collapsed;
+            PanelGif.Visibility = Visibility.Collapsed;
+            
+            if (mode == "Trim/Kırp")
+            {
+                PanelTrimCrop.Visibility = Visibility.Visible;
+            }
+            else if (mode == "Hız Ayarla")
+            {
+                PanelSpeed.Visibility = Visibility.Visible;
+            }
+            else if (mode == "Altyazı Göm")
+            {
+                PanelSubtitles.Visibility = Visibility.Visible;
+            }
+            else if (mode == "GIF Oluştur")
+            {
+                PanelGif.Visibility = Visibility.Visible;
+            }
+            else if (mode == "Senkron Düzelt")
+            {
+                PanelSync.Visibility = Visibility.Visible;
+            }
+
             if (mode.Contains("Ses", StringComparison.OrdinalIgnoreCase))
             {
                 // Ses çıkarma modu - Format ComboBox'ı ses formatlarıyla doldur

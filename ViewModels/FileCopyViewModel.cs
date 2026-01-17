@@ -1,425 +1,444 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using SwissKnifeApp.Models;
 using SwissKnifeApp.Services;
-using SwissKnifeApp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
-using System.Windows.Input;
 
-namespace SwissKnifeApp.ViewModels;
-
-public class FileCopyViewModel : INotifyPropertyChanged
+namespace SwissKnifeApp.ViewModels
 {
-    private readonly IFolderDialogService _folderDialog;
-    private readonly ICopyService _copyService;
-    private readonly IConfigService _configService;
-
-    public FileCopyViewModel() : this(new FolderDialogService(), new CopyService(), new ConfigService()) { }
-
-    public FileCopyViewModel(IFolderDialogService folderDialog, ICopyService copyService, IConfigService configService)
+    public partial class FileCopyViewModel : ObservableObject
     {
-        _folderDialog = folderDialog;
-        _copyService = copyService;
-        _configService = configService;
+        private readonly ICopyService _copyService;
+        private CancellationTokenSource? _cts;
 
-        BrowseSourceCommand = new RelayCommand(BrowseSource);
-        BrowseTargetCommand = new RelayCommand(BrowseTarget);
-        StartCommand = new RelayCommand(async () => await StartAsync(), () => CanStart);
-        CancelCommand = new RelayCommand(Cancel, () => IsBusy);
-        LoadListCommand = new RelayCommand(async () => await LoadListAsync(), () => !IsBusy && !string.IsNullOrWhiteSpace(SourceFolder));
-        CopySelectedCommand = new RelayCommand(async () => await CopySelectedAsync(), () => !IsBusy && HasSelection && !string.IsNullOrWhiteSpace(TargetFolder));
+        [ObservableProperty] private string _sourceFolder = string.Empty;
+        [ObservableProperty] private string _targetFolder = string.Empty;
+        
+        // Protocol & Credentials
+        [ObservableProperty] 
+        [NotifyPropertyChangedFor(nameof(IsNetworkProtocol))]
+        private string _protocol = "Local"; // Local, FTP, FTPS, SFTP
+        
+        public bool IsNetworkProtocol => Protocol != "Local";
 
-        // Initialize collection view for filtering
-        FilesView = CollectionViewSource.GetDefaultView(Files);
-        FilesView.Filter = FilterFiles;
+        [ObservableProperty] private string _ftpUser = string.Empty;
+        [ObservableProperty] private string _ftpPassword = string.Empty;
+        [ObservableProperty] private string _ftpHost = string.Empty;
+        [ObservableProperty] private int _ftpPort = 0; // 0 = default
 
-        // defaults
-        WorkerCount = Environment.ProcessorCount;
-        Overwrite = false;
+        public ObservableCollection<string> Protocols { get; } = new() { "Local", "FTP", "FTPS", "SFTP" };
 
-        // Load config
-        var cfg = _configService.Load();
-        RememberLast = cfg.RememberLast;
-        if (RememberLast)
+        // Filters
+        [ObservableProperty] private bool _allFiles = false;
+        [ObservableProperty] private bool _imageJpg = true;
+        [ObservableProperty] private bool _imageJpeg = true;
+        [ObservableProperty] private bool _imagePng = true;
+        [ObservableProperty] private bool _imageBmp = true;
+        [ObservableProperty] private bool _videoMp4 = false;
+        [ObservableProperty] private bool _audioMp3 = false;
+        [ObservableProperty] private bool _anyExe = false;
+
+        // Options
+        [ObservableProperty] private int _workerCount = 4;
+        [ObservableProperty] private bool _overwrite = false;
+        [ObservableProperty] private bool _rememberLast = true;
+
+        // Progress
+        [ObservableProperty] private long _totalFiles;
+        [ObservableProperty] private long _copiedFiles;
+        [ObservableProperty] private long _totalBytes;
+        [ObservableProperty] private long _copiedBytes;
+        [ObservableProperty] private string _totalBytesHuman = "0 B";
+        [ObservableProperty] private string _copiedBytesHuman = "0 B";
+        [ObservableProperty] private bool _isBusy;
+        [ObservableProperty] private string _statusMessage = "HazÄ±r";
+
+        // Logs
+        public ObservableCollection<string> LogLines { get; } = new();
+        public ObservableCollection<string> ErrorLines { get; } = new();
+
+        // Manual Selection
+        [ObservableProperty] private string _fileFilter = string.Empty;
+        public ObservableCollection<FileListItem> Files { get; } = new();
+        public CollectionViewSource FilesViewSource { get; } = new();
+        public System.ComponentModel.ICollectionView FilesView => FilesViewSource.View;
+
+        public FileCopyViewModel()
         {
-            if (!string.IsNullOrWhiteSpace(cfg.LastSource)) SourceFolder = cfg.LastSource;
-            if (!string.IsNullOrWhiteSpace(cfg.LastTarget)) TargetFolder = cfg.LastTarget;
+            _copyService = new CopyService();
+            FilesViewSource.Source = Files;
+            FilesViewSource.Filter += OnFilesFilter;
         }
-        ImageJpg = true; ImageJpeg = true; ImagePng = true; ImageBmp = true;
-    }
 
-    private string? _sourceFolder;
-    public string? SourceFolder { get => _sourceFolder; set { if (Set(ref _sourceFolder, value)) RefreshCanExecutes(); } }
-
-    private string? _targetFolder;
-    public string? TargetFolder { get => _targetFolder; set { if (Set(ref _targetFolder, value)) RefreshCanExecutes(); } }
-
-    private int _workerCount;
-    public int WorkerCount { get => _workerCount; set { Set(ref _workerCount, value); } }
-
-    private bool _overwrite;
-    public bool Overwrite { get => _overwrite; set { Set(ref _overwrite, value); } }
-
-    private bool _rememberLast;
-    public bool RememberLast { get => _rememberLast; set { if (Set(ref _rememberLast, value)) SaveConfig(); } }
-
-    // Extensions
-    private bool _allFiles;
-    public bool AllFiles { get => _allFiles; set { if (Set(ref _allFiles, value)) OnAllFilesToggled(); } }
-    public bool ImageJpg { get => _imageJpg; set { if (Set(ref _imageJpg, value)) RefreshCanExecutes(); } }
-    public bool ImageJpeg { get => _imageJpeg; set { if (Set(ref _imageJpeg, value)) RefreshCanExecutes(); } }
-    public bool ImagePng { get => _imagePng; set { if (Set(ref _imagePng, value)) RefreshCanExecutes(); } }
-    public bool ImageBmp { get => _imageBmp; set { if (Set(ref _imageBmp, value)) RefreshCanExecutes(); } }
-    public bool VideoMp4 { get => _videoMp4; set { if (Set(ref _videoMp4, value)) RefreshCanExecutes(); } }
-    public bool AudioMp3 { get => _audioMp3; set { if (Set(ref _audioMp3, value)) RefreshCanExecutes(); } }
-    public bool AnyExe { get => _anyExe; set { if (Set(ref _anyExe, value)) RefreshCanExecutes(); } }
-
-    private bool _imageJpg, _imageJpeg, _imagePng, _imageBmp, _videoMp4, _audioMp3, _anyExe;
-
-    public ObservableCollection<string> LogLines { get; } = new();
-    public ObservableCollection<string> ErrorLines { get; } = new();
-    public ObservableCollection<FileListItem> Files { get; } = new();
-    public ICollectionView FilesView { get; private set; }
-
-    private bool _hasSelection;
-    public bool HasSelection { get => _hasSelection; set { if (Set(ref _hasSelection, value)) RefreshCanExecutes(); } }
-
-    private string _fileFilter = "";
-    public string FileFilter
-    {
-        get => _fileFilter;
-        set
+        private void OnFilesFilter(object sender, FilterEventArgs e)
         {
-            if (Set(ref _fileFilter, value))
+            if (string.IsNullOrWhiteSpace(FileFilter))
             {
-                FilesView?.Refresh();
-            }
-        }
-    }
-
-    private long _totalFiles;
-    public long TotalFiles { get => _totalFiles; set { Set(ref _totalFiles, value); } }
-
-    private long _totalBytes;
-    public long TotalBytes { get => _totalBytes; set { Set(ref _totalBytes, value); } }
-
-    private string _totalBytesHuman = "0 B";
-    public string TotalBytesHuman { get => _totalBytesHuman; set { Set(ref _totalBytesHuman, value); } }
-
-    private long _copiedFiles;
-    public long CopiedFiles { get => _copiedFiles; set { Set(ref _copiedFiles, value); } }
-
-    private long _copiedBytes;
-    public long CopiedBytes { get => _copiedBytes; set { if (Set(ref _copiedBytes, value)) CopiedBytesHuman = FormatBytes(value); } }
-
-    private string _copiedBytesHuman = "0 B";
-    public string CopiedBytesHuman { get => _copiedBytesHuman; set { Set(ref _copiedBytesHuman, value); } }
-
-    private bool _isBusy;
-    public bool IsBusy { get => _isBusy; set { if (Set(ref _isBusy, value)) RefreshCanExecutes(); } }
-
-    public ICommand BrowseSourceCommand { get; }
-    public ICommand BrowseTargetCommand { get; }
-    public ICommand StartCommand { get; }
-    public ICommand CancelCommand { get; }
-    public ICommand LoadListCommand { get; }
-    public ICommand CopySelectedCommand { get; }
-
-    private CancellationTokenSource? _cts;
-
-    private void BrowseSource()
-    {
-        var chosen = _folderDialog.PickFolder(SourceFolder);
-        if (!string.IsNullOrWhiteSpace(chosen)) { SourceFolder = chosen; SaveConfig(); }
-    }
-
-    private void BrowseTarget()
-    {
-        var chosen = _folderDialog.PickFolder(TargetFolder);
-        if (!string.IsNullOrWhiteSpace(chosen)) { TargetFolder = chosen; SaveConfig(); }
-    }
-
-    public bool CanStart => !IsBusy && !string.IsNullOrWhiteSpace(SourceFolder) && !string.IsNullOrWhiteSpace(TargetFolder);
-
-    private async Task StartAsync()
-    {
-        if (!CanStart) return;
-        IsBusy = true;
-        LogLines.Clear(); ErrorLines.Clear();
-        CopiedFiles = 0; CopiedBytes = 0; TotalFiles = 0; TotalBytes = 0;
-
-        _cts = new CancellationTokenSource();
-
-        try
-        {
-            // Build list of extensions
-            var exts = BuildExtensions();
-
-            // Validate target not under source
-            try
-            {
-                var srcFull = Path.GetFullPath(SourceFolder!);
-                var dstFull = Path.GetFullPath(TargetFolder!);
-                if (dstFull.StartsWith(srcFull, StringComparison.OrdinalIgnoreCase))
-                {
-                    AppendLog("Hedef klasör, kaynak klasörün içinde olamaz.");
-                    return;
-                }
-            }
-            catch { }
-
-            // Count
-            var countTask = _copyService.CountAsync(SourceFolder!, exts, _cts.Token);
-            var (files, bytes) = await countTask;
-            TotalFiles = files; TotalBytes = bytes; TotalBytesHuman = FormatBytes(bytes);
-            AppendLog($"Toplam: {files} dosya, {FormatBytes(bytes)}");
-
-            // Enumerate items preserving structure
-            var items = EnumerateItems(SourceFolder!, TargetFolder!, exts);
-
-            // Copy
-            await _copyService.CopyAsync(
-                items,
-                Math.Max(1, WorkerCount),
-                Overwrite,
-                TimeSpan.FromSeconds(15),
-                onProgress: (copied, copiedBytes, path) =>
-                {
-                    CopiedFiles = copied;
-                    CopiedBytes = copiedBytes;
-                },
-                onLog: AppendLog,
-                onError: (path, ex) => AppendError($"{path} -> {ex.Message}"),
-                ct: _cts.Token);
-        }
-        catch (OperationCanceledException)
-        {
-            AppendLog("Ýptal edildi.");
-        }
-        catch (Exception ex)
-        {
-            AppendError(ex.Message);
-        }
-        finally
-        {
-            IsBusy = false;
-            _cts?.Dispose();
-            _cts = null;
-            SaveConfig();
-        }
-    }
-
-    private IEnumerable<string> BuildExtensions()
-    {
-        if (AllFiles) return new[] { "*.*" };
-        var list = new List<string>();
-        if (ImageJpg) list.Add(".jpg");
-        if (ImageJpeg) list.Add(".jpeg");
-        if (ImagePng) list.Add(".png");
-        if (ImageBmp) list.Add(".bmp");
-        if (VideoMp4) list.Add(".mp4");
-        if (AudioMp3) list.Add(".mp3");
-        if (AnyExe) list.Add(".exe");
-        if (list.Count == 0) list.AddRange(new[] { ".jpg", ".jpeg", ".png", ".bmp" });
-        return list;
-    }
-
-    private static IEnumerable<CopyItem> EnumerateItems(string source, string target, IEnumerable<string> exts)
-    {
-        HashSet<string>? set = exts.Any(x => x == "*.*") ? null : exts.Select(x => x.StartsWith('.') ? x.ToLowerInvariant() : "." + x.ToLowerInvariant()).ToHashSet();
-        foreach (var file in Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories))
-        {
-            if (set is not null)
-            {
-                var ext = Path.GetExtension(file).ToLowerInvariant();
-                if (!set.Contains(ext)) continue;
-            }
-            var rel = Path.GetRelativePath(source, file);
-            var dest = Path.Combine(target, rel);
-            yield return new CopyItem(file, dest);
-        }
-    }
-
-    private void Cancel()
-    {
-        _cts?.Cancel();
-    }
-
-    private void OnAllFilesToggled()
-    {
-        // Deðerleri deðiþtirmiyoruz; sadece XAML tarafýnda IsEnabled ile pasifleþtiriyoruz.
-        RefreshCanExecutes();
-    }
-
-    private void AppendLog(string message)
-    {
-        App.Current?.Dispatcher.Invoke(() => LogLines.Add(message));
-    }
-
-    private void AppendError(string message)
-    {
-        App.Current?.Dispatcher.Invoke(() => ErrorLines.Add(message));
-    }
-
-    private void SaveConfig()
-    {
-        var cfg = new Models.AppConfig
-        {
-            RememberLast = this.RememberLast,
-            LastSource = this.RememberLast ? this.SourceFolder : null,
-            LastTarget = this.RememberLast ? this.TargetFolder : null
-        };
-        _configService.Save(cfg);
-    }
-
-    private void RefreshCanExecutes()
-    {
-        (StartCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (CancelCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (LoadListCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (CopySelectedCommand as RelayCommand)?.RaiseCanExecuteChanged();
-    }
-
-    private static string FormatBytes(long bytes)
-    {
-        string[] sizes = { "B", "KB", "MB", "GB", "TB" };
-        double len = bytes;
-        int order = 0;
-        while (len >= 1024 && order < sizes.Length - 1)
-        {
-            order++;
-            len = len / 1024;
-        }
-        return $"{len:0.##} {sizes[order]}";
-    }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
-    protected bool Set<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
-    {
-        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-        field = value;
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        return true;
-    }
-
-    private async Task LoadListAsync()
-    {
-        if (string.IsNullOrWhiteSpace(SourceFolder)) return;
-        try
-        {
-            IsBusy = true;
-            Files.Clear();
-            var exts = BuildExtensions();
-            var set = exts.Any(x => x == "*.*") ? null : exts.Select(x => x.StartsWith('.') ? x.ToLowerInvariant() : "." + x.ToLowerInvariant()).ToHashSet();
-            await Task.Run(() =>
-            {
-                foreach (var file in Directory.EnumerateFiles(SourceFolder!, "*", SearchOption.AllDirectories))
-                {
-                    if (set is not null)
-                    {
-                        var ext = Path.GetExtension(file).ToLowerInvariant();
-                        if (!set.Contains(ext)) continue;
-                    }
-                    try
-                    {
-                        var info = new FileInfo(file);
-                        var rel = Path.GetRelativePath(SourceFolder!, file);
-                        var human = FormatBytes(info.Length);
-                        var item = new FileListItem(file, rel, info.Length, human);
-                        item.PropertyChanged += OnItemPropertyChanged;
-                        App.Current?.Dispatcher.Invoke(() => Files.Add(item));
-                    }
-                    catch { }
-                }
-            });
-            UpdateSelectionState();
-        }
-        finally
-        {
-            IsBusy = false;
-        }
-    }
-
-    private async Task CopySelectedAsync()
-    {
-        if (string.IsNullOrWhiteSpace(TargetFolder)) return;
-        var selected = Files.Where(f => f.Selected).ToList();
-        if (selected.Count == 0) return;
-
-        try
-        {
-            var srcFull = Path.GetFullPath(SourceFolder!);
-            var dstFull = Path.GetFullPath(TargetFolder!);
-            if (dstFull.StartsWith(srcFull, StringComparison.OrdinalIgnoreCase))
-            {
-                AppendLog("Hedef klasör, kaynak klasörün içinde olamaz.");
+                e.Accepted = true;
                 return;
             }
+            if (e.Item is FileListItem item)
+            {
+                e.Accepted = item.RelativePath.Contains(FileFilter, StringComparison.OrdinalIgnoreCase) ||
+                             item.FullPath.Contains(FileFilter, StringComparison.OrdinalIgnoreCase);
+            }
         }
-        catch { }
 
-        _cts = new CancellationTokenSource();
-        IsBusy = true;
-        try
+        partial void OnFileFilterChanged(string value)
         {
-            var items = selected.Select(s => new CopyItem(s.FullPath, Path.Combine(TargetFolder!, s.RelativePath)));
-            long totalBytes = selected.Sum(s => s.Size);
-            TotalFiles = selected.Count;
-            TotalBytes = totalBytes;
-            TotalBytesHuman = FormatBytes(totalBytes);
+            FilesView.Refresh();
+        }
 
-            await _copyService.CopyAsync(
-                items,
-                Math.Max(1, WorkerCount),
-                Overwrite,
-                TimeSpan.FromSeconds(15),
-                onProgress: (copied, copiedBytes, path) =>
+        [RelayCommand]
+        private void BrowseSource()
+        {
+            var dlg = new CommonOpenFileDialog { IsFolderPicker = true };
+            if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                SourceFolder = dlg.FileName;
+            }
+        }
+
+        [RelayCommand]
+        private void BrowseTarget()
+        {
+            var dlg = new CommonOpenFileDialog { IsFolderPicker = true };
+            if (dlg.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                TargetFolder = dlg.FileName;
+            }
+        }
+
+        [RelayCommand]
+        private async Task TestConnection()
+        {
+            if (Protocol == "Local")
+            {
+                Log("Yerel protokol seÃ§ili, test gerekmez.");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(FtpHost))
+            {
+                Log("Hata: Host adresi giriniz.");
+                return;
+            }
+
+            var opts = new ConnectionOptions
+            {
+                Protocol = Protocol,
+                Host = FtpHost,
+                Port = FtpPort,
+                Username = FtpUser,
+                Password = FtpPassword
+            };
+
+            Log($"BaÄŸlantÄ± test ediliyor ({Protocol})...");
+            bool success = await _copyService.TestConnectionAsync(opts, Log);
+            if (success) MessageBox.Show("BaÄŸlantÄ± BaÅŸarÄ±lÄ±!", "Test", MessageBoxButton.OK, MessageBoxImage.Information);
+            else MessageBox.Show("BaÄŸlantÄ± BaÅŸarÄ±sÄ±z!", "Test", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+
+        [RelayCommand]
+        private async Task Start()
+        {
+            if (IsBusy) return;
+            if (string.IsNullOrWhiteSpace(SourceFolder) || string.IsNullOrWhiteSpace(TargetFolder))
+            {
+                MessageBox.Show("Kaynak ve Hedef klasÃ¶rleri seÃ§iniz.");
+                return;
+            }
+
+            IsBusy = true;
+            LogLines.Clear();
+            ErrorLines.Clear();
+            _cts = new CancellationTokenSource();
+
+            try
+            {
+                var exts = GetSelectedExtensions();
+                Log("Dosyalar sayÄ±lÄ±yor...");
+                var (count, bytes) = await _copyService.CountAsync(SourceFolder, exts, _cts.Token);
+                TotalFiles = count;
+                TotalBytes = bytes;
+                TotalBytesHuman = FormatBytes(bytes);
+                CopiedFiles = 0;
+                CopiedBytes = 0;
+                CopiedBytesHuman = "0 B";
+
+                Log($"Toplam {count} dosya, {TotalBytesHuman} kopyalanacak.");
+
+                var items = new List<CopyItem>();
+                
+                await Task.Run(() =>
                 {
-                    CopiedFiles = copied;
-                    CopiedBytes = copiedBytes;
-                },
-                onLog: AppendLog,
-                onError: (path, ex) => AppendError($"{path} -> {ex.Message}"),
-                ct: _cts.Token);
+                    var extSet = exts.Any(x => x == "*.*") ? null : new HashSet<string>(exts.Select(x => x.StartsWith('.') ? x.ToLowerInvariant() : "." + x.ToLowerInvariant()));
+                    foreach (var file in Directory.EnumerateFiles(SourceFolder, "*", SearchOption.AllDirectories))
+                    {
+                        if (extSet != null && !extSet.Contains(Path.GetExtension(file).ToLowerInvariant())) continue;
+                        
+                        string rel = Path.GetRelativePath(SourceFolder, file);
+                        string targetPath;
+                        if (Protocol == "Local")
+                        {
+                            targetPath = Path.Combine(TargetFolder, rel);
+                        }
+                        else
+                        {
+                            targetPath = Path.Combine(TargetFolder, rel).Replace("\\", "/"); 
+                        }
+                        items.Add(new CopyItem(file, targetPath));
+                    }
+                });
+
+                var connOpts = new ConnectionOptions
+                {
+                    Protocol = Protocol,
+                    Host = FtpHost,
+                    Port = FtpPort,
+                    Username = FtpUser,
+                    Password = FtpPassword
+                };
+
+                await _copyService.CopyAsync(
+                    items,
+                    connOpts,
+                    WorkerCount,
+                    Overwrite,
+                    TimeSpan.FromSeconds(15),
+                    OnProgress,
+                    Log,
+                    OnError,
+                    _cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                Log("Ä°ÅŸlem iptal edildi.");
+            }
+            catch (Exception ex)
+            {
+                Log($"Hata: {ex.Message}");
+            }
+            finally
+            {
+                IsBusy = false;
+                _cts = null;
+            }
         }
-        catch (OperationCanceledException)
+
+        [RelayCommand]
+        private void Cancel()
         {
-            AppendLog("Ýptal edildi.");
+            _cts?.Cancel();
         }
-        finally
+
+        [RelayCommand]
+        private async Task LoadList()
         {
-            IsBusy = false;
-            _cts?.Dispose();
-            _cts = null;
+            if (string.IsNullOrWhiteSpace(SourceFolder)) return;
+            IsBusy = true;
+            Files.Clear();
+            try
+            {
+                var exts = GetSelectedExtensions();
+                await Task.Run(() =>
+                {
+                    var extSet = exts.Any(x => x == "*.*") ? null : new HashSet<string>(exts.Select(x => x.StartsWith('.') ? x.ToLowerInvariant() : "." + x.ToLowerInvariant()));
+                    foreach (var file in Directory.EnumerateFiles(SourceFolder, "*", SearchOption.AllDirectories))
+                    {
+                        if (extSet != null && !extSet.Contains(Path.GetExtension(file).ToLowerInvariant())) continue;
+                        var fi = new FileInfo(file);
+                        var rel = Path.GetRelativePath(SourceFolder, file);
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            Files.Add(new FileListItem(file, rel, fi.Length, FormatBytes(fi.Length)) { Selected = true });
+                        });
+                    }
+                });
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
-    }
 
-    private void OnItemPropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == nameof(FileListItem.Selected))
+        [RelayCommand]
+        private async Task CopySelected()
         {
-            UpdateSelectionState();
+            var selected = Files.Where(x => x.Selected).ToList();
+            if (!selected.Any())
+            {
+                MessageBox.Show("LÃ¼tfen dosya seÃ§iniz.");
+                return;
+            }
+
+            IsBusy = true;
+            _cts = new CancellationTokenSource();
+            LogLines.Clear();
+
+            try
+            {
+                TotalFiles = selected.Count;
+                TotalBytes = selected.Sum(x => x.Size);
+                TotalBytesHuman = FormatBytes(TotalBytes);
+                CopiedFiles = 0;
+                CopiedBytes = 0;
+
+                var items = selected.Select(x => 
+                {
+                    string targetPath;
+                    if (Protocol == "Local")
+                    {
+                        targetPath = Path.Combine(TargetFolder, x.RelativePath);
+                    }
+                    else
+                    {
+                        targetPath = Path.Combine(TargetFolder, x.RelativePath).Replace("\\", "/");
+                    }
+                    return new CopyItem(x.FullPath, targetPath);
+                }).ToList();
+
+                var connOpts = new ConnectionOptions
+                {
+                    Protocol = Protocol,
+                    Host = FtpHost,
+                    Port = FtpPort,
+                    Username = FtpUser,
+                    Password = FtpPassword
+                };
+
+                await _copyService.CopyAsync(
+                    items,
+                    connOpts,
+                    WorkerCount,
+                    Overwrite,
+                    TimeSpan.FromSeconds(15),
+                    OnProgress,
+                    Log,
+                    OnError,
+                    _cts.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                Log("Ä°ptal edildi.");
+            }
+            finally
+            {
+                IsBusy = false;
+                _cts = null;
+            }
         }
-    }
 
-    private void UpdateSelectionState()
-    {
-        HasSelection = Files.Any(f => f.Selected);
-    }
+        [RelayCommand]
+        private async Task ShowMissingFiles()
+        {
+            if (Protocol != "Local")
+            {
+                MessageBox.Show("Eksik dosya kontrolÃ¼ sadece Yerel protokolde Ã§alÄ±ÅŸÄ±r.");
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(SourceFolder) || string.IsNullOrWhiteSpace(TargetFolder)) return;
 
-    private bool FilterFiles(object item)
-    {
-        if (item is not FileListItem file) return false;
-        if (string.IsNullOrWhiteSpace(FileFilter)) return true;
+            IsBusy = true;
+            Files.Clear();
+            try
+            {
+                await Task.Run(() =>
+                {
+                    var exts = GetSelectedExtensions();
+                    var extSet = exts.Any(x => x == "*.*") ? null : new HashSet<string>(exts.Select(x => x.StartsWith('.') ? x.ToLowerInvariant() : "." + x.ToLowerInvariant()));
 
-        return file.RelativePath.Contains(FileFilter, StringComparison.OrdinalIgnoreCase) ||
-               file.FullPath.Contains(FileFilter, StringComparison.OrdinalIgnoreCase);
+                    var targetFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                    if (Directory.Exists(TargetFolder))
+                    {
+                        foreach (var f in Directory.EnumerateFiles(TargetFolder, "*", SearchOption.AllDirectories))
+                        {
+                            targetFiles.Add(Path.GetRelativePath(TargetFolder, f));
+                        }
+                    }
+
+                    foreach (var file in Directory.EnumerateFiles(SourceFolder, "*", SearchOption.AllDirectories))
+                    {
+                        if (extSet != null && !extSet.Contains(Path.GetExtension(file).ToLowerInvariant())) continue;
+                        
+                        var rel = Path.GetRelativePath(SourceFolder, file);
+                        if (!targetFiles.Contains(rel))
+                        {
+                            var fi = new FileInfo(file);
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                Files.Add(new FileListItem(file, rel, fi.Length, FormatBytes(fi.Length)) { Selected = true });
+                            });
+                        }
+                    }
+                });
+                MessageBox.Show($"Hedefte olmayan {Files.Count} dosya bulundu.");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        private IEnumerable<string> GetSelectedExtensions()
+        {
+            var list = new List<string>();
+            if (AllFiles) { list.Add("*.*"); return list; }
+            if (ImageJpg) list.Add(".jpg");
+            if (ImageJpeg) list.Add(".jpeg");
+            if (ImagePng) list.Add(".png");
+            if (ImageBmp) list.Add(".bmp");
+            if (VideoMp4) list.Add(".mp4");
+            if (AudioMp3) list.Add(".mp3");
+            if (AnyExe) list.Add(".exe");
+            return list;
+        }
+
+        private void OnProgress(long files, long bytes, string currentFile)
+        {
+            CopiedFiles = files;
+            CopiedBytes = bytes;
+            CopiedBytesHuman = FormatBytes(bytes);
+            StatusMessage = $"KopyalanÄ±yor: {Path.GetFileName(currentFile)}";
+        }
+
+        private void Log(string msg)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                LogLines.Insert(0, $"[{DateTime.Now:HH:mm:ss}] {msg}");
+                if (LogLines.Count > 1000) LogLines.RemoveAt(LogLines.Count - 1);
+            });
+        }
+
+        private void OnError(string file, Exception ex)
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                ErrorLines.Add($"{file}: {ex.Message}");
+            });
+        }
+
+        private static string FormatBytes(long bytes)
+        {
+            string[] sizes = { "B", "KB", "MB", "GB", "TB" };
+            double len = bytes;
+            int order = 0;
+            while (len >= 1024 && order < sizes.Length - 1)
+            {
+                order++;
+                len = len / 1024;
+            }
+            return $"{len:0.##} {sizes[order]}";
+        }
     }
 }

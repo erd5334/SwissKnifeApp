@@ -158,6 +158,12 @@
                                         <TextBlock Text="Box Plot" Width="50"/>
                                     </StackPanel>
                                 </Button>
+                                <Button Style="{StaticResource OutlineButtonStyle}" Margin="0,0,8,0" Click="BtnViolinPlot_Click" Padding="8,6">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="ChartBellCurve" Width="14" Height="14" Margin="4,0,6,0"/>
+                                        <TextBlock Text="Violin" Width="40"/>
+                                    </StackPanel>
+                                </Button>
                                 <Button Style="{StaticResource OutlineButtonStyle}" Margin="0,0,8,0" Click="BtnCorrelation_Click" Padding="8,6">
                                     <StackPanel Orientation="Horizontal">
                                         <iconPacks:PackIconMaterial Kind="ChartScatterPlot" Width="14" Height="14" Margin="4,0,6,0"/>
@@ -372,11 +378,11 @@
                             <iconPacks:PackIconMaterial Kind="Tools" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,8,0"/>
                             <TextBlock Text="Temizleme İşlemleri" Style="{StaticResource SectionHeader}" Margin="0"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                             <Button Style="{StaticResource OutlineButtonStyle}" Click="BtnFillMissing_Click" Margin="0,0,10,0" Padding="12,8">
                                 <StackPanel Orientation="Horizontal">
                                     <iconPacks:PackIconMaterial Kind="DatabaseEdit" Width="16" Height="16" Margin="5,0,10,0"/>
-                                    <TextBlock Text="Eksik Değerleri Doldur (Ortalama)" Width="165"/>
+                                    <TextBlock Text="Eksik Değerleri Doldur" Width="130"/>
                                 </StackPanel>
                             </Button>
                             <Button Style="{StaticResource OutlineButtonStyle}" Click="BtnRemoveOutliers_Click" Margin="0,0,10,0" Padding="12,8">
@@ -385,16 +391,36 @@
                                     <TextBlock Text="Aykırı Değerleri Kaldır" Width="120"/>
                                 </StackPanel>
                             </Button>
+                            <Button Style="{StaticResource OutlineButtonStyle}" Click="BtnRemoveDuplicates_Click" Margin="0,0,10,0" Padding="12,8">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="ContentDuplicate" Width="16" Height="16" Margin="5,0,10,0"/>
+                                    <TextBlock Text="Tekrar Edenleri Sil" Width="110"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
                             <Button Style="{StaticResource AccentButtonStyle}" Click="BtnExportExcel_Click" Margin="0,0,10,0" Padding="12,8">
                                 <StackPanel Orientation="Horizontal">
                                     <iconPacks:PackIconMaterial Kind="FileExcel" Width="16" Height="16" Margin="5,0,10,0"/>
                                     <TextBlock Text="Excel Dışa Aktar" Width="95"/>
                                 </StackPanel>
                             </Button>
-                            <Button Style="{StaticResource AccentButtonStyle}" Click="BtnExportJson_Click" Margin="0" Padding="12,8">
+                            <Button Style="{StaticResource AccentButtonStyle}" Click="BtnExportJson_Click" Margin="0,0,10,0" Padding="12,8">
                                 <StackPanel Orientation="Horizontal">
                                     <iconPacks:PackIconMaterial Kind="CodeJson" Width="16" Height="16" Margin="5,0,10,0"/>
                                     <TextBlock Text="JSON Dışa Aktar" Width="95"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource AccentButtonStyle}" Click="BtnExportHtml_Click" Margin="0,0,10,0" Padding="12,8">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="LanguageHtml5" Width="16" Height="16" Margin="5,0,10,0"/>
+                                    <TextBlock Text="İnteraktif HTML" Width="90"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource AccentButtonStyle}" Click="BtnCreateDashboard_Click" Margin="0" Padding="12,8">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="ViewDashboard" Width="16" Height="16" Margin="5,0,10,0"/>
+                                    <TextBlock Text="Dashboard Oluştur" Width="115"/>
                                 </StackPanel>
                             </Button>
                         </StackPanel>

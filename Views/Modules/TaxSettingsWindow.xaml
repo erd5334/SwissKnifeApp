@@ -107,7 +107,7 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0" Text="Motorlu Taşıtlar Vergisi - Otomobil (2025)" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                        <TextBlock Grid.Row="0" Text="Motorlu Taşıtlar Vergisi - Otomobil (2026)" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,10"/>
                         
                         <DataGrid Grid.Row="1" x:Name="DgMtvOtomobil" 
                                   AutoGenerateColumns="False" 
@@ -214,7 +214,7 @@
                         </StackPanel>
                     </TabItem.Header>
                     <StackPanel Margin="20">
-                        <TextBlock Text="Emlak Vergisi Oranları (2025)" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,15"/>
+                        <TextBlock Text="Emlak Vergisi Oranları (2026)" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,15"/>
                         
                         <StackPanel Margin="0,0,0,15">
                             <TextBlock Text="Bina Oranı (%)" FontSize="13" Margin="0,0,0,5"/>
@@ -239,6 +239,11 @@
                     <StackPanel Margin="20">
                         <TextBlock Text="Vergi Gecikme Faizi Oranları" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,15"/>
                         
+                        <StackPanel Margin="0,0,0,15">
+                            <TextBlock Text="2026 Aylık Oran (%)" FontSize="13" Margin="0,0,0,5"/>
+                            <mah:NumericUpDown x:Name="NumDelay2026" Minimum="0" Maximum="20" Interval="0.1" StringFormat="N1" Value="4.5"/>
+                        </StackPanel>
+
                         <StackPanel Margin="0,0,0,15">
                             <TextBlock Text="2025 Aylık Oran (%)" FontSize="13" Margin="0,0,0,5"/>
                             <mah:NumericUpDown x:Name="NumDelay2025" Minimum="0" Maximum="20" Interval="0.1" StringFormat="N1" Value="3.5"/>

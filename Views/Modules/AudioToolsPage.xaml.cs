@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using SwissKnifeApp.Services;
 
 namespace SwissKnifeApp.Views.Modules
 {
@@ -237,6 +238,96 @@ namespace SwissKnifeApp.Views.Modules
                 BtnStart.IsEnabled = true;
                 BtnCancel.IsEnabled = false;
             }
+        }
+
+        private async void BtnMerge_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedFiles.Count < 2) { MessageBox.Show("Birleştirmek için en az iki dosya seçin."); return; }
+            if (string.IsNullOrWhiteSpace(TxtOutput.Text)) { MessageBox.Show("Çıkış klasörünü seçin."); return; }
+
+            var fmt = ParseFormat((CmbMergeFormat.SelectedItem as ComboBoxItem)?.Content?.ToString());
+            var outPath = Path.Combine(TxtOutput.Text, $"merged_{DateTime.Now:yyyyMMdd_HHmmss}.{GetExt(fmt)}");
+
+            try {
+                TxtLog.Clear();
+                TxtLog.AppendText("Birleştirme başlıyor..." + Environment.NewLine);
+                await _service.MergeAsync(_selectedFiles, outPath, fmt, SwissKnifeApp.Services.QualityPreset.Highest, log: new Progress<string>(s => TxtLog.AppendText(s + Environment.NewLine)));
+                MessageBox.Show($"Dosyalar başarıyla birleştirildi:\n{outPath}");
+            } catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+
+        private async void BtnApplyAdvanced_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedFiles.Count == 0) return;
+            double pitch = SldPitch.Value;
+            double speed = SldSpeed.Value;
+            bool noise = ChkReduceNoise.IsChecked == true;
+            var fmt = ParseFormat("MP3");
+
+            try {
+                TxtLog.Clear();
+                foreach (var file in _selectedFiles) {
+                    var outPath = Path.Combine(TxtOutput.Text, $"{Path.GetFileNameWithoutExtension(file)}_fx.mp3");
+                    await _service.ProcessAdvancedAsync(file, outPath, pitch, speed, noise, fmt, SwissKnifeApp.Services.QualityPreset.High, null, null, new Progress<string>(s => TxtLog.AppendText(s + Environment.NewLine)));
+                }
+                MessageBox.Show("Gelişmiş efektler uygulandı.");
+            } catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+
+        private async void BtnPreviewAdvanced_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedFiles.Count == 0) { MessageBox.Show("Önce bir dosya seçin."); return; }
+            
+            double pitch = SldPitch.Value;
+            double speed = SldSpeed.Value;
+            bool noise = ChkReduceNoise.IsChecked == true;
+            
+            var tempFile = Path.Combine(Path.GetTempPath(), $"preview_fx_{Guid.NewGuid():N}.mp3");
+
+            try {
+                TxtLog.Clear();
+                TxtLog.AppendText("Önizleme hazırlanıyor (10 sn)..." + Environment.NewLine);
+                
+                await _service.ProcessAdvancedAsync(
+                    _selectedFiles[0], 
+                    tempFile, 
+                    pitch, 
+                    speed, 
+                    noise, 
+                    SwissKnifeApp.Services.AudioFormat.Mp3, 
+                    SwissKnifeApp.Services.QualityPreset.Medium,
+                    limitDuration: TimeSpan.FromSeconds(10),
+                    log: new Progress<string>(s => TxtLog.AppendText(s + Environment.NewLine)));
+
+                // Hazırlanan önizlemeyi oynat
+                AudioPlayer.Source = new Uri(tempFile);
+                AudioPlayer.Play();
+                _timer?.Start();
+                
+            } catch (Exception ex) { MessageBox.Show("Önizleme hatası: " + ex.Message); }
+        }
+
+        private async void BtnGenerateSpectrum_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedFiles.Count == 0) return;
+            var file = _selectedFiles[0];
+            var outPath = Path.Combine(TxtOutput.Text, $"{Path.GetFileNameWithoutExtension(file)}_spectrum.mp4");
+
+            try {
+                TxtLog.Clear();
+                TxtLog.AppendText("Spektrum videosu oluşturuluyor (bu işlem biraz zaman alabilir)..." + Environment.NewLine);
+                await _service.GenerateSpectrumAsync(file, outPath, CancellationToken.None);
+                MessageBox.Show($"Video oluşturuldu:\n{outPath}");
+            } catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+
+        private async void BtnDetectBpm_Click(object sender, RoutedEventArgs e)
+        {
+            if (_selectedFiles.Count == 0) return;
+            try {
+                var bpm = await _service.DetectBpmAsync(_selectedFiles[0], CancellationToken.None);
+                TxtBpmResult.Text = $"BPM: {bpm}";
+            } catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)

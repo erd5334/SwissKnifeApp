@@ -1,0 +1,2316 @@
+Folder PATH listing
+Volume serial number is 9249-A987
+C:.
+-   .gitignore
+-   App.xaml
+-   App.xaml.cs
+-   AssemblyInfo.cs
+-   CONTRIBUTING.md
+-   LICENSE
+-   MainWindow.xaml
+-   MainWindow.xaml.cs
+-   ornek_araliklar.txt
+-   ozellikler.md
+-   README.md
+-   SETUP_KILAVUZU.md
+-   SwissKnifeApp.csproj
+-   SwissKnifeApp.csproj.Backup.tmp
+-   SwissKnifeApp.csproj.user
+-   SwissKnifeApp.sln
+-   TestJsonLoad.cs
+-   workspace.txt
+-   YOUTUBE_KESIT_KULLANIM.md
+-   YOUTUBE_KULLANIM.md
+-   
++¦¦¦.vscode
+-       tasks.json
+-       
++¦¦¦bin
+-   L¦¦¦Debug
+-       L¦¦¦net8.0-windows
+-           -   BouncyCastle.Cryptography.dll
+-           -   CommunityToolkit.Mvvm.dll
+-           -   ControlzEx.dll
+-           -   EPPlus.dll
+-           -   EPPlus.Interfaces.dll
+-           -   ExCSS.dll
+-           -   HBMoneyToWords.dll
+-           -   HtmlAgilityPack.dll
+-           -   ICSharpCode.AvalonEdit.dll
+-           -   itextsharp.dll
+-           -   Logo.png
+-           -   LucideIcons.dll
+-           -   MahApps.Metro.dll
+-           -   MahApps.Metro.IconPacks.BootstrapIcons.dll
+-           -   MahApps.Metro.IconPacks.BoxIcons.dll
+-           -   MahApps.Metro.IconPacks.CircumIcons.dll
+-           -   MahApps.Metro.IconPacks.Codicons.dll
+-           -   MahApps.Metro.IconPacks.Coolicons.dll
+-           -   MahApps.Metro.IconPacks.Core.dll
+-           -   MahApps.Metro.IconPacks.dll
+-           -   MahApps.Metro.IconPacks.Entypo.dll
+-           -   MahApps.Metro.IconPacks.EvaIcons.dll
+-           -   MahApps.Metro.IconPacks.FeatherIcons.dll
+-           -   MahApps.Metro.IconPacks.FileIcons.dll
+-           -   MahApps.Metro.IconPacks.Fontaudio.dll
+-           -   MahApps.Metro.IconPacks.FontAwesome.dll
+-           -   MahApps.Metro.IconPacks.FontAwesome5.dll
+-           -   MahApps.Metro.IconPacks.FontAwesome6.dll
+-           -   MahApps.Metro.IconPacks.Fontisto.dll
+-           -   MahApps.Metro.IconPacks.ForkAwesome.dll
+-           -   MahApps.Metro.IconPacks.GameIcons.dll
+-           -   MahApps.Metro.IconPacks.Ionicons.dll
+-           -   MahApps.Metro.IconPacks.JamIcons.dll
+-           -   MahApps.Metro.IconPacks.KeyruneIcons.dll
+-           -   MahApps.Metro.IconPacks.Lucide.dll
+-           -   MahApps.Metro.IconPacks.Material.dll
+-           -   MahApps.Metro.IconPacks.MaterialDesign.dll
+-           -   MahApps.Metro.IconPacks.MaterialLight.dll
+-           -   MahApps.Metro.IconPacks.MemoryIcons.dll
+-           -   MahApps.Metro.IconPacks.Microns.dll
+-           -   MahApps.Metro.IconPacks.MingCuteIcons.dll
+-           -   MahApps.Metro.IconPacks.Modern.dll
+-           -   MahApps.Metro.IconPacks.MynaUIIcons.dll
+-           -   MahApps.Metro.IconPacks.Octicons.dll
+-           -   MahApps.Metro.IconPacks.PhosphorIcons.dll
+-           -   MahApps.Metro.IconPacks.PicolIcons.dll
+-           -   MahApps.Metro.IconPacks.PixelartIcons.dll
+-           -   MahApps.Metro.IconPacks.RadixIcons.dll
+-           -   MahApps.Metro.IconPacks.RemixIcon.dll
+-           -   MahApps.Metro.IconPacks.RPGAwesome.dll
+-           -   MahApps.Metro.IconPacks.SimpleIcons.dll
+-           -   MahApps.Metro.IconPacks.Typicons.dll
+-           -   MahApps.Metro.IconPacks.Unicons.dll
+-           -   MahApps.Metro.IconPacks.VaadinIcons.dll
+-           -   MahApps.Metro.IconPacks.WeatherIcons.dll
+-           -   MahApps.Metro.IconPacks.Zondicons.dll
+-           -   Microsoft.Data.Sqlite.dll
+-           -   Microsoft.Extensions.Configuration.Abstractions.dll
+-           -   Microsoft.Extensions.Configuration.dll
+-           -   Microsoft.Extensions.Configuration.FileExtensions.dll
+-           -   Microsoft.Extensions.Configuration.Json.dll
+-           -   Microsoft.Extensions.DependencyInjection.Abstractions.dll
+-           -   Microsoft.Extensions.DependencyInjection.dll
+-           -   Microsoft.Extensions.FileProviders.Abstractions.dll
+-           -   Microsoft.Extensions.FileProviders.Physical.dll
+-           -   Microsoft.Extensions.FileSystemGlobbing.dll
+-           -   Microsoft.Extensions.Logging.Abstractions.dll
+-           -   Microsoft.Extensions.Logging.dll
+-           -   Microsoft.Extensions.Options.dll
+-           -   Microsoft.Extensions.Primitives.dll
+-           -   Microsoft.IO.RecyclableMemoryStream.dll
+-           -   Microsoft.WindowsAPICodePack.dll
+-           -   Microsoft.WindowsAPICodePack.Shell.dll
+-           -   Microsoft.Xaml.Behaviors.dll
+-           -   Newtonsoft.Json.dll
+-           -   OxyPlot.dll
+-           -   OxyPlot.Wpf.dll
+-           -   OxyPlot.Wpf.Shared.dll
+-           -   PdfiumViewer.dll
+-           -   PdfSharp.BarCodes.dll
+-           -   PdfSharp.Charting.dll
+-           -   PdfSharp.Cryptography.dll
+-           -   PdfSharp.dll
+-           -   PdfSharp.Quality.dll
+-           -   PdfSharp.Shared.dll
+-           -   PdfSharp.Snippets.dll
+-           -   PdfSharp.System.dll
+-           -   PdfSharp.WPFonts.dll
+-           -   QRCoder.dll
+-           -   SixLabors.Fonts.dll
+-           -   SixLabors.ImageSharp.dll
+-           -   SixLabors.ImageSharp.Drawing.dll
+-           -   SQLitePCLRaw.batteries_v2.dll
+-           -   SQLitePCLRaw.core.dll
+-           -   SQLitePCLRaw.provider.e_sqlite3.dll
+-           -   Svg.dll
+-           -   System.Drawing.Common.dll
+-           -   System.Security.Cryptography.Pkcs.dll
+-           -   System.Security.Cryptography.Xml.dll
+-           -   Türk Çakýsý.deps.json
+-           -   Türk Çakýsý.dll
+-           -   Türk Çakýsý.exe
+-           -   Türk Çakýsý.pdb
+-           -   Türk Çakýsý.runtimeconfig.json
+-           -   UnitConverterSettings.json
+-           -   zxing.dll
+-           -   ZXing.Windows.Compatibility.dll
+-           -   
+-           +¦¦¦Data
+-           -       tax-rates.json
+-           -       
+-           +¦¦¦de
+-           -       MahApps.Metro.resources.dll
+-           -       
+-           +¦¦¦nl
+-           -       PdfiumViewer.resources.dll
+-           -       
+-           +¦¦¦runtimes
+-           -   +¦¦¦browser-wasm
+-           -   -   L¦¦¦nativeassets
+-           -   -       L¦¦¦net8.0
+-           -   -               e_sqlite3.a
+-           -   -               
+-           -   +¦¦¦linux-arm
+-           -   -   L¦¦¦native
+-           -   -           libe_sqlite3.so
+-           -   -           
+-           -   +¦¦¦linux-arm64
+-           -   -   L¦¦¦native
+-           -   -           libe_sqlite3.so
+-           -   -           
+-           -   +¦¦¦linux-armel
+-           -   -   L¦¦¦native
+-           -   -           libe_sqlite3.so
+-           -   -           
+-           -   +¦¦¦linux-mips64
+-           -   -   L¦¦¦native
+-           -   -           libe_sqlite3.so
+-           -   -           
+-           -   +¦¦¦linux-musl-arm
+-           -   -   L¦¦¦native
+-           -   -           libe_sqlite3.so
+-           -   -           
+-           -   +¦¦¦linux-musl-arm64
+-           -   -   L¦¦¦native
+-           -   -           libe_sqlite3.so
+-           -   -           
+-           -   +¦¦¦linux-musl-x64
+-           -   -   L¦¦¦native
+-           -   -           libe_sqlite3.so
+-           -   -           
+-           -   +¦¦¦linux-ppc64le
+-           -   -   L¦¦¦native
+-           -   -           libe_sqlite3.so
+-           -   -           
+-           -   +¦¦¦linux-s390x
+-           -   -   L¦¦¦native
+-           -   -           libe_sqlite3.so
+-           -   -           
+-           -   +¦¦¦linux-x64
+-           -   -   L¦¦¦native
+-           -   -           libe_sqlite3.so
+-           -   -           
+-           -   +¦¦¦linux-x86
+-           -   -   L¦¦¦native
+-           -   -           libe_sqlite3.so
+-           -   -           
+-           -   +¦¦¦maccatalyst-arm64
+-           -   -   L¦¦¦native
+-           -   -           libe_sqlite3.dylib
+-           -   -           
+-           -   +¦¦¦maccatalyst-x64
+-           -   -   L¦¦¦native
+-           -   -           libe_sqlite3.dylib
+-           -   -           
+-           -   +¦¦¦osx-arm64
+-           -   -   L¦¦¦native
+-           -   -           libe_sqlite3.dylib
+-           -   -           
+-           -   +¦¦¦osx-x64
+-           -   -   L¦¦¦native
+-           -   -           libe_sqlite3.dylib
+-           -   -           
+-           -   +¦¦¦win
+-           -   -   L¦¦¦lib
+-           -   -       L¦¦¦net8.0
+-           -   -               System.Security.Cryptography.Pkcs.dll
+-           -   -               
+-           -   +¦¦¦win-arm
+-           -   -   L¦¦¦native
+-           -   -           e_sqlite3.dll
+-           -   -           
+-           -   +¦¦¦win-arm64
+-           -   -   L¦¦¦native
+-           -   -           e_sqlite3.dll
+-           -   -           
+-           -   +¦¦¦win-x64
+-           -   -   L¦¦¦native
+-           -   -           e_sqlite3.dll
+-           -   -           
+-           -   L¦¦¦win-x86
+-           -       L¦¦¦native
+-           -               e_sqlite3.dll
+-           -               
+-           L¦¦¦Tools
+-                   ffmpeg.exe
+-                   yt-dlp.exe
+-                   
++¦¦¦Data
+-       tax-rates.json
+-       
++¦¦¦gorsel
+-       Gorsel-000.png
+-       Gorsel-001.png
+-       Gorsel-002.png
+-       Gorsel-003.png
+-       Gorsel-004.png
+-       Gorsel-005.png
+-       Gorsel-006.png
+-       Gorsel-007.png
+-       Gorsel-008.png
+-       Gorsel-009.png
+-       Gorsel-010.png
+-       Gorsel-011.png
+-       Gorsel-012.png
+-       Gorsel-013.png
+-       Gorsel-014.png
+-       Gorsel-015.png
+-       Gorsel-016.png
+-       Gorsel-017.png
+-       Gorsel-018.png
+-       Gorsel-019.png
+-       Gorsel-020.png
+-       Gorsel-021.png
+-       Gorsel-022.png
+-       Gorsel-023.png
+-       
++¦¦¦Models
+-       ClipboardItem.cs
+-       FileManagerModels.cs
+-       PasswordCategory.cs
+-       PasswordEntry.cs
+-       TaxRateModels.cs
+-       
++¦¦¦obj
+-   -   project.assets.json
+-   -   project.nuget.cache
+-   -   SwissKnifeApp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp.csproj.nuget.g.props
+-   -   SwissKnifeApp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_0tq3apsh_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_0tq3apsh_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_0tq3apsh_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_12fycq5d_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_12fycq5d_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_12fycq5d_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_15iwca2t_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_15iwca2t_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_15iwca2t_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_1t3bnd04_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_1t3bnd04_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_1t3bnd04_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_1zb3pxkf_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_1zb3pxkf_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_1zb3pxkf_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_2ckoffxa_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_2ckoffxa_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_2ckoffxa_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_2s5klmz2_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_2s5klmz2_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_2s5klmz2_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_4xjjijal_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_4xjjijal_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_4xjjijal_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_5nxmnsua_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_5nxmnsua_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_5nxmnsua_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_5zt5ikrr_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_5zt5ikrr_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_5zt5ikrr_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_a3tlvbvy_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_a3tlvbvy_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_a3tlvbvy_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_afzzdq0z_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_afzzdq0z_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_afzzdq0z_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_aipnge44_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_aipnge44_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_aipnge44_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_apze3w0k_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_apze3w0k_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_apze3w0k_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_awtr3vlj_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_awtr3vlj_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_awtr3vlj_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_crw0ruqs_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_crw0ruqs_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_crw0ruqs_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_d2w0f123_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_d2w0f123_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_d2w0f123_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_d5c5l323_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_d5c5l323_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_d5c5l323_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_dk4jk4th_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_dk4jk4th_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_dk4jk4th_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_emdwlxcz_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_emdwlxcz_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_emdwlxcz_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_hamn0xih_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_hamn0xih_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_hamn0xih_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_ikomsj5k_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_ikomsj5k_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_ikomsj5k_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_j5yvuygv_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_j5yvuygv_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_j5yvuygv_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_msfgqrz2_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_msfgqrz2_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_msfgqrz2_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_nesau1wm_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_nesau1wm_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_nesau1wm_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_nm1otxsl_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_nm1otxsl_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_nm1otxsl_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_oxtcrsiq_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_oxtcrsiq_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_oxtcrsiq_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_prpemglr_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_prpemglr_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_prpemglr_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_qdfnm5z2_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_qdfnm5z2_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_qdfnm5z2_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_qysnla4d_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_qysnla4d_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_qysnla4d_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_rj412xsl_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_rj412xsl_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_rj412xsl_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_rm4llmjp_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_rm4llmjp_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_rm4llmjp_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_sfuvoqpr_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_sfuvoqpr_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_sfuvoqpr_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_svl3o4ao_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_svl3o4ao_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_svl3o4ao_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_tjeeo1if_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_tjeeo1if_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_tjeeo1if_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_ub0tvqqa_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_ub0tvqqa_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_ub0tvqqa_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_ujgvh52c_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_ujgvh52c_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_ujgvh52c_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_v0jzhskl_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_v0jzhskl_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_v0jzhskl_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_va5vu4gi_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_va5vu4gi_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_va5vu4gi_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_wjktlrxj_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_wjktlrxj_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_wjktlrxj_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_xqu1jpyj_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_xqu1jpyj_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_xqu1jpyj_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_xt0g0qt1_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_xt0g0qt1_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_xt0g0qt1_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_xx1fzc3t_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_xx1fzc3t_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_xx1fzc3t_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_y5qmla12_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_y5qmla12_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_y5qmla12_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_yect0tc2_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_yect0tc2_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_yect0tc2_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_yvutmhz3_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_yvutmhz3_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_yvutmhz3_wpftmp.csproj.nuget.g.targets
+-   -   SwissKnifeApp_zd5u1zft_wpftmp.csproj.nuget.dgspec.json
+-   -   SwissKnifeApp_zd5u1zft_wpftmp.csproj.nuget.g.props
+-   -   SwissKnifeApp_zd5u1zft_wpftmp.csproj.nuget.g.targets
+-   -   
+-   L¦¦¦Debug
+-       L¦¦¦net8.0-windows
+-           -   .NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+-           -   App.baml
+-           -   App.g.cs
+-           -   App.g.i.cs
+-           -   apphost.exe
+-           -   build-time-generator.touch
+-           -   GeneratedInternalTypeHelper.g.cs
+-           -   GeneratedInternalTypeHelper.g.i.cs
+-           -   MainWindow.baml
+-           -   MainWindow.g.cs
+-           -   MainWindow.g.i.cs
+-           -   SwissKni.D077E6BF.Up2Date
+-           -   SwissKnifeApp.AssemblyInfo.cs
+-           -   SwissKnifeApp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp.assets.cache
+-           -   SwissKnifeApp.csproj.AssemblyReference.cache
+-           -   SwissKnifeApp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp.csproj.CoreCompileInputs.cache
+-           -   SwissKnifeApp.csproj.FileListAbsolute.txt
+-           -   SwissKnifeApp.designer.deps.json
+-           -   SwissKnifeApp.designer.runtimeconfig.json
+-           -   SwissKnifeApp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp.genruntimeconfig.cache
+-           -   SwissKnifeApp.GlobalUsings.g.cs
+-           -   SwissKnifeApp.sourcelink.json
+-           -   SwissKnifeApp_0453nvkm_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_0453nvkm_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_0453nvkm_wpftmp.assets.cache
+-           -   SwissKnifeApp_0453nvkm_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_0453nvkm_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_0453nvkm_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_0a5fpiro_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_0a5fpiro_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_0a5fpiro_wpftmp.assets.cache
+-           -   SwissKnifeApp_0a5fpiro_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_0a5fpiro_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_0a5fpiro_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_0a5fpiro_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_0al1vuju_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_0al1vuju_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_0al1vuju_wpftmp.assets.cache
+-           -   SwissKnifeApp_0al1vuju_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_0al1vuju_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_0al1vuju_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_0bn22zgk_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_0bn22zgk_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_0bn22zgk_wpftmp.assets.cache
+-           -   SwissKnifeApp_0bn22zgk_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_0bn22zgk_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_0bn22zgk_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_0tq3apsh_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_0tq3apsh_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_0tq3apsh_wpftmp.assets.cache
+-           -   SwissKnifeApp_0tq3apsh_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_0tq3apsh_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_0tq3apsh_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_0x3mvs1k_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_0x3mvs1k_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_0x3mvs1k_wpftmp.assets.cache
+-           -   SwissKnifeApp_0x3mvs1k_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_0x3mvs1k_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_0x3mvs1k_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_0x3mvs1k_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_0zdv1kah_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_0zdv1kah_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_0zdv1kah_wpftmp.assets.cache
+-           -   SwissKnifeApp_0zdv1kah_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_0zdv1kah_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_0zdv1kah_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_12fycq5d_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_12fycq5d_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_12fycq5d_wpftmp.assets.cache
+-           -   SwissKnifeApp_12fycq5d_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_12fycq5d_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_12fycq5d_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_15iwca2t_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_15iwca2t_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_15iwca2t_wpftmp.assets.cache
+-           -   SwissKnifeApp_15iwca2t_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_15iwca2t_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_15iwca2t_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_1brfi5j0_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_1brfi5j0_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_1brfi5j0_wpftmp.assets.cache
+-           -   SwissKnifeApp_1brfi5j0_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_1brfi5j0_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_1brfi5j0_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_1dh2a0wc_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_1dh2a0wc_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_1dh2a0wc_wpftmp.assets.cache
+-           -   SwissKnifeApp_1dh2a0wc_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_1dh2a0wc_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_1dh2a0wc_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_1hocypxo_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_1hocypxo_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_1hocypxo_wpftmp.assets.cache
+-           -   SwissKnifeApp_1hocypxo_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_1hocypxo_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_1hocypxo_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_1ipeis2r_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_1ipeis2r_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_1ipeis2r_wpftmp.assets.cache
+-           -   SwissKnifeApp_1ipeis2r_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_1ipeis2r_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_1ipeis2r_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_1ipeis2r_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_1sh0j3bp_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_1sh0j3bp_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_1sh0j3bp_wpftmp.assets.cache
+-           -   SwissKnifeApp_1sh0j3bp_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_1sh0j3bp_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_1sh0j3bp_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_1sh0j3bp_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_1t3bnd04_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_1t3bnd04_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_1t3bnd04_wpftmp.assets.cache
+-           -   SwissKnifeApp_1t3bnd04_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_1t3bnd04_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_1t3bnd04_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_1tf2se4h_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_1tf2se4h_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_1tf2se4h_wpftmp.assets.cache
+-           -   SwissKnifeApp_1tf2se4h_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_1tf2se4h_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_1tf2se4h_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_1zb3pxkf_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_1zb3pxkf_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_1zb3pxkf_wpftmp.assets.cache
+-           -   SwissKnifeApp_1zb3pxkf_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_1zb3pxkf_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_1zb3pxkf_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_2ckoffxa_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_2ckoffxa_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_2ckoffxa_wpftmp.assets.cache
+-           -   SwissKnifeApp_2ckoffxa_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_2ckoffxa_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_2ckoffxa_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_2cossey2_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_2cossey2_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_2cossey2_wpftmp.assets.cache
+-           -   SwissKnifeApp_2cossey2_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_2cossey2_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_2cossey2_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_2czyhvnp_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_2czyhvnp_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_2czyhvnp_wpftmp.assets.cache
+-           -   SwissKnifeApp_2czyhvnp_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_2czyhvnp_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_2czyhvnp_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_2d4nbqnr_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_2d4nbqnr_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_2d4nbqnr_wpftmp.assets.cache
+-           -   SwissKnifeApp_2d4nbqnr_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_2d4nbqnr_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_2d4nbqnr_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_2hdbrk0u_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_2hdbrk0u_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_2hdbrk0u_wpftmp.assets.cache
+-           -   SwissKnifeApp_2hdbrk0u_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_2hdbrk0u_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_2hdbrk0u_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_2ib4rtoj_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_2ib4rtoj_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_2ib4rtoj_wpftmp.assets.cache
+-           -   SwissKnifeApp_2ib4rtoj_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_2ib4rtoj_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_2ib4rtoj_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_2ib4rtoj_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_2s5klmz2_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_2s5klmz2_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_2s5klmz2_wpftmp.assets.cache
+-           -   SwissKnifeApp_2s5klmz2_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_2s5klmz2_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_2s5klmz2_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_2zleyuzx_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_2zleyuzx_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_2zleyuzx_wpftmp.assets.cache
+-           -   SwissKnifeApp_2zleyuzx_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_2zleyuzx_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_2zleyuzx_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_2zleyuzx_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_3ap1sjbt_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_3ap1sjbt_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_3ap1sjbt_wpftmp.assets.cache
+-           -   SwissKnifeApp_3ap1sjbt_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_3ap1sjbt_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_3ap1sjbt_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_3npdmsdn_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_3npdmsdn_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_3npdmsdn_wpftmp.assets.cache
+-           -   SwissKnifeApp_3npdmsdn_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_3npdmsdn_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_3npdmsdn_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_3pketxla_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_3pketxla_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_3pketxla_wpftmp.assets.cache
+-           -   SwissKnifeApp_3pketxla_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_3pketxla_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_3pketxla_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_3q1tmqkx_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_3q1tmqkx_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_3q1tmqkx_wpftmp.assets.cache
+-           -   SwissKnifeApp_3q1tmqkx_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_3q1tmqkx_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_3q1tmqkx_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_3rptt0we_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_3rptt0we_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_3rptt0we_wpftmp.assets.cache
+-           -   SwissKnifeApp_3rptt0we_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_3rptt0we_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_3rptt0we_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_3waldvbs_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_3waldvbs_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_3waldvbs_wpftmp.assets.cache
+-           -   SwissKnifeApp_3waldvbs_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_3waldvbs_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_3waldvbs_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_3x2kxyq0_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_3x2kxyq0_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_3x2kxyq0_wpftmp.assets.cache
+-           -   SwissKnifeApp_3x2kxyq0_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_3x2kxyq0_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_3x2kxyq0_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_4gr5ba2b_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_4gr5ba2b_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_4gr5ba2b_wpftmp.assets.cache
+-           -   SwissKnifeApp_4gr5ba2b_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_4gr5ba2b_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_4gr5ba2b_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_4lgzbpid_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_4lgzbpid_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_4lgzbpid_wpftmp.assets.cache
+-           -   SwissKnifeApp_4lgzbpid_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_4lgzbpid_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_4lgzbpid_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_4mrw4k4m_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_4mrw4k4m_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_4mrw4k4m_wpftmp.assets.cache
+-           -   SwissKnifeApp_4mrw4k4m_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_4mrw4k4m_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_4mrw4k4m_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_4wvt32ya_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_4wvt32ya_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_4wvt32ya_wpftmp.assets.cache
+-           -   SwissKnifeApp_4wvt32ya_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_4wvt32ya_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_4wvt32ya_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_4xjjijal_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_4xjjijal_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_4xjjijal_wpftmp.assets.cache
+-           -   SwissKnifeApp_4xjjijal_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_4xjjijal_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_4xjjijal_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_51xsnlww_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_51xsnlww_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_51xsnlww_wpftmp.assets.cache
+-           -   SwissKnifeApp_51xsnlww_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_51xsnlww_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_51xsnlww_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_52eoc4sz_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_52eoc4sz_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_52eoc4sz_wpftmp.assets.cache
+-           -   SwissKnifeApp_52eoc4sz_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_52eoc4sz_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_52eoc4sz_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_530zcdgw_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_530zcdgw_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_530zcdgw_wpftmp.assets.cache
+-           -   SwissKnifeApp_530zcdgw_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_530zcdgw_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_530zcdgw_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_54pjwmlt_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_54pjwmlt_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_54pjwmlt_wpftmp.assets.cache
+-           -   SwissKnifeApp_54pjwmlt_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_54pjwmlt_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_54pjwmlt_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_54xbbg3e_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_54xbbg3e_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_54xbbg3e_wpftmp.assets.cache
+-           -   SwissKnifeApp_54xbbg3e_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_54xbbg3e_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_54xbbg3e_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_5cod3erw_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_5cod3erw_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_5cod3erw_wpftmp.assets.cache
+-           -   SwissKnifeApp_5cod3erw_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_5cod3erw_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_5cod3erw_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_5j4ldg1c_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_5j4ldg1c_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_5j4ldg1c_wpftmp.assets.cache
+-           -   SwissKnifeApp_5j4ldg1c_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_5j4ldg1c_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_5j4ldg1c_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_5j4ldg1c_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_5jeou5ar_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_5jeou5ar_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_5jeou5ar_wpftmp.assets.cache
+-           -   SwissKnifeApp_5jeou5ar_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_5jeou5ar_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_5jeou5ar_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_5jqd1z3o_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_5jqd1z3o_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_5jqd1z3o_wpftmp.assets.cache
+-           -   SwissKnifeApp_5jqd1z3o_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_5jqd1z3o_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_5jqd1z3o_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_5nxmnsua_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_5nxmnsua_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_5nxmnsua_wpftmp.assets.cache
+-           -   SwissKnifeApp_5nxmnsua_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_5nxmnsua_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_5nxmnsua_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_5rj404cu_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_5rj404cu_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_5rj404cu_wpftmp.assets.cache
+-           -   SwissKnifeApp_5rj404cu_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_5rj404cu_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_5rj404cu_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_5zt5ikrr_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_5zt5ikrr_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_5zt5ikrr_wpftmp.assets.cache
+-           -   SwissKnifeApp_5zt5ikrr_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_5zt5ikrr_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_5zt5ikrr_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_a0cvw3jx_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_a0cvw3jx_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_a0cvw3jx_wpftmp.assets.cache
+-           -   SwissKnifeApp_a0cvw3jx_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_a0cvw3jx_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_a0cvw3jx_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_a3tlvbvy_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_a3tlvbvy_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_a3tlvbvy_wpftmp.assets.cache
+-           -   SwissKnifeApp_a3tlvbvy_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_a3tlvbvy_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_a3tlvbvy_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_a43okd40_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_a43okd40_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_a43okd40_wpftmp.assets.cache
+-           -   SwissKnifeApp_a43okd40_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_a43okd40_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_afzzdq0z_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_afzzdq0z_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_afzzdq0z_wpftmp.assets.cache
+-           -   SwissKnifeApp_afzzdq0z_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_afzzdq0z_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_afzzdq0z_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_aipnge44_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_aipnge44_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_aipnge44_wpftmp.assets.cache
+-           -   SwissKnifeApp_aipnge44_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_aipnge44_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_aipnge44_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_akkhvzdl_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_akkhvzdl_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_akkhvzdl_wpftmp.assets.cache
+-           -   SwissKnifeApp_akkhvzdl_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_akkhvzdl_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_akkhvzdl_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_apze3w0k_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_apze3w0k_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_apze3w0k_wpftmp.assets.cache
+-           -   SwissKnifeApp_apze3w0k_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_apze3w0k_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_apze3w0k_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ardbmpgi_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ardbmpgi_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ardbmpgi_wpftmp.assets.cache
+-           -   SwissKnifeApp_ardbmpgi_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ardbmpgi_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ardbmpgi_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_aret3wf4_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_aret3wf4_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_aret3wf4_wpftmp.assets.cache
+-           -   SwissKnifeApp_aret3wf4_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_aret3wf4_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_aret3wf4_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_aviqbnfq_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_aviqbnfq_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_aviqbnfq_wpftmp.assets.cache
+-           -   SwissKnifeApp_aviqbnfq_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_aviqbnfq_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_aviqbnfq_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_awtr3vlj_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_awtr3vlj_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_awtr3vlj_wpftmp.assets.cache
+-           -   SwissKnifeApp_awtr3vlj_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_awtr3vlj_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_awtr3vlj_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_b1ytjbon_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_b1ytjbon_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_b1ytjbon_wpftmp.assets.cache
+-           -   SwissKnifeApp_b1ytjbon_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_b1ytjbon_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_b1ytjbon_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_b303xgsr_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_b303xgsr_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_b303xgsr_wpftmp.assets.cache
+-           -   SwissKnifeApp_b303xgsr_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_b303xgsr_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_b303xgsr_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_b35xu42s_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_b35xu42s_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_b35xu42s_wpftmp.assets.cache
+-           -   SwissKnifeApp_b35xu42s_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_b35xu42s_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_b35xu42s_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_b35xu42s_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_bb1q2vdq_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_bb1q2vdq_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_bb1q2vdq_wpftmp.assets.cache
+-           -   SwissKnifeApp_bb1q2vdq_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_bb1q2vdq_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_bb1q2vdq_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_bcroyxk4_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_bcroyxk4_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_bcroyxk4_wpftmp.assets.cache
+-           -   SwissKnifeApp_bcroyxk4_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_bcroyxk4_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_bcroyxk4_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_bgqwne4h_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_bgqwne4h_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_bgqwne4h_wpftmp.assets.cache
+-           -   SwissKnifeApp_bgqwne4h_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_bgqwne4h_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_bgqwne4h_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_bgqwne4h_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_bh0pvc5i_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_bh0pvc5i_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_bh0pvc5i_wpftmp.assets.cache
+-           -   SwissKnifeApp_bh0pvc5i_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_bh0pvc5i_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_bh0pvc5i_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_bhctpudr_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_bhctpudr_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_bhctpudr_wpftmp.assets.cache
+-           -   SwissKnifeApp_bhctpudr_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_bhctpudr_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_bhctpudr_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_blubuxuw_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_blubuxuw_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_blubuxuw_wpftmp.assets.cache
+-           -   SwissKnifeApp_blubuxuw_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_blubuxuw_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_blubuxuw_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_bnysmnbr_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_bnysmnbr_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_bnysmnbr_wpftmp.assets.cache
+-           -   SwissKnifeApp_bnysmnbr_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_bnysmnbr_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_bnysmnbr_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_bnysmnbr_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_bp5svm5n_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_bp5svm5n_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_bp5svm5n_wpftmp.assets.cache
+-           -   SwissKnifeApp_bp5svm5n_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_bp5svm5n_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_bp5svm5n_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_but5wi20_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_but5wi20_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_but5wi20_wpftmp.assets.cache
+-           -   SwissKnifeApp_but5wi20_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_but5wi20_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_but5wi20_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_c25mtscb_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_c25mtscb_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_c25mtscb_wpftmp.assets.cache
+-           -   SwissKnifeApp_c25mtscb_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_c25mtscb_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_c25mtscb_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_c25mtscb_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_c2qenuhd_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_c2qenuhd_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_c2qenuhd_wpftmp.assets.cache
+-           -   SwissKnifeApp_c2qenuhd_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_c2qenuhd_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_c2qenuhd_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_c2qenuhd_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_c4mvwlcf_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_c4mvwlcf_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_c4mvwlcf_wpftmp.assets.cache
+-           -   SwissKnifeApp_c4mvwlcf_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_c4mvwlcf_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_c4mvwlcf_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_c4mvwlcf_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_cf3ofy3n_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_cf3ofy3n_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_cf3ofy3n_wpftmp.assets.cache
+-           -   SwissKnifeApp_cf3ofy3n_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_cf3ofy3n_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_cf3ofy3n_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_cgezrqxg_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_cgezrqxg_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_cgezrqxg_wpftmp.assets.cache
+-           -   SwissKnifeApp_cgezrqxg_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_cgezrqxg_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_cgezrqxg_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_cifcpm04_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_cifcpm04_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_cifcpm04_wpftmp.assets.cache
+-           -   SwissKnifeApp_cifcpm04_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_cifcpm04_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_cifcpm04_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_cifcpm04_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_cjcvapry_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_cjcvapry_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_cjcvapry_wpftmp.assets.cache
+-           -   SwissKnifeApp_cjcvapry_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_cjcvapry_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_cjcvapry_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_Content.g.i.cs
+-           -   SwissKnifeApp_cpxw3aa3_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_cpxw3aa3_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_cpxw3aa3_wpftmp.assets.cache
+-           -   SwissKnifeApp_cpxw3aa3_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_cpxw3aa3_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_cpxw3aa3_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_crw0ruqs_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_crw0ruqs_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_crw0ruqs_wpftmp.assets.cache
+-           -   SwissKnifeApp_crw0ruqs_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_crw0ruqs_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_crw0ruqs_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ctbs2aew_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ctbs2aew_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ctbs2aew_wpftmp.assets.cache
+-           -   SwissKnifeApp_ctbs2aew_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_ctbs2aew_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ctbs2aew_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ctbs2aew_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_d2w0f123_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_d2w0f123_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_d2w0f123_wpftmp.assets.cache
+-           -   SwissKnifeApp_d2w0f123_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_d2w0f123_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_d2w0f123_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_d5c5l323_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_d5c5l323_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_d5c5l323_wpftmp.assets.cache
+-           -   SwissKnifeApp_d5c5l323_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_d5c5l323_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_dbosdpu0_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_dbosdpu0_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_dbosdpu0_wpftmp.assets.cache
+-           -   SwissKnifeApp_dbosdpu0_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_dbosdpu0_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_dbosdpu0_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_dbosdpu0_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_dk4jk4th_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_dk4jk4th_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_dk4jk4th_wpftmp.assets.cache
+-           -   SwissKnifeApp_dk4jk4th_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_dk4jk4th_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_dk4jk4th_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_dyitfb1c_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_dyitfb1c_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_dyitfb1c_wpftmp.assets.cache
+-           -   SwissKnifeApp_dyitfb1c_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_dyitfb1c_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_dyitfb1c_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_e0ehotat_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_e0ehotat_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_e0ehotat_wpftmp.assets.cache
+-           -   SwissKnifeApp_e0ehotat_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_e0ehotat_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_e0ehotat_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_e0ehotat_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ehhmeedf_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ehhmeedf_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ehhmeedf_wpftmp.assets.cache
+-           -   SwissKnifeApp_ehhmeedf_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ehhmeedf_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ehhmeedf_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ejpbf3ul_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ejpbf3ul_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ejpbf3ul_wpftmp.assets.cache
+-           -   SwissKnifeApp_ejpbf3ul_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_ejpbf3ul_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ejpbf3ul_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_emdwlxcz_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_emdwlxcz_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_emdwlxcz_wpftmp.assets.cache
+-           -   SwissKnifeApp_emdwlxcz_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_emdwlxcz_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_emdwlxcz_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_emfyryzz_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_emfyryzz_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_emfyryzz_wpftmp.assets.cache
+-           -   SwissKnifeApp_emfyryzz_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_emfyryzz_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_emfyryzz_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_eqgwuegf_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_eqgwuegf_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_eqgwuegf_wpftmp.assets.cache
+-           -   SwissKnifeApp_eqgwuegf_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_eqgwuegf_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_eqgwuegf_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_eqgwuegf_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_et30eb2t_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_et30eb2t_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_et30eb2t_wpftmp.assets.cache
+-           -   SwissKnifeApp_et30eb2t_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_et30eb2t_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_et30eb2t_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_etjwpa2y_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_etjwpa2y_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_etjwpa2y_wpftmp.assets.cache
+-           -   SwissKnifeApp_etjwpa2y_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_etjwpa2y_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_etjwpa2y_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_f4en0gxv_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_f4en0gxv_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_f4en0gxv_wpftmp.assets.cache
+-           -   SwissKnifeApp_f4en0gxv_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_f4en0gxv_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_f4en0gxv_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_fakhadwu_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_fakhadwu_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_fakhadwu_wpftmp.assets.cache
+-           -   SwissKnifeApp_fakhadwu_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_fakhadwu_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_fakhadwu_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_fbw2z2zl_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_fbw2z2zl_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_fbw2z2zl_wpftmp.assets.cache
+-           -   SwissKnifeApp_fbw2z2zl_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_fbw2z2zl_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_fbw2z2zl_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_fiqiuu4r_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_fiqiuu4r_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_fiqiuu4r_wpftmp.assets.cache
+-           -   SwissKnifeApp_fiqiuu4r_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_fiqiuu4r_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_fiqiuu4r_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_fncabqdi_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_fncabqdi_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_fncabqdi_wpftmp.assets.cache
+-           -   SwissKnifeApp_fncabqdi_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_fncabqdi_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_fncabqdi_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_fqkhj1ar_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_fqkhj1ar_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_fqkhj1ar_wpftmp.assets.cache
+-           -   SwissKnifeApp_fqkhj1ar_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_fqkhj1ar_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_fqkhj1ar_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_fqkhj1ar_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_fvx1rrtk_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_fvx1rrtk_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_fvx1rrtk_wpftmp.assets.cache
+-           -   SwissKnifeApp_fvx1rrtk_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_fvx1rrtk_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_fvx1rrtk_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_fvx1rrtk_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_fw3l2pwu_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_fw3l2pwu_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_fw3l2pwu_wpftmp.assets.cache
+-           -   SwissKnifeApp_fw3l2pwu_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_fw3l2pwu_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_fw3l2pwu_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_fw3l2pwu_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ghgm0al4_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ghgm0al4_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ghgm0al4_wpftmp.assets.cache
+-           -   SwissKnifeApp_ghgm0al4_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ghgm0al4_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ghgm0al4_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_gi5cdk4u_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_gi5cdk4u_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_gi5cdk4u_wpftmp.assets.cache
+-           -   SwissKnifeApp_gi5cdk4u_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_gi5cdk4u_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_gi5cdk4u_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_gnfuow0x_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_gnfuow0x_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_gnfuow0x_wpftmp.assets.cache
+-           -   SwissKnifeApp_gnfuow0x_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_gnfuow0x_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_gnfuow0x_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_gs22eeij_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_gs22eeij_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_gs22eeij_wpftmp.assets.cache
+-           -   SwissKnifeApp_gs22eeij_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_gs22eeij_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_gs22eeij_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_hamn0xih_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_hamn0xih_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_hamn0xih_wpftmp.assets.cache
+-           -   SwissKnifeApp_hamn0xih_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_hamn0xih_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_hamn0xih_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_hcgysiz5_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_hcgysiz5_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_hcgysiz5_wpftmp.assets.cache
+-           -   SwissKnifeApp_hcgysiz5_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_hcgysiz5_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_hcgysiz5_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_hddb240i_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_hddb240i_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_hddb240i_wpftmp.assets.cache
+-           -   SwissKnifeApp_hddb240i_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_hddb240i_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_hddb240i_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_hdu1u0xe_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_hdu1u0xe_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_hdu1u0xe_wpftmp.assets.cache
+-           -   SwissKnifeApp_hdu1u0xe_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_hdu1u0xe_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_hdu1u0xe_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_hdu1u0xe_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_heeeyrk5_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_heeeyrk5_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_heeeyrk5_wpftmp.assets.cache
+-           -   SwissKnifeApp_heeeyrk5_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_heeeyrk5_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_heeeyrk5_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_heeeyrk5_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_herdjahe_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_herdjahe_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_herdjahe_wpftmp.assets.cache
+-           -   SwissKnifeApp_herdjahe_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_herdjahe_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_herdjahe_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_hyopy5t4_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_hyopy5t4_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_hyopy5t4_wpftmp.assets.cache
+-           -   SwissKnifeApp_hyopy5t4_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_hyopy5t4_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_hyopy5t4_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_i0dneefg_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_i0dneefg_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_i0dneefg_wpftmp.assets.cache
+-           -   SwissKnifeApp_i0dneefg_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_i0dneefg_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_i0dneefg_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_i0dneefg_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_i4dl3ghx_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_i4dl3ghx_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_i4dl3ghx_wpftmp.assets.cache
+-           -   SwissKnifeApp_i4dl3ghx_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_i4dl3ghx_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_i4dl3ghx_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_i4dl3ghx_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ibd3f23c_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ibd3f23c_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ibd3f23c_wpftmp.assets.cache
+-           -   SwissKnifeApp_ibd3f23c_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ibd3f23c_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ibd3f23c_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_iexvtcsn_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_iexvtcsn_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_iexvtcsn_wpftmp.assets.cache
+-           -   SwissKnifeApp_iexvtcsn_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_iexvtcsn_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_iexvtcsn_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ihcoitjj_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ihcoitjj_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ihcoitjj_wpftmp.assets.cache
+-           -   SwissKnifeApp_ihcoitjj_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ihcoitjj_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ihcoitjj_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_iis0zxi2_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_iis0zxi2_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_iis0zxi2_wpftmp.assets.cache
+-           -   SwissKnifeApp_iis0zxi2_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_iis0zxi2_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_iis0zxi2_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ijanive5_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ijanive5_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ijanive5_wpftmp.assets.cache
+-           -   SwissKnifeApp_ijanive5_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_ijanive5_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ijanive5_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ikomsj5k_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ikomsj5k_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ikomsj5k_wpftmp.assets.cache
+-           -   SwissKnifeApp_ikomsj5k_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ikomsj5k_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ikomsj5k_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_iq2mfuu4_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_iq2mfuu4_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_iq2mfuu4_wpftmp.assets.cache
+-           -   SwissKnifeApp_iq2mfuu4_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_iq2mfuu4_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_iq2mfuu4_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_iq2mfuu4_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ivcf0v5k_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ivcf0v5k_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ivcf0v5k_wpftmp.assets.cache
+-           -   SwissKnifeApp_ivcf0v5k_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ivcf0v5k_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ivcf0v5k_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_j0pwwpwn_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_j0pwwpwn_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_j0pwwpwn_wpftmp.assets.cache
+-           -   SwissKnifeApp_j0pwwpwn_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_j0pwwpwn_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_j0pwwpwn_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_j5yvuygv_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_j5yvuygv_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_j5yvuygv_wpftmp.assets.cache
+-           -   SwissKnifeApp_j5yvuygv_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_j5yvuygv_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_j5yvuygv_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_jhafie03_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_jhafie03_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_jhafie03_wpftmp.assets.cache
+-           -   SwissKnifeApp_jhafie03_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_jhafie03_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_jhafie03_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_jqyabfn1_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_jqyabfn1_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_jqyabfn1_wpftmp.assets.cache
+-           -   SwissKnifeApp_jqyabfn1_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_jqyabfn1_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_jqyabfn1_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_jr4d4qss_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_jr4d4qss_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_jr4d4qss_wpftmp.assets.cache
+-           -   SwissKnifeApp_jr4d4qss_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_jr4d4qss_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_jr4d4qss_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_jr4d4qss_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_jrgxweao_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_jrgxweao_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_jrgxweao_wpftmp.assets.cache
+-           -   SwissKnifeApp_jrgxweao_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_jrgxweao_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_jrgxweao_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_jxxfutcn_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_jxxfutcn_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_jxxfutcn_wpftmp.assets.cache
+-           -   SwissKnifeApp_jxxfutcn_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_jxxfutcn_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_jxxfutcn_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_k3hlcoa5_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_k3hlcoa5_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_k3hlcoa5_wpftmp.assets.cache
+-           -   SwissKnifeApp_k3hlcoa5_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_k3hlcoa5_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_k3hlcoa5_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ktvk31pg_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ktvk31pg_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ktvk31pg_wpftmp.assets.cache
+-           -   SwissKnifeApp_ktvk31pg_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ktvk31pg_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ktvk31pg_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_kwnrxlej_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_kwnrxlej_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_kwnrxlej_wpftmp.assets.cache
+-           -   SwissKnifeApp_kwnrxlej_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_kwnrxlej_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_kwnrxlej_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ky0fl4le_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ky0fl4le_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ky0fl4le_wpftmp.assets.cache
+-           -   SwissKnifeApp_ky0fl4le_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ky0fl4le_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ky0fl4le_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_l3zlxd43_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_l3zlxd43_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_l3zlxd43_wpftmp.assets.cache
+-           -   SwissKnifeApp_l3zlxd43_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_l3zlxd43_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_l3zlxd43_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_l4dfqa2d_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_l4dfqa2d_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_l4dfqa2d_wpftmp.assets.cache
+-           -   SwissKnifeApp_l4dfqa2d_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_l4dfqa2d_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_l4dfqa2d_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_lcbczlws_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_lcbczlws_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_lcbczlws_wpftmp.assets.cache
+-           -   SwissKnifeApp_lcbczlws_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_lcbczlws_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_lcbczlws_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_lcq4zozc_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_lcq4zozc_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_lcq4zozc_wpftmp.assets.cache
+-           -   SwissKnifeApp_lcq4zozc_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_lcq4zozc_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_lcq4zozc_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_lm0p4ub5_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_lm0p4ub5_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_lm0p4ub5_wpftmp.assets.cache
+-           -   SwissKnifeApp_lm0p4ub5_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_lm0p4ub5_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_lm0p4ub5_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_lmaji4fz_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_lmaji4fz_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_lmaji4fz_wpftmp.assets.cache
+-           -   SwissKnifeApp_lmaji4fz_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_lmaji4fz_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_lmaji4fz_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_lmbc5dtc_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_lmbc5dtc_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_lmbc5dtc_wpftmp.assets.cache
+-           -   SwissKnifeApp_lmbc5dtc_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_lmbc5dtc_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_lmbc5dtc_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_lmbc5dtc_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_lofnncc3_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_lofnncc3_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_lofnncc3_wpftmp.assets.cache
+-           -   SwissKnifeApp_lofnncc3_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_lofnncc3_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_lofnncc3_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_lqize1vj_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_lqize1vj_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_lqize1vj_wpftmp.assets.cache
+-           -   SwissKnifeApp_lqize1vj_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_lqize1vj_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_lqize1vj_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_lrzm211q_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_lrzm211q_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_lrzm211q_wpftmp.assets.cache
+-           -   SwissKnifeApp_lrzm211q_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_lrzm211q_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_lrzm211q_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_lvjddghk_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_lvjddghk_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_lvjddghk_wpftmp.assets.cache
+-           -   SwissKnifeApp_lvjddghk_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_lvjddghk_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_lvjddghk_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_lvppybdb_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_lvppybdb_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_lvppybdb_wpftmp.assets.cache
+-           -   SwissKnifeApp_lvppybdb_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_lvppybdb_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_lvppybdb_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_lvppybdb_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_lwq54ebc_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_lwq54ebc_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_lwq54ebc_wpftmp.assets.cache
+-           -   SwissKnifeApp_lwq54ebc_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_lwq54ebc_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_lwq54ebc_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_lwq54ebc_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_m0fxtyez_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_m0fxtyez_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_m0fxtyez_wpftmp.assets.cache
+-           -   SwissKnifeApp_m0fxtyez_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_m0fxtyez_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_m0fxtyez_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_m0fxtyez_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_MarkupCompile.i.cache
+-           -   SwissKnifeApp_mqc1a1sh_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_mqc1a1sh_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_mqc1a1sh_wpftmp.assets.cache
+-           -   SwissKnifeApp_mqc1a1sh_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_mqc1a1sh_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_mqc1a1sh_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_msfgqrz2_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_msfgqrz2_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_msfgqrz2_wpftmp.assets.cache
+-           -   SwissKnifeApp_msfgqrz2_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_msfgqrz2_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_msfgqrz2_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_napuflgu_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_napuflgu_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_napuflgu_wpftmp.assets.cache
+-           -   SwissKnifeApp_napuflgu_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_napuflgu_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_napuflgu_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_nchqfhlb_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_nchqfhlb_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_nchqfhlb_wpftmp.assets.cache
+-           -   SwissKnifeApp_nchqfhlb_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_nchqfhlb_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_nchqfhlb_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_nchqfhlb_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_nesau1wm_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_nesau1wm_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_nesau1wm_wpftmp.assets.cache
+-           -   SwissKnifeApp_nesau1wm_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_nesau1wm_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_nesau1wm_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ngohr0om_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ngohr0om_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ngohr0om_wpftmp.assets.cache
+-           -   SwissKnifeApp_ngohr0om_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ngohr0om_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ngohr0om_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_nhfucdrb_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_nhfucdrb_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_nhfucdrb_wpftmp.assets.cache
+-           -   SwissKnifeApp_nhfucdrb_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_nhfucdrb_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_nhfucdrb_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_nlyki0p5_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_nlyki0p5_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_nlyki0p5_wpftmp.assets.cache
+-           -   SwissKnifeApp_nlyki0p5_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_nlyki0p5_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_nlyki0p5_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_nm1otxsl_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_nm1otxsl_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_nm1otxsl_wpftmp.assets.cache
+-           -   SwissKnifeApp_nm1otxsl_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_nm1otxsl_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_nm1otxsl_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_nv0g1sxb_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_nv0g1sxb_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_nv0g1sxb_wpftmp.assets.cache
+-           -   SwissKnifeApp_nv0g1sxb_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_nv0g1sxb_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_nv0g1sxb_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_nxgsdftt_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_nxgsdftt_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_nxgsdftt_wpftmp.assets.cache
+-           -   SwissKnifeApp_nxgsdftt_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_nxgsdftt_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_nxgsdftt_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_nxgsdftt_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_o1hw4510_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_o1hw4510_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_o1hw4510_wpftmp.assets.cache
+-           -   SwissKnifeApp_o1hw4510_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_o1hw4510_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_o1hw4510_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_o3kjn2zh_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_o3kjn2zh_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_o3kjn2zh_wpftmp.assets.cache
+-           -   SwissKnifeApp_o3kjn2zh_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_o3kjn2zh_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_o3kjn2zh_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_o3kjn2zh_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_o3v4theo_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_o3v4theo_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_o3v4theo_wpftmp.assets.cache
+-           -   SwissKnifeApp_o3v4theo_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_o3v4theo_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_o3v4theo_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_oaveq0x5_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_oaveq0x5_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_oaveq0x5_wpftmp.assets.cache
+-           -   SwissKnifeApp_oaveq0x5_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_oaveq0x5_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_oaveq0x5_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_oaveq0x5_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_obwymzeh_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_obwymzeh_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_obwymzeh_wpftmp.assets.cache
+-           -   SwissKnifeApp_obwymzeh_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_obwymzeh_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_obwymzeh_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_oettx2pp_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_oettx2pp_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_oettx2pp_wpftmp.assets.cache
+-           -   SwissKnifeApp_oettx2pp_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_oettx2pp_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_oettx2pp_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_oettx2pp_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ogcw4ywy_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ogcw4ywy_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ogcw4ywy_wpftmp.assets.cache
+-           -   SwissKnifeApp_ogcw4ywy_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ogcw4ywy_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ogcw4ywy_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_okhmolnc_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_okhmolnc_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_okhmolnc_wpftmp.assets.cache
+-           -   SwissKnifeApp_okhmolnc_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_okhmolnc_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_oku2tnvx_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_oku2tnvx_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_oku2tnvx_wpftmp.assets.cache
+-           -   SwissKnifeApp_oku2tnvx_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_oku2tnvx_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ouw5wgzd_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ouw5wgzd_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ouw5wgzd_wpftmp.assets.cache
+-           -   SwissKnifeApp_ouw5wgzd_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_ouw5wgzd_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ouw5wgzd_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_oxtcrsiq_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_oxtcrsiq_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_oxtcrsiq_wpftmp.assets.cache
+-           -   SwissKnifeApp_oxtcrsiq_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_oxtcrsiq_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_oxtcrsiq_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_pa1izfur_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_pa1izfur_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_pa1izfur_wpftmp.assets.cache
+-           -   SwissKnifeApp_pa1izfur_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_pa1izfur_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_pa1izfur_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_pdubv0n3_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_pdubv0n3_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_pdubv0n3_wpftmp.assets.cache
+-           -   SwissKnifeApp_pdubv0n3_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_pdubv0n3_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_pdubv0n3_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_pfwgvzgd_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_pfwgvzgd_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_pfwgvzgd_wpftmp.assets.cache
+-           -   SwissKnifeApp_pfwgvzgd_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_pfwgvzgd_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_pfwgvzgd_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_pm5410lg_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_pm5410lg_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_pm5410lg_wpftmp.assets.cache
+-           -   SwissKnifeApp_pm5410lg_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_pm5410lg_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_pm5410lg_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_pm5410lg_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_prpemglr_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_prpemglr_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_prpemglr_wpftmp.assets.cache
+-           -   SwissKnifeApp_prpemglr_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_prpemglr_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_prpemglr_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_pzumd4kt_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_pzumd4kt_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_pzumd4kt_wpftmp.assets.cache
+-           -   SwissKnifeApp_pzumd4kt_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_pzumd4kt_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_pzumd4kt_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_qdfnm5z2_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_qdfnm5z2_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_qdfnm5z2_wpftmp.assets.cache
+-           -   SwissKnifeApp_qdfnm5z2_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_qdfnm5z2_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_qdfnm5z2_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_qfvkbwr3_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_qfvkbwr3_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_qfvkbwr3_wpftmp.assets.cache
+-           -   SwissKnifeApp_qfvkbwr3_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_qfvkbwr3_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_qfvkbwr3_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_qj0daymg_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_qj0daymg_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_qj0daymg_wpftmp.assets.cache
+-           -   SwissKnifeApp_qj0daymg_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_qj0daymg_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_qj0daymg_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_qj0daymg_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_qm1jl3zt_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_qm1jl3zt_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_qm1jl3zt_wpftmp.assets.cache
+-           -   SwissKnifeApp_qm1jl3zt_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_qm1jl3zt_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_qm1jl3zt_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_qqrhkuje_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_qqrhkuje_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_qqrhkuje_wpftmp.assets.cache
+-           -   SwissKnifeApp_qqrhkuje_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_qqrhkuje_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_qqrhkuje_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_quv5bqjb_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_quv5bqjb_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_quv5bqjb_wpftmp.assets.cache
+-           -   SwissKnifeApp_quv5bqjb_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_quv5bqjb_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_quv5bqjb_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_qwkwkf5v_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_qwkwkf5v_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_qwkwkf5v_wpftmp.assets.cache
+-           -   SwissKnifeApp_qwkwkf5v_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_qwkwkf5v_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_qwkwkf5v_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_qysnla4d_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_qysnla4d_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_qysnla4d_wpftmp.assets.cache
+-           -   SwissKnifeApp_qysnla4d_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_qysnla4d_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_qysnla4d_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_r3r2kdea_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_r3r2kdea_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_r3r2kdea_wpftmp.assets.cache
+-           -   SwissKnifeApp_r3r2kdea_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_r3r2kdea_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_r3r2kdea_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_r3si33wp_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_r3si33wp_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_r3si33wp_wpftmp.assets.cache
+-           -   SwissKnifeApp_r3si33wp_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_r3si33wp_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_r3si33wp_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_r3si33wp_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_rj412xsl_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_rj412xsl_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_rj412xsl_wpftmp.assets.cache
+-           -   SwissKnifeApp_rj412xsl_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_rj412xsl_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_rj412xsl_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_rk2qn1np_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_rk2qn1np_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_rk2qn1np_wpftmp.assets.cache
+-           -   SwissKnifeApp_rk2qn1np_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_rk2qn1np_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_rk2qn1np_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_rm4llmjp_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_rm4llmjp_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_rm4llmjp_wpftmp.assets.cache
+-           -   SwissKnifeApp_rm4llmjp_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_rm4llmjp_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_rm4llmjp_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_rptgrd4u_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_rptgrd4u_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_rptgrd4u_wpftmp.assets.cache
+-           -   SwissKnifeApp_rptgrd4u_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_rptgrd4u_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_rptgrd4u_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_rsephd0n_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_rsephd0n_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_rsephd0n_wpftmp.assets.cache
+-           -   SwissKnifeApp_rsephd0n_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_rsephd0n_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_rsephd0n_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_rt1th0fj_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_rt1th0fj_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_rt1th0fj_wpftmp.assets.cache
+-           -   SwissKnifeApp_rt1th0fj_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_rt1th0fj_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_rt1th0fj_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_rw0ul2a4_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_rw0ul2a4_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_rw0ul2a4_wpftmp.assets.cache
+-           -   SwissKnifeApp_rw0ul2a4_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_rw0ul2a4_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_rw0ul2a4_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_rypkfsix_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_rypkfsix_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_rypkfsix_wpftmp.assets.cache
+-           -   SwissKnifeApp_rypkfsix_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_rypkfsix_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_rypkfsix_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_s1dxbzlo_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_s1dxbzlo_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_s1dxbzlo_wpftmp.assets.cache
+-           -   SwissKnifeApp_s1dxbzlo_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_s1dxbzlo_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_s1dxbzlo_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_s52djcnj_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_s52djcnj_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_s52djcnj_wpftmp.assets.cache
+-           -   SwissKnifeApp_s52djcnj_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_s52djcnj_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_s52djcnj_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_savqjokj_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_savqjokj_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_savqjokj_wpftmp.assets.cache
+-           -   SwissKnifeApp_savqjokj_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_savqjokj_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_savqjokj_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_savqjokj_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_sdc1lokc_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_sdc1lokc_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_sdc1lokc_wpftmp.assets.cache
+-           -   SwissKnifeApp_sdc1lokc_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_sdc1lokc_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_sdc1lokc_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_sfuvoqpr_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_sfuvoqpr_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_sfuvoqpr_wpftmp.assets.cache
+-           -   SwissKnifeApp_sfuvoqpr_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_sfuvoqpr_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_sfuvoqpr_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_sicilu2t_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_sicilu2t_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_sicilu2t_wpftmp.assets.cache
+-           -   SwissKnifeApp_sicilu2t_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_sicilu2t_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_sicilu2t_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_smwqho3n_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_smwqho3n_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_smwqho3n_wpftmp.assets.cache
+-           -   SwissKnifeApp_smwqho3n_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_smwqho3n_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_smwqho3n_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_smwqho3n_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_so2y2y5x_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_so2y2y5x_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_so2y2y5x_wpftmp.assets.cache
+-           -   SwissKnifeApp_so2y2y5x_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_so2y2y5x_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_so2y2y5x_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_sqxueznn_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_sqxueznn_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_sqxueznn_wpftmp.assets.cache
+-           -   SwissKnifeApp_sqxueznn_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_sqxueznn_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_sqxueznn_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_svl3o4ao_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_svl3o4ao_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_svl3o4ao_wpftmp.assets.cache
+-           -   SwissKnifeApp_svl3o4ao_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_svl3o4ao_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_svn0dzw0_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_svn0dzw0_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_svn0dzw0_wpftmp.assets.cache
+-           -   SwissKnifeApp_svn0dzw0_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_svn0dzw0_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_svn0dzw0_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_svn0dzw0_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_sygsmz4e_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_sygsmz4e_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_sygsmz4e_wpftmp.assets.cache
+-           -   SwissKnifeApp_sygsmz4e_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_sygsmz4e_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_sygsmz4e_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_sygsmz4e_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_t5diywbu_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_t5diywbu_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_t5diywbu_wpftmp.assets.cache
+-           -   SwissKnifeApp_t5diywbu_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_t5diywbu_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_t5diywbu_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_taf023iw_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_taf023iw_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_taf023iw_wpftmp.assets.cache
+-           -   SwissKnifeApp_taf023iw_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_taf023iw_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_taf023iw_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_taf023iw_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_tjeeo1if_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_tjeeo1if_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_tjeeo1if_wpftmp.assets.cache
+-           -   SwissKnifeApp_tjeeo1if_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_tjeeo1if_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_tjeeo1if_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_tl3sx13a_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_tl3sx13a_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_tl3sx13a_wpftmp.assets.cache
+-           -   SwissKnifeApp_tl3sx13a_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_tl3sx13a_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_tl3sx13a_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_tuwoenbk_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_tuwoenbk_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_tuwoenbk_wpftmp.assets.cache
+-           -   SwissKnifeApp_tuwoenbk_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_tuwoenbk_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_tuwoenbk_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_tx1zx0vw_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_tx1zx0vw_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_tx1zx0vw_wpftmp.assets.cache
+-           -   SwissKnifeApp_tx1zx0vw_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_tx1zx0vw_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_tx1zx0vw_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_txuupdyx_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_txuupdyx_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_txuupdyx_wpftmp.assets.cache
+-           -   SwissKnifeApp_txuupdyx_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_txuupdyx_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_txuupdyx_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_u0qhxr23_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_u0qhxr23_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_u0qhxr23_wpftmp.assets.cache
+-           -   SwissKnifeApp_u0qhxr23_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_u0qhxr23_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_u0qhxr23_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_u333iycu_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_u333iycu_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_u333iycu_wpftmp.assets.cache
+-           -   SwissKnifeApp_u333iycu_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_u333iycu_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_u333iycu_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ub0tvqqa_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ub0tvqqa_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ub0tvqqa_wpftmp.assets.cache
+-           -   SwissKnifeApp_ub0tvqqa_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ub0tvqqa_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ub0tvqqa_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ui0g0cft_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ui0g0cft_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ui0g0cft_wpftmp.assets.cache
+-           -   SwissKnifeApp_ui0g0cft_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ui0g0cft_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ui0g0cft_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_uipd02u3_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_uipd02u3_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_uipd02u3_wpftmp.assets.cache
+-           -   SwissKnifeApp_uipd02u3_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_uipd02u3_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_uipd02u3_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_uipd02u3_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ujgvh52c_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ujgvh52c_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ujgvh52c_wpftmp.assets.cache
+-           -   SwissKnifeApp_ujgvh52c_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ujgvh52c_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ujgvh52c_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_uq3d100s_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_uq3d100s_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_uq3d100s_wpftmp.assets.cache
+-           -   SwissKnifeApp_uq3d100s_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_uq3d100s_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_uq3d100s_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_uugmeph5_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_uugmeph5_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_uugmeph5_wpftmp.assets.cache
+-           -   SwissKnifeApp_uugmeph5_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_uugmeph5_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_uugmeph5_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_uugmeph5_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_uw5oe01n_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_uw5oe01n_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_uw5oe01n_wpftmp.assets.cache
+-           -   SwissKnifeApp_uw5oe01n_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_uw5oe01n_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_uw5oe01n_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_uw5oe01n_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ux2vtbth_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ux2vtbth_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ux2vtbth_wpftmp.assets.cache
+-           -   SwissKnifeApp_ux2vtbth_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_ux2vtbth_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ux2vtbth_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ux2vtbth_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_v0jzhskl_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_v0jzhskl_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_v0jzhskl_wpftmp.assets.cache
+-           -   SwissKnifeApp_v0jzhskl_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_v0jzhskl_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_v0jzhskl_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_v0u0akwk_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_v0u0akwk_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_v0u0akwk_wpftmp.assets.cache
+-           -   SwissKnifeApp_v0u0akwk_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_v0u0akwk_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_v0u0akwk_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_v2awo3kw_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_v2awo3kw_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_v2awo3kw_wpftmp.assets.cache
+-           -   SwissKnifeApp_v2awo3kw_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_v2awo3kw_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_v2awo3kw_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_va5vu4gi_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_va5vu4gi_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_va5vu4gi_wpftmp.assets.cache
+-           -   SwissKnifeApp_va5vu4gi_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_va5vu4gi_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_va5vu4gi_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_vbuf2f2v_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_vbuf2f2v_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_vbuf2f2v_wpftmp.assets.cache
+-           -   SwissKnifeApp_vbuf2f2v_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_vbuf2f2v_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_vbuf2f2v_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_vbuf2f2v_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_vc2nlvf1_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_vc2nlvf1_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_vc2nlvf1_wpftmp.assets.cache
+-           -   SwissKnifeApp_vc2nlvf1_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_vc2nlvf1_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_vc2nlvf1_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_vc2nlvf1_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_vnh2wsjp_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_vnh2wsjp_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_vnh2wsjp_wpftmp.assets.cache
+-           -   SwissKnifeApp_vnh2wsjp_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_vnh2wsjp_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_vnh2wsjp_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_voibbzzu_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_voibbzzu_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_voibbzzu_wpftmp.assets.cache
+-           -   SwissKnifeApp_voibbzzu_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_voibbzzu_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_voibbzzu_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_voibbzzu_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_vsfpfkwv_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_vsfpfkwv_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_vsfpfkwv_wpftmp.assets.cache
+-           -   SwissKnifeApp_vsfpfkwv_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_vsfpfkwv_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_vsfpfkwv_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_vsfpfkwv_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_w2sbq4ou_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_w2sbq4ou_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_w2sbq4ou_wpftmp.assets.cache
+-           -   SwissKnifeApp_w2sbq4ou_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_w2sbq4ou_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_w2sbq4ou_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_wa130in4_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_wa130in4_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_wa130in4_wpftmp.assets.cache
+-           -   SwissKnifeApp_wa130in4_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_wa130in4_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_wa130in4_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_wguiaqhc_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_wguiaqhc_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_wguiaqhc_wpftmp.assets.cache
+-           -   SwissKnifeApp_wguiaqhc_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_wguiaqhc_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_wguiaqhc_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_wjktlrxj_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_wjktlrxj_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_wjktlrxj_wpftmp.assets.cache
+-           -   SwissKnifeApp_wjktlrxj_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_wjktlrxj_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_wjktlrxj_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_wkeep0ca_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_wkeep0ca_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_wkeep0ca_wpftmp.assets.cache
+-           -   SwissKnifeApp_wkeep0ca_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_wkeep0ca_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_wkeep0ca_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_wq0atou5_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_wq0atou5_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_wq0atou5_wpftmp.assets.cache
+-           -   SwissKnifeApp_wq0atou5_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_wq0atou5_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_wq0atou5_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_wq0atou5_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_wse40cry_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_wse40cry_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_wse40cry_wpftmp.assets.cache
+-           -   SwissKnifeApp_wse40cry_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_wse40cry_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_wse40cry_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_wt5jbiw3_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_wt5jbiw3_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_wt5jbiw3_wpftmp.assets.cache
+-           -   SwissKnifeApp_wt5jbiw3_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_wt5jbiw3_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_wt5jbiw3_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_wt5jbiw3_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_wx3duven_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_wx3duven_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_wx3duven_wpftmp.assets.cache
+-           -   SwissKnifeApp_wx3duven_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_wx3duven_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_wx3duven_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_x2h5imsv_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_x2h5imsv_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_x2h5imsv_wpftmp.assets.cache
+-           -   SwissKnifeApp_x2h5imsv_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_x2h5imsv_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_x2h5imsv_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_x2kwpq2c_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_x2kwpq2c_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_x2kwpq2c_wpftmp.assets.cache
+-           -   SwissKnifeApp_x2kwpq2c_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_x2kwpq2c_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_x2kwpq2c_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_x3curmau_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_x3curmau_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_x3curmau_wpftmp.assets.cache
+-           -   SwissKnifeApp_x3curmau_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_x3curmau_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_x3curmau_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_x3curmau_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_x5bmn4rd_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_x5bmn4rd_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_x5bmn4rd_wpftmp.assets.cache
+-           -   SwissKnifeApp_x5bmn4rd_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_x5bmn4rd_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_x5bmn4rd_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_x5bmn4rd_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_xcm31gwd_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_xcm31gwd_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_xcm31gwd_wpftmp.assets.cache
+-           -   SwissKnifeApp_xcm31gwd_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_xcm31gwd_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_xcm31gwd_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_xgxra1md_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_xgxra1md_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_xgxra1md_wpftmp.assets.cache
+-           -   SwissKnifeApp_xgxra1md_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_xgxra1md_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_xgxra1md_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_xhasbjey_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_xhasbjey_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_xhasbjey_wpftmp.assets.cache
+-           -   SwissKnifeApp_xhasbjey_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_xhasbjey_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_xqu1jpyj_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_xqu1jpyj_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_xqu1jpyj_wpftmp.assets.cache
+-           -   SwissKnifeApp_xqu1jpyj_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_xqu1jpyj_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_xqu1jpyj_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_xqzhj3sf_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_xqzhj3sf_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_xqzhj3sf_wpftmp.assets.cache
+-           -   SwissKnifeApp_xqzhj3sf_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_xqzhj3sf_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_xqzhj3sf_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_xt0g0qt1_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_xt0g0qt1_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_xt0g0qt1_wpftmp.assets.cache
+-           -   SwissKnifeApp_xt0g0qt1_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_xt0g0qt1_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_xt0g0qt1_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_xx1fzc3t_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_xx1fzc3t_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_xx1fzc3t_wpftmp.assets.cache
+-           -   SwissKnifeApp_xx1fzc3t_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_xx1fzc3t_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_xx1fzc3t_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_xzfyelwj_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_xzfyelwj_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_xzfyelwj_wpftmp.assets.cache
+-           -   SwissKnifeApp_xzfyelwj_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_xzfyelwj_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_xzfyelwj_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_y5qmla12_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_y5qmla12_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_y5qmla12_wpftmp.assets.cache
+-           -   SwissKnifeApp_y5qmla12_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_y5qmla12_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_y5qmla12_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ybavonmw_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ybavonmw_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ybavonmw_wpftmp.assets.cache
+-           -   SwissKnifeApp_ybavonmw_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_ybavonmw_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ybavonmw_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ybavonmw_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_yebpalrz_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_yebpalrz_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_yebpalrz_wpftmp.assets.cache
+-           -   SwissKnifeApp_yebpalrz_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_yebpalrz_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_yebpalrz_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_yect0tc2_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_yect0tc2_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_yect0tc2_wpftmp.assets.cache
+-           -   SwissKnifeApp_yect0tc2_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_yect0tc2_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_yect0tc2_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_yjptf1o1_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_yjptf1o1_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_yjptf1o1_wpftmp.assets.cache
+-           -   SwissKnifeApp_yjptf1o1_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_yjptf1o1_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_yjptf1o1_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ykchuoqa_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ykchuoqa_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ykchuoqa_wpftmp.assets.cache
+-           -   SwissKnifeApp_ykchuoqa_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ykchuoqa_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ykchuoqa_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ylg022uv_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ylg022uv_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ylg022uv_wpftmp.assets.cache
+-           -   SwissKnifeApp_ylg022uv_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_ylg022uv_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ylg022uv_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ylg022uv_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_yoodliai_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_yoodliai_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_yoodliai_wpftmp.assets.cache
+-           -   SwissKnifeApp_yoodliai_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_yoodliai_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_yoodliai_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_yvutmhz3_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_yvutmhz3_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_yvutmhz3_wpftmp.assets.cache
+-           -   SwissKnifeApp_yvutmhz3_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_yvutmhz3_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_yvutmhz3_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_zaaz4aba_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_zaaz4aba_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_zaaz4aba_wpftmp.assets.cache
+-           -   SwissKnifeApp_zaaz4aba_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_zaaz4aba_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_zaaz4aba_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_zaaz4aba_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_zd5u1zft_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_zd5u1zft_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_zd5u1zft_wpftmp.assets.cache
+-           -   SwissKnifeApp_zd5u1zft_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_zd5u1zft_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_zd5u1zft_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ze1wnzp4_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ze1wnzp4_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ze1wnzp4_wpftmp.assets.cache
+-           -   SwissKnifeApp_ze1wnzp4_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ze1wnzp4_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_ze1wnzp4_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_zflcn1zl_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_zflcn1zl_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_zflcn1zl_wpftmp.assets.cache
+-           -   SwissKnifeApp_zflcn1zl_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_zflcn1zl_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_zflcn1zl_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_ziaftnu2_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_ziaftnu2_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_ziaftnu2_wpftmp.assets.cache
+-           -   SwissKnifeApp_ziaftnu2_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_ziaftnu2_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_ziaftnu2_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_zk2ckjey_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_zk2ckjey_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_zk2ckjey_wpftmp.assets.cache
+-           -   SwissKnifeApp_zk2ckjey_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_zk2ckjey_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_zk2ckjey_wpftmp.sourcelink.json
+-           -   SwissKnifeApp_zl1wiqkq_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_zl1wiqkq_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_zl1wiqkq_wpftmp.assets.cache
+-           -   SwissKnifeApp_zl1wiqkq_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_zl1wiqkq_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_zl1wiqkq_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_zomuepfg_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_zomuepfg_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_zomuepfg_wpftmp.assets.cache
+-           -   SwissKnifeApp_zomuepfg_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_zomuepfg_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_zomuepfg_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_zzy1sdvk_wpftmp.AssemblyInfo.cs
+-           -   SwissKnifeApp_zzy1sdvk_wpftmp.AssemblyInfoInputs.cache
+-           -   SwissKnifeApp_zzy1sdvk_wpftmp.assets.cache
+-           -   SwissKnifeApp_zzy1sdvk_wpftmp.csproj.BuildWithSkipAnalyzers
+-           -   SwissKnifeApp_zzy1sdvk_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+-           -   SwissKnifeApp_zzy1sdvk_wpftmp.GlobalUsings.g.cs
+-           -   SwissKnifeApp_zzy1sdvk_wpftmp.sourcelink.json
+-           -   Türk Çakýsý.designer.deps.json
+-           -   Türk Çakýsý.designer.runtimeconfig.json
+-           -   Türk Çakýsý.dll
+-           -   Türk Çakýsý.g.resources
+-           -   Türk Çakýsý.pdb
+-           -   Türk Çakýsý_Content.g.cs
+-           -   Türk Çakýsý_Content.g.i.cs
+-           -   Türk Çakýsý_MarkupCompile.cache
+-           -   Türk Çakýsý_MarkupCompile.i.cache
+-           -   Türk Çakýsý_MarkupCompile.lref
+-           -   uno.reload.cookie.g.cs
+-           -   
+-           +¦¦¦ref
+-           -       Türk Çakýsý.dll
+-           -       
+-           +¦¦¦refint
+-           -       Türk Çakýsý.dll
+-           -       
+-           +¦¦¦Resources
+-           -   L¦¦¦Themes
+-           -           CustomStyles.baml
+-           -           
+-           L¦¦¦Views
+-               L¦¦¦Modules
+-                       AudioToolsPage.baml
+-                       AudioToolsPage.g.cs
+-                       AudioToolsPage.g.i.cs
+-                       ClipboardHistoryPage.baml
+-                       ClipboardHistoryPage.g.cs
+-                       ClipboardHistoryPage.g.i.cs
+-                       ColorPickerPage.baml
+-                       ColorPickerPage.g.cs
+-                       ColorPickerPage.g.i.cs
+-                       CookieHelpWindow.baml
+-                       CookieHelpWindow.g.cs
+-                       CookieHelpWindow.g.i.cs
+-                       DataAnalysisPage.baml
+-                       DataAnalysisPage.g.cs
+-                       DataAnalysisPage.g.i.cs
+-                       EyedropperOverlayWindow.baml
+-                       EyedropperOverlayWindow.g.cs
+-                       EyedropperOverlayWindow.g.i.cs
+-                       FileManagerPage.baml
+-                       FileManagerPage.g.cs
+-                       FileManagerPage.g.i.cs
+-                       ImageConverterPage.baml
+-                       ImageConverterPage.g.cs
+-                       ImageConverterPage.g.i.cs
+-                       JsonXmlFormatterPage.baml
+-                       JsonXmlFormatterPage.g.cs
+-                       JsonXmlFormatterPage.g.i.cs
+-                       MoneyToTextPage.baml
+-                       MoneyToTextPage.g.cs
+-                       MoneyToTextPage.g.i.cs
+-                       PasswordEntryDialog.baml
+-                       PasswordEntryDialog.g.cs
+-                       PasswordEntryDialog.g.i.cs
+-                       PasswordToolsPage.baml
+-                       PasswordToolsPage.g.cs
+-                       PasswordToolsPage.g.i.cs
+-                       PdfOperationsPage.baml
+-                       PdfOperationsPage.g.cs
+-                       PdfOperationsPage.g.i.cs
+-                       PhotoCollagePage.baml
+-                       PhotoCollagePage.g.cs
+-                       PhotoCollagePage.g.i.cs
+-                       QrBarcodeToolsPage.baml
+-                       QrBarcodeToolsPage.g.cs
+-                       QrBarcodeToolsPage.g.i.cs
+-                       SpeedTestPage.g.i.cs
+-                       TaxCalculatorPage.baml
+-                       TaxCalculatorPage.g.cs
+-                       TaxCalculatorPage.g.i.cs
+-                       TaxSettingsWindow.baml
+-                       TaxSettingsWindow.g.cs
+-                       TaxSettingsWindow.g.i.cs
+-                       TextOperationsPage.baml
+-                       TextOperationsPage.g.cs
+-                       TextOperationsPage.g.i.cs
+-                       TextSummarizerPage.baml
+-                       TextSummarizerPage.g.cs
+-                       TextSummarizerPage.g.i.cs
+-                       UnitConverterPage.baml
+-                       UnitConverterPage.g.cs
+-                       UnitConverterPage.g.i.cs
+-                       VideoToolsPage.baml
+-                       VideoToolsPage.g.cs
+-                       VideoToolsPage.g.i.cs
+-                       YouTubeClipDownloaderPage.baml
+-                       YouTubeClipDownloaderPage.g.cs
+-                       YouTubeClipDownloaderPage.g.i.cs
+-                       
++¦¦¦Resources
+-   +¦¦¦Converters
+-   -       StringNullOrEmptyToVisibilityConverter.cs
+-   -       
+-   +¦¦¦Icons
+-   -       icon.ico
+-   -       Logo.png
+-   -       
+-   L¦¦¦Themes
+-           CustomStyles.xaml
+-           
++¦¦¦Scripts
+-       DownloadTools.ps1
+-       
++¦¦¦Services
+-       AudioToolsService.cs
+-       ClipboardHistoryService.cs
+-       ColorPickerService.cs
+-       DataAnalysisService.cs
+-       FileManagerService.cs
+-       ImageConverterService.cs
+-       JsonXmlFormatterService.cs
+-       MoneyToTextService.cs
+-       PasswordDatabaseService.cs
+-       PdfOperationsService.cs
+-       PhotoCollageService.cs
+-       QrBarcodeService.cs
+-       TaxCalculationService.cs
+-       TaxRatesScraperService.cs
+-       TextOperationsService.cs
+-       TextSummarizerService.cs
+-       ToolInstallerService.cs
+-       UnitConverterService.cs
+-       VideoToolsService.cs
+-       YoutubeTxtClipDownloaderService.cs
+-       
++¦¦¦ViewModels
+-       MainViewModel.cs
+-       
+L¦¦¦Views
+    L¦¦¦Modules
+            AudioToolsPage.xaml
+            AudioToolsPage.xaml.cs
+            ClipboardHistoryPage.xaml
+            ClipboardHistoryPage.xaml.cs
+            ColorPickerPage.xaml
+            ColorPickerPage.xaml.cs
+            CookieHelpWindow.xaml
+            CookieHelpWindow.xaml.cs
+            DataAnalysisPage.xaml
+            DataAnalysisPage.xaml.cs
+            EyedropperOverlayWindow.xaml
+            EyedropperOverlayWindow.xaml.cs
+            FileManagerPage.xaml
+            FileManagerPage.xaml.cs
+            ImageConverterPage.xaml
+            ImageConverterPage.xaml.cs
+            JsonXmlFormatterPage.xaml
+            JsonXmlFormatterPage.xaml.cs
+            MoneyToTextPage.xaml
+            MoneyToTextPage.xaml.cs
+            PasswordEntryDialog.xaml
+            PasswordEntryDialog.xaml.cs
+            PasswordToolsPage.xaml
+            PasswordToolsPage.xaml.cs
+            PdfOperationsPage.xaml
+            PdfOperationsPage.xaml.cs
+            PhotoCollagePage.xaml
+            PhotoCollagePage.xaml.cs
+            PhotoCollagePage.xaml.cs.backup
+            QrBarcodeToolsPage.xaml
+            QrBarcodeToolsPage.xaml.cs
+            TaxCalculatorPage.xaml
+            TaxCalculatorPage.xaml.cs
+            TaxSettingsWindow.xaml
+            TaxSettingsWindow.xaml.cs
+            TextOperationsPage.xaml
+            TextOperationsPage.xaml.cs
+            TextSummarizerPage.xaml
+            TextSummarizerPage.xaml.cs
+            UnitConverterPage.xaml
+            UnitConverterPage.xaml.cs
+            VideoToolsPage.xaml
+            VideoToolsPage.xaml.cs
+            YouTubeClipDownloaderPage.xaml
+            YouTubeClipDownloaderPage.xaml.cs
+            

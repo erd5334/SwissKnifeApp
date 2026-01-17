@@ -1,0 +1,202 @@
+<Page x:Class="SwissKnifeApp.Views.Modules.DocumentToolsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+      mc:Ignorable="d" 
+      d:DesignHeight="700" d:DesignWidth="1000"
+      Title="Belge Araçları">
+
+    <Page.Resources>
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.1"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SectionHeader" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#2C3E50"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+
+        <Style x:Key="AccentButtonStyle" TargetType="Button" BasedOn="{StaticResource MahApps.Styles.Button.Flat}">
+            <Setter Property="Background" Value="#2196F3"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#1976D2"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="Belge Araçları" FontSize="28" FontWeight="Bold" Foreground="#2C3E50"/>
+            <TextBlock Text="Markdown, OCR, DOCX Dönüştürme ve Analiz" FontSize="14" Foreground="#7F8C8D" Margin="0,5,0,0"/>
+        </StackPanel>
+
+        <!-- Main Content -->
+        <mah:MetroAnimatedSingleRowTabControl Grid.Row="1" mah:TabControlHelper.Underlined="TabItems">
+            
+            <!-- 1. Markdown Editor -->
+            <TabItem Header="Markdown Editörü">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="4">
+                        <avalonEdit:TextEditor x:Name="MarkdownEditor"
+                                             FontFamily="Consolas"
+                                             FontSize="14"
+                                             ShowLineNumbers="True"
+                                             SyntaxHighlighting="Markdown"
+                                             TextChanged="MarkdownEditor_TextChanged"/>
+                    </Border>
+
+                    <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Background="Transparent"/>
+
+                    <Border Grid.Column="2" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="4" Background="White">
+                        <WebBrowser x:Name="MarkdownPreview"/>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <!-- 2. OCR (Metin Tanıma) -->
+            <TabItem Header="OCR (Görselden Metin)">
+                <Border Style="{StaticResource Card}" Margin="0,10,0,0">
+                    <StackPanel>
+                        <TextBlock Text="Görselden Metin Çıkar" Style="{StaticResource SectionHeader}"/>
+                        <TextBlock Text="Bir görsel veya taranmış döküman yükleyerek içindeki metinleri ayıklayabilirsiniz." Foreground="#7F8C8D" Margin="0,0,0,15"/>
+                        
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0">
+                                <Button Content="Görsel Seç" Click="BtnPickImage_Click" Style="{StaticResource AccentButtonStyle}"/>
+                                <Image x:Name="ImgPreview" Height="200" Stretch="Uniform" Margin="0,10" Visibility="Collapsed"/>
+                                <ComboBox x:Name="CmbOcrLanguage" mah:TextBoxHelper.Watermark="Dil Seçin" Margin="5">
+                                    <ComboBoxItem Content="Türkçe (tr)" IsSelected="True"/>
+                                    <ComboBoxItem Content="İngilizce (en)"/>
+                                </ComboBox>
+                                <Button Content="Metni Ayıkla" Click="BtnOcr_Click" Style="{StaticResource AccentButtonStyle}" Margin="5,15,5,5"/>
+                            </StackPanel>
+
+                            <Border Grid.Column="1" Margin="20,0,0,0" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="4">
+                                <TextBox x:Name="TxtOcrResult" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" mah:TextBoxHelper.Watermark="Ayıklanan metin burada görünecek..."/>
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </TabItem>
+
+            <!-- 3. DOCX to PDF -->
+            <TabItem Header="DOCX to PDF">
+                <Border Style="{StaticResource Card}" Margin="0,10,0,0">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <iconPacks:PackIconMaterial Kind="FileWord" Width="64" Height="64" Foreground="#2B579A" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Word Dosyasını PDF'e Dönüştür" FontSize="20" FontWeight="SemiBold" Margin="0,15,0,5" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Seçilen .docx dosyalarını yüksek kaliteyle PDF formatına çevirir." Foreground="#7F8C8D" Margin="0,0,0,25" HorizontalAlignment="Center"/>
+                        
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Button Content="Dosya Seç" Click="BtnPickDocx_Click" Style="{StaticResource AccentButtonStyle}" Width="150"/>
+                            <Button x:Name="BtnConvertDocx" Content="PDF'e Dönüştür" Click="BtnConvertDocx_Click" Style="{StaticResource AccentButtonStyle}" Width="150" IsEnabled="False"/>
+                        </StackPanel>
+                        
+                        <TextBlock x:Name="TxtDocxPath" Text="Dosya seçilmedi" Margin="0,10,0,0" Foreground="#7F8C8D" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </TabItem>
+
+            <!-- 4. Word Count Analyzer -->
+            <TabItem Header="Detaylı Analiz">
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="350"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" BorderBrush="#E0E0E0" BorderThickness="1" CornerRadius="4" Margin="0,0,10,0">
+                        <TextBox x:Name="TxtAnalysisInput" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" 
+                                 TextChanged="TxtAnalysisInput_TextChanged" mah:TextBoxHelper.Watermark="Analiz edilecek metni buraya yapıştırın..."/>
+                    </Border>
+
+                    <Border Grid.Column="1" Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock Text="Metin İstatistikleri" Style="{StaticResource SectionHeader}"/>
+                            
+                            <UniformGrid Columns="2">
+                                <StackPanel Margin="5">
+                                    <TextBlock Text="Kelime" FontSize="12" Foreground="#7F8C8D"/>
+                                    <TextBlock x:Name="StatWords" Text="0" FontSize="24" FontWeight="Bold"/>
+                                </StackPanel>
+                                <StackPanel Margin="5">
+                                    <TextBlock Text="Karakter" FontSize="12" Foreground="#7F8C8D"/>
+                                    <TextBlock x:Name="StatChars" Text="0" FontSize="24" FontWeight="Bold"/>
+                                </StackPanel>
+                                <StackPanel Margin="5">
+                                    <TextBlock Text="Cümle" FontSize="12" Foreground="#7F8C8D"/>
+                                    <TextBlock x:Name="StatSentences" Text="0" FontSize="24" FontWeight="Bold"/>
+                                </StackPanel>
+                                <StackPanel Margin="5">
+                                    <TextBlock Text="Paragraf" FontSize="12" Foreground="#7F8C8D"/>
+                                    <TextBlock x:Name="StatParagraphs" Text="0" FontSize="24" FontWeight="Bold"/>
+                                </StackPanel>
+                            </UniformGrid>
+
+                            <Separator Margin="0,15"/>
+
+                            <StackPanel>
+                                <TextBlock Text="Tahmini Okuma Süresi" FontSize="12" Foreground="#7F8C8D"/>
+                                <TextBlock x:Name="StatReadTime" Text="0 dk" FontSize="18" FontWeight="SemiBold"/>
+                                
+                                <TextBlock Text="En Çok Kullanılan Kelimeler" FontSize="12" Foreground="#7F8C8D" Margin="0,15,0,5"/>
+                                <ItemsControl x:Name="ListFrequentWords">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,2">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Word}" Foreground="#2C3E50"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding Count}" Foreground="#2196F3" FontWeight="Bold"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+        </mah:MetroAnimatedSingleRowTabControl>
+    </Grid>
+</Page>

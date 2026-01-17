@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
 using System.Windows;
+using System.Text;
+using System.Security.Cryptography;
 using SwissKnifeApp.Models;
 using SwissKnifeApp.Services;
 
@@ -12,159 +12,122 @@ namespace SwissKnifeApp.Views.Modules
     {
         private readonly PasswordDatabaseService _dbService;
         private readonly PasswordEntry? _editEntry;
-        private readonly bool _isEditMode;
 
-        public PasswordEntryDialog(PasswordDatabaseService dbService, PasswordEntry? editEntry = null)
+        public PasswordEntryDialog(PasswordDatabaseService dbService, PasswordEntry? entry = null)
         {
             InitializeComponent();
             _dbService = dbService;
-            _editEntry = editEntry;
-            _isEditMode = editEntry != null;
+            _editEntry = entry;
 
             LoadCategories();
 
-            if (_isEditMode && _editEntry != null)
+            if (_editEntry != null)
             {
-                Title = "Parolayı Düzenle";
-                TxtTitle.Text = _editEntry.Title;
+                TxtDialogTitle.Text = "Kaydı Düzenle";
+                TxtEntryTitle.Text = _editEntry.Title;
                 TxtUsername.Text = _editEntry.Username;
+                TxtPassword.Password = _dbService.DecryptPassword(_editEntry.EncryptedPassword);
                 TxtUrl.Text = _editEntry.Url;
                 TxtNotes.Text = _editEntry.Notes;
+                TxtTotp.Text = _editEntry.TotpSecret;
+                ChkIsNote.IsChecked = _editEntry.IsSecureNote;
+                DpExpiry.SelectedDate = _editEntry.ExpiryDate;
                 CmbCategory.SelectedValue = _editEntry.CategoryId;
-                DpExpiryDate.SelectedDate = _editEntry.ExpiryDate;
-                TxtStrength.Text = _editEntry.Strength;
-                
-                // Parolayı gösterme (güvenlik için boş bırakılabilir)
-                var decryptedPassword = _dbService.DecryptPassword(_editEntry.EncryptedPassword);
-                TxtPassword.Password = decryptedPassword;
             }
-            else
-            {
-                Title = "Yeni Parola Ekle";
-                CmbCategory.SelectedIndex = 0;
-            }
-
-            TxtPassword.PasswordChanged += (s, e) => {
-                TxtPasswordVisible.Text = TxtPassword.Password;
-                UpdatePasswordStrength();
-            };
-            TxtPasswordVisible.TextChanged += (s, e) => {
-                TxtPassword.Password = TxtPasswordVisible.Text;
-                UpdatePasswordStrength();
-            };
-        }
-
-        private void ChkShowPassword_Checked(object sender, RoutedEventArgs e)
-        {
-            TxtPasswordVisible.Text = TxtPassword.Password;
-            TxtPasswordVisible.Visibility = Visibility.Visible;
-            TxtPassword.Visibility = Visibility.Collapsed;
-        }
-
-        private void ChkShowPassword_Unchecked(object sender, RoutedEventArgs e)
-        {
-            TxtPassword.Password = TxtPasswordVisible.Text;
-            TxtPassword.Visibility = Visibility.Visible;
-            TxtPasswordVisible.Visibility = Visibility.Collapsed;
         }
 
         private void LoadCategories()
         {
             var categories = _dbService.GetAllCategories();
             CmbCategory.ItemsSource = categories;
-            if (categories.Count > 0)
-                CmbCategory.SelectedIndex = 0;
+            CmbCategory.SelectedValuePath = "Id";
+            if (_editEntry == null) CmbCategory.SelectedIndex = 0;
         }
 
-        private void UpdatePasswordStrength()
+        private void BtnShowHide_Click(object sender, RoutedEventArgs e)
         {
-            var password = TxtPassword.Password;
-            if (string.IsNullOrEmpty(password))
+            if (TxtPassword.Visibility == Visibility.Visible)
             {
-                TxtStrength.Text = "";
-                return;
+                TxtPasswordVisible.Text = TxtPassword.Password;
+                TxtPassword.Visibility = Visibility.Collapsed;
+                TxtPasswordVisible.Visibility = Visibility.Visible;
+                IconEye.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.EyeOff;
             }
-
-            int score = 0;
-            if (password.Length >= 8) score += 20;
-            if (password.Any(char.IsUpper)) score += 20;
-            if (password.Any(char.IsLower)) score += 20;
-            if (password.Any(char.IsDigit)) score += 20;
-            if (password.Any(c => !char.IsLetterOrDigit(c))) score += 20;
-
-            TxtStrength.Text = score switch
+            else
             {
-                <= 40 => "Zayıf 🔴",
-                <= 70 => "Orta 🟠",
-                _ => "Güçlü 🟢"
-            };
+                TxtPassword.Password = TxtPasswordVisible.Text;
+                TxtPasswordVisible.Visibility = Visibility.Collapsed;
+                TxtPassword.Visibility = Visibility.Visible;
+                IconEye.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.Eye;
+            }
         }
 
-        private void BtnGeneratePassword_Click(object sender, RoutedEventArgs e)
+        private void BtnGenerate_Click(object sender, RoutedEventArgs e)
         {
-            const string charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=";
-            const int length = 16;
+            string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+            var bytes = new byte[16];
+            using (var rng = RandomNumberGenerator.Create()) rng.GetBytes(bytes);
+            var result = new char[16];
+            for (int i = 0; i < 16; i++) result[i] = chars[bytes[i] % chars.Length];
+            var pwd = new string(result);
+            
+            TxtPassword.Password = pwd;
+            TxtPasswordVisible.Text = pwd;
+        }
 
-            var result = new StringBuilder(length);
-            using var rng = RandomNumberGenerator.Create();
-            var buffer = new byte[sizeof(uint)];
-
-            for (int i = 0; i < length; i++)
+        private void ChkIsNote_Changed(object sender, RoutedEventArgs e)
+        {
+            if (PasswordSection != null)
             {
-                rng.GetBytes(buffer);
-                uint num = BitConverter.ToUInt32(buffer, 0);
-                result.Append(charset[(int)(num % (uint)charset.Length)]);
+                PasswordSection.Visibility = ChkIsNote.IsChecked == true ? Visibility.Collapsed : Visibility.Visible;
             }
-
-            TxtPassword.Password = result.ToString();
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(TxtTitle.Text))
+            if (string.IsNullOrWhiteSpace(TxtEntryTitle.Text))
             {
-                MessageBox.Show("Başlık boş olamaz!");
+                MessageBox.Show("Lütfen bir başlık girin.");
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(TxtPassword.Password))
-            {
-                MessageBox.Show("Parola boş olamaz!");
-                return;
-            }
+            var password = TxtPassword.Visibility == Visibility.Visible ? TxtPassword.Password : TxtPasswordVisible.Text;
 
-            var entry = new PasswordEntry
+            if (_editEntry == null)
             {
-                Title = TxtTitle.Text,
-                Username = TxtUsername.Text,
-                Url = TxtUrl.Text,
-                Notes = TxtNotes.Text,
-                CategoryId = (int)(CmbCategory.SelectedValue ?? 1),
-                ExpiryDate = DpExpiryDate.SelectedDate,
-                Strength = TxtStrength.Text
-            };
-
-            try
-            {
-                if (_isEditMode && _editEntry != null)
+                var newEntry = new PasswordEntry
                 {
-                    entry.Id = _editEntry.Id;
-                    _dbService.UpdatePassword(entry, TxtPassword.Password);
-                    MessageBox.Show("Parola güncellendi!");
-                }
-                else
-                {
-                    _dbService.AddPassword(entry, TxtPassword.Password);
-                    MessageBox.Show("Parola eklendi!");
-                }
-
-                DialogResult = true;
-                Close();
+                    Title = TxtEntryTitle.Text,
+                    Username = TxtUsername.Text,
+                    EncryptedPassword = password,
+                    Url = TxtUrl.Text,
+                    Notes = TxtNotes.Text,
+                    TotpSecret = TxtTotp.Text,
+                    IsSecureNote = ChkIsNote.IsChecked ?? false,
+                    CategoryId = (int)(CmbCategory.SelectedValue ?? 1),
+                    ExpiryDate = DpExpiry.SelectedDate,
+                    CreatedDate = DateTime.Now,
+                    ModifiedDate = DateTime.Now
+                };
+                _dbService.AddPassword(newEntry, password);
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Hata: {ex.Message}");
+                _editEntry.Title = TxtEntryTitle.Text;
+                _editEntry.Username = TxtUsername.Text;
+                _editEntry.Url = TxtUrl.Text;
+                _editEntry.Notes = TxtNotes.Text;
+                _editEntry.TotpSecret = TxtTotp.Text;
+                _editEntry.IsSecureNote = ChkIsNote.IsChecked ?? false;
+                _editEntry.CategoryId = (int)(CmbCategory.SelectedValue ?? 1);
+                _editEntry.ExpiryDate = DpExpiry.SelectedDate;
+                _editEntry.ModifiedDate = DateTime.Now;
+
+                _dbService.UpdatePassword(_editEntry, password);
             }
+
+            DialogResult = true;
+            Close();
         }
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)

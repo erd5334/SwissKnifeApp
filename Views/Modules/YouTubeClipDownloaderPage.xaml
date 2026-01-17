@@ -1,196 +1,244 @@
 <Page x:Class="SwissKnifeApp.Views.Modules.YouTubeClipDownloaderPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    mc:Ignorable="d"
-    Title="YouTube TXT Clip Downloader">
-    <Grid Margin="16">
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      mc:Ignorable="d" 
+      d:DesignHeight="750" d:DesignWidth="1000"
+      Title="Gelişmiş YouTube İndirici">
+
+    <Page.Resources>
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="15"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+        <Style x:Key="HeaderTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#2C3E50"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="200"/>
         </Grid.RowDefinitions>
 
-        <!-- YouTube URL Kartı -->
-        <Border Grid.Row="0" Background="#e3f2fd" CornerRadius="12" Padding="16" Margin="0,0,0,12" BorderBrush="#90caf9" BorderThickness="1">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <iconPacks:PackIconMaterial Kind="Youtube" Width="24" Height="24" Foreground="#FFEC2121" Margin="0,0,8,0"/>
-                <TextBlock Text="YouTube URL" FontWeight="Bold" VerticalAlignment="Center"/>
-                <TextBox x:Name="TxtUrl" Height="28" Width="420" Margin="16,0,0,0"/>
+        <!-- Header -->
+        <Border Grid.Row="0" Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="Gelişmiş YouTube İndirici" FontSize="28" FontWeight="Bold" Foreground="#FFEC2121"/>
+                <TextBlock Text="Video, Oynatma Listesi, Kanal ve Kesit İndirme" FontSize="14" Foreground="#7F8C8D" Margin="0,5,0,0"/>
             </StackPanel>
         </Border>
 
-        <!-- Aralık Girişi Kartı -->
-        <Border Grid.Row="1" Background="#e3f2fd" CornerRadius="12" Padding="16" Margin="0,0,0,12" BorderBrush="#90caf9" BorderThickness="1">
-            <StackPanel Orientation="Vertical">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                        <iconPacks:PackIconMaterial Kind="Timeline" Width="22" Height="22" Foreground="#FFEC2121" Margin="0,0,8,0"/>
-                        <TextBlock Text="Aralık Girişi" FontWeight="Bold"/>
-                        <RadioButton x:Name="RbTxt" Content="TXT" IsChecked="True" Width="50" Margin="16,0,0,0"/>
-                        <RadioButton x:Name="RbManual" Content="Manuel" Margin="8,0,0,0" Width="70"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                        <iconPacks:PackIconMaterial Kind="FileMusic" Width="20" Height="20" Foreground="#1976d2" Margin="0,0,8,0"/>
-                        <TextBlock Text="Format:" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <ComboBox x:Name="CmbFormat" Width="100" SelectedIndex="0">
-                            <ComboBoxItem Content="Video (MP4)"/>
-                            <ComboBoxItem Content="MP3"/>
-                            <ComboBoxItem Content="WAV"/>
-                            <ComboBoxItem Content="FLAC"/>
-                            <ComboBoxItem Content="M4A"/>
-                            <ComboBoxItem Content="OGG"/>
-                            <ComboBoxItem Content="OPUS"/>
-                        </ComboBox>
-                    </StackPanel>
-                </Grid>
-                <Grid Margin="0,6,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <!-- TXT Mode -->
-                    <DockPanel x:Name="PanelTxt" Grid.ColumnSpan="2">
-                        <TextBox x:Name="TxtTxtPath" Height="28" Width="320"/>
-                        <Button Margin="8,0,0,0" Padding="12,4"  Click="BtnPickTxt_Click" Style="{StaticResource AccentButtonStyle}" Background="#FFEC2121">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="FileDocument" Width="18" Height="18" Foreground="White" Margin="0,0,6,0"/>
-                                <TextBlock Text="Seç"/>
+        <!-- Main Content -->
+        <mah:MetroAnimatedSingleRowTabControl Grid.Row="1" mah:TabControlHelper.Underlined="TabItems">
+            
+            <!-- 1. HIZLI İNDİRME -->
+            <TabItem Header="Video &amp; Liste İndir">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="10">
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="Bağlantı Bilgileri" Style="{StaticResource HeaderTextStyle}"/>
+                                <TextBox x:Name="TxtGeneralUrl" mah:TextBoxHelper.Watermark="Video, Playlist veya Kanal URL'si yapıştırın..." 
+                                         Height="35" FontSize="14" VerticalContentAlignment="Center"/>
                             </StackPanel>
-                        </Button>
-                    </DockPanel>
-                    <!-- Manual Mode -->
-                    <StackPanel x:Name="PanelManual" Grid.ColumnSpan="2" Visibility="Collapsed">
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <TextBox x:Name="TxtStart" Width="100" Height="28" />
-                            <TextBox x:Name="TxtEnd" Width="100" Height="28" Margin="8,0,0,0" />
-                            <Button Margin="8,0,0,0" Padding="12,4" Click="BtnAddInterval_Click" Style="{StaticResource AccentButtonStyle}">
-                                <StackPanel Orientation="Horizontal">
-                                    <iconPacks:PackIconMaterial Kind="Plus" Width="16" Height="16" Foreground="#1976d2" Margin="5,0,4,0"/>
-                                    <TextBlock Text="Ekle" Width="25"/>
-                                </StackPanel>
-                            </Button>
-                            <Button Margin="8,0,0,0" Padding="12,4" Click="BtnRemoveInterval_Click" Style="{StaticResource AccentButtonStyle}">
-                                <StackPanel Orientation="Horizontal">
-                                    <iconPacks:PackIconMaterial Kind="Delete" Width="16" Height="16" Foreground="#1976d2" Margin="5,0,4,0"/>
-                                    <TextBlock Text="Sil" Width="25"/>
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
+                        </Border>
+
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="Başlangıçlar" FontWeight="Bold"/>
-                                <ListBox x:Name="LbStarts" Height="120"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1" Margin="8,0,0,0">
-                                <TextBlock Text="Bitişler" FontWeight="Bold"/>
-                                <ListBox x:Name="LbEnds" Height="120"/>
-                            </StackPanel>
+                            
+                            <Border Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,5,10">
+                                <StackPanel>
+                                    <TextBlock Text="İndirme Ayarları" Style="{StaticResource HeaderTextStyle}"/>
+                                    <Label Content="Kalite Seçimi:"/>
+                                    <ComboBox x:Name="CmbQuality" Margin="0,0,0,10">
+                                        <ComboBoxItem Content="En İyi (Varsayılan)" IsSelected="True"/>
+                                        <ComboBoxItem Content="1080p Full HD"/>
+                                        <ComboBoxItem Content="720p HD"/>
+                                        <ComboBoxItem Content="480p SD"/>
+                                        <ComboBoxItem Content="Sadece Ses"/>
+                                    </ComboBox>
+                                    
+                                    <Label Content="Format:"/>
+                                    <ComboBox x:Name="CmbGeneralFormat" Margin="0,0,0,10">
+                                        <ComboBoxItem Content="MP4 (Video)" IsSelected="True"/>
+                                        <ComboBoxItem Content="MP3 (Müzik)"/>
+                                        <ComboBoxItem Content="M4A"/>
+                                        <ComboBoxItem Content="wav"/>
+                                    </ComboBox>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="1" Style="{StaticResource CardStyle}" Margin="5,0,0,10">
+                                <StackPanel>
+                                    <TextBlock Text="Ek Seçenekler" Style="{StaticResource HeaderTextStyle}"/>
+                                    <CheckBox x:Name="ChkDownloadSubs" Content="Altyazıları İndir" Margin="0,0,0,8"/>
+                                    <CheckBox x:Name="ChkDownloadThumb" Content="Kapak Fotoğrafını (Thumbnail) Kaydet" Margin="0,0,0,8"/>
+                                    <CheckBox x:Name="ChkExportMetadata" Content="Video Bilgilerini Dışa Aktar (JSON)" Margin="0,0,0,8"/>
+                                </StackPanel>
+                            </Border>
                         </Grid>
-                    </StackPanel>
-                </Grid>
-            </StackPanel>
-        </Border>
 
-        <!-- Çıkış Klasörü Kartı -->
-        <Border Grid.Row="2" Background="#e3f2fd" CornerRadius="12" Padding="16" Margin="0,0,0,12" BorderBrush="#90caf9" BorderThickness="1">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <iconPacks:PackIconMaterial Kind="Folder" Width="22" Height="22" Foreground="#1976d2" Margin="0,0,8,0"/>
-                    <TextBlock Text="Çıkış Klasörü" FontWeight="Bold"/>
-                    <TextBox x:Name="TxtOutput" Height="28" Width="320" Margin="16,0,0,0"/>
-                    <Button Margin="8,0,0,0" Padding="12,4" Click="BtnPickFolder_Click" Style="{StaticResource AccentButtonStyle}">
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="FolderSearch" Width="18" Height="18" Foreground="White" Margin="5,0,6,0"/>
-                            <TextBlock Text="Seç" Width="20"/>
+                        <Button x:Name="BtnStartGeneral" Style="{StaticResource AccentButtonStyle}" Background="#FFEC2121" 
+                                Click="BtnStartGeneral_Click" Height="45" FontSize="16" Content="İndirmeyi Başlat"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- 2. KESİT İNDİRME (Eski Sistem) -->
+            <TabItem Header="Kesit (Klip) İndir">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="10">
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="Video Bağlantısı" Style="{StaticResource HeaderTextStyle}"/>
+                                <TextBox x:Name="TxtUrl" mah:TextBoxHelper.Watermark="https://www.youtube.com/watch?v=..." Height="30"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource CardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="Kesit Zamanları" Style="{StaticResource HeaderTextStyle}"/>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                    <RadioButton x:Name="RbTxt" Content="Dosyadan (TXT)" IsChecked="True" Margin="0,0,20,0"/>
+                                    <RadioButton x:Name="RbManual" Content="Manuel Giriş"/>
+                                </StackPanel>
+
+                                <!-- TXT Pane -->
+                                <Grid x:Name="PanelTxt">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="TxtTxtPath" mah:TextBoxHelper.Watermark="Interval dosyası seçin..." Height="30"/>
+                                    <Button Grid.Column="1" Content="Seç" Click="BtnPickTxt_Click" Margin="5,0,0,0" Width="80"/>
+                                </Grid>
+
+                                <!-- Manual Pane -->
+                                <StackPanel x:Name="PanelManual" Visibility="Collapsed">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Margin="0,0,5,0">
+                                            <Label Content="Başlangıç (mm:ss):"/>
+                                            <TextBox x:Name="TxtStart"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Margin="5,0,5,0">
+                                            <Label Content="Bitiş (mm:ss):"/>
+                                            <TextBox x:Name="TxtEnd"/>
+                                        </StackPanel>
+                                        <Button Grid.Column="2" Content="Ekle" Click="BtnAddInterval_Click" VerticalAlignment="Bottom" Width="80"/>
+                                    </Grid>
+                                    <UniformGrid Columns="2" Margin="0,10,0,0">
+                                        <ListBox x:Name="LbStarts" Height="100"/>
+                                        <ListBox x:Name="LbEnds" Height="100"/>
+                                    </UniformGrid>
+                                    <Button Content="Sıradakini Sil" Click="BtnRemoveInterval_Click" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Button x:Name="BtnStartClips" Style="{StaticResource AccentButtonStyle}" Background="#FFEC2121" 
+                                Click="BtnStart_Click" Height="40" Content="Kesitleri İndir" Margin="0,10,0,0"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- 3. GENEL AYARLAR -->
+            <TabItem Header="Ayarlar">
+                <StackPanel Margin="10">
+                    <Border Style="{StaticResource CardStyle}">
+                        <StackPanel>
+                            <TextBlock Text="Dosya Yolları" Style="{StaticResource HeaderTextStyle}"/>
+                            <Label Content="İndirme Klasörü:"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="TxtOutput" Height="30"/>
+                                <Button Grid.Column="1" Content="Gözat" Click="BtnPickFolder_Click" Margin="5,0,0,0" Width="80"/>
+                            </Grid>
+
+                            <Label Content="Cookie Kaynağı (Giriş Gereken Videolar İçin):" Margin="0,10,0,0"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
+                                <RadioButton x:Name="RbCookieBrowser" Content="Tarayıcıdan Al" IsChecked="True" Margin="0,0,20,0"/>
+                                <RadioButton x:Name="RbCookieFile" Content="Dosyadan Oku"/>
+                            </StackPanel>
+                            
+                            <!-- Tarayıcı Seçimi -->
+                            <StackPanel x:Name="PanelCookieBrowser">
+                                <ComboBox x:Name="CmbBrowser" Height="30" SelectedIndex="0">
+                                    <ComboBoxItem Content="(Cookie Kullanma)"/>
+                                    <ComboBoxItem Content="Chrome"/>
+                                    <ComboBoxItem Content="Firefox"/>
+                                    <ComboBoxItem Content="Edge"/>
+                                    <ComboBoxItem Content="Brave"/>
+                                    <ComboBoxItem Content="Opera"/>
+                                </ComboBox>
+                                <TextBlock Text="⚠️ Tarayıcı kapalıyken deneyin" FontSize="11" Foreground="Gray" Margin="0,3,0,0"/>
+                            </StackPanel>
+                            
+                            <!-- Dosya Seçimi (gizli) -->
+                            <Grid x:Name="PanelCookieFile" Visibility="Collapsed">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="TxtCookie" Height="30"/>
+                                <Button Grid.Column="1" Content="Seç" Click="BtnPickCookie_Click" Margin="5,0,0,0" Width="80"/>
+                            </Grid>
                         </StackPanel>
-                    </Button>
-                </StackPanel>
-                
-                <!-- Cookie Dosyası (Opsiyonel) -->
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,10,0,0">
-                    <iconPacks:PackIconMaterial Kind="Cookie" Width="20" Height="20" Foreground="#ff6f00" Margin="0,0,8,0"/>
-                    <TextBlock Text="Cookie (Opsiyonel)" FontWeight="Bold" Foreground="#555"/>
-                    <TextBox x:Name="TxtCookie" Height="28" Width="250" Margin="16,0,0,0" ToolTip="Giriş yapmış hesabınızın cookie'sini kullanmak için"/>
-                    <Button Margin="8,0,0,0" Padding="12,4" Click="BtnPickCookie_Click" Style="{StaticResource AccentButtonStyle}" Background="#ff9800">
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="FileSearch" Width="18" Height="18" Foreground="White" Margin="5,0,6,0"/>
-                            <TextBlock Text="Seç" Width="25"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Margin="8,0,0,0" Padding="8,4" Click="BtnCookieHelp_Click" 
-                            ToolTip="Cookie nasıl alınır ve kullanılır?"
-                            Style="{StaticResource AccentButtonStyle}" Background="#2196F3">
-                        <iconPacks:PackIconMaterial Kind="HelpCircle" Width="18" Height="18" Foreground="White"/>
-                    </Button>
-                </StackPanel>
-            </StackPanel>
-        </Border>
+                    </Border>
 
-        <!-- Butonlar Kartı -->
-        <Border Grid.Row="3" Background="#e3f2fd" CornerRadius="12" Padding="16" Margin="0,0,0,12" BorderBrush="#90caf9" BorderThickness="1">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Button x:Name="BtnStart" Padding="16,6" Click="BtnStart_Click" Style="{StaticResource AccentButtonStyle}" Background="#FF6ACE6A">
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="Download" Width="18" Height="18" Foreground="White" Margin="5,0,6,0"/>
-                        <TextBlock Text="İndirmeyi Başlat" Width="80"/>
-                    </StackPanel>
-                </Button>
-                <Button x:Name="BtnCancel" Margin="8,0,0,0" Padding="16,6" Click="BtnCancel_Click" IsEnabled="False" Style="{StaticResource AccentButtonStyle}">
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="Cancel" Width="18" Height="18" Foreground="#1976d2" Margin="5,0,6,0"/>
-                        <TextBlock Text="Durdur" Width="40"/>
-                    </StackPanel>
-                </Button>
-                <Button x:Name="BtnInstallTools" Margin="16,0,0,0" Padding="16,6" Click="BtnInstallTools_Click" Background="#FFA500" Foreground="White">
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="Toolbox" Width="18" Height="18" Foreground="White" Margin="0,0,6,0"/>
-                        <TextBlock Text="Araçları Kur"/>
-                    </StackPanel>
-                </Button>
-            </StackPanel>
-        </Border>
+                    <Button x:Name="BtnInstallTools" Content="Araçları Güncelle / Kur (yt-dlp, FFmpeg)" Click="BtnInstallTools_Click" 
+                            Style="{StaticResource OutlineButtonStyle}" Margin="0,10,0,0"/>
+                </StackPanel>
+            </TabItem>
+        </mah:MetroAnimatedSingleRowTabControl>
 
-        <!-- İlerleme ve Log Kartı -->
-        <Border Grid.Row="4" Background="#e3f2fd" CornerRadius="12" Padding="16" BorderBrush="#90caf9" BorderThickness="1">
+        <!-- Status & Log -->
+        <Border Grid.Row="2" Style="{StaticResource CardStyle}" Margin="0,10,0,0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,-35,0,0">
-                    <iconPacks:PackIconMaterial Kind="ProgressClock" Width="20" Height="20" Foreground="#1976d2" Margin="0,0,8,0"/>
-                    <TextBlock Text="Toplam İlerleme" FontWeight="Bold"/>
+                
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="İlerleme: " FontWeight="Bold"/>
+                    <TextBlock x:Name="TxtProgressStatus" Text="Boşta"/>
                 </StackPanel>
-                <ProgressBar x:Name="PbTotal" Grid.Row="0" Height="18" Margin="0,10,0,0" Minimum="0" Maximum="100"/>
-                <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,10,0,0" VerticalAlignment="Center">
-                    <iconPacks:PackIconMaterial Kind="ProgressCheck" Width="18" Height="18" Foreground="#1976d2" Margin="0,0,8,0"/>
-                    <TextBlock Text="Parça İlerleme" FontWeight="Bold"/>
-                </StackPanel>
-                <ProgressBar x:Name="PbPart" Grid.Row="2" Height="18" Margin="0,10,0,0" Minimum="0" Maximum="100"/>
-                <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="0,-448,0,0" VerticalAlignment="Center">
-                    <iconPacks:PackIconMaterial Kind="TextBox" Width="18" Height="18" Foreground="#1976d2" Margin="0,0,8,0"/>
-                    <TextBlock Text="Log" FontWeight="Bold"/>
-                </StackPanel>
-                <ScrollViewer Grid.Row="4" Margin="0,35,0,0">
-                    <TextBox x:Name="TxtLog"  IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap"/>
-                </ScrollViewer>
+                
+                <ProgressBar x:Name="PbTotal" Grid.Row="1" Height="15" Margin="0,0,0,10"/>
+                
+                <TextBox x:Name="TxtLog" Grid.Row="2" IsReadOnly="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" 
+                         FontFamily="Consolas" FontSize="11" Background="#F8F9FA"/>
             </Grid>
         </Border>
+
+        <!-- Global Cancel Button -->
+        <Button x:Name="BtnCancel" Grid.Row="2" Content="İptal Et" Click="BtnCancel_Click" 
+                VerticalAlignment="Top" HorizontalAlignment="Right" IsEnabled="False"
+                Style="{StaticResource OutlineButtonStyle}" Width="100" Margin="0,0,5,0"/>
     </Grid>
 </Page>

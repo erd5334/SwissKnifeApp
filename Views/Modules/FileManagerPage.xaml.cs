@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Security.Cryptography;
 using SwissKnifeApp.Services;
 using SwissKnifeApp.Models;
 
@@ -551,6 +552,174 @@ namespace SwissKnifeApp.Views.Modules
             {
                 MessageBox.Show($"İşlem tamamlandı!\n✅ Başarılı: {successCount}\n❌ Hatalı: {errorCount}", "Sonuç", MessageBoxButton.OK, MessageBoxImage.Information);
                 BtnLoadFiles_Click(null!, null!);
+            }
+        }
+
+        // ============================================
+        // 4️⃣ DOSYA AYIRICI / BİRLEŞTİRİCİ
+        // ============================================
+
+        private void BtnSelectSplitFile_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog();
+            if (dlg.ShowDialog() == true) TxtSplitFilePath.Text = dlg.FileName;
+        }
+
+        private void BtnSplitFile_Click(object sender, RoutedEventArgs e)
+        {
+            string path = TxtSplitFilePath.Text;
+            if (string.IsNullOrEmpty(path) || !File.Exists(path)) return;
+
+            try
+            {
+                long partSize = 100 * 1024 * 1024; // Varsayılan 100MB
+                byte[] buffer = new byte[partSize];
+                using var fs = new FileStream(path, FileMode.Open, FileAccess.Read);
+                int index = 1;
+                int read;
+                while ((read = fs.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    string partPath = $"{path}.part{index:D3}";
+                    using var partFs = new FileStream(partPath, FileMode.Create, FileAccess.Write);
+                    partFs.Write(buffer, 0, read);
+                    index++;
+                }
+                TxtSplitStatus.Text = $"✅ Dosya {index - 1} parçaya ayrıldı.";
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+
+        private void BtnJoinFiles_Click(object sender, RoutedEventArgs e)
+        {
+            string firstPart = TxtSplitFilePath.Text;
+            if (string.IsNullOrEmpty(firstPart) || !firstPart.Contains(".part001")) 
+            {
+                MessageBox.Show("Lütfen '.part001' uzantılı ilk parçayı seçin.");
+                return;
+            }
+
+            try
+            {
+                string originalPath = firstPart.Replace(".part001", "");
+                using var outFs = new FileStream(originalPath, FileMode.Create, FileAccess.Write);
+                int index = 1;
+                while (true)
+                {
+                    string partPath = $"{originalPath}.part{index:D3}";
+                    if (!File.Exists(partPath)) break;
+                    using var partFs = new FileStream(partPath, FileMode.Open, FileAccess.Read);
+                    partFs.CopyTo(outFs);
+                    index++;
+                }
+                TxtSplitStatus.Text = $"✅ {index - 1} parça birleştirildi: {Path.GetFileName(originalPath)}";
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+
+        // ============================================
+        // 5️⃣ HASH DOĞRULAYICI
+        // ============================================
+
+        private void BtnSelectHashFile_Click(object sender, RoutedEventArgs e)
+        {
+            var dlg = new Microsoft.Win32.OpenFileDialog();
+            if (dlg.ShowDialog() == true) TxtHashFilePath.Text = dlg.FileName;
+        }
+
+        private void BtnCalculateHash_Click(object sender, RoutedEventArgs e)
+        {
+            string path = TxtHashFilePath.Text;
+            if (string.IsNullOrEmpty(path) || !File.Exists(path)) return;
+
+            try
+            {
+                string algo = (CmbHashAlgo.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "SHA256";
+                using var stream = File.OpenRead(path);
+                
+                byte[] hashBytes;
+                if (algo == "MD5") hashBytes = MD5.Create().ComputeHash(stream);
+                else if (algo == "SHA512") hashBytes = SHA512.Create().ComputeHash(stream);
+                else hashBytes = SHA256.Create().ComputeHash(stream);
+
+                TxtCalculatedHash.Text = BitConverter.ToString(hashBytes).Replace("-", "").ToLowerInvariant();
+                VerifyHash();
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+
+        private void TxtVerifyHash_TextChanged(object sender, TextChangedEventArgs e) => VerifyHash();
+
+        private void VerifyHash()
+        {
+            if (string.IsNullOrEmpty(TxtCalculatedHash.Text) || string.IsNullOrEmpty(TxtVerifyHash.Text))
+            {
+                TxtHashResult.Text = "Bekleniyor...";
+                TxtHashResult.Foreground = Brushes.Gray;
+                return;
+            }
+
+            if (TxtCalculatedHash.Text.Equals(TxtVerifyHash.Text.Trim(), StringComparison.OrdinalIgnoreCase))
+            {
+                TxtHashResult.Text = "✅ HASH DOĞRULANDI - Dosya Güvenli";
+                TxtHashResult.Foreground = Brushes.Green;
+            }
+            else
+            {
+                TxtHashResult.Text = "❌ HASH UYUŞMUYOR - Dosya Değişmiş Olabilir!";
+                TxtHashResult.Foreground = Brushes.Red;
+            }
+        }
+
+        // ============================================
+        // 6️⃣ TEMİZLİK ARAÇLARI
+        // ============================================
+
+        private void BtnSelectCleanupFolder_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) TxtCleanupPath.Text = dialog.SelectedPath;
+        }
+
+        private void BtnFindEmptyFolders_Click(object sender, RoutedEventArgs e)
+        {
+            string path = TxtCleanupPath.Text;
+            if (string.IsNullOrEmpty(path) || !Directory.Exists(path)) return;
+
+            LstCleanupResults.Items.Clear();
+            var emptyFolders = Directory.GetDirectories(path, "*", SearchOption.AllDirectories)
+                .Where(d => !Directory.EnumerateFileSystemEntries(d).Any()).ToList();
+
+            foreach (var r in emptyFolders) LstCleanupResults.Items.Add(r);
+            BtnDeleteSelectedCleanup.Visibility = emptyFolders.Any() ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        private void BtnFindLargeFiles_Click(object sender, RoutedEventArgs e)
+        {
+            string path = TxtCleanupPath.Text;
+            if (string.IsNullOrEmpty(path) || !Directory.Exists(path)) return;
+
+            LstCleanupResults.Items.Clear();
+            BtnDeleteSelectedCleanup.Visibility = Visibility.Collapsed;
+            
+            var largeFiles = new DirectoryInfo(path).GetFiles("*", SearchOption.AllDirectories)
+                .Where(f => f.Length > 100 * 1024 * 1024)
+                .OrderByDescending(f => f.Length)
+                .Take(50);
+
+            foreach (var f in largeFiles) 
+                LstCleanupResults.Items.Add($"{f.Length / 1024 / 1024} MB - {f.FullName}");
+        }
+
+        private void BtnDeleteSelectedCleanup_Click(object sender, RoutedEventArgs e)
+        {
+            var result = MessageBox.Show("Seçili tüm boş klasörleri silmek istediğinize emin misiniz?", "Onay", MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                foreach (string item in LstCleanupResults.Items)
+                {
+                    try { if (Directory.Exists(item)) Directory.Delete(item); } catch { }
+                }
+                BtnFindEmptyFolders_Click(null!, null!);
             }
         }
     }

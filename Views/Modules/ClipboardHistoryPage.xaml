@@ -3,15 +3,31 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-      Title="ClipboardHistoryPage">
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d" 
+      d:DesignHeight="720" d:DesignWidth="1000"
+      Title="Pano Pro">
 
-    <!-- Page-level accent override (Clipboard = Purple) -->
     <Page.Resources>
         <SolidColorBrush x:Key="AccentBrush" Color="#8E24AA"/>
         <SolidColorBrush x:Key="AccentBrush2" Color="#6A1B9A"/>
+        
+        <Style x:Key="PinnedIconStyle" TargetType="iconPacks:PackIconMaterial">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsPinned}" Value="True">
+                    <Setter Property="Foreground" Value="#FFD600"/>
+                    <Setter Property="Kind" Value="Pin"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsPinned}" Value="False">
+                    <Setter Property="Foreground" Value="#CCC"/>
+                    <Setter Property="Kind" Value="PinOutline"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </Page.Resources>
 
-    <Grid Margin="20">
+    <Grid Background="{DynamicResource AppBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -19,79 +35,148 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,12">
-            <iconPacks:PackIconMaterial Kind="ClipboardText" Width="28" Height="28" Foreground="{StaticResource AccentBrush}"/>
-            <TextBlock Text="Pano Geçmişi" FontSize="20" FontWeight="Bold" Margin="8,0,0,0"/>
-            <TextBlock Text=" • Kopyalanan öğeleri yönetin" Foreground="#607D8B" Margin="6,4,0,0"/>
-        </StackPanel>
+        <Border Grid.Row="0" Padding="20,15" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid>
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="ClipboardTextMultiple" Width="24" Height="24" VerticalAlignment="Center" Foreground="{StaticResource AccentBrush}"/>
+                    <TextBlock Text="Pano Yöneticisi PRO" FontSize="20" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBox x:Name="SearchBox" Style="{StaticResource RoundedTextBox}" Width="250" Height="34" 
+                             mah:TextBoxHelper.Watermark="Geçmişte ara..." mah:TextBoxHelper.ClearTextButton="True"
+                             TextChanged="SearchBox_TextChanged"/>
+                    <Button Style="{StaticResource OutlineButtonStyle}" Margin="10,0,0,0" Click="Clear_Click" ToolTip="Geçmişi Temizle">
+                        <iconPacks:PackIconMaterial Kind="DeleteSweep" Width="18" Height="18"/>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
 
-        <!-- Search & Actions Card -->
-        <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,12">
+        <!-- Quick actions / Templates Creator -->
+        <Border Grid.Row="1" Margin="20,10" Padding="15" Background="#F3E5F5" CornerRadius="8" BorderBrush="#E1BEE7" BorderThickness="1">
             <Grid>
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBox x:Name="SearchBox" Style="{StaticResource RoundedTextBox}" Width="280" Height="32" TextChanged="SearchBox_TextChanged" Foreground="Black" mah:TextBoxHelper.Watermark="Ara..."/>                    
+                <iconPacks:PackIconMaterial Kind="TextBoxPlus" Width="20" Height="20" VerticalAlignment="Center" Margin="0,0,15,0" Foreground="#7B1FA2"/>
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <TextBox x:Name="TxtTemplateName" mah:TextBoxHelper.Watermark="Şablon Adı" Width="150" Margin="0,0,10,0"/>
+                    <TextBox x:Name="TxtTemplateContent" mah:TextBoxHelper.Watermark="Hızlıca yapıştırılacak metin..." Width="400" Margin="0,0,10,0"/>
+                    <Button Content="Şablon Ekle" Style="{StaticResource AccentButtonStyle}" Click="BtnAddTemplate_Click"/>
                 </StackPanel>
-                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Style="{StaticResource OutlineButtonStyle}" Margin="8,0,0,0" Click="Refresh_Click">
+                
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button x:Name="BtnOcr" Style="{StaticResource OutlineButtonStyle}" Click="BtnOcr_Click" ToolTip="Görselden Metin Al (OCR)" IsEnabled="False">
                         <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="Refresh" Width="18" Height="18" Margin="10,0,8,0"/>
-                            <TextBlock Text="Yenile" Width="30"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Style="{StaticResource OutlineButtonStyle}" Margin="8,0,0,0" Click="Clear_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="DeleteSweep" Width="18" Height="18" Margin="5,0,8,0"/>
-                            <TextBlock Text="Tümünü Temizle" Width="80"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Style="{StaticResource AccentButtonStyle}" Margin="8,0,0,0" Click="Save_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="ContentSave" Width="18" Height="18" Margin="5,0,8,0"/>
-                            <TextBlock Text="Dışa Aktar" Width="53"/>
-                        </StackPanel>
-                    </Button>
-                    <Button Style="{StaticResource OutlineButtonStyle}" Margin="8,0,0,0" Click="Load_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="FolderUpload" Width="18" Height="18" Margin="5,0,8,0"/>
-                            <TextBlock Text="İçe Aktar" Width="50"/>
+                            <iconPacks:PackIconMaterial Kind="TextBoxSearch" Width="16" Height="16" Margin="0,0,8,0"/>
+                            <TextBlock Text="OCR"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>
             </Grid>
         </Border>
 
-        <!-- List Card -->
-        <Border Grid.Row="2" Style="{StaticResource Card}">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="Kayıtlar" Style="{StaticResource SectionHeader}"/>
-                <ListView x:Name="ClipboardList" Grid.Row="1"
-                          MouseDoubleClick="ClipboardList_MouseDoubleClick"
-                          SelectionChanged="ClipboardList_SelectionChanged">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Zaman" Width="160" DisplayMemberBinding="{Binding Time}"/>
-                            <GridViewColumn Header="Tür" Width="120" DisplayMemberBinding="{Binding Type}"/>
-                            <GridViewColumn Header="İçerik" Width="400" DisplayMemberBinding="{Binding Preview}"/>
-                        </GridView>
-                    </ListView.View>
+        <!-- Main Content (Tabs) -->
+        <mah:MetroAnimatedSingleRowTabControl Grid.Row="2" Margin="20,0,20,20">
+            <TabItem Header="Tüm Geçmiş">
+                <ListView x:Name="ClipboardList" BorderThickness="0" Background="Transparent" 
+                          MouseDoubleClick="ClipboardList_MouseDoubleClick" SelectionChanged="ClipboardList_SelectionChanged">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Padding="10">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <Button Style="{StaticResource MahApps.Styles.Button.Chromeless}" Click="BtnPin_Click" Margin="0,0,15,0">
+                                        <iconPacks:PackIconMaterial Style="{StaticResource PinnedIconStyle}" Width="16" Height="16"/>
+                                    </Button>
+
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Time, StringFormat=HH:mm:ss}" FontSize="12" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding Type}" FontSize="10" Foreground="Gray"/>
+                                    </StackPanel>
+
+                                    <TextBlock Grid.Column="2" Text="{Binding Preview}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                    
+                                    <StackPanel Grid.Column="3" Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="Star" Foreground="#FFD600" Width="14" Height="14" 
+                                                                    Visibility="{Binding IsPinned, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                    Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <iconPacks:PackIconMaterial Kind="FileDocument" Foreground="#7B1FA2" Width="14" Height="14" 
+                                                                    Visibility="{Binding IsTemplate, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                                    Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <Button Style="{StaticResource MahApps.Styles.Button.Chromeless}" Click="BtnCopyNow_Click" ToolTip="Kopyala">
+                                            <iconPacks:PackIconMaterial Kind="ContentCopy" Width="16" Height="16" Foreground="#8E24AA"/>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
                 </ListView>
-            </Grid>
-        </Border>
+            </TabItem>
+            
+            <TabItem Header="Pinlenenler">
+                <ListView x:Name="PinnedList" BorderThickness="0" Background="Transparent" MouseDoubleClick="ClipboardList_MouseDoubleClick" />
+            </TabItem>
 
-        <!-- Görsel Önizleme Popup -->
+            <TabItem Header="Hızlı Şablonlar">
+                <ListView x:Name="TemplatesList" BorderThickness="0" Background="Transparent" MouseDoubleClick="ClipboardList_MouseDoubleClick" />
+            </TabItem>
+
+            <TabItem Header="Otomatik Sıra (Sequence)">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Margin="0,0,0,10" Padding="10" Background="#E8EAF6" CornerRadius="4">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Sıradaki Öğeyi Kopyala:" VerticalAlignment="Center" FontWeight="Bold" Margin="0,0,10,0"/>
+                            <Button x:Name="BtnNextInSequence" Content="ŞİMDİ KOPYALA" Style="{StaticResource AccentButtonStyle}" Click="BtnNextInSequence_Click"/>
+                            <TextBlock x:Name="TxtSequenceStatus" Text="Sıra boş" VerticalAlignment="Center" Margin="15,0,0,0" Foreground="Gray"/>
+                        </StackPanel>
+                    </Border>
+                    <ListView x:Name="SequenceList" Grid.Row="1" BorderThickness="0" Background="Transparent">
+                         <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="5">
+                                    <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Index}" FontWeight="Bold" VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Content}" VerticalAlignment="Center"/>
+                                    <Button Grid.Column="2" Click="BtnRemoveFromSequence_Click" Style="{StaticResource MahApps.Styles.Button.Chromeless}">
+                                        <iconPacks:PackIconMaterial Kind="Close" Width="14" Height="14" Foreground="Red"/>
+                                    </Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </TabItem>
+        </mah:MetroAnimatedSingleRowTabControl>
+
+        <!-- Image Preview Popup -->
         <Popup x:Name="ImagePopup" Placement="Center" StaysOpen="False">
-            <Border Background="White" BorderBrush="#22000000" BorderThickness="1" CornerRadius="10" Padding="10">
+            <Border Background="White" BorderBrush="{StaticResource AccentBrush}" BorderThickness="2" CornerRadius="12" Padding="15" MaxWidth="600">
                 <StackPanel>
-                    <Image x:Name="PopupImage" Width="420" Height="420" Stretch="Uniform"/>
-                    <Button Style="{StaticResource OutlineButtonStyle}" Margin="0,10,0,0" Click="ClosePopup_Click">Kapat</Button>
+                    <TextBlock Text="Görsel Önizleme" FontWeight="Bold" Margin="0,0,0,10"/>
+                    <Image x:Name="PopupImage" MaxHeight="500" Stretch="Uniform"/>
+                    <TextBlock x:Name="TxtOcrResult" TextWrapping="Wrap" Margin="0,10,0,0" MaxHeight="100" FontStyle="Italic" Foreground="Gray"/>
+                    <Button Style="{StaticResource OutlineButtonStyle}" Margin="0,15,0,0" Click="ClosePopup_Click" Content="Kapat"/>
                 </StackPanel>
             </Border>
         </Popup>
