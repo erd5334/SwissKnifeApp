@@ -179,7 +179,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
                         <Border Background="{TemplateBinding Background}" 
-                                BorderBrush="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="4">
                             <Grid>
@@ -194,7 +194,10 @@
                                 <!-- Text Input -->
                                 <ScrollViewer x:Name="PART_ContentHost" 
                                               Margin="{TemplateBinding Padding}"
-                                              VerticalAlignment="Center"/>
+                                              VerticalAlignment="Center"
+                                              Focusable="False"
+                                              HorizontalScrollBarVisibility="Hidden"
+                                              VerticalScrollBarVisibility="Hidden"/>
                                 
                                 <!-- Placeholder -->
                                 <TextBlock x:Name="Placeholder" 

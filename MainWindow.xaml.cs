@@ -120,16 +120,17 @@ namespace SwissKnifeApp
 
         private void CollectMenuButtons(DependencyObject parent)
         {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            foreach (var child in LogicalTreeHelper.GetChildren(parent))
             {
-                var child = VisualTreeHelper.GetChild(parent, i);
-                
                 if (child is Button button && button.Tag is string)
                 {
                     allMenuButtons.Add(button);
                 }
                 
-                CollectMenuButtons(child);
+                if (child is DependencyObject depObj)
+                {
+                    CollectMenuButtons(depObj);
+                }
             }
         }
 
