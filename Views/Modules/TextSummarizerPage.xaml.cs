@@ -53,6 +53,7 @@ namespace SwissKnifeApp.Views.Modules
             LstKeywords.ItemsSource = null;
             LstSentences.ItemsSource = null;
             TxtSummaryStats.Text = "Özet oluşturulmadı.";
+            BorderSummaryStats.Visibility = Visibility.Collapsed;
         }
 
         private void UpdateInputStats()
@@ -98,6 +99,7 @@ namespace SwissKnifeApp.Views.Modules
                 var summary = _summarizer.SummarizeText(text, ratio, language);
 
                 TxtSummary.Text = summary;
+                BorderSummaryStats.Visibility = Visibility.Visible;
 
                 var originalWords = _summarizer.GetWords(text).Count;
                 var summaryWords = _summarizer.GetWords(summary).Count;

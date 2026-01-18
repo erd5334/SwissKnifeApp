@@ -7,8 +7,8 @@
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       xmlns:local="clr-namespace:SwissKnifeApp.Views.Modules"
       mc:Ignorable="d" 
-      d:DesignHeight="800" d:DesignWidth="1000"
-      Title="Developer Tools">
+      d:DesignHeight="800" d:DesignWidth="1100"
+      Title="Geliştirici Araçları">
 
     <Grid Background="{DynamicResource AppBackground}">
         <Grid.RowDefinitions>
@@ -16,216 +16,298 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <Border Grid.Row="0" Padding="20,15" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
-            <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconMaterial Kind="Tools" Width="24" Height="24" VerticalAlignment="Center" Foreground="{DynamicResource AccentBrush}"/>
-                <TextBlock Text="Giriştirici Araçları" FontSize="20" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource HeaderText}"/>
+        <!-- Modern Header -->
+        <Border Grid.Row="0" Padding="25,20" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="CodeTags" Width="30" Height="30" VerticalAlignment="Center" Foreground="{DynamicResource AccentBrush}"/>
+                    <TextBlock Text="Geliştirici Araçları" FontSize="24" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource HeaderText}"/>
+                </StackPanel>
+                <TextBlock Text="GUID üretin, JWT çözümleyin, Timestamp dönüştürün ve test verileri oluşturun" FontSize="14" Foreground="{DynamicResource SecondaryText}" Margin="45,5,0,0"/>
             </StackPanel>
         </Border>
 
-        <!-- Content Tabs -->
+        <!-- Main Content -->
         <mah:MetroAnimatedSingleRowTabControl Grid.Row="1" Margin="20" mah:HeaderedControlHelper.HeaderFontSize="15">
             
-            <!-- GUID Generator -->
-            <TabItem Header="GUID/UUID">
-                <Grid Margin="10,20">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                        <StackPanel Margin="0,0,20,0">
-                            <TextBlock Text="Adet" Foreground="Gray" Margin="0,0,0,5"/>
-                            <mah:NumericUpDown x:Name="NumGuidCount" Value="10" Minimum="1" Maximum="1000" Width="100"/>
-                        </StackPanel>
-                        <StackPanel Margin="0,0,20,0">
-                            <TextBlock Text="Format" Foreground="Gray" Margin="0,0,0,5"/>
-                            <ComboBox x:Name="CmbGuidFormat" Width="150" SelectedIndex="0">
+            <!-- GUID/UUID Generator -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="KeyChain" Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="GUID / UUID" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="0,15,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="380"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Style="{StaticResource Card}" VerticalAlignment="Top" Margin="0,0,20,0">
+                        <StackPanel>
+                            <TextBlock Text="Üretim Ayarları" Style="{StaticResource SectionHeader}"/>
+                            
+                            <TextBlock Text="Adet" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,8" FontSize="12"/>
+                            <mah:NumericUpDown x:Name="NumGuidCount" Value="10" Minimum="1" Maximum="1000" Height="36" Margin="0,0,0,15"/>
+
+                            <TextBlock Text="Format" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,8" FontSize="12"/>
+                            <ComboBox x:Name="CmbGuidFormat" Height="36" Margin="0,0,0,20" SelectedIndex="0">
                                 <ComboBoxItem Content="Diz Reçinesi (D)"/>
                                 <ComboBoxItem Content="Parantezli (B)"/>
                                 <ComboBoxItem Content="Küme Parantezli (P)"/>
                                 <ComboBoxItem Content="Düz (N)"/>
                             </ComboBox>
-                        </StackPanel>
-                        <Button Click="BtnGenerateGuid_Click" Style="{StaticResource AccentButtonStyle}" VerticalAlignment="Bottom" Height="34" Width="120">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Refresh" Width="14" Height="14" Margin="0,0,8,0"/>
-                                <TextBlock Text="Generate"/>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
 
-                    <Grid Grid.Row="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <TextBox x:Name="TxtGuidList" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" 
-                                 FontFamily="Consolas" IsReadOnly="True" Background="#F8F9FA" Padding="10"/>
-                        <Button Grid.Row="1" Content="Hepsini Kopyala" Click="BtnCopyGuids_Click" HorizontalAlignment="Right" Margin="0,10,0,0" Style="{StaticResource OutlineButtonStyle}"/>
-                    </Grid>
+                            <Button Click="BtnGenerateGuid_Click" Style="{StaticResource AccentButtonStyle}" Height="40">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Refresh" Width="16" Height="16" Margin="0,0,10,0"/>
+                                    <TextBlock Text="GUID Üret" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Grid.Column="1" Style="{StaticResource Card}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBox x:Name="TxtGuidList" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" 
+                                     FontFamily="Consolas" IsReadOnly="True" Background="{DynamicResource AppBackground}" 
+                                     Foreground="{DynamicResource AppForeground}" BorderThickness="0" Padding="10"/>
+                            <Button Grid.Row="1" Click="BtnCopyGuids_Click" Style="{StaticResource OutlineButtonStyle}" 
+                                    HorizontalAlignment="Right" Margin="0,15,0,0" Height="36">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="ContentCopy" Width="14" Height="14" Margin="0,0,8,0"/>
+                                    <TextBlock Text="Tümünü Kopyala"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </Border>
                 </Grid>
             </TabItem>
 
             <!-- Timestamp Converter -->
-            <TabItem Header="Timestamp">
-                <StackPanel Margin="10,20" MaxWidth="800" HorizontalAlignment="Left">
-                    <TextBlock Text="Unix Timestamp &lt;&gt; ISO 8601" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,20"/>
-                    
-                    <Grid Margin="0,0,0,30">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <StackPanel Grid.Column="0">
-                            <TextBlock Text="Unix Timestamp (Seconds / Milliseconds)" Margin="0,0,0,5" Foreground="Gray"/>
-                            <TextBox x:Name="TxtUnixInput" Height="40" VerticalContentAlignment="Center" FontSize="16" TextChanged="TxtUnixInput_TextChanged"/>
-                        </StackPanel>
-                        
-                        <iconPacks:PackIconMaterial Kind="ArrowLeftRight" Grid.Column="1" VerticalAlignment="Center" Margin="20,20,20,0" Foreground="Gray"/>
-                        
-                        <StackPanel Grid.Column="2">
-                            <TextBlock Text="ISO 8601 / Yerel Zaman" Margin="0,0,0,5" Foreground="Gray"/>
-                            <TextBox x:Name="TxtIsoInput" Height="40" VerticalContentAlignment="Center" FontSize="16" TextChanged="TxtIsoInput_TextChanged"/>
-                        </StackPanel>
-                    </Grid>
-                    
-                    <Button Click="BtnGetNow_Click" Style="{StaticResource OutlineButtonStyle}" Width="150" HorizontalAlignment="Left">
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="ClockOutline" Width="14" Height="14" Margin="0,0,8,0"/>
-                            <TextBlock Text="Şu An (Now)"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="ClockFast" Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Unix Timestamp" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Border Style="{StaticResource Card}" Margin="0,15,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="800">
+                    <StackPanel>
+                        <TextBlock Text="Zaman Dönüştürücü" Style="{StaticResource SectionHeader}"/>
+                        <TextBlock Text="Unix Timestamp ile ISO 8601 / Yerel zaman arasında kolayca dönüşüm yapın." Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,25"/>
 
-            <!-- JWT Tools -->
-            <TabItem Header="JWT Decoder">
-                <Grid Margin="10,20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    
-                    <Grid Margin="0,0,10,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="JWT Token" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                        <TextBox x:Name="TxtJwtInput" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" 
-                                 FontFamily="Consolas" mah:TextBoxHelper.Watermark="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                                 TextChanged="TxtJwtInput_TextChanged"/>
-                    </Grid>
-                    
-                    <Grid Grid.Column="1" Margin="10,0,0,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="2*"/>
-                        </Grid.RowDefinitions>
-                        
-                        <TextBlock Text="Header" FontWeight="SemiBold" Foreground="#FF4081" Margin="0,0,0,5"/>
-                        <TextBox x:Name="TxtJwtHeader" Grid.Row="1" IsReadOnly="True" Height="100" FontFamily="Consolas" Background="#FFF5F8"/>
-                        
-                        <TextBlock Text="Payload / Claims" Grid.Row="2" FontWeight="SemiBold" Foreground="#2196F3" Margin="0,15,0,5"/>
-                        <TextBox x:Name="TxtJwtPayload" Grid.Row="3" Grid.RowSpan="2" IsReadOnly="True" FontFamily="Consolas" Background="#F1F8FF" VerticalScrollBarVisibility="Auto"/>
-                    </Grid>
-                </Grid>
-            </TabItem>
-
-            <!-- Cron Tester -->
-            <TabItem Header="Cron Builder">
-                <StackPanel Margin="10,20">
-                    <TextBlock Text="Cron İfadesi Test Edici" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
-                    <Grid Margin="0,0,0,20">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBox x:Name="TxtCronExpression" Text="*/5 * * * *" Height="45" FontSize="18" VerticalContentAlignment="Center" 
-                                 FontFamily="Consolas" TextChanged="TxtCronExpression_TextChanged"/>
-                        <Button Grid.Column="1" Click="BtnCronHelp_Click" Style="{StaticResource MahApps.Styles.Button.Chromeless}" ToolTip="Örnekler">
-                            <iconPacks:PackIconMaterial Kind="HelpCircleOutline" Width="20" Height="20" Foreground="Gray"/>
-                        </Button>
-                    </Grid>
-                    
-                    <Border Background="#E3F2FD" BorderBrush="#BBDEFB" BorderThickness="1" Padding="15" CornerRadius="4">
-                        <StackPanel>
-                            <TextBlock Text="İnsan Gözüyle Okunuşu:" FontWeight="Bold" Foreground="#1976D2" Margin="0,0,0,5"/>
-                            <TextBlock x:Name="TxtCronDescription" Text="Şu an her 5 dakikada bir çalışır." FontSize="16" TextWrapping="Wrap"/>
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
-            </TabItem>
-
-            <!-- Lorem & Fake Data -->
-            <TabItem Header="Fake Data">
-                <Grid Margin="10,20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="280"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    
-                    <StackPanel Grid.Column="0" Margin="0,0,20,0">
-                        <TextBlock Text="Ayarlar" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,15"/>
-                        
-                        <TextBlock Text="Ülke / Dil (Locale)" Margin="0,0,0,5" Foreground="Gray"/>
-                        <ComboBox x:Name="CmbLocale" Margin="0,0,0,15">
-                            <ComboBoxItem Content="Türkiye (tr)" Tag="tr"/>
-                            <ComboBoxItem Content="USA (en)" Tag="en"/>
-                            <ComboBoxItem Content="Germany (de)" Tag="de"/>
-                            <ComboBoxItem Content="France (fr)" Tag="fr"/>
-                            <ComboBoxItem Content="Great Britain (en_GB)" Tag="en_GB"/>
-                        </ComboBox>
-                        
-                        <TextBlock Text="Veri Tipi" Margin="0,0,0,5" Foreground="Gray"/>
-                        <ComboBox x:Name="CmbFakeDataType" Margin="0,0,0,15" SelectedIndex="0">
-                            <ComboBoxItem Content="Kişi (İsim, Tel, Email)"/>
-                            <ComboBoxItem Content="Adres (Sokak, Şehir, Posta)"/>
-                            <ComboBoxItem Content="Şirket &amp; Meslek"/>
-                            <ComboBoxItem Content="İnternet (URL, UserAgent)"/>
-                            <ComboBoxItem Content="Finans (IBAN, Kart)"/>
-                        </ComboBox>
-
-                        <TextBlock Text="Doğum Tarihi Aralığı (Yıl)" Margin="0,0,0,5" Foreground="Gray"/>
-                        <Grid Margin="0,0,0,15">
+                        <Grid Margin="0,0,0,30">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <mah:NumericUpDown x:Name="NumBirthStart" Value="1980" Minimum="1900" Maximum="2100"/>
-                            <TextBlock Grid.Column="1" Text="-" VerticalAlignment="Center" Margin="5,0"/>
-                            <mah:NumericUpDown Grid.Column="2" x:Name="NumBirthEnd" Value="2005" Minimum="1900" Maximum="2100"/>
+                            
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="Unix Timestamp (Saniye/Milisaniye)" Margin="0,0,0,8" Foreground="{DynamicResource SecondaryText}" FontSize="12"/>
+                                <TextBox x:Name="TxtUnixInput" Style="{StaticResource RoundedTextBox}" Height="45" FontSize="18" FontWeight="Bold" 
+                                         VerticalContentAlignment="Center" TextChanged="TxtUnixInput_TextChanged"/>
+                            </StackPanel>
+                            
+                            <iconPacks:PackIconMaterial Kind="ArrowLeftRight" Grid.Column="1" VerticalAlignment="Center" Margin="25,25,25,0" 
+                                                       Foreground="{DynamicResource AccentBrush}" Width="24" Height="24"/>
+                            
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="ISO 8601 / Yerel Zaman" Margin="0,0,0,8" Foreground="{DynamicResource SecondaryText}" FontSize="12"/>
+                                <TextBox x:Name="TxtIsoInput" Style="{StaticResource RoundedTextBox}" Height="45" FontSize="16" 
+                                         VerticalContentAlignment="Center" TextChanged="TxtIsoInput_TextChanged"/>
+                            </StackPanel>
                         </Grid>
-
-                        <TextBlock Text="Miktar" Margin="0,0,0,5" Foreground="Gray"/>
-                        <mah:NumericUpDown x:Name="NumFakeCount" Value="10" Minimum="1" Maximum="100" Margin="0,0,0,20"/>
                         
-                        <Button Click="BtnGenerateFake_Click" Style="{StaticResource AccentButtonStyle}" Height="40">
+                        <Button Click="BtnGetNow_Click" Style="{StaticResource OutlineButtonStyle}" HorizontalAlignment="Left" Height="40" Padding="20,0">
                             <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="LightningBolt" Width="14" Height="14" Margin="0,0,8,0"/>
-                                <TextBlock Text="Veri Üret"/>
+                                <iconPacks:PackIconMaterial Kind="ClockOutline" Width="16" Height="16" Margin="0,0,10,0"/>
+                                <TextBlock Text="Şu Anki Zamanı Al (Now)"/>
                             </StackPanel>
                         </Button>
                     </StackPanel>
+                </Border>
+            </TabItem>
+
+            <!-- JWT Tools -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="Security" Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="JWT Decoder" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="0,15,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
                     
-                    <Grid Grid.Column="1">
+                    <Border Grid.Column="0" Style="{StaticResource Card}" Margin="0,0,10,0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="JWT Token" Style="{StaticResource SectionHeader}"/>
+                            <TextBox x:Name="TxtJwtInput" Grid.Row="1" AcceptsReturn="True" TextWrapping="Wrap" 
+                                     Style="{StaticResource RoundedTextBox}" Padding="15"
+                                     FontFamily="Consolas" mah:TextBoxHelper.Watermark="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                                     TextChanged="TxtJwtInput_TextChanged"/>
+                        </Grid>
+                    </Border>
+                    
+                    <Grid Grid.Column="1" Margin="10,0,0,0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <TextBox x:Name="TxtFakeDataOutput" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" 
-                                 FontFamily="Consolas" IsReadOnly="True" Background="#F8F9FA"/>
-                        <Button Grid.Row="1" Content="Kopyala" Click="BtnCopyFake_Click" Style="{StaticResource OutlineButtonStyle}" HorizontalAlignment="Right" Margin="0,10,0,0"/>
+                        
+                        <Border Style="{StaticResource Card}" Margin="0,0,0,15">
+                            <StackPanel>
+                                <TextBlock Text="Header" Style="{StaticResource SectionHeader}" Foreground="#FF4081"/>
+                                <TextBox x:Name="TxtJwtHeader" IsReadOnly="True" Height="120" FontFamily="Consolas" 
+                                         Background="{DynamicResource AppBackground}" Foreground="{DynamicResource AppForeground}" BorderThickness="0"/>
+                            </StackPanel>
+                        </Border>
+                        
+                        <Border Grid.Row="1" Style="{StaticResource Card}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="Payload / Claims" Style="{StaticResource SectionHeader}" Foreground="#2196F3"/>
+                                <TextBox x:Name="TxtJwtPayload" Grid.Row="1" IsReadOnly="True" FontFamily="Consolas" 
+                                         Background="{DynamicResource AppBackground}" Foreground="{DynamicResource AppForeground}" 
+                                         BorderThickness="0" VerticalScrollBarVisibility="Auto"/>
+                            </Grid>
+                        </Border>
                     </Grid>
+                </Grid>
+            </TabItem>
+
+            <!-- Cron Tester -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="CalendarClock" Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Cron Builder" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Border Style="{StaticResource Card}" Margin="0,15,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="800">
+                    <StackPanel>
+                        <TextBlock Text="Cron İfadesi Test Edici" Style="{StaticResource SectionHeader}"/>
+                        
+                        <Grid Margin="0,10,0,25">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="TxtCronExpression" Text="*/5 * * * *" Height="50" FontSize="22" VerticalContentAlignment="Center" 
+                                     Style="{StaticResource RoundedTextBox}" FontFamily="Consolas" TextChanged="TxtCronExpression_TextChanged"/>
+                            <Button Grid.Column="1" Click="BtnCronHelp_Click" Style="{StaticResource MahApps.Styles.Button.Chromeless}" Margin="10,0,0,0" ToolTip="Örnekler">
+                                <iconPacks:PackIconMaterial Kind="HelpCircleOutline" Width="24" Height="24" Foreground="{DynamicResource SecondaryText}"/>
+                            </Button>
+                        </Grid>
+                        
+                        <Border Background="{DynamicResource AccentBrush}" BorderThickness="0" Padding="20" CornerRadius="12" Opacity="0.1">
+                            <!-- Helper border for colored bg -->
+                        </Border>
+                        <Border Background="Transparent" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1" Padding="20" CornerRadius="12" Margin="0,-60,0,0">
+                            <StackPanel>
+                                <TextBlock Text="İnsan Gözüyle Okunuşu" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}" Margin="0,0,0,8" FontSize="12"/>
+                                <TextBlock x:Name="TxtCronDescription" Text="Şu an her 5 dakikada bir çalışır." FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap" Foreground="{DynamicResource HeaderText}"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Border>
+            </TabItem>
+
+            <!-- Lorem & Fake Data -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="Database" Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Fake Data" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="0,15,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="320"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Border Grid.Column="0" Style="{StaticResource Card}" VerticalAlignment="Top" Margin="0,0,20,0">
+                        <StackPanel>
+                            <TextBlock Text="Veri Üretim Ayarları" Style="{StaticResource SectionHeader}"/>
+                            
+                            <TextBlock Text="Ülke / Dil (Locale)" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,8" FontSize="12"/>
+                            <ComboBox x:Name="CmbLocale" Margin="0,0,0,15" Height="36">
+                                <ComboBoxItem Content="Türkiye (tr)" Tag="tr" IsSelected="True"/>
+                                <ComboBoxItem Content="USA (en)" Tag="en"/>
+                                <ComboBoxItem Content="Germany (de)" Tag="de"/>
+                                <ComboBoxItem Content="France (fr)" Tag="fr"/>
+                                <ComboBoxItem Content="Great Britain (en_GB)" Tag="en_GB"/>
+                            </ComboBox>
+                            
+                            <TextBlock Text="Veri Tipi" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,8" FontSize="12"/>
+                            <ComboBox x:Name="CmbFakeDataType" Margin="0,0,0,15" Height="36" SelectedIndex="0">
+                                <ComboBoxItem Content="Kişi (İsim, Tel, Email)"/>
+                                <ComboBoxItem Content="Adres (Sokak, Şehir, Posta)"/>
+                                <ComboBoxItem Content="Şirket &amp; Meslek"/>
+                                <ComboBoxItem Content="İnternet (URL, UserAgent)"/>
+                                <ComboBoxItem Content="Finans (IBAN, Kart)"/>
+                            </ComboBox>
+
+                            <TextBlock Text="Doğum Tarihi Aralığı (Yıl)" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,8" FontSize="12"/>
+                            <Grid Margin="0,0,0,15">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <mah:NumericUpDown x:Name="NumBirthStart" Value="1980" Minimum="1900" Maximum="2100" Height="36"/>
+                                <TextBlock Grid.Column="1" Text="-" VerticalAlignment="Center" Margin="10,0" Foreground="{DynamicResource SecondaryText}"/>
+                                <mah:NumericUpDown Grid.Column="2" x:Name="NumBirthEnd" Value="2005" Minimum="1900" Maximum="2100" Height="36"/>
+                            </Grid>
+
+                            <TextBlock Text="Miktar" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,8" FontSize="12"/>
+                            <mah:NumericUpDown x:Name="NumFakeCount" Value="10" Minimum="1" Maximum="100" Height="36" Margin="0,0,0,25"/>
+                            
+                            <Button Click="BtnGenerateFake_Click" Style="{StaticResource AccentButtonStyle}" Height="45">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="LightningBolt" Width="18" Height="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Test Verisi Üret" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Border Grid.Column="1" Style="{StaticResource Card}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBox x:Name="TxtFakeDataOutput" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" 
+                                     FontFamily="Consolas" IsReadOnly="True" Background="{DynamicResource AppBackground}" 
+                                     Foreground="{DynamicResource AppForeground}" BorderThickness="0" Padding="15"/>
+                            <Button Grid.Row="1" Click="BtnCopyFake_Click" Style="{StaticResource OutlineButtonStyle}" 
+                                    HorizontalAlignment="Right" Margin="0,15,0,0" Height="36" Padding="20,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="ContentCopy" Width="14" Height="14" Margin="0,0,8,0"/>
+                                    <TextBlock Text="Sonuçları Kopyala"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </Border>
                 </Grid>
             </TabItem>
             

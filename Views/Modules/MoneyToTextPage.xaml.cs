@@ -18,9 +18,6 @@ using System.Windows.Shapes;
 
 namespace SwissKnifeApp.Views.Modules
 {
-    /// <summary>
-    /// Interaction logic for MoneyToTextPage.xaml
-    /// </summary>
     public partial class MoneyToTextPage : Page
     {
         private readonly SwissKnifeApp.Services.MoneyToTextService _moneyToTextService;
@@ -34,32 +31,23 @@ namespace SwissKnifeApp.Views.Modules
 
         private void BtnConvert_Click(object sender, RoutedEventArgs e)
         {
-            var txtAmountBox = FindName("txtAmount") as TextBox;
-            var txtResultBlock = FindName("txtResult") as TextBlock;
-            var cmbLanguage = FindName("cmbLanguage") as ComboBox;
-            var cmbCasing = FindName("cmbCasing") as ComboBox;
-            var chkNoSpaces = FindName("chkNoSpaces") as CheckBox;
-            var chkFirstLetterUpper = FindName("chkFirstLetterUpper") as CheckBox;
-            var txtSeparator = FindName("txtSeparator") as TextBox;
-            var amountText = txtAmountBox?.Text?.Trim().Replace(',', '.') ?? "";
+            var amountText = txtAmount?.Text?.Trim().Replace(',', '.') ?? "";
             if (!decimal.TryParse(amountText, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var amount))
             {
-                if (txtResultBlock != null)
-                    txtResultBlock.Text = "Geçerli bir tutar girin.";
+                if (txtResult != null)
+                    txtResult.Text = "Geçerli bir tutar girin.";
                 return;
             }
 
             string? langText = null;
             if (cmbLanguage != null)
             {
-                // Prefer SelectedValue (bound to Tag), fallback to ComboBoxItem.Content or TextBlock text inside
                 langText = cmbLanguage.SelectedValue as string;
                 if (string.IsNullOrWhiteSpace(langText))
                 {
                     if (cmbLanguage.SelectedItem is ComboBoxItem cbi)
                     {
-                        langText = cbi.Tag as string
-                                   ?? cbi.Content?.ToString();
+                        langText = cbi.Tag as string ?? cbi.Content?.ToString();
                         if (string.IsNullOrWhiteSpace(langText) && cbi.Content is StackPanel sp)
                         {
                             var tb = sp.Children.OfType<TextBlock>().FirstOrDefault();
@@ -68,20 +56,22 @@ namespace SwissKnifeApp.Views.Modules
                     }
                 }
             }
+
             var language = _moneyToTextService.ParseLanguage(langText);
             var casing = _moneyToTextService.ParseCasingIndex(cmbCasing?.SelectedIndex);
             bool noSpaces = chkNoSpaces?.IsChecked == true;
             string separator = txtSeparator?.Text ?? " ";
-            bool firstLetterUpper = chkFirstLetterUpper?.IsChecked == true;
-
-            var result = _moneyToTextService.Convert(amount, language, casing, noSpaces, separator, firstLetterUpper);
-            if (txtResultBlock != null)
-                txtResultBlock.Text = result;
+            
+            // Note: chkFirstLetterUpper was removed in modern UI as it is now part of cmbCasing or handled by service
+            var result = _moneyToTextService.Convert(amount, language, casing, noSpaces, separator, false);
+            if (txtResult != null)
+                txtResult.Text = result;
         }
 
         private void btnCopy_Click(object sender, RoutedEventArgs e)
         {
-            Clipboard.SetText((FindName("txtResult") as TextBlock)?.Text ?? "");
+            if (!string.IsNullOrEmpty(txtResult?.Text))
+                Clipboard.SetText(txtResult.Text);
         }
     }
 }

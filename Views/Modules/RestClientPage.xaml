@@ -11,290 +11,344 @@
       Title="REST Client">
 
     <Page.Resources>
+        <!-- REST specific accent colors -->
+        <SolidColorBrush x:Key="RestAccent" Color="#4CAF50"/>
+        
         <Style x:Key="MethodTabItem" TargetType="TabItem" BasedOn="{StaticResource MahApps.Styles.TabItem}">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource SecondaryText}"/>
             <Setter Property="HeaderTemplate">
                 <Setter.Value>
                     <DataTemplate>
-                        <TextBlock Text="{Binding}" FontWeight="SemiBold" Margin="5,0"/>
+                        <TextBlock Text="{Binding}" FontWeight="SemiBold" Margin="8,4"/>
                     </DataTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+
+        <!-- Local Styles for Inputs -->
+        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{DynamicResource HeaderText}"/>
         </Style>
     </Page.Resources>
 
     <Grid Background="{DynamicResource AppBackground}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250" x:Name="SidebarColumn"/>
+            <ColumnDefinition Width="280" x:Name="SidebarColumn"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Sidebar: History & Collections -->
-        <Border Grid.Column="0" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,1,0" Background="{DynamicResource CardBackground}">
+        <!-- Sidebar (History/Collections) -->
+        <Border Grid.Column="0" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,1,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="İSTEK GEÇMİŞİ" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource SecondaryText}" Margin="20,20,20,10"/>
+
+                <TextBox x:Name="TxtSearchHistory" Grid.Row="1" Margin="20,0,20,15" Height="35"
+                         mah:TextBoxHelper.Watermark="Geçmişte ara..." mah:TextBoxHelper.ClearTextButton="True">
+                    <mah:TextBoxHelper.ButtonContent>
+                        <iconPacks:PackIconMaterial Kind="Magnify" Width="14" Height="14"/>
+                    </mah:TextBoxHelper.ButtonContent>
+                </TextBox>
+
+                <ListBox x:Name="LstHistory" Grid.Row="2" Background="Transparent" BorderThickness="0" Padding="10,0" SelectionChanged="LstHistory_SelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="0,2" Padding="10" Background="Transparent" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Width="45" Height="20" CornerRadius="4" VerticalAlignment="Center">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Method}" Value="GET">
+                                                        <Setter Property="Background" Value="#1E4CAF50"/>
+                                                        <Setter Property="BorderBrush" Value="#4CAF50"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Method}" Value="POST">
+                                                        <Setter Property="Background" Value="#1E2196F3"/>
+                                                        <Setter Property="BorderBrush" Value="#2196F3"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Method}" Value="PUT">
+                                                        <Setter Property="Background" Value="#1EFF9800"/>
+                                                        <Setter Property="BorderBrush" Value="#FF9800"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Method}" Value="DELETE">
+                                                        <Setter Property="Background" Value="#1EF44336"/>
+                                                        <Setter Property="BorderBrush" Value="#F44336"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <Border.Child>
+                                            <TextBlock Text="{Binding Method}" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Method}" Value="GET"><Setter Property="Foreground" Value="#4CAF50"/></DataTrigger>
+                                                            <DataTrigger Binding="{Binding Method}" Value="POST"><Setter Property="Foreground" Value="#2196F3"/></DataTrigger>
+                                                            <DataTrigger Binding="{Binding Method}" Value="PUT"><Setter Property="Foreground" Value="#FF9800"/></DataTrigger>
+                                                            <DataTrigger Binding="{Binding Method}" Value="DELETE"><Setter Property="Foreground" Value="#F44336"/></DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Border.Child>
+                                    </Border>
+                                    <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                        <TextBlock Text="{Binding Url}" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource HeaderText}" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock Text="{Binding Timestamp}" FontSize="10" Foreground="{DynamicResource SecondaryText}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem" BasedOn="{StaticResource MahApps.Styles.ListBoxItem}">
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </Grid>
+        </Border>
+
+        <!-- Grid Splitter -->
+        <GridSplitter Grid.Column="1" Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="{DynamicResource CardBorderBrush}"/>
+
+        <!-- Main Area -->
+        <Border Grid.Column="2" Padding="25">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <Border Padding="10" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
-                    <Grid>
-                        <TextBlock Text="Koleksiyonlar" FontWeight="Bold" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                        <Button Style="{StaticResource MahApps.Styles.Button.Chromeless}" ToolTip="Yeni İstek" HorizontalAlignment="Right">
-                            <iconPacks:PackIconMaterial Kind="Plus" Width="14" Height="14"/>
-                        </Button>
-                    </Grid>
-                </Border>
+                <!-- Request Bar -->
+                <Grid Grid.Row="0" Margin="0,0,0,25">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
-                <ListBox x:Name="LstHistory" Grid.Row="1" BorderThickness="0" Background="Transparent" Padding="5" SelectionChanged="LstHistory_SelectionChanged">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Border Padding="8,5" CornerRadius="4" Margin="0,2">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding Method}" FontWeight="Bold" Width="45" VerticalAlignment="Center">
-                                        <TextBlock.Style>
-                                            <Style TargetType="TextBlock">
-                                                <Style.Triggers>
-                                                    <Trigger Property="Text" Value="GET">
-                                                        <Setter Property="Foreground" Value="#4CAF50"/>
-                                                    </Trigger>
-                                                    <Trigger Property="Text" Value="POST">
-                                                        <Setter Property="Foreground" Value="#FF9800"/>
-                                                    </Trigger>
-                                                    <Trigger Property="Text" Value="PUT">
-                                                        <Setter Property="Foreground" Value="#2196F3"/>
-                                                    </Trigger>
-                                                    <Trigger Property="Text" Value="DELETE">
-                                                        <Setter Property="Foreground" Value="#F44336"/>
-                                                    </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                    <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" MaxWidth="140" Margin="5,0"/>
-                                    <Button Grid.Column="2" Style="{StaticResource MahApps.Styles.Button.Chromeless}" Click="BtnDeleteHistory_Click" Tag="{Binding Id}">
-                                        <iconPacks:PackIconMaterial Kind="Delete" Width="12" Height="12" Foreground="Gray"/>
-                                    </Button>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Grid>
-        </Border>
+                    <ComboBox x:Name="CmbMethod" SelectedIndex="0" Height="45" mah:TextBoxHelper.AutoWatermark="True">
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem" BasedOn="{StaticResource MahApps.Styles.ComboBoxItem}">
+                                <Setter Property="FontWeight" Value="Bold"/>
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                        <ComboBoxItem Content="GET" Foreground="#4CAF50" FontWeight="Bold"/>
+                        <ComboBoxItem Content="POST" Foreground="#2196F3" FontWeight="Bold"/>
+                        <ComboBoxItem Content="PUT" Foreground="#FF9800" FontWeight="Bold"/>
+                        <ComboBoxItem Content="DELETE" Foreground="#F44336" FontWeight="Bold"/>
+                        <ComboBoxItem Content="PATCH" Foreground="#9C27B0" FontWeight="Bold"/>
+                    </ComboBox>
 
-        <!-- Grid Splitter -->
-        <GridSplitter Grid.Column="1" Width="4" HorizontalAlignment="Center" VerticalAlignment="Stretch" Background="Transparent"/>
+                    <TextBox x:Name="TxtUrl" Grid.Column="1" Margin="10,0" Height="45" FontSize="14"
+                             mah:TextBoxHelper.Watermark="İstek URL'sini girin (örn: https://api.example.com/v1/users)"
+                             mah:TextBoxHelper.ClearTextButton="True"
+                             Foreground="{DynamicResource HeaderText}"/>
 
-        <!-- Main Area -->
-        <Grid Grid.Column="2" Margin="20">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <!-- Request Bar -->
-            <Grid Grid.Row="0" Margin="0,0,0,20">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <ComboBox x:Name="CmbMethod" SelectedIndex="0" Height="40" mah:TextBoxHelper.AutoWatermark="True">
-                    <ComboBoxItem Content="GET"/>
-                    <ComboBoxItem Content="POST"/>
-                    <ComboBoxItem Content="PUT"/>
-                    <ComboBoxItem Content="DELETE"/>
-                    <ComboBoxItem Content="PATCH"/>
-                    <ComboBoxItem Content="HEAD"/>
-                    <ComboBoxItem Content="OPTIONS"/>
-                </ComboBox>
-
-                <TextBox x:Name="TxtUrl" Grid.Column="1" Margin="10,0" Height="40" 
-                         mah:TextBoxHelper.Watermark="İstek URL'sini girin (örn: https://api.example.com/users)"
-                         mah:TextBoxHelper.ClearTextButton="True" VerticalContentAlignment="Center" FontSize="14"/>
-
-                <StackPanel Grid.Column="2" Orientation="Horizontal">
-                    <ComboBox x:Name="CmbEnvironment" Width="120" Height="40" Margin="0,0,10,0" 
-                              mah:TextBoxHelper.Watermark="No Environment" ToolTip="Çalışma Ortamı">
+                    <ComboBox x:Name="CmbEnvironment" Grid.Column="2" Width="150" Height="45" Margin="0,0,10,0" 
+                              mah:TextBoxHelper.Watermark="No Environment" ToolTip="Çalışma Ortamı"
+                              Foreground="{DynamicResource SecondaryText}">
                         <ComboBoxItem Content="No Environment"/>
                         <ComboBoxItem Content="Development"/>
                         <ComboBoxItem Content="Staging"/>
                         <ComboBoxItem Content="Production"/>
                     </ComboBox>
                     
-                    <Button x:Name="BtnSend" Width="100" Height="40" 
+                    <Button x:Name="BtnSend" Grid.Column="3" Width="120" Height="45" 
                             Style="{StaticResource AccentButtonStyle}" Click="BtnSend_Click">
                         <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="Send" Width="16" Height="16" Margin="0,0,8,0"/>
+                            <iconPacks:PackIconMaterial Kind="Send" Width="18" Height="18" Margin="0,0,10,0"/>
                             <TextBlock Text="GÖNDER" FontWeight="Bold"/>
                         </StackPanel>
                     </Button>
-                </StackPanel>
-            </Grid>
+                </Grid>
 
-            <!-- Request Details and Response -->
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
-                <!-- Request Configuration -->
-                <mah:MetroAnimatedSingleRowTabControl Grid.Row="0" Margin="0,0,0,10">
-                    <TabItem Header="Headers">
-                        <Grid Margin="0,10">
-                            <DataGrid x:Name="DgHeaders" AutoGenerateColumns="False" CanUserAddRows="True">
-                                <DataGrid.Columns>
-                                    <DataGridCheckBoxColumn Binding="{Binding IsEnabled}" Header="" Width="30"/>
-                                    <DataGridTextColumn Binding="{Binding Key}" Header="Key" Width="*"/>
-                                    <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="*"/>
-                                    <DataGridTextColumn Binding="{Binding Description}" Header="Description" Width="*"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </Grid>
-                    </TabItem>
-                    <TabItem Header="Body">
-                        <Grid Margin="0,10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                                <RadioButton x:Name="RbNone" Content="none" IsChecked="True" Margin="0,0,15,0"/>
-                                <RadioButton x:Name="RbRaw" Content="raw" Margin="0,0,15,0"/>
-                                <RadioButton x:Name="RbFormData" Content="form-data" Margin="0,0,15,0"/>
-                                
-                                <ComboBox x:Name="CmbBodyType" Width="100" 
-                                          Visibility="{Binding IsChecked, ElementName=RbRaw, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                    <ComboBoxItem Content="JSON" Tag="application/json"/>
-                                    <ComboBoxItem Content="XML" Tag="application/xml"/>
-                                    <ComboBoxItem Content="Text" Tag="text/plain"/>
-                                    <ComboBoxItem Content="HTML" Tag="text/html"/>
-                                </ComboBox>
-                            </StackPanel>
-                            
-                            <TextBox x:Name="TxtBody" Grid.Row="1" AcceptsReturn="True" AcceptsTab="True" 
-                                     FontFamily="Consolas" FontSize="13" VerticalScrollBarVisibility="Auto"
-                                     mah:TextBoxHelper.Watermark="İstek gövdesini buraya yazın..."
-                                     Visibility="{Binding IsChecked, ElementName=RbRaw, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-                            
-                            <DataGrid x:Name="DgFormData" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="True"
-                                      Visibility="{Binding IsChecked, ElementName=RbFormData, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <DataGrid.Columns>
-                                    <DataGridCheckBoxColumn Binding="{Binding IsEnabled}" Header="" Width="30"/>
-                                    <DataGridTextColumn Binding="{Binding Key}" Header="Key" Width="*"/>
-                                    <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="*"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </Grid>
-                    </TabItem>
-                    <TabItem Header="Auth">
-                        <StackPanel Margin="0,10">
-                            <TextBlock Text="Kimlik Doğrulama" Margin="0,0,0,10" FontWeight="SemiBold"/>
-                            <ComboBox x:Name="CmbAuthType" Width="200" HorizontalAlignment="Left" Margin="0,0,0,15">
-                                <ComboBoxItem Content="No Auth"/>
-                                <ComboBoxItem Content="Bearer Token"/>
-                                <ComboBoxItem Content="Basic Auth"/>
-                                <ComboBoxItem Content="API Key"/>
-                            </ComboBox>
-                            
-                            <!-- Bearer Token UI -->
-                            <StackPanel Visibility="{Binding SelectedIndex, ElementName=CmbAuthType, Converter={StaticResource IntToVisibilityConverter}, ConverterParameter=1}">
-                                <TextBlock Text="Token" Margin="0,0,0,5"/>
-                                <TextBox x:Name="TxtBearerToken" mah:TextBoxHelper.Watermark="Token girin"/>
-                            </StackPanel>
-                            
-                            <!-- Basic Auth UI -->
-                            <Grid Visibility="{Binding SelectedIndex, ElementName=CmbAuthType, Converter={StaticResource IntToVisibilityConverter}, ConverterParameter=2}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Margin="0,0,10,0">
-                                    <TextBlock Text="Kullanıcı Adı" Margin="0,0,0,5"/>
-                                    <TextBox x:Name="TxtBasicUsername"/>
-                                </StackPanel>
-                                <StackPanel Grid.Column="1">
-                                    <TextBlock Text="Şifre" Margin="0,0,0,5"/>
-                                    <PasswordBox x:Name="TxtBasicPassword"/>
-                                </StackPanel>
-                            </Grid>
-                        </StackPanel>
-                    </TabItem>
-                </mah:MetroAnimatedSingleRowTabControl>
-
-                <!-- Grid Splitter -->
-                <GridSplitter Grid.Row="1" Height="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="#EEE" Margin="0,5"/>
-
-                <!-- Response Area -->
-                <Grid Grid.Row="2">
+                <!-- Request Details and Response -->
+                <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <Border Grid.Row="0" Margin="0,0,0,10" Padding="10,5" Background="#F8F9FA" BorderBrush="#EEE" BorderThickness="1" CornerRadius="4">
-                        <Grid>
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <TextBlock Text="Response" FontWeight="Bold" Margin="0,0,15,0"/>
-                                <TextBlock Text="Status:" Foreground="Gray" Margin="0,0,5,0"/>
-                                <TextBlock x:Name="TxtStatus" FontWeight="SemiBold" Text="---" Margin="0,0,15,0"/>
-                                <TextBlock Text="Time:" Foreground="Gray" Margin="0,0,5,0"/>
-                                <TextBlock x:Name="TxtTime" FontWeight="SemiBold" Text="0 ms" Margin="0,0,15,0"/>
-                                <TextBlock Text="Size:" Foreground="Gray" Margin="0,0,5,0"/>
-                                <TextBlock x:Name="TxtSize" FontWeight="SemiBold" Text="0 B"/>
-                            </StackPanel>
-                            
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                <TextBox x:Name="TxtSearchResponse" Width="180" Height="28" 
-                                         mah:TextBoxHelper.Watermark="Yanıt içinde ara..."
-                                         mah:TextBoxHelper.ClearTextButton="True"
-                                         TextChanged="TxtSearchResponse_TextChanged"
-                                         Margin="0,0,10,0" VerticalContentAlignment="Center"/>
-                                <Button Content="Kopyala" Style="{StaticResource MahApps.Styles.Button.Chromeless}" Click="BtnCopyResponse_Click">
-                                    <Button.ContentTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <iconPacks:PackIconMaterial Kind="ContentCopy" Width="14" Height="14" Margin="0,0,5,0"/>
-                                                <TextBlock Text="Kopyala"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </Button.ContentTemplate>
-                                </Button>
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-
-                    <mah:MetroAnimatedSingleRowTabControl Grid.Row="1">
-                        <TabItem Header="Body">
-                            <TextBox x:Name="TxtResponseBody" IsReadOnly="True" AcceptsReturn="True" 
-                                     FontFamily="Consolas" FontSize="13" VerticalScrollBarVisibility="Auto"
-                                     Background="#FDFDFD"/>
-                        </TabItem>
+                    <!-- Request Configuration -->
+                    <mah:MetroAnimatedSingleRowTabControl Grid.Row="0" Margin="0,0,0,15" Background="Transparent" BorderThickness="0">
+                        <TabControl.Resources>
+                            <Style TargetType="TabItem" BasedOn="{StaticResource MethodTabItem}"/>
+                        </TabControl.Resources>
+                        
                         <TabItem Header="Headers">
-                            <DataGrid x:Name="DgResponseHeaders" IsReadOnly="True" AutoGenerateColumns="False">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Binding="{Binding Key}" Header="Header" Width="*"/>
-                                    <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="2*"/>
-                                </DataGrid.Columns>
-                            </DataGrid>
+                            <Border Style="{StaticResource Card}" Padding="0">
+                                <DataGrid x:Name="DgHeaders" AutoGenerateColumns="False" CanUserAddRows="True" BorderThickness="0">
+                                    <DataGrid.Columns>
+                                        <DataGridCheckBoxColumn Binding="{Binding IsEnabled}" Header="" Width="40"/>
+                                        <DataGridTextColumn Binding="{Binding Key}" Header="Key" Width="*"/>
+                                        <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="*"/>
+                                        <DataGridTextColumn Binding="{Binding Description}" Header="Description" Width="*"/>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Border>
+                        </TabItem>
+                        
+                        <TabItem Header="Body">
+                            <Border Style="{StaticResource Card}" Padding="15">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                                        <RadioButton x:Name="RbNone" Content="None" IsChecked="True" Margin="0,0,15,0"/>
+                                        <RadioButton x:Name="RbFormData" Content="Form Data" Margin="0,0,15,0"/>
+                                        <RadioButton x:Name="RbRaw" Content="Raw (JSON)" Margin="0,0,15,0"/>
+                                        <ComboBox x:Name="CmbBodyType" Width="150" Height="30" Visibility="{Binding IsChecked, ElementName=RbRaw, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <ComboBoxItem Content="JSON" Tag="application/json" IsSelected="True"/>
+                                            <ComboBoxItem Content="XML" Tag="application/xml"/>
+                                            <ComboBoxItem Content="Text" Tag="text/plain"/>
+                                            <ComboBoxItem Content="HTML" Tag="text/html"/>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    
+                                    <TextBox x:Name="TxtBody" Grid.Row="1" AcceptsReturn="True" AcceptsTab="True" 
+                                             FontFamily="Consolas" FontSize="13" VerticalScrollBarVisibility="Auto"
+                                             mah:TextBoxHelper.Watermark="İstek gövdesini buraya yazın..."
+                                             Background="{DynamicResource AppBackground}"
+                                             Foreground="{DynamicResource HeaderText}"
+                                             BorderBrush="{DynamicResource CardBorderBrush}"
+                                             Visibility="{Binding IsChecked, ElementName=RbRaw, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                    
+                                    <DataGrid x:Name="DgFormData" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="True" BorderThickness="0"
+                                              Visibility="{Binding IsChecked, ElementName=RbFormData, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <DataGrid.Columns>
+                                            <DataGridCheckBoxColumn Binding="{Binding IsEnabled}" Header="" Width="40"/>
+                                            <DataGridTextColumn Binding="{Binding Key}" Header="Key" Width="*"/>
+                                            <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="*"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Grid>
+                            </Border>
+                        </TabItem>
+                        
+                        <TabItem Header="Auth">
+                            <Border Style="{StaticResource Card}" Padding="15">
+                                <StackPanel>
+                                    <TextBlock Text="Kimlik Doğrulama" FontWeight="Bold" Margin="0,0,0,15" Foreground="{DynamicResource HeaderText}"/>
+                                    <ComboBox x:Name="CmbAuthType" Width="200" HorizontalAlignment="Left" Margin="0,0,0,20">
+                                        <ComboBoxItem Content="No Auth" IsSelected="True"/>
+                                        <ComboBoxItem Content="Bearer Token"/>
+                                        <ComboBoxItem Content="Basic Auth"/>
+                                    </ComboBox>
+                                    
+                                    <!-- Bearer Auth -->
+                                    <Grid Visibility="{Binding SelectedIndex, ElementName=CmbAuthType, Converter={StaticResource IntToVisibilityConverter}, ConverterParameter=1}">
+                                        <TextBox x:Name="TxtBearerToken" mah:TextBoxHelper.Watermark="Token girin..." Height="40"/>
+                                    </Grid>
+                                    
+                                    <!-- Basic Auth -->
+                                    <Grid Visibility="{Binding SelectedIndex, ElementName=CmbAuthType, Converter={StaticResource IntToVisibilityConverter}, ConverterParameter=2}">
+                                        <StackPanel>
+                                            <TextBox x:Name="TxtBasicUsername" Margin="0,0,0,10" Height="40" mah:TextBoxHelper.Watermark="Kullanıcı Adı"/>
+                                            <PasswordBox x:Name="TxtBasicPassword" Height="40" mah:TextBoxHelper.Watermark="Şifre"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
                         </TabItem>
                     </mah:MetroAnimatedSingleRowTabControl>
-                    
-                    <!-- Loading Overlay -->
-                    <Grid x:Name="LoadingOverlay" Grid.Row="0" Grid.RowSpan="2" Background="#80FFFFFF" Visibility="Collapsed">
-                        <mah:ProgressRing IsActive="True"/>
+
+                    <!-- Grid Splitter -->
+                    <GridSplitter Grid.Row="1" Height="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Background="{DynamicResource CardBorderBrush}" Margin="0,5"/>
+
+                    <!-- Response Area -->
+                    <Grid Grid.Row="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0" Margin="0,15,0,15" Padding="15,10" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8">
+                            <Grid>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <iconPacks:PackIconMaterial Kind="CheckboxMarkedCircle" Foreground="#4CAF50" Width="18" Height="18" VerticalAlignment="Center"/>
+                                    <TextBlock Text="YANI" FontWeight="Bold" Margin="10,0,20,0" VerticalAlignment="Center" Foreground="{DynamicResource HeaderText}"/>
+                                    
+                                    <Border Background="#1E4CAF50" BorderBrush="#4CAF50" BorderThickness="1" CornerRadius="4" Padding="8,2" Margin="0,0,10,0">
+                                        <TextBlock x:Name="TxtStatus" Text="200 OK" FontSize="11" FontWeight="Bold" Foreground="#4CAF50"/>
+                                    </Border>
+                                    
+                                    <Border Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="4" Padding="8,2" Margin="0,0,10,0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="ClockOutline" Width="12" Height="12" VerticalAlignment="Center" Margin="0,0,5,0" Foreground="{DynamicResource SecondaryText}"/>
+                                            <TextBlock x:Name="TxtTime" Text="120 ms" FontSize="11" Foreground="{DynamicResource HeaderText}"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="4" Padding="8,2">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="Weight" Width="12" Height="12" VerticalAlignment="Center" Margin="0,0,5,0" Foreground="{DynamicResource SecondaryText}"/>
+                                            <TextBlock x:Name="TxtSize" Text="1.2 KB" FontSize="11" Foreground="{DynamicResource HeaderText}"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <TextBox x:Name="TxtSearchResponse" Width="150" Height="30" Margin="0,0,10,0" 
+                                             mah:TextBoxHelper.Watermark="Ara..." mah:TextBoxHelper.ClearTextButton="True"
+                                             TextChanged="TxtSearchResponse_TextChanged"/>
+                                    <Button Style="{StaticResource OutlineButtonStyle}" Width="auto" Padding="10,0" Height="30" Margin="0,0,10,0" Click="BtnCopyResponse_Click">
+                                        <iconPacks:PackIconMaterial Kind="ContentCopy" Width="14" Height="14"/>
+                                    </Button>
+                                    <Button Style="{StaticResource OutlineButtonStyle}" Width="auto" Padding="10,0" Height="30">
+                                        <iconPacks:PackIconMaterial Kind="Download" Width="14" Height="14"/>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <mah:MetroAnimatedSingleRowTabControl Grid.Row="1">
+                            <TabItem Header="Body">
+                                <TextBox x:Name="TxtResponseBody" IsReadOnly="True" AcceptsReturn="True" 
+                                         FontFamily="Consolas" FontSize="13" VerticalScrollBarVisibility="Auto"
+                                         Background="{DynamicResource AppBackground}"
+                                         Foreground="{DynamicResource HeaderText}"
+                                         BorderBrush="{DynamicResource CardBorderBrush}"/>
+                            </TabItem>
+                            <TabItem Header="Headers">
+                                <Border Style="{StaticResource Card}" Padding="0">
+                                    <DataGrid x:Name="DgResponseHeaders" IsReadOnly="True" AutoGenerateColumns="False" BorderThickness="0">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Binding="{Binding Key}" Header="Header" Width="*"/>
+                                            <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="2*"/>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </Border>
+                            </TabItem>
+                        </mah:MetroAnimatedSingleRowTabControl>
+                        
+                        <!-- Loading Overlay -->
+                        <Grid x:Name="LoadingOverlay" Grid.Row="0" Grid.RowSpan="2" Background="{DynamicResource TransparentBackgroundBrush}" Visibility="Collapsed">
+                            <mah:ProgressRing IsActive="True" Foreground="{DynamicResource MahApps.Brushes.Accent}"/>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Grid>
-        </Grid>
+        </Border>
     </Grid>
 </Page>

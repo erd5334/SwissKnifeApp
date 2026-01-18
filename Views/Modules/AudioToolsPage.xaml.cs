@@ -43,8 +43,21 @@ namespace SwissKnifeApp.Views.Modules
                     AudioPlayer.Position = TimeSpan.Zero;
                     _isMediaOpened = false;
                 }
-                AudioPlayer.Play();
-                _timer?.Start();
+
+                if (IconPlayPause.Kind == MahApps.Metro.IconPacks.PackIconMaterialKind.Play)
+                {
+                    AudioPlayer.Play();
+                    _timer?.Start();
+                    IconPlayPause.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.Pause;
+                    BtnPlayPause.ToolTip = "Duraklat";
+                }
+                else
+                {
+                    AudioPlayer.Pause();
+                    _timer?.Stop();
+                    IconPlayPause.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.Play;
+                    BtnPlayPause.ToolTip = "Oynat";
+                }
             }
         }
 
@@ -52,6 +65,8 @@ namespace SwissKnifeApp.Views.Modules
         {
             AudioPlayer.Pause();
             _timer?.Stop();
+            IconPlayPause.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.Play;
+            BtnPlayPause.ToolTip = "Oynat";
         }
 
         private void BtnStopAudio_Click(object sender, RoutedEventArgs e)
@@ -59,6 +74,8 @@ namespace SwissKnifeApp.Views.Modules
             AudioPlayer.Stop();
             _timer?.Stop();
             SliderPosition.Value = 0;
+            IconPlayPause.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.Play;
+            BtnPlayPause.ToolTip = "Oynat";
         }
 
         private void BtnForwardAudio_Click(object sender, RoutedEventArgs e)
@@ -89,12 +106,16 @@ namespace SwissKnifeApp.Views.Modules
             SliderPosition.Value = 0;
             TxtTotalTime.Text = FormatTime(AudioPlayer.NaturalDuration.TimeSpan);
             TxtCurrentTime.Text = "00:00";
+            IconPlayPause.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.Pause;
+            BtnPlayPause.ToolTip = "Duraklat";
         }
 
         private void AudioPlayer_MediaEnded(object? sender, RoutedEventArgs e)
         {
             _timer?.Stop();
             SliderPosition.Value = 0;
+            IconPlayPause.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.Play;
+            BtnPlayPause.ToolTip = "Oynat";
         }
 
         private void Timer_Tick(object? sender, EventArgs e)
@@ -139,10 +160,19 @@ namespace SwissKnifeApp.Views.Modules
             {
                 _selectedFiles.Clear();
                 _selectedFiles.AddRange(dlg.FileNames);
-                LblSelectedCount.Text = _selectedFiles.Count.ToString();
-                if (_selectedFiles.Count > 0 && string.IsNullOrWhiteSpace(TxtOutput.Text))
+                LblSelectedCount.Text = $"{_selectedFiles.Count} dosya hazır";
+                
+                if (_selectedFiles.Count > 0)
                 {
-                    TxtOutput.Text = Path.GetDirectoryName(_selectedFiles[0]) ?? "";
+                    LblSelectedFiles.Text = string.Join(", ", _selectedFiles.Select(Path.GetFileName));
+                    if (string.IsNullOrWhiteSpace(TxtOutput.Text))
+                    {
+                        TxtOutput.Text = Path.GetDirectoryName(_selectedFiles[0]) ?? "";
+                    }
+                }
+                else
+                {
+                    LblSelectedFiles.Text = "Henüz dosya seçilmedi";
                 }
             }
         }

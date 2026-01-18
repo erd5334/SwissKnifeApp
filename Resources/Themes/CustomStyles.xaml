@@ -12,18 +12,26 @@
     <SolidColorBrush x:Key="SuccessBrush" Color="#43A047"/>
     <SolidColorBrush x:Key="CardBackgroundBrush" Color="#FFFFFFFF"/>
     <SolidColorBrush x:Key="CardBorderBrush" Color="#11000000"/>
+    
+    <!-- Modern Shadow Effect -->
+    <DropShadowEffect x:Key="CardShadow" 
+                      Color="#40000000" 
+                      Direction="270" 
+                      ShadowDepth="2" 
+                      BlurRadius="8" 
+                      Opacity="0.3"/>
 
     <!-- Card container -->
     <Style x:Key="Card" TargetType="Border">
-        <Setter Property="Background" Value="{StaticResource CardBackgroundBrush}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource CardBorderBrush}"/>
+        <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource CardBorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="CornerRadius" Value="10"/>
         <Setter Property="Padding" Value="14"/>
         <Setter Property="SnapsToDevicePixels" Value="True"/>
         <Setter Property="Effect">
             <Setter.Value>
-                <DropShadowEffect Color="#22000000" BlurRadius="10" ShadowDepth="2" Opacity="0.5"/>
+                <DropShadowEffect Color="#000000" BlurRadius="15" ShadowDepth="2" Opacity="0.1"/>
             </Setter.Value>
         </Setter>
     </Style>
@@ -32,14 +40,14 @@
     <Style x:Key="SectionHeader" TargetType="TextBlock">
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="Foreground" Value="#2C3E50"/>
+        <Setter Property="Foreground" Value="{DynamicResource HeaderText}"/>
         <Setter Property="Margin" Value="0,0,0,8"/>
     </Style>
 
     <!-- Primary button -->
     <Style x:Key="AccentButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-        <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource ButtonForeground}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Padding" Value="10,8"/>
@@ -50,20 +58,18 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="0"
-                            CornerRadius="8">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="{StaticResource AccentBrush2}"/>
-                            <Setter Property="Effect">
-                                <Setter.Value>
-                                    <DropShadowEffect Color="#55000000" BlurRadius="10" Opacity="0.6"/>
-                                </Setter.Value>
-                            </Setter>
+                            <Setter Property="Opacity" Value="0.9"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" Value="0.7"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" Value="0.6"/>
+                            <Setter Property="Opacity" Value="0.5"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -74,9 +80,9 @@
     <!-- Outline button -->
     <Style x:Key="OutlineButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="{StaticResource AccentBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
         <Setter Property="BorderThickness" Value="1.5"/>
-        <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Padding" Value="10,8"/>
@@ -86,12 +92,19 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
-                            CornerRadius="8">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            CornerRadius="{TemplateBinding mah:ControlsHelper.CornerRadius}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#111E88E5"/>
+                            <Setter Property="Background" Value="{DynamicResource CardBorderBrush}"/>
+                            <Setter Property="Opacity" Value="0.8"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Opacity" Value="0.6"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.5"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -102,9 +115,10 @@
     <!-- MahApps Watermark destekli yuvarlatılmış TextBox -->
     <Style x:Key="RoundedTextBox" TargetType="TextBox" BasedOn="{StaticResource MahApps.Styles.TextBox}" xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls">
         <Setter Property="Padding" Value="8,6"/>
-        <Setter Property="BorderBrush" Value="#33000000"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource InputBorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Background" Value="#FFF"/>
+        <Setter Property="Background" Value="{DynamicResource InputBackground}"/>
+        <Setter Property="Foreground" Value="{DynamicResource InputForeground}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
@@ -114,7 +128,7 @@
                         </Border>
                         <TextBlock x:Name="Watermark"
                                    Text="{Binding Path=(mah:TextBoxHelper.Watermark), RelativeSource={RelativeSource TemplatedParent}}"
-                                   Foreground="#99000000"
+                                   Foreground="{DynamicResource SecondaryText}"
                                    Margin="12,0,0,0"
                                    VerticalAlignment="Center"
                                    IsHitTestVisible="False"
@@ -128,15 +142,15 @@
     <!-- ProgressBar accent -->
     <Style x:Key="AccentProgressBar" TargetType="ProgressBar" BasedOn="{StaticResource {x:Type ProgressBar}}">
         <Setter Property="Height" Value="16"/>
-        <Setter Property="Foreground" Value="{StaticResource AccentBrush}"/>
-        <Setter Property="BorderBrush" Value="#22000000"/>
+        <Setter Property="Foreground" Value="{DynamicResource AccentBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource CardBorderBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ProgressBar">
                     <Grid SnapsToDevicePixels="True">
-                        <Border Background="#11000000" CornerRadius="8"/>
-                        <Rectangle x:Name="PART_Track" Fill="#11000000" RadiusX="8" RadiusY="8"/>
+                        <Border Background="{DynamicResource InputBackground}" CornerRadius="8"/>
+                        <Rectangle x:Name="PART_Track" Fill="Transparent" RadiusX="8" RadiusY="8"/>
                         <Rectangle x:Name="PART_Indicator" Fill="{TemplateBinding Foreground}" RadiusX="8" RadiusY="8"/>
                     </Grid>
                 </ControlTemplate>

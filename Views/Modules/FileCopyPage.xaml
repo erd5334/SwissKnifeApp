@@ -5,197 +5,339 @@
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       xmlns:local="clr-namespace:SwissKnifeApp.Views.Modules"
       xmlns:vm="clr-namespace:SwissKnifeApp.ViewModels"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="850" d:DesignWidth="1100"
+      Background="{DynamicResource AppBackground}"
       Title="Dosya Kopyalayıcı">
 
     <Page.DataContext>
         <vm:FileCopyViewModel />
     </Page.DataContext>
+
     <Page.Resources>
-        <SolidColorBrush x:Key="AccentBrush" Color="#FF5722"/>
-        <SolidColorBrush x:Key="AccentBrush2" Color="#E64A19"/>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Page.Resources>
 
-    <Grid Margin="20">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <!-- Header -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,0,12">
-            <iconPacks:PackIconMaterial Kind="ContentCopy" Width="28" Height="28" Foreground="{StaticResource AccentBrush}"/>
-            <TextBlock Text="Dosya Kopyalayıcısı" FontSize="20" FontWeight="Bold" Margin="8,0,0,0"/>
-            <TextBlock Text=" • Dosyalarınızı Kopyalayın (FTP/SFTP Destekli)" Foreground="#607D8B" Margin="6,4,0,0"/>
-        </StackPanel>
-        <TabControl>
-            <!-- Toplu Kopya Modu -->
-            <TabItem Header="Toplu Kopya">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
 
-                    <!-- Source -->
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,8">
-                        <Label Content="Kaynak:" Width="80" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding SourceFolder, UpdateSourceTrigger=PropertyChanged}" MinWidth="500"/>
-                        <Button Content="Gözat" Command="{Binding BrowseSourceCommand}" Margin="8,0,0,0"/>
+        <!-- Modern Header -->
+        <Border Grid.Row="0" Padding="25,20" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="ContentCopy" Width="30" Height="30" VerticalAlignment="Center" Foreground="{DynamicResource AccentBrush}"/>
+                    <TextBlock Text="Dosya Kopyalayıcı" FontSize="24" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource HeaderText}"/>
+                </StackPanel>
+                <TextBlock Text="Yerel veya ağ üzerinden (FTP/SFTP) güvenli ve hızlı dosya transferi" FontSize="14" Foreground="{DynamicResource SecondaryText}" Margin="45,5,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Main Content -->
+        <mah:MetroAnimatedSingleRowTabControl Grid.Row="1" Margin="20" mah:HeaderedControlHelper.HeaderFontSize="15">
+            
+            <!-- 1. Toplu Kopya Modu -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="Layers" Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Toplu Kopyalama" VerticalAlignment="Center"/>
                     </StackPanel>
+                </TabItem.Header>
+                <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,15,0,0">
+                    <StackPanel>
+                        <!-- Path Selection Card -->
+                        <Border Style="{StaticResource Card}">
+                            <StackPanel>
+                                <TextBlock Text="Konum Ayarları" Style="{StaticResource SectionHeader}"/>
+                                
+                                <TextBlock Text="Kaynak Klasör" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,8" FontSize="12"/>
+                                <Grid Margin="0,0,0,20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding SourceFolder, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RoundedTextBox}" Padding="10" Margin="0,0,10,0"/>
+                                    <Button Grid.Column="1" Command="{Binding BrowseSourceCommand}" Style="{StaticResource OutlineButtonStyle}" Padding="20,0" Content="Gözat"/>
+                                </Grid>
 
-                    <!-- Target & Protocol -->
-                    <StackPanel Grid.Row="1" Margin="0,0,0,8">
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
-                            <Label Content="Hedef:" Width="80" VerticalAlignment="Center"/>
-                            <TextBox Text="{Binding TargetFolder, UpdateSourceTrigger=PropertyChanged}" MinWidth="500"/>
-                            <Button Content="Gözat" Command="{Binding BrowseTargetCommand}" Margin="8,0,0,0"/>
-                        </StackPanel>
-                        
-                        <StackPanel Orientation="Horizontal" Margin="80,4,0,0">
-                            <Label Content="Protokol:" VerticalAlignment="Center"/>
-                            <ComboBox ItemsSource="{Binding Protocols}" SelectedItem="{Binding Protocol}" Width="80" Margin="4,0"/>
-                            
-                            <StackPanel Orientation="Horizontal" Visibility="{Binding IsNetworkProtocol, Converter={StaticResource BoolToVis}}"> 
-                                <Label Content="Host:" VerticalAlignment="Center" Margin="8,0,0,0"/>
-                                <TextBox Text="{Binding FtpHost}" Width="120" Margin="4,0"/>
-                                <Label Content="Port:" VerticalAlignment="Center"/>
-                                <TextBox Text="{Binding FtpPort}" Width="40" Margin="4,0"/>
-                                <Label Content="User:" VerticalAlignment="Center"/>
-                                <TextBox Text="{Binding FtpUser}" Width="80" Margin="4,0"/>
-                                <Label Content="Pass:" VerticalAlignment="Center"/>
-                                <TextBox Text="{Binding FtpPassword}" Width="80" Margin="4,0"/>
-                                <Button Content="Test Et" Command="{Binding TestConnectionCommand}" Margin="8,0,0,0"/>
+                                <TextBlock Text="Hedef Klasör" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,8" FontSize="12"/>
+                                <Grid Margin="0,0,0,15">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding TargetFolder, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RoundedTextBox}" Padding="10" Margin="0,0,10,0"/>
+                                    <Button Grid.Column="1" Command="{Binding BrowseTargetCommand}" Style="{StaticResource OutlineButtonStyle}" Padding="20,0" Content="Gözat"/>
+                                </Grid>
                             </StackPanel>
-                        </StackPanel>
+                        </Border>
+
+                        <!-- Protocol & Options Grid -->
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Style="{StaticResource Card}" Margin="0,0,10,0">
+                                <StackPanel>
+                                    <TextBlock Text="Protokol Ayarları" Style="{StaticResource SectionHeader}"/>
+                                    <Grid Margin="0,5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Protokol:" VerticalAlignment="Center" Margin="0,0,15,0" Foreground="{DynamicResource SecondaryText}"/>
+                                        <ComboBox Grid.Column="1" ItemsSource="{Binding Protocols}" SelectedItem="{Binding Protocol}" Height="36"/>
+                                    </Grid>
+
+                                    <!-- Network Options -->
+                                    <StackPanel Visibility="{Binding IsNetworkProtocol, Converter={StaticResource BoolToVis}}" Margin="0,15,0,0">
+                                        <Grid Margin="0,5">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock Text="Host Address" FontSize="11" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,5"/>
+                                                <TextBox Text="{Binding FtpHost}" Style="{StaticResource RoundedTextBox}" Height="36" Margin="0,0,10,0"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" Width="80">
+                                                <TextBlock Text="Port" FontSize="11" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,5"/>
+                                                <TextBox Text="{Binding FtpPort}" Style="{StaticResource RoundedTextBox}" Height="36"/>
+                                            </StackPanel>
+                                        </Grid>
+                                        <Grid Margin="0,10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel Margin="0,0,5,0">
+                                                <TextBlock Text="Kullanıcı" FontSize="11" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,5"/>
+                                                <TextBox Text="{Binding FtpUser}" Style="{StaticResource RoundedTextBox}" Height="36"/>
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" Margin="5,0,0,0">
+                                                <TextBlock Text="Şifre" FontSize="11" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,5"/>
+                                                <TextBox Text="{Binding FtpPassword}" Style="{StaticResource RoundedTextBox}" mah:TextBoxHelper.Watermark="Şifre" mah:TextBoxHelper.UseFloatingWatermark="False" Height="36"/>
+                                            </StackPanel>
+                                        </Grid>
+                                        <Button Command="{Binding TestConnectionCommand}" Style="{StaticResource OutlineButtonStyle}" Content="Bağlantıyı Test Et" Height="36" Margin="0,5,0,0"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="1" Style="{StaticResource Card}" Margin="10,0,0,0">
+                                <StackPanel>
+                                    <TextBlock Text="Transfer Seçenekleri" Style="{StaticResource SectionHeader}"/>
+                                    
+                                    <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                                        <TextBlock Text="Eşzamanlı İş:" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="{DynamicResource SecondaryText}"/>
+                                        <mah:NumericUpDown Value="{Binding WorkerCount}" Minimum="1" Maximum="32" Width="80"/>
+                                    </StackPanel>
+
+                                    <CheckBox Content="Mevcut dosyaların üzerine yaz" IsChecked="{Binding Overwrite}" Margin="0,0,0,10"/>
+                                    <CheckBox Content="Son kullanılan klasörleri hatırla" IsChecked="{Binding RememberLast}" Margin="0,0,0,15"/>
+                                    
+                                    <TextBlock Text="Filtrelenecek Uzantılar" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,10" FontSize="12"/>
+                                    <WrapPanel>
+                                        <CheckBox Content="Tümü (*.*)" IsChecked="{Binding AllFiles}" Margin="0,0,15,5"/>
+                                        <CheckBox Content=".jpg" IsChecked="{Binding ImageJpg}" IsEnabled="{Binding AllFiles, Converter={StaticResource BoolNegationConverter}}" Margin="0,0,12,5"/>
+                                        <CheckBox Content=".png" IsChecked="{Binding ImagePng}" IsEnabled="{Binding AllFiles, Converter={StaticResource BoolNegationConverter}}" Margin="0,0,12,5"/>
+                                        <CheckBox Content=".mp4" IsChecked="{Binding VideoMp4}" IsEnabled="{Binding AllFiles, Converter={StaticResource BoolNegationConverter}}" Margin="0,0,12,5"/>
+                                        <CheckBox Content=".exe" IsChecked="{Binding AnyExe}" IsEnabled="{Binding AllFiles, Converter={StaticResource BoolNegationConverter}}" Margin="0,0,12,5"/>
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <!-- Execution Card -->
+                        <Border Style="{StaticResource Card}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,15">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="İlerleme Durumu" Style="{StaticResource SectionHeader}" Margin="0"/>
+                                        <TextBlock Text="{Binding StatusMessage}" FontSize="12" Foreground="{DynamicResource SecondaryText}" Margin="0,5,0,0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <Button Command="{Binding StartCommand}" Style="{StaticResource AccentButtonStyle}" Padding="25,0" Height="45" Margin="0,0,10,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Kind="Play" Width="18" Height="18" Margin="0,0,10,0"/>
+                                                <TextBlock Text="Kopyalamayı Başlat" FontWeight="Bold"/>
+                                            </StackPanel>
+                                        </Button>
+                                        <Button Command="{Binding CancelCommand}" Style="{StaticResource OutlineButtonStyle}" Padding="20,0" Height="45">
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Kind="Stop" Width="18" Height="18" Margin="0,0,10,0"/>
+                                                <TextBlock Text="Durdur"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+
+                                <mah:MetroProgressBar Minimum="0" Maximum="{Binding TotalFiles}" Value="{Binding CopiedFiles}" Height="10" Margin="0,10"/>
+                                
+                                <UniformGrid Columns="3" Margin="0,10,0,0">
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Text="Kopyalanan / Toplam" FontSize="11" Foreground="{DynamicResource SecondaryText}" HorizontalAlignment="Center"/>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <TextBlock Text="{Binding CopiedFiles}" FontSize="18" FontWeight="Bold"/>
+                                            <TextBlock Text=" / " FontSize="18"/>
+                                            <TextBlock Text="{Binding TotalFiles}" FontSize="18" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Text="Kopyalanan Boyut" FontSize="11" Foreground="{DynamicResource SecondaryText}" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding CopiedBytesHuman}" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}"/>
+                                    </StackPanel>
+                                    <StackPanel HorizontalAlignment="Center">
+                                        <TextBlock Text="Toplam Boyut" FontSize="11" Foreground="{DynamicResource SecondaryText}" HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding TotalBytesHuman}" FontSize="18" FontWeight="Bold"/>
+                                    </StackPanel>
+                                </UniformGrid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Logs Section -->
+                        <Border Style="{StaticResource Card}" Padding="0" Margin="0,0,0,20">
+                            <mah:MetroAnimatedSingleRowTabControl mah:TabControlHelper.Underlined="TabItems">
+                                <TabItem Header="Transfer Logları">
+                                    <ListBox ItemsSource="{Binding LogLines}" Height="200" Background="Transparent" BorderThickness="0" Padding="10" FontFamily="Consolas" FontSize="11"/>
+                                </TabItem>
+                                <TabItem Header="Hatalar">
+                                    <ListBox ItemsSource="{Binding ErrorLines}" Height="200" Background="Transparent" BorderThickness="0" Padding="10" FontFamily="Consolas" FontSize="11" Foreground="#EF5350"/>
+                                </TabItem>
+                            </mah:MetroAnimatedSingleRowTabControl>
+                        </Border>
                     </StackPanel>
-
-                    <!-- Extensions -->
-                    <WrapPanel Grid.Row="2" Margin="0,0,0,8">
-                        <CheckBox Content="*.* (Tüm dosyalar)" IsChecked="{Binding AllFiles}" Margin="0,0,12,0"/>
-                        <CheckBox Content=".jpg" IsChecked="{Binding ImageJpg}" IsEnabled="{Binding AllFiles, Converter={StaticResource BoolNegationConverter}}" Margin="0,0,8,0"/>
-                        <CheckBox Content=".jpeg" IsChecked="{Binding ImageJpeg}" IsEnabled="{Binding AllFiles, Converter={StaticResource BoolNegationConverter}}" Margin="0,0,8,0"/>
-                        <CheckBox Content=".png" IsChecked="{Binding ImagePng}" IsEnabled="{Binding AllFiles, Converter={StaticResource BoolNegationConverter}}" Margin="0,0,8,0"/>
-                        <CheckBox Content=".bmp" IsChecked="{Binding ImageBmp}" IsEnabled="{Binding AllFiles, Converter={StaticResource BoolNegationConverter}}" Margin="0,0,8,0"/>
-                        <CheckBox Content=".mp4" IsChecked="{Binding VideoMp4}" IsEnabled="{Binding AllFiles, Converter={StaticResource BoolNegationConverter}}" Margin="0,0,8,0"/>
-                        <CheckBox Content=".mp3" IsChecked="{Binding AudioMp3}" IsEnabled="{Binding AllFiles, Converter={StaticResource BoolNegationConverter}}" Margin="0,0,8,0"/>
-                        <CheckBox Content=".exe" IsChecked="{Binding AnyExe}" IsEnabled="{Binding AllFiles, Converter={StaticResource BoolNegationConverter}}" Margin="0,0,8,0"/>
-                    </WrapPanel>
-
-                    <!-- Controls -->
-                    <DockPanel Grid.Row="3" LastChildFill="False" Margin="0,0,0,8">
-                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
-                            <Label Content="İş parçacığı:" VerticalAlignment="Center"/>
-                            <TextBox Text="{Binding WorkerCount}" Width="60" Margin="4,0"/>
-                            <CheckBox Content="Üzerine yaz" IsChecked="{Binding Overwrite}" Margin="8,0"/>
-                            <CheckBox Content="Son klasörleri hatırla" IsChecked="{Binding RememberLast}" Margin="8,0"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                            <Button Content="Başlat" Command="{Binding StartCommand}" Margin="0,0,8,0" Style="{StaticResource AccentButtonStyle}"/>
-                            <Button Content="Durdur" Command="{Binding CancelCommand}"/>
-                        </StackPanel>
-                    </DockPanel>
-
-                    <!-- Progress -->
-                    <StackPanel Grid.Row="4" Margin="0,0,0,8">
-                        <ProgressBar Minimum="0" Maximum="{Binding TotalFiles}" Value="{Binding CopiedFiles}" Height="18"/>
-                        <TextBlock HorizontalAlignment="Center" Margin="0,4,0,0">
-                     <Run Text="{Binding StatusMessage}"/>
-                     <Run Text=" | "/>
-                     <Run Text="Dosyalar: "/>
-                     <Run Text="{Binding CopiedFiles}"/>
-                     <Run Text=" / "/>
-                     <Run Text="{Binding TotalFiles}"/>
-                     <Run Text="  "/>
-                     <Run Text="Boyut: "/>
-                     <Run Text="{Binding CopiedBytesHuman}"/>
-                     <Run Text=" / "/>
-                     <Run Text="{Binding TotalBytesHuman}"/>
-                        </TextBlock>
-                    </StackPanel>
-
-                    <!-- Logs -->
-                    <TabControl Grid.Row="5">
-                        <TabItem Header="Log">
-                            <ListBox ItemsSource="{Binding LogLines}"/>
-                        </TabItem>
-                        <TabItem Header="Hatalar">
-                            <ListBox ItemsSource="{Binding ErrorLines}"/>
-                        </TabItem>
-                    </TabControl>
-
-                    <!-- Status Bar -->
-                    <StatusBar Grid.Row="6">
-                        <StatusBarItem>
-                            <TextBlock Text="{Binding IsBusy, StringFormat='Meşgul: {0}'}"/>
-                        </StatusBarItem>
-                    </StatusBar>
-                </Grid>
+                </ScrollViewer>
             </TabItem>
 
-            <!-- Seçerek Kopya Modu -->
-            <TabItem Header="Seçerek Kopya">
-                <Grid>
+            <!-- 2. Seçerek Kopya Modu -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="Selection" Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Seçerek Kopyalama" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="0,15,0,0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <!-- Kaynak Satırı -->
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,8">
-                        <Label Content="Kaynak:" Width="80" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding SourceFolder, UpdateSourceTrigger=PropertyChanged}" MinWidth="500"/>
-                        <Button Content="Gözat" Command="{Binding BrowseSourceCommand}" Margin="8,0,0,0"/>
-                        <Button Content="Listele" Command="{Binding LoadListCommand}" Margin="8,0,0,0"/>
-                        <Label Content="Filtre:" VerticalAlignment="Center" Margin="20,0,0,0"/>
-                        <TextBox Text="{Binding FileFilter, UpdateSourceTrigger=PropertyChanged}" Width="150" Margin="4,0,0,0" ToolTip="Dosya adı veya yoluna göre filtrele"/>
-                    </StackPanel>
+                    <Border Style="{StaticResource Card}" Margin="0,0,0,15">
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="Gezinme ve Seçim" Style="{StaticResource SectionHeader}"/>
+                                    <TextBlock Text="Dosyaları tek tek seçin veya eksik olanları otomatik tespit edin." Foreground="{DynamicResource SecondaryText}" Margin="0,5,0,15"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Top">
+                                    <Button Command="{Binding CopySelectedCommand}" Style="{StaticResource AccentButtonStyle}" Padding="20,0" Height="36" Margin="0,0,10,0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="ContentCopy" Width="14" Height="14" Margin="0,0,8,0"/>
+                                            <TextBlock Text="Seçilenleri Kopyala"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Command="{Binding CancelCommand}" Style="{StaticResource OutlineButtonStyle}" Padding="15,0" Height="36">
+                                        <iconPacks:PackIconMaterial Kind="Stop" Width="14" Height="14"/>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
 
-                    <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0,0,0,8">
-                        <Label Content="Hedef:" Width="80" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding TargetFolder, UpdateSourceTrigger=PropertyChanged}" MinWidth="500"/>
-                        <Button Content="Gözat" Command="{Binding BrowseTargetCommand}" Margin="8,0,0,0"/>
-                        <Button Content="Eksikleri Bul" Command="{Binding ShowMissingFilesCommand}" Margin="8,0,0,0" ToolTip="Hedefte olmayan dosyaları seçer"/>
-                        
-                        <Button Content="Seçilenleri Kopyala" Command="{Binding CopySelectedCommand}" Margin="20,0,0,0" Style="{StaticResource AccentButtonStyle}"/>
-                        <Button Content="Durdur" Command="{Binding CancelCommand}" Margin="8,0,0,0"/>
-                    </StackPanel>
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Kaynak" VerticalAlignment="Center" Foreground="{DynamicResource SecondaryText}"/>
+                                <TextBox Grid.Column="1" Text="{Binding SourceFolder, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RoundedTextBox}" Margin="0,0,10,0"/>
+                                <Button Grid.Column="2" Command="{Binding BrowseSourceCommand}" Style="{StaticResource OutlineButtonStyle}" Padding="15,0" Content="Gözat" Margin="0,0,10,0"/>
+                                <Button Grid.Column="3" Command="{Binding LoadListCommand}" Style="{StaticResource AccentButtonStyle}" Padding="15,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="Refresh" Width="12" Height="12" Margin="0,0,8,0"/>
+                                        <TextBlock Text="Listele"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
 
-                    <!-- DataGrid -->
-                    <DataGrid Grid.Row="2" ItemsSource="{Binding FilesView}" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="False" SelectionMode="Extended">
-                        <DataGrid.Columns>
-                            <DataGridCheckBoxColumn Binding="{Binding Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Seç" Width="60"/>
-                            <DataGridTextColumn Binding="{Binding RelativePath}" Header="Göreli Yol" Width="*" IsReadOnly="True"/>
-                            <DataGridTextColumn Binding="{Binding FullPath}" Header="Tam Yol" Width="2*" IsReadOnly="True"/>
-                            <DataGridTextColumn Binding="{Binding SizeHuman}" Header="Boyut" Width="100" IsReadOnly="True"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Hedef" VerticalAlignment="Center" Foreground="{DynamicResource SecondaryText}"/>
+                                <TextBox Grid.Column="1" Text="{Binding TargetFolder, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RoundedTextBox}" Margin="0,0,10,0"/>
+                                <Button Grid.Column="2" Command="{Binding BrowseTargetCommand}" Style="{StaticResource OutlineButtonStyle}" Padding="15,0" Content="Gözat" Margin="0,0,10,0"/>
+                                <Button Grid.Column="3" Command="{Binding ShowMissingFilesCommand}" Style="{StaticResource OutlineButtonStyle}" Padding="15,0" Content="Eksikleri Bul" ToolTip="Hedefte bulunmayan dosyaları işaretler"/>
+                            </Grid>
+                        </StackPanel>
+                    </Border>
 
-                    <!-- Durum / İlerleme -->
-                    <StackPanel Grid.Row="3" Margin="0,8,0,0">
-                        <ProgressBar Minimum="0" Maximum="{Binding TotalFiles}" Value="{Binding CopiedFiles}" Height="18"/>
-                        <TextBlock HorizontalAlignment="Center">
-                     <Run Text="{Binding StatusMessage}"/>
-                     <Run Text=" | "/>
-                     <Run Text="Dosyalar: "/>
-                     <Run Text="{Binding CopiedFiles}"/>
-                     <Run Text=" / "/>
-                     <Run Text="{Binding TotalFiles}"/>
-                     <Run Text="  "/>
-                     <Run Text="Boyut: "/>
-                     <Run Text="{Binding CopiedBytesHuman}"/>
-                     <Run Text=" / "/>
-                     <Run Text="{Binding TotalBytesHuman}"/>
-                        </TextBlock>
-                    </StackPanel>
+                    <Border Grid.Row="1" Style="{StaticResource Card}" Padding="0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <Border Padding="15,10" Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
+                                <Grid>
+                                    <TextBox Text="{Binding FileFilter, UpdateSourceTrigger=PropertyChanged}" 
+                                             Style="{StaticResource RoundedTextBox}" 
+                                             mah:TextBoxHelper.Watermark="Dosya adı veya yola göre filtrele..." 
+                                             mah:TextBoxHelper.ClearTextButton="True"
+                                             Padding="35,0,0,0" Height="32"/>
+                                    <iconPacks:PackIconMaterial Kind="FilterVariant" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Width="14" Height="14" Opacity="0.5"/>
+                                </Grid>
+                            </Border>
+
+                            <DataGrid Grid.Row="1" ItemsSource="{Binding FilesView}" AutoGenerateColumns="False" CanUserAddRows="False" 
+                                      IsReadOnly="False" SelectionMode="Extended" BorderThickness="0" Background="Transparent">
+                                <DataGrid.Columns>
+                                    <DataGridCheckBoxColumn Binding="{Binding Selected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Seç" Width="60"/>
+                                    <DataGridTextColumn Binding="{Binding RelativePath}" Header="Göreli Yol" Width="*" IsReadOnly="True"/>
+                                    <DataGridTextColumn Binding="{Binding SizeHuman}" Header="Boyut" Width="100" IsReadOnly="True"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </Border>
+
+                    <!-- Status Bar Footer -->
+                    <Border Grid.Row="2" Margin="0,15,0,0" Background="{DynamicResource CardBackground}" CornerRadius="12" Padding="20,15" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding StatusMessage}" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{DynamicResource HeaderText}"/>
+                                <TextBlock Grid.Column="1" Text="{Binding CopiedBytesHuman, StringFormat='Transfer Edilen: {0}'}" VerticalAlignment="Center" Foreground="{DynamicResource AccentBrush}"/>
+                            </Grid>
+                            <mah:MetroProgressBar Minimum="0" Maximum="{Binding TotalFiles}" Value="{Binding CopiedFiles}" Height="6" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
                 </Grid>
             </TabItem>
-        </TabControl>
+        </mah:MetroAnimatedSingleRowTabControl>
     </Grid>
 </Page>

@@ -16,124 +16,167 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <Border Grid.Row="0" Padding="20,15" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
-            <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconMaterial Kind="PaletteAdvanced" Width="24" Height="24" VerticalAlignment="Center" Foreground="{DynamicResource AccentBrush}"/>
-                <TextBlock Text="Gelişmiş Renk Araçları" FontSize="20" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Center"/>
+        <!-- Modern Header -->
+        <Border Grid.Row="0" Padding="25,20" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="PaletteAdvanced" Width="30" Height="30" VerticalAlignment="Center" Foreground="{DynamicResource AccentBrush}"/>
+                    <TextBlock Text="Gelişmiş Renk Araçları" FontSize="24" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource HeaderText}"/>
+                </StackPanel>
+                <TextBlock Text="Paletler oluşturun, kontrastı test edin ve renk körlüğü simülasyonları yapın" FontSize="14" Foreground="{DynamicResource SecondaryText}" Margin="45,5,0,0"/>
             </StackPanel>
         </Border>
 
-        <!-- Content -->
+        <!-- Main Content -->
         <mah:MetroAnimatedSingleRowTabControl Grid.Row="1" Margin="20" mah:HeaderedControlHelper.HeaderFontSize="15">
             
             <!-- Harmony & Palette -->
-            <TabItem Header="Renk Uyumu &amp; Palet">
-                <Grid Margin="10,20">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="Palette" Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Renk Uyumu &amp; Palet" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="0,15,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="350"/>
+                        <ColumnDefinition Width="380"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Left: Color Selection -->
-                    <StackPanel Grid.Column="0" Margin="0,0,30,0">
-                        <TextBlock Text="Ana Renk Seçimi" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,15"/>
-                        
-                        <Grid Margin="0,0,0,20">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox x:Name="TxtBaseColor" Height="40" FontSize="16" VerticalContentAlignment="Center" 
-                                     mah:TextBoxHelper.Watermark="#7C4DFF" TextChanged="TxtBaseColor_TextChanged"/>
-                            <Border Grid.Column="1" Width="40" Height="40" Margin="10,0,0,0" CornerRadius="4" BorderBrush="Gray" BorderThickness="1">
-                                <Rectangle x:Name="RectBaseColorPreview" Fill="#7C4DFF"/>
-                            </Border>
-                        </Grid>
+                    <!-- Left: Color Selection Card -->
+                    <Border Grid.Column="0" Style="{StaticResource Card}" VerticalAlignment="Top" Margin="0,0,20,0">
+                        <StackPanel>
+                            <TextBlock Text="Ana Renk Seçimi" FontWeight="Bold" FontSize="16" Margin="0,0,0,15" Foreground="{DynamicResource HeaderText}"/>
+                            
+                            <Grid Margin="0,0,0,20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="TxtBaseColor" Style="{StaticResource RoundedTextBox}" Height="40" FontSize="16" 
+                                         mah:TextBoxHelper.Watermark="#7C4DFF" TextChanged="TxtBaseColor_TextChanged"/>
+                                <Border Grid.Column="1" Width="42" Height="40" Margin="10,0,0,0" CornerRadius="6" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
+                                    <Rectangle x:Name="RectBaseColorPreview" Fill="#7C4DFF" RadiusX="5" RadiusY="5"/>
+                                </Border>
+                            </Grid>
 
-                        <TextBlock Text="Uyum Kuralı" Foreground="Gray" Margin="0,0,0,5"/>
-                        <ComboBox x:Name="CmbHarmonyRule" Margin="0,0,0,20" SelectionChanged="CmbHarmonyRule_SelectionChanged">
-                            <ComboBoxItem Content="Tamamlayıcı (Complementary)" Tag="Complementary"/>
-                            <ComboBoxItem Content="Üçlü (Triadic)" Tag="Triadic"/>
-                            <ComboBoxItem Content="Benzer (Analogous)" Tag="Analogous"/>
-                            <ComboBoxItem Content="Bölünmüş Tamamlayıcı (Split)" Tag="Split"/>
-                            <ComboBoxItem Content="Dörtlü (Tetradic)" Tag="Tetradic"/>
-                            <ComboBoxItem Content="Monokromatik" Tag="Monochromatic"/>
-                        </ComboBox>
+                            <TextBlock Text="Uyum Kuralı" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,8" FontSize="12"/>
+                            <ComboBox x:Name="CmbHarmonyRule" Margin="0,0,0,20" Height="36" SelectionChanged="CmbHarmonyRule_SelectionChanged">
+                                <ComboBoxItem Content="Tamamlayıcı (Complementary)" Tag="Complementary" IsSelected="True"/>
+                                <ComboBoxItem Content="Üçlü (Triadic)" Tag="Triadic"/>
+                                <ComboBoxItem Content="Benzer (Analogous)" Tag="Analogous"/>
+                                <ComboBoxItem Content="Bölünmüş Tamamlayıcı (Split)" Tag="Split"/>
+                                <ComboBoxItem Content="Dörtlü (Tetradic)" Tag="Tetradic"/>
+                                <ComboBoxItem Content="Monokromatik" Tag="Monochromatic"/>
+                            </ComboBox>
 
-                        <Button Click="BtnRandomPalette_Click" Style="{StaticResource OutlineButtonStyle}" Height="40">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Refresh" Width="14" Height="14" Margin="0,0,8,0"/>
-                                <TextBlock Text="Rastgele Palet Üret"/>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
+                            <Button Click="BtnRandomPalette_Click" Style="{StaticResource OutlineButtonStyle}" Height="40">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Refresh" Width="16" Height="16" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Rastgele Palet Üret" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </Border>
 
                     <!-- Right: Palette Display -->
-                    <Grid Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        
-                        <ItemsControl x:Name="IcPalette">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <UniformGrid Rows="1"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Margin="5">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-                                        <Border CornerRadius="8" Background="{Binding Brush}" MouseLeftButtonDown="PaletteColor_Click">
-                                            <TextBlock Text="Kopyala" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                                       FontSize="12" Opacity="0" x:Name="TxtCopyHint"/>
-                                        </Border>
-                                        <StackPanel Grid.Row="1" HorizontalAlignment="Center" Margin="0,10">
-                                            <TextBlock Text="{Binding Hex}" FontWeight="Bold" HorizontalAlignment="Center"/>
-                                            <TextBlock Text="{Binding Label}" FontSize="10" Foreground="Gray" HorizontalAlignment="Center"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </Grid>
+                    <Border Grid.Column="1" Style="{StaticResource Card}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Oluşturulan Palet" FontWeight="Bold" Margin="0,0,0,15" Foreground="{DynamicResource HeaderText}"/>
+                            <ItemsControl x:Name="IcPalette" Grid.Row="1">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Rows="1"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="8">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Border CornerRadius="12" Background="{Binding Brush}" MouseLeftButtonDown="PaletteColor_Click" Cursor="Hand" Effect="{DynamicResource CardShadow}">
+                                                <Grid>
+                                                    <TextBlock Text="Kopyala" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                                                               FontSize="12" FontWeight="Bold" Opacity="0" x:Name="TxtCopyHint">
+                                                        <TextBlock.Effect>
+                                                            <DropShadowEffect BlurRadius="4" ShadowDepth="1"/>
+                                                        </TextBlock.Effect>
+                                                    </TextBlock>
+                                                </Grid>
+                                            </Border>
+                                            <StackPanel Grid.Row="1" HorizontalAlignment="Center" Margin="0,15,0,5">
+                                                <TextBlock Text="{Binding Hex}" FontWeight="Bold" Foreground="{DynamicResource HeaderText}" FontSize="14" HorizontalAlignment="Center" FontFamily="Consolas"/>
+                                                <TextBlock Text="{Binding Label}" FontSize="11" Foreground="{DynamicResource SecondaryText}" HorizontalAlignment="Center" Margin="0,2,0,0"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </Border>
                 </Grid>
             </TabItem>
 
             <!-- Gradient Generator -->
-            <TabItem Header="Gradyan Oluşturucu">
-                <Grid Margin="10,20">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="GradientVertical" Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Gradyan Oluşturucu" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="0,15,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="350"/>
+                        <ColumnDefinition Width="380"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0" Margin="0,0,30,0">
-                        <TextBlock Text="Gradyan Ayarları" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,15"/>
-                        
-                        <TextBlock Text="Renk 1" Foreground="Gray" Margin="0,0,0,5"/>
-                        <TextBox x:Name="TxtGrad1" mah:TextBoxHelper.Watermark="#FF0000" Text="#7C4DFF" TextChanged="UpdateGradientPreview"/>
-                        
-                        <TextBlock Text="Renk 2" Foreground="Gray" Margin="0,15,0,5"/>
-                        <TextBox x:Name="TxtGrad2" mah:TextBoxHelper.Watermark="#0000FF" Text="#18FFFF" TextChanged="UpdateGradientPreview"/>
+                    <Border Grid.Column="0" Style="{StaticResource Card}" VerticalAlignment="Top" Margin="0,0,20,0">
+                        <StackPanel>
+                            <TextBlock Text="Gradyan Ayarları" FontWeight="Bold" FontSize="16" Margin="0,0,0,15" Foreground="{DynamicResource HeaderText}"/>
+                            
+                            <TextBlock Text="Birinci Renk" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,8" FontSize="12"/>
+                            <TextBox x:Name="TxtGrad1" Style="{StaticResource RoundedTextBox}" mah:TextBoxHelper.Watermark="#FF0000" Text="#7C4DFF" TextChanged="UpdateGradientPreview" Margin="0,0,0,15"/>
+                            
+                            <TextBlock Text="İkinci Renk" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,8" FontSize="12"/>
+                            <TextBox x:Name="TxtGrad2" Style="{StaticResource RoundedTextBox}" mah:TextBoxHelper.Watermark="#0000FF" Text="#18FFFF" TextChanged="UpdateGradientPreview" Margin="0,0,0,15"/>
 
-                        <TextBlock Text="Açı (Derece)" Foreground="Gray" Margin="0,15,0,5"/>
-                        <Slider x:Name="SldGradAngle" Minimum="0" Maximum="360" Value="90" ValueChanged="UpdateGradientPreview"/>
-                        
-                        <Button Margin="0,20,0,0" Content="CSS Olarak Kopyala" Click="BtnCopyGradientCss_Click" Style="{StaticResource AccentButtonStyle}"/>
-                    </StackPanel>
+                            <TextBlock Text="Gradyan Açısı" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,8" FontSize="12"/>
+                            <Grid Margin="0,0,0,20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="40"/>
+                                </Grid.ColumnDefinitions>
+                                <Slider x:Name="SldGradAngle" Minimum="0" Maximum="360" Value="90" ValueChanged="UpdateGradientPreview" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Value, ElementName=SldGradAngle, StringFormat=\{0\}°}" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{DynamicResource HeaderText}" FontWeight="SemiBold"/>
+                            </Grid>
+                            
+                            <Button Content="CSS Kodu Kopyala" Click="BtnCopyGradientCss_Click" Style="{StaticResource AccentButtonStyle}" Height="40">
+                                <Button.ContentTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="ContentCopy" Width="14" Height="14" Margin="0,0,10,0"/>
+                                            <TextBlock Text="CSS Olarak Kopyala" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Button.ContentTemplate>
+                            </Button>
+                        </StackPanel>
+                    </Border>
 
-                    <Border Grid.Column="1" CornerRadius="12" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
+                    <Border Grid.Column="1" Style="{StaticResource Card}" Padding="20">
                         <Grid>
-                            <Rectangle x:Name="RectGradientPreview" RadiusX="12" RadiusY="12"/>
-                            <Border x:Name="BrdGradientCss" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="20" 
-                                    Background="#80000000" CornerRadius="4" Padding="15,8">
-                                <TextBlock x:Name="TxtGradientCss" Foreground="White" Text="background: ..."/>
+                            <Rectangle x:Name="RectGradientPreview" RadiusX="12" RadiusY="12" Effect="{DynamicResource CardShadow}"/>
+                            <Border x:Name="BrdGradientCss" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="30" 
+                                    Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="20,12" Opacity="0.9">
+                                <TextBlock x:Name="TxtGradientCss" Foreground="{DynamicResource HeaderText}" FontFamily="Consolas" Text="background: ..." FontSize="13"/>
                             </Border>
                         </Grid>
                     </Border>
@@ -141,50 +184,58 @@
             </TabItem>
 
             <!-- Contrast Checker -->
-            <TabItem Header="Kontrast (WCAG)">
-                <Grid Margin="10,20">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="ContrastCircle" Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Kontrast (WCAG)" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="0,15,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="350"/>
+                        <ColumnDefinition Width="380"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Grid.Column="0" Margin="0,0,30,0">
-                        <TextBlock Text="Erişilebilirlik Testi" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,15"/>
-                        
-                        <TextBlock Text="Metin Rengi (Foreground)" Foreground="Gray" Margin="0,0,0,5"/>
-                        <TextBox x:Name="TxtContrastFore" Text="#000000" TextChanged="UpdateContrastCheck"/>
-                        
-                        <TextBlock Text="Arka Plan Rengi (Background)" Foreground="Gray" Margin="0,15,0,5"/>
-                        <TextBox x:Name="TxtContrastBack" Text="#FFFFFF" TextChanged="UpdateContrastCheck"/>
+                    <Border Grid.Column="0" Style="{StaticResource Card}" VerticalAlignment="Top" Margin="0,0,20,0">
+                        <StackPanel>
+                            <TextBlock Text="Erişilebilirlik Testi" FontWeight="Bold" FontSize="16" Margin="0,0,0,15" Foreground="{DynamicResource HeaderText}"/>
+                            
+                            <TextBlock Text="Metin Rengi (Ön Plan)" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,8" FontSize="12"/>
+                            <TextBox x:Name="TxtContrastFore" Style="{StaticResource RoundedTextBox}" Text="#000000" TextChanged="UpdateContrastCheck" Margin="0,0,0,15"/>
+                            
+                            <TextBlock Text="Arka Plan Rengi" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,8" FontSize="12"/>
+                            <TextBox x:Name="TxtContrastBack" Style="{StaticResource RoundedTextBox}" Text="#FFFFFF" TextChanged="UpdateContrastCheck" Margin="0,0,0,20"/>
 
-                        <Border Margin="0,25,0,0" Padding="15" CornerRadius="8" Background="#F8F9FA">
-                            <StackPanel>
-                                <TextBlock Text="Kontrast Oranı:" Foreground="Gray"/>
-                                <TextBlock x:Name="TxtContrastRatio" Text="21.0:1" FontSize="32" FontWeight="Bold" Margin="0,5"/>
-                                
-                                <Grid Margin="0,10,0,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <StackPanel>
-                                        <TextBlock Text="Normal Metin" FontSize="12" Foreground="Gray"/>
-                                        <TextBlock x:Name="TxtWcagNormal" Text="BAŞARILI" FontWeight="Bold" Foreground="Green"/>
-                                    </StackPanel>
-                                    <StackPanel Grid.Column="1">
-                                        <TextBlock Text="Büyük Metin" FontSize="12" Foreground="Gray"/>
-                                        <TextBlock x:Name="TxtWcagLarge" Text="BAŞARILI" FontWeight="Bold" Foreground="Green"/>
-                                    </StackPanel>
-                                </Grid>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
+                            <Border Padding="20" CornerRadius="12" Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="Kontrast Oranı" Foreground="{DynamicResource SecondaryText}" HorizontalAlignment="Center"/>
+                                    <TextBlock x:Name="TxtContrastRatio" Text="21.0:1" FontSize="42" FontWeight="Bold" Margin="0,5" Foreground="{DynamicResource HeaderText}" HorizontalAlignment="Center"/>
+                                    
+                                    <Grid Margin="0,15,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <TextBlock Text="Normal Metin" FontSize="11" Foreground="{DynamicResource SecondaryText}" HorizontalAlignment="Center"/>
+                                            <TextBlock x:Name="TxtWcagNormal" Text="BAŞARILI" FontWeight="Bold" Foreground="#2ECC71" HorizontalAlignment="Center" Margin="0,3,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                                            <TextBlock Text="Büyük Metin" FontSize="11" Foreground="{DynamicResource SecondaryText}" HorizontalAlignment="Center"/>
+                                            <TextBlock x:Name="TxtWcagLarge" Text="BAŞARILI" FontWeight="Bold" Foreground="#2ECC71" HorizontalAlignment="Center" Margin="0,3,0,0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </Border>
 
-                    <Border Grid.Column="1" x:Name="BrdContrastPreview" Background="White" CornerRadius="12" BorderBrush="#EEE" BorderThickness="1">
+                    <Border Grid.Column="1" x:Name="BrdContrastPreview" Background="White" CornerRadius="12" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" Padding="40" Effect="{DynamicResource CardShadow}">
                         <Grid>
                             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <TextBlock x:Name="TxtContrastPreviewMain" Text="Aa" FontSize="72" FontWeight="Bold" HorizontalAlignment="Center"/>
-                                <TextBlock x:Name="TxtContrastPreviewSub" Text="Bu bir erişilebilirlik örneğidir." FontSize="18" HorizontalAlignment="Center" Margin="0,10"/>
+                                <TextBlock x:Name="TxtContrastPreviewMain" Text="Aa" FontSize="120" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                <TextBlock x:Name="TxtContrastPreviewSub" Text="Bu bir WCAG erişilebilirlik test örneğidir." FontSize="20" HorizontalAlignment="Center" Margin="0,20,0,0"/>
                             </StackPanel>
                         </Grid>
                     </Border>
@@ -192,18 +243,27 @@
             </TabItem>
 
             <!-- Color Blindness Simulator -->
-            <TabItem Header="Renk Körlüğü Simülatörü">
-                <Grid Margin="10,20">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="EyeOff" Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="Renk Körlüğü Simülatörü" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </TabItem.Header>
+                <Grid Margin="0,15,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,20">
-                        <TextBlock Text="Simüle Edilecek Renk:" VerticalAlignment="Center" Margin="0,0,15,0"/>
-                        <TextBox x:Name="TxtSimulatorColor" Width="120" Text="#7C4DFF" TextChanged="UpdateSimulation"/>
-                        <Border Width="30" Height="30" Margin="10,0" CornerRadius="4" x:Name="BrdSimSourceColor"/>
-                    </StackPanel>
+                    <Border Grid.Row="0" Style="{StaticResource Card}" Margin="0,0,0,20">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Simüle Edilecek Renk:" VerticalAlignment="Center" Foreground="{DynamicResource HeaderText}" FontWeight="SemiBold" Margin="0,0,15,0"/>
+                            <TextBox x:Name="TxtSimulatorColor" Style="{StaticResource RoundedTextBox}" Width="150" Height="40" Text="#7C4DFF" TextChanged="UpdateSimulation"/>
+                            <Border Width="40" Height="40" Margin="15,0" CornerRadius="6" x:Name="BrdSimSourceColor" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1"/>
+                            <TextBlock Text="Farklı renk körlüğü türlerinde bu rengin nasıl göründüğünü inceleyin." VerticalAlignment="Center" Foreground="{DynamicResource SecondaryText}" FontStyle="Italic" Margin="20,0,0,0"/>
+                        </StackPanel>
+                    </Border>
 
                     <ItemsControl Grid.Row="1" x:Name="IcSimulation">
                         <ItemsControl.ItemsPanel>
@@ -213,12 +273,12 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Margin="10" Padding="15" Background="#F8F9FA" CornerRadius="8" BorderBrush="#EEE" BorderThickness="1">
+                                <Border Margin="10" Style="{StaticResource Card}" Padding="20">
                                     <StackPanel>
-                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Margin="0,0,10,0" HorizontalAlignment="Center"/>
-                                        <TextBlock Text="{Binding Description}" FontSize="10" Foreground="Gray" HorizontalAlignment="Center" Margin="0,0,0,10" TextAlignment="Center"/>
-                                        <Ellipse Width="80" Height="80" Fill="{Binding Brush}" Stroke="#CCC" StrokeThickness="1"/>
-                                        <TextBlock Text="{Binding Hex}" Margin="0,10,0,0" HorizontalAlignment="Center" FontFamily="Consolas"/>
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="{DynamicResource HeaderText}" Margin="0,0,0,5" HorizontalAlignment="Center" FontSize="14"/>
+                                        <TextBlock Text="{Binding Description}" FontSize="10" Foreground="{DynamicResource SecondaryText}" HorizontalAlignment="Center" Margin="0,0,0,15" TextAlignment="Center" Height="25"/>
+                                        <Ellipse Width="100" Height="100" Fill="{Binding Brush}" Stroke="{DynamicResource CardBorderBrush}" StrokeThickness="1" Effect="{DynamicResource CardShadow}"/>
+                                        <TextBlock Text="{Binding Hex}" Margin="0,15,0,0" HorizontalAlignment="Center" FontFamily="Consolas" FontWeight="Bold" Foreground="{DynamicResource HeaderText}"/>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>

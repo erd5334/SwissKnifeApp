@@ -7,14 +7,14 @@ using SwissKnifeApp.Services;
 
 namespace SwissKnifeApp.Views.Modules
 {
-    public partial class JsonXmlFormatterPage : UserControl
+    public partial class JsonXmlFormatterPage : Page
     {
         private bool isDarkMode = true;
         private readonly JsonXmlFormatterService _service = new();
 
         public Brush EditorBackground => isDarkMode ? new SolidColorBrush(Color.FromRgb(30, 30, 30)) : Brushes.White;
         public Brush ForegroundColor => isDarkMode ? Brushes.White : Brushes.Black;
-        public string ThemeToggleText => isDarkMode ? "🌙 Karanlık" : "☀️ Aydınlık";
+        public string ThemeToggleText => isDarkMode ? "🌙 Karanlık Mod" : "☀️ Aydınlık Mod";
 
         public JsonXmlFormatterPage()
         {

@@ -168,11 +168,14 @@ namespace SwissKnifeApp.Views.Modules
                 double ratio = GetContrastRatio(fore, back);
                 TxtContrastRatio.Text = $"{ratio:F1}:1";
 
+                var successBrush = (Brush)FindResource("SuccessBrush") ?? Brushes.Green;
+                var dangerBrush = (Brush)FindResource("DangerBrush") ?? Brushes.Red;
+
                 TxtWcagNormal.Text = ratio >= 4.5 ? "GEÇTİ (AA)" : "KALDI";
-                TxtWcagNormal.Foreground = ratio >= 4.5 ? Brushes.Green : Brushes.Red;
+                TxtWcagNormal.Foreground = ratio >= 4.5 ? successBrush : dangerBrush;
                 
                 TxtWcagLarge.Text = ratio >= 3.0 ? "GEÇTİ (AA)" : "KALDI";
-                TxtWcagLarge.Foreground = ratio >= 3.0 ? Brushes.Green : Brushes.Red;
+                TxtWcagLarge.Foreground = ratio >= 3.0 ? successBrush : dangerBrush;
 
                 BrdContrastPreview.Background = new SolidColorBrush(back);
                 TxtContrastPreviewMain.Foreground = new SolidColorBrush(fore);

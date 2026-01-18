@@ -1,1358 +1,1267 @@
 <Page x:Class="SwissKnifeApp.Views.Modules.TaxCalculatorPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    Title="Vergi Hesaplayıcı"
-    Background="{DynamicResource MahApps.Brushes.ThemeBackground}">
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:local="clr-namespace:SwissKnifeApp.Views.Modules"
+      mc:Ignorable="d" 
+      d:DesignHeight="800" d:DesignWidth="1100"
+      Title="Vergi Hesaplayıcı"
+      Background="{DynamicResource AppBackground}">
 
-    <Grid Margin="20">
-        <!-- Accent Color for TaxCalculator: Gold -->
-        <Grid.Resources>
-            <SolidColorBrush x:Key="AccentGoldBrush" Color="#FFD700"/>
-        </Grid.Resources>
+    <Page.Resources>
+        <!-- Local override to give Tax module a consistent Gold theme -->
+        <SolidColorBrush x:Key="AccentBrush" Color="{Binding Source={StaticResource TaxAccent}, Path=Color}"/>
+    </Page.Resources>
+
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header Card -->
-        <Border Grid.Row="0" Style="{StaticResource Card}" Background="White" BorderBrush="{StaticResource AccentGoldBrush}" BorderThickness="2" CornerRadius="12" Padding="24" Margin="0,0,0,20">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <iconPacks:PackIconMaterial Kind="CalculatorVariant" Width="32" Height="32" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                    <TextBlock Text="Vergi Hesaplayıcı" FontSize="28" FontWeight="Bold" Foreground="{StaticResource AccentGoldBrush}"/>
-                </StackPanel>
-                <TextBlock Text="Gelir, KDV, Kurumlar ve Kira Vergisi Hesaplamaları" FontSize="14" Foreground="{DynamicResource MahApps.Brushes.Gray1}" Margin="0,5,0,0"/>
-                <!-- Güncelleme Bilgisi -->
-                <Grid Margin="0,10,0,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="CalendarCheck" Width="18" Height="18" Foreground="{DynamicResource MahApps.Brushes.Gray2}" Margin="0,0,5,0"/>
-                        <TextBlock Text="Son Güncelleme: " FontSize="12" Foreground="{DynamicResource MahApps.Brushes.Gray2}"/>
-                        <TextBlock x:Name="TxtLastUpdate" Text="Yükleniyor..." FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource AccentGoldBrush}" Margin="5,0,0,0"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Button x:Name="BtnSettings" Click="BtnSettings_Click" Style="{StaticResource AccentButtonStyle}" Height="32" Padding="15,0" Margin="0,0,10,0">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Cog" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="5,0,10,0"/>
-                                <TextBlock Text="Ayarlar" Width="40"/>
-                            </StackPanel>
-                        </Button>
-                        <Button x:Name="BtnRefreshRates" Click="BtnRefreshRates_Click" Style="{StaticResource AccentButtonStyle}" Height="32" Padding="15,0">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Refresh" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="5,0,10,0"/>
-                                <TextBlock Text="Oranları Güncelle" Width="85"/>
-                            </StackPanel>
-                        </Button>
-                    </StackPanel>
-                </Grid>
-                <!-- Disclaimer -->
-                <Border Background="#FFF3CD" BorderBrush="#FFC107" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,10,0,0">
+        <!-- Modern Header -->
+        <Border Grid.Row="0" Padding="25,20" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0">
                     <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="Alert" Width="18" Height="18" Foreground="#FFC107" Margin="0,0,10,0"/>
-                        <TextBlock TextWrapping="Wrap" FontSize="11" Foreground="#856404">
-                            <Run Text="Uyarı: "/>
-                            Bu hesaplamalar bilgilendirme amaçlıdır. Resmi işlemler için yetkili muhasebeciye danışınız.
-                        </TextBlock>
+                        <iconPacks:PackIconMaterial Kind="CalculatorVariant" Width="30" Height="30" VerticalAlignment="Center" Foreground="{StaticResource TaxAccent}"/>
+                        <TextBlock Text="Vergi Hesaplayıcı" FontSize="24" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource HeaderText}"/>
                     </StackPanel>
-                </Border>
-            </StackPanel>
+                    <TextBlock Text="Gelir, KDV, Kurumlar ve Kira Vergisi hesaplamalarınızı kolayca yapın" FontSize="14" Foreground="{DynamicResource SecondaryText}" Margin="45,5,0,0"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button x:Name="BtnSettings" Click="BtnSettings_Click" Style="{StaticResource OutlineButtonStyle}" Width="Auto" Height="40" Padding="20,0" Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconMaterial Kind="Cog" Width="18" Height="18" Margin="0,0,10,0"/>
+                            <TextBlock Text="Ayarlar" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button x:Name="BtnRefreshRates" Click="BtnRefreshRates_Click" Style="{StaticResource AccentButtonStyle}" Width="Auto" Height="40" Padding="20,0">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconMaterial Kind="Refresh" Width="18" Height="18" Margin="0,0,10,0"/>
+                            <TextBlock Text="Oranları Güncelle" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
         </Border>
 
-        <!-- Tabs in Card -->
-        <Border Grid.Row="1" Style="{StaticResource Card}" Background="White" BorderBrush="{StaticResource AccentGoldBrush}" BorderThickness="2" CornerRadius="12" Padding="24">
-            <TabControl Style="{StaticResource MahApps.Styles.TabControl}" mah:HeaderedControlHelper.HeaderFontSize="14">
-            
-            <!-- Gelir Vergisi -->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="ChartBar" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="Gelir Vergisi"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        <ComboBox x:Name="CmbIncomeYear" 
-                                 mah:TextBoxHelper.Watermark="Vergi Yılı"
-                                 SelectionChanged="CmbIncomeYear_SelectionChanged"
-                                 Margin="0,0,0,15"/>
-                        
-                        <ComboBox x:Name="CmbIncomeType" 
-                                 mah:TextBoxHelper.Watermark="Gelir Türü"
-                                 Margin="0,0,0,15">
-                            <ComboBoxItem Content="Ücret Geliri" Tag="ucret" IsSelected="True"/>
-                            <ComboBoxItem Content="Ücret Dışı Gelir" Tag="ucretdisi"/>
-                        </ComboBox>
-
-                        <mah:NumericUpDown x:Name="NumIncomeMatrah"
-                                          Minimum="0"
-                                          Maximum="999999999"
-                                          Interval="1000"
-                                          StringFormat="N2"
-                                          mah:TextBoxHelper.Watermark="Vergi Matrahı (TL)"
-                                          Margin="0,0,0,15"/>
-
-                        <Button Click="BtnCalculateIncomeTax_Click" Style="{StaticResource AccentButtonStyle}" Height="40" Margin="0,0,0,20">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Calculator" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Hesapla"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Border x:Name="IncomeTaxResult" 
-                               Visibility="Collapsed"
-                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                               BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
-                               BorderThickness="2"
-                               CornerRadius="8"
-                               Padding="20">
-                            <StackPanel>
-                                <TextBlock Text="Hesaplama Sonucu" 
-                                          FontSize="18" 
-                                          FontWeight="Bold"
-                                          Margin="0,0,0,15"/>
-                                
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Vergi Matrahı:" FontSize="14" Margin="0,5"/>
-                                    <TextBlock x:Name="TxtIncomeMatrahResult" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
-
-                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Gelir Vergisi:" FontSize="14" Margin="0,5"/>
-                                    <TextBlock x:Name="TxtIncomeTaxResult" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#DC3545" Margin="0,5"/>
-
-                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Net Tutar:" FontSize="16" FontWeight="Bold" Margin="0,10,0,5"/>
-                                    <TextBlock x:Name="TxtIncomeNetResult" Grid.Row="2" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#28A745" Margin="0,10,0,5"/>
-                                </Grid>
-
-                                <Separator Margin="0,15"/>
-
-                                <TextBlock Text="Vergi Dilimleri:" FontSize="14" FontWeight="Bold" Margin="0,10,0,10"/>
-                                <ItemsControl x:Name="IncomeTaxBrackets">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border Background="{DynamicResource MahApps.Brushes.Gray10}" 
-                                                   Padding="10" 
-                                                   Margin="0,5" 
-                                                   CornerRadius="5">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <StackPanel Grid.Column="0">
-                                                        <TextBlock Text="{Binding Aciklama}" FontSize="12" FontWeight="SemiBold"/>
-                                                        <TextBlock FontSize="11" Foreground="{DynamicResource MahApps.Brushes.Gray2}">
-                                                            <Run Text="Matrah:"/>
-                                                            <Run Text="{Binding Matrah, StringFormat='{}{0:N2} TL'}"/>
-                                                        </TextBlock>
-                                                    </StackPanel>
-                                                    <TextBlock Grid.Column="1" 
-                                                              Text="{Binding VergiTutari, StringFormat='{}{0:N2} TL'}" 
-                                                              FontSize="13" 
-                                                              FontWeight="Bold"
-                                                              Foreground="{DynamicResource MahApps.Brushes.Accent}"
-                                                              VerticalAlignment="Center"/>
-                                                </Grid>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-
-            <!-- KDV -->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="ReceiptText" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="KDV"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        <ComboBox x:Name="CmbKdvOperation" 
-                                 SelectionChanged="CmbKdvOperation_SelectionChanged"
-                                 Margin="0,0,0,15">
-                            <ComboBoxItem Content="KDV Dahil Hesaplama" Tag="dahil" IsSelected="True"/>
-                            <ComboBoxItem Content="KDV Hariç Hesaplama" Tag="haric"/>
-                        </ComboBox>
-
-                        <ComboBox x:Name="CmbKdvRate" 
-                                 mah:TextBoxHelper.Watermark="KDV Oranı"
-                                 Margin="0,0,0,15">
-                            <ComboBoxItem Content="%1" Tag="1"/>
-                            <ComboBoxItem Content="%8" Tag="8"/>
-                            <ComboBoxItem Content="%10" Tag="10"/>
-                            <ComboBoxItem Content="%18" Tag="18"/>
-                            <ComboBoxItem Content="%20" Tag="20" IsSelected="True"/>
-                        </ComboBox>
-
-                        <mah:NumericUpDown x:Name="NumKdvAmount"
-                                          Minimum="0"
-                                          Maximum="999999999"
-                                          Interval="100"
-                                          StringFormat="N2"
-                                          mah:TextBoxHelper.Watermark="Tutar (TL)"
-                                          Margin="0,0,0,15"/>
-
-                        <Button Click="BtnCalculateKdv_Click" Style="{StaticResource AccentButtonStyle}" Height="40" Margin="0,0,0,20">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Calculator" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Hesapla"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Border x:Name="KdvResult" 
-                               Visibility="Collapsed"
-                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                               BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
-                               BorderThickness="2"
-                               CornerRadius="8"
-                               Padding="20">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Net Tutar:" FontSize="14" Margin="0,5"/>
-                                <TextBlock x:Name="TxtKdvNetAmount" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
-
-                                <TextBlock Grid.Row="1" Grid.Column="0" Text="KDV Tutarı:" FontSize="14" Margin="0,5"/>
-                                <TextBlock x:Name="TxtKdvAmount" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#DC3545" Margin="0,5"/>
-
-                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Toplam:" FontSize="16" FontWeight="Bold" Margin="0,10,0,5"/>
-                                <TextBlock x:Name="TxtKdvTotal" Grid.Row="2" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#28A745" Margin="0,10,0,5"/>
-                            </Grid>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-
-            <!-- Kurumlar Vergisi -->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="OfficeBuilding" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="Kurumlar Vergisi"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        <ComboBox x:Name="CmbCorporateYear" 
-                                 mah:TextBoxHelper.Watermark="Vergi Yılı"
-                                 SelectionChanged="CmbCorporateYear_SelectionChanged"
-                                 Margin="0,0,0,15"/>
-
-                        <CheckBox x:Name="ChkFinancial" 
-                                 Content="Finans Kurumu (Banka, Sigorta, vb.)"
-                                 Margin="0,0,0,15"/>
-
-                        <mah:NumericUpDown x:Name="NumCorporateMatrah"
-                                          Minimum="0"
-                                          Maximum="999999999"
-                                          Interval="10000"
-                                          StringFormat="N2"
-                                          mah:TextBoxHelper.Watermark="Safi Kurum Kazancı (TL)"
-                                          Margin="0,0,0,15"/>
-
-                        <Button Click="BtnCalculateCorporateTax_Click" Style="{StaticResource AccentButtonStyle}" Height="40" Margin="0,0,0,20">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Calculator" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Hesapla"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Border x:Name="CorporateTaxResult" 
-                               Visibility="Collapsed"
-                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                               BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
-                               BorderThickness="2"
-                               CornerRadius="8"
-                               Padding="20">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Safi Kurum Kazancı:" FontSize="14" Margin="0,5"/>
-                                <TextBlock x:Name="TxtCorporateMatrah" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
-
-                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Vergi Oranı:" FontSize="14" Margin="0,5"/>
-                                <TextBlock x:Name="TxtCorporateRate" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource MahApps.Brushes.Accent}" Margin="0,5"/>
-
-                                <Separator Grid.Row="2" Grid.ColumnSpan="2" Margin="0,10"/>
-
-                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Kurumlar Vergisi:" FontSize="16" FontWeight="Bold" Margin="0,5"/>
-                                <TextBlock x:Name="TxtCorporateTax" Grid.Row="3" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#DC3545" Margin="0,5"/>
-                            </Grid>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-
-            <!-- Kira Vergisi -->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="HomeCity" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="Kira Vergisi"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        <ComboBox x:Name="CmbRentYear" 
-                                 mah:TextBoxHelper.Watermark="Gelir Yılı"
-                                 SelectionChanged="CmbRentYear_SelectionChanged"
-                                 Margin="0,0,0,15"/>
-
-                        <CheckBox x:Name="ChkRentExemption" 
-                                 Content="Konut Kira Geliri İstisnası"
-                                 IsChecked="True"
-                                 Margin="0,0,0,5"/>
-                        
-                        <TextBlock x:Name="TxtRentExemptionAmount" 
-                                  Text="(2026: 50.000 TL)" 
-                                  FontSize="11" 
-                                  Foreground="{DynamicResource MahApps.Brushes.Gray2}"
-                                  Margin="25,0,0,15"/>
-
-                        <mah:NumericUpDown x:Name="NumRentIncome"
-                                          Minimum="0"
-                                          Maximum="999999999"
-                                          Interval="1000"
-                                          StringFormat="N2"
-                                          mah:TextBoxHelper.Watermark="Yıllık Kira Geliri (TL)"
-                                          Margin="0,0,0,15"/>
-
-                        <mah:NumericUpDown x:Name="NumOtherIncome"
-                                          Minimum="0"
-                                          Maximum="999999999"
-                                          Interval="1000"
-                                          StringFormat="N2"
-                                          Value="0"
-                                          mah:TextBoxHelper.Watermark="Diğer Gelirler (TL) - Opsiyonel"
-                                          Margin="0,0,0,15"/>
-
-                        <Button Click="BtnCalculateRentTax_Click" Style="{StaticResource AccentButtonStyle}" Height="40" Margin="0,0,0,20">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Calculator" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Hesapla"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Border x:Name="RentTaxResult" 
-                               Visibility="Collapsed"
-                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                               BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
-                               BorderThickness="2"
-                               CornerRadius="8"
-                               Padding="20">
-                            <StackPanel>
-                                <TextBlock Text="Hesaplama Sonucu" 
-                                          FontSize="18" 
-                                          FontWeight="Bold"
-                                          Margin="0,0,0,15"/>
-                                
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Kira Geliri:" FontSize="14" Margin="0,5"/>
-                                    <TextBlock x:Name="TxtRentIncomeResult" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
-
-                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Vergilendirilebilir Matrah:" FontSize="14" Margin="0,5"/>
-                                    <TextBlock x:Name="TxtRentTaxableAmount" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
-
-                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Gelir Vergisi:" FontSize="14" Margin="0,5"/>
-                                    <TextBlock x:Name="TxtRentTax" Grid.Row="2" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#DC3545" Margin="0,5"/>
-
-                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Net Kira Geliri:" FontSize="16" FontWeight="Bold" Margin="0,10,0,5"/>
-                                    <TextBlock x:Name="TxtRentNet" Grid.Row="3" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#28A745" Margin="0,10,0,5"/>
-                                </Grid>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-
-            <!-- Damga Vergisi -->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="FileDocumentOutline" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="Damga Vergisi"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        <mah:NumericUpDown x:Name="NumStampAmount"
-                                          Minimum="0"
-                                          Maximum="999999999"
-                                          Interval="1000"
-                                          StringFormat="N2"
-                                          mah:TextBoxHelper.Watermark="İşlem Tutarı (TL)"
-                                          Margin="0,0,0,15"/>
-
-                        <Button Click="BtnCalculateStampTax_Click" Style="{StaticResource AccentButtonStyle}" Height="40" Margin="0,0,0,20">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Calculator" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Hesapla"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Border x:Name="StampResult" 
-                               Visibility="Collapsed"
-                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                               BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
-                               BorderThickness="2"
-                               CornerRadius="8"
-                               Padding="20">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="İşlem Tutarı:" FontSize="14" Margin="0,5"/>
-                                <TextBlock x:Name="TxtStampBase" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
-
-                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Damga Vergisi (‰0.948):" FontSize="14" Margin="0,5"/>
-                                <TextBlock x:Name="TxtStampTax" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#DC3545" Margin="0,5"/>
-
-                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Toplam Ödeme:" FontSize="16" FontWeight="Bold" Margin="0,10,0,5"/>
-                                <TextBlock x:Name="TxtStampTotal" Grid.Row="2" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#28A745" Margin="0,10,0,5"/>
-                            </Grid>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-
-            <!-- MTV -->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="Car" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="MTV"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        <ComboBox x:Name="CmbMtvYear" 
-                                 mah:TextBoxHelper.Watermark="Vergi Yılı"
-                                 Margin="0,0,0,15">
-                            <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
-                            <ComboBoxItem Content="2025" Tag="2025"/>
-                        </ComboBox>
-
-                        <ComboBox x:Name="CmbVehicleType" 
-                                 mah:TextBoxHelper.Watermark="Araç Türü"
-                                 SelectionChanged="CmbVehicleType_SelectionChanged"
-                                 Margin="0,0,0,15">
-                            <ComboBoxItem Content="Otomobil" Tag="car" IsSelected="True"/>
-                            <ComboBoxItem Content="Motosiklet" Tag="motorcycle"/>
-                        </ComboBox>
-
-                        <mah:NumericUpDown x:Name="NumEngineSize"
-                                          Minimum="0"
-                                          Maximum="10000"
-                                          Interval="10"
-                                          mah:TextBoxHelper.Watermark="Motor Hacmi (cc)"
-                                          Margin="0,0,0,15"/>
-
-                        <StackPanel x:Name="PnlCarAge" Margin="0,0,0,15">
-                            <ComboBox x:Name="CmbCarAge" 
-                                     mah:TextBoxHelper.Watermark="Araç Yaşı"
-                                     Margin="0,0,0,0">
-                                <ComboBoxItem Content="1 yaşında" Tag="1" IsSelected="True"/>
-                                <ComboBoxItem Content="2 yaşında" Tag="2"/>
-                                <ComboBoxItem Content="3 yaşında" Tag="3"/>
-                                <ComboBoxItem Content="4 yaşında" Tag="4"/>
-                                <ComboBoxItem Content="5+ yaşında" Tag="5"/>
-                            </ComboBox>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="25">
+            <StackPanel MaxWidth="1000" HorizontalAlignment="Left" Width="900">
+                
+                <!-- Info Section -->
+                <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,25">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <iconPacks:PackIconMaterial Kind="Information" Width="18" Height="18" Foreground="{StaticResource TaxAccent}" Margin="0,0,12,0"/>
+                            <TextBlock Text="Hesaplamalar resmi verilere göre yapılmaktadır." VerticalAlignment="Center" Foreground="{DynamicResource SecondaryText}"/>
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" Margin="15,0" Height="15"/>
+                            <TextBlock Text="Son Güncelleme:" Foreground="{DynamicResource SecondaryText}"/>
+                            <TextBlock x:Name="TxtLastUpdate" Text="Yükleniyor..." FontWeight="SemiBold" Foreground="{DynamicResource HeaderText}" Margin="5,0,0,0"/>
                         </StackPanel>
-
-                        <Button Click="BtnCalculateMtv_Click" Style="{StaticResource AccentButtonStyle}" Height="40" Margin="0,0,0,20">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Calculator" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Hesapla"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Border x:Name="MtvResult" 
-                               Visibility="Collapsed"
-                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                               BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
-                               BorderThickness="2"
-                               CornerRadius="8"
-                               Padding="20">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="MTV Tutarı:" FontSize="16" FontWeight="Bold" Margin="0,5"/>
-                                <TextBlock x:Name="TxtMtvAmount" Grid.Row="0" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#28A745" Margin="0,5"/>
-                            </Grid>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-
-            <!-- KDV Tevkifatı -->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="ScissorsCutting" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="KDV Tevkifatı"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        <ComboBox x:Name="CmbWithholdingCategory" 
-                                 mah:TextBoxHelper.Watermark="Hizmet Kategorisi"
-                                 Margin="0,0,0,15"/>
-
-                        <mah:NumericUpDown x:Name="NumWithholdingAmount"
-                                          Minimum="0"
-                                          Maximum="999999999"
-                                          Interval="1000"
-                                          StringFormat="N2"
-                                          mah:TextBoxHelper.Watermark="Hizmet Bedeli (KDV Hariç)"
-                                          Margin="0,0,0,15"/>
-
-                        <Button Click="BtnCalculateWithholding_Click" Style="{StaticResource AccentButtonStyle}" Height="40" Margin="0,0,0,20">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Calculator" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Hesapla"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Border x:Name="WithholdingResult" 
-                               Visibility="Collapsed"
-                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                               BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
-                               BorderThickness="2"
-                               CornerRadius="8"
-                               Padding="20">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Hizmet Bedeli:" FontSize="14" Margin="0,5"/>
-                                <TextBlock x:Name="TxtWithholdingBase" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
-
-                                <TextBlock Grid.Row="1" Grid.Column="0" Text="KDV Tutarı:" FontSize="14" Margin="0,5"/>
-                                <TextBlock x:Name="TxtWithholdingVat" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
-
-                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Tevkifat Tutarı:" FontSize="14" Margin="0,5"/>
-                                <TextBlock x:Name="TxtWithholdingAmount" Grid.Row="2" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#FFC107" Margin="0,5"/>
-
-                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Ödenecek KDV:" FontSize="16" FontWeight="Bold" Margin="0,10,0,5"/>
-                                <TextBlock x:Name="TxtWithholdingNet" Grid.Row="3" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#28A745" Margin="0,10,0,5"/>
-                            </Grid>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-
-            <!-- Değer Artış Kazancı -->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="TrendingUp" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="Değer Artış Kazancı"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        <ComboBox x:Name="CmbCapitalGainYear" 
-                                 mah:TextBoxHelper.Watermark="Vergi Yılı"
-                                 Margin="0,0,0,15">
-                            <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
-                            <ComboBoxItem Content="2025" Tag="2025"/>
-                        </ComboBox>
-
-                        <ComboBox x:Name="CmbAssetType" 
-                                 mah:TextBoxHelper.Watermark="Varlık Türü"
-                                 Margin="0,0,0,15">
-                            <ComboBoxItem Content="Gayrimenkul" Tag="gayrimenkul" IsSelected="True"/>
-                            <ComboBoxItem Content="Menkul Kıymet" Tag="menkul"/>
-                        </ComboBox>
-
-                        <mah:NumericUpDown x:Name="NumPurchasePrice"
-                                          Minimum="0"
-                                          Maximum="999999999"
-                                          Interval="10000"
-                                          StringFormat="N2"
-                                          mah:TextBoxHelper.Watermark="Alış Fiyatı (TL)"
-                                          Margin="0,0,0,15"/>
-
-                        <mah:NumericUpDown x:Name="NumSalePrice"
-                                          Minimum="0"
-                                          Maximum="999999999"
-                                          Interval="10000"
-                                          StringFormat="N2"
-                                          mah:TextBoxHelper.Watermark="Satış Fiyatı (TL)"
-                                          Margin="0,0,0,15"/>
-
-                        <Button Click="BtnCalculateCapitalGain_Click" Style="{StaticResource AccentButtonStyle}" Height="40" Margin="0,0,0,20">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Calculator" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Hesapla"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Border x:Name="CapitalGainResult" 
-                               Visibility="Collapsed"
-                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                               BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
-                               BorderThickness="2"
-                               CornerRadius="8"
-                               Padding="20">
-                            <StackPanel>
-                                <TextBlock Text="Hesaplama Sonucu" 
-                                          FontSize="18" 
-                                          FontWeight="Bold"
-                                          Margin="0,0,0,15"/>
-                                
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Kazanç:" FontSize="14" Margin="0,5"/>
-                                    <TextBlock x:Name="TxtCapitalGain" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
-
-                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="İstisna (%50):" FontSize="14" Margin="0,5"/>
-                                    <TextBlock x:Name="TxtCapitalExemption" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
-
-                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Vergi Tutarı:" FontSize="14" Margin="0,5"/>
-                                    <TextBlock x:Name="TxtCapitalTax" Grid.Row="2" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#DC3545" Margin="0,5"/>
-
-                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Net Kazanç:" FontSize="16" FontWeight="Bold" Margin="0,10,0,5"/>
-                                    <TextBlock x:Name="TxtCapitalNet" Grid.Row="3" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#28A745" Margin="0,10,0,5"/>
-                                </Grid>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-
-            <!-- Değerli Konut Vergisi -->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="HomeGroup" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="Değerli Konut"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        <ComboBox x:Name="CmbLuxuryYear" 
-                                 mah:TextBoxHelper.Watermark="Vergi Yılı"
-                                 Margin="0,0,0,15">
-                            <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
-                            <ComboBoxItem Content="2025" Tag="2025"/>
-                        </ComboBox>
-
-                        <mah:NumericUpDown x:Name="NumHouseValue"
-                                          Minimum="0"
-                                          Maximum="999999999"
-                                          Interval="100000"
-                                          StringFormat="N2"
-                                          mah:TextBoxHelper.Watermark="Konut Değeri (TL)"
-                                          Margin="0,0,0,15"/>
-
-                        <TextBlock Text="💡 2026 yılı için eşik değer: 13.000.000 TL" 
-                                  FontSize="11" 
-                                  Foreground="{DynamicResource MahApps.Brushes.Gray2}"
-                                  TextWrapping="Wrap"
-                                  Margin="0,0,0,15"/>
-
-                        <Button Click="BtnCalculateLuxuryHousing_Click" Style="{StaticResource AccentButtonStyle}" Height="40" Margin="0,0,0,20">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Calculator" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Hesapla"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Border x:Name="LuxuryResult" 
-                               Visibility="Collapsed"
-                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                               BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
-                               BorderThickness="2"
-                               CornerRadius="8"
-                               Padding="20">
-                            <StackPanel>
-                                <TextBlock Text="Hesaplama Sonucu" 
-                                          FontSize="18" 
-                                          FontWeight="Bold"
-                                          Margin="0,0,0,15"/>
-                                
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Konut Değeri:" FontSize="14" Margin="0,5"/>
-                                    <TextBlock x:Name="TxtLuxuryValue" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
-
-                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Değerli Konut Vergisi:" FontSize="16" FontWeight="Bold" Margin="0,10,0,5"/>
-                                    <TextBlock x:Name="TxtLuxuryTax" Grid.Row="1" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#DC3545" Margin="0,10,0,5"/>
-                                </Grid>
-
-                                <ItemsControl x:Name="LuxuryBrackets" Margin="0,15,0,0">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border Background="{DynamicResource MahApps.Brushes.Gray10}" 
-                                                   Padding="10" 
-                                                   Margin="0,5" 
-                                                   CornerRadius="5">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="{Binding Aciklama}" FontSize="12"/>
-                                                    <TextBlock Grid.Column="1" FontSize="12" FontWeight="Bold">
-                                                        <Run Text="{Binding VergiTutari, StringFormat='{}{0:N2} TL'}"/>
-                                                    </TextBlock>
-                                                </Grid>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-
-            <!-- Emlak Vergisi -->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="HomeModern" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="Emlak Vergisi"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        <ComboBox x:Name="CmbPropertyYear" 
-                                 mah:TextBoxHelper.Watermark="Vergi Yılı"
-                                 Margin="0,0,0,15">
-                            <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
-                            <ComboBoxItem Content="2025" Tag="2025"/>
-                        </ComboBox>
-
-                        <ComboBox x:Name="CmbPropertyType" 
-                                 mah:TextBoxHelper.Watermark="Emlak Türü"
-                                 Margin="0,0,0,15">
-                            <ComboBoxItem Content="Bina" Tag="bina" IsSelected="True"/>
-                            <ComboBoxItem Content="Arazi" Tag="arazi"/>
-                        </ComboBox>
-
-                        <mah:NumericUpDown x:Name="NumPropertyValue"
-                                          Minimum="0"
-                                          Maximum="999999999"
-                                          Interval="10000"
-                                          StringFormat="N2"
-                                          mah:TextBoxHelper.Watermark="Emlak Değeri (TL)"
-                                          Margin="0,0,0,15"/>
-
-                        <TextBlock Text="💡 Bina: %0.2, Arazi: %0.1" 
-                                  FontSize="11" 
-                                  Foreground="{DynamicResource MahApps.Brushes.Gray2}"
-                                  Margin="0,0,0,15"/>
-
-                        <Button Click="BtnCalculateProperty_Click" Style="{StaticResource AccentButtonStyle}" Height="40" Margin="0,0,0,20">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Calculator" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Hesapla"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Border x:Name="PropertyResult" 
-                               Visibility="Collapsed"
-                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                               BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
-                               BorderThickness="2"
-                               CornerRadius="8"
-                               Padding="20">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Emlak Değeri:" FontSize="14" Margin="0,5"/>
-                                <TextBlock x:Name="TxtPropertyValue" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
-
-                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Emlak Vergisi:" FontSize="16" FontWeight="Bold" Margin="0,10,0,5"/>
-                                <TextBlock x:Name="TxtPropertyTax" Grid.Row="1" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#DC3545" Margin="0,10,0,5"/>
-                            </Grid>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-
-            <!-- ÖTV (Akaryakıt) -->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="GasStation" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="ÖTV"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        <ComboBox x:Name="CmbFuelType" 
-                                 mah:TextBoxHelper.Watermark="Yakıt Türü"
-                                 Margin="0,0,0,15">
-                            <ComboBoxItem Content="Benzin" Tag="Benzin" IsSelected="True"/>
-                            <ComboBoxItem Content="Motorin" Tag="Motorin"/>
-                            <ComboBoxItem Content="LPG" Tag="LPG"/>
-                        </ComboBox>
-
-                        <mah:NumericUpDown x:Name="NumFuelLiters"
-                                          Minimum="0"
-                                          Maximum="10000"
-                                          Interval="1"
-                                          StringFormat="N2"
-                                          mah:TextBoxHelper.Watermark="Litre"
-                                          Margin="0,0,0,15"/>
-
-                        <TextBlock FontSize="11" 
-                                  Foreground="{DynamicResource MahApps.Brushes.Gray2}"
-                                  TextWrapping="Wrap"
-                                  Margin="0,0,0,15">
-                            <Run Text="💡 2026 ÖTV Oranları:"/>
-                            <LineBreak/>
-                            <Run Text="Benzin: 5.17 TL/litre"/>
-                            <LineBreak/>
-                            <Run Text="Motorin: 3.44 TL/litre"/>
-                            <LineBreak/>
-                            <Run Text="LPG: 2.07 TL/litre"/>
-                        </TextBlock>
-
-                        <Button Click="BtnCalculateSct_Click" Style="{StaticResource AccentButtonStyle}" Height="40" Margin="0,0,0,20">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Calculator" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Hesapla"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Border x:Name="SctResult" 
-                               Visibility="Collapsed"
-                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                               BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
-                               BorderThickness="2"
-                               CornerRadius="8"
-                               Padding="20">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Litre:" FontSize="14" Margin="0,5"/>
-                                <TextBlock x:Name="TxtSctLiters" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
-
-                                <TextBlock Grid.Row="1" Grid.Column="0" Text="ÖTV Tutarı:" FontSize="16" FontWeight="Bold" Margin="0,10,0,5"/>
-                                <TextBlock x:Name="TxtSctAmount" Grid.Row="1" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#DC3545" Margin="0,10,0,5"/>
-                            </Grid>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-
-            <!-- Veraset ve İntikal -->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="Gift" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="Veraset ve İntikal"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        <ComboBox x:Name="CmbInheritanceYear" 
-                                 mah:TextBoxHelper.Watermark="Vergi Yılı"
-                                 Margin="0,0,0,15">
-                            <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
-                            <ComboBoxItem Content="2025" Tag="2025"/>
-                        </ComboBox>
-
-                        <ComboBox x:Name="CmbHeirType" 
-                                 mah:TextBoxHelper.Watermark="Mirasçı Türü"
-                                 Margin="0,0,0,15">
-                            <ComboBoxItem Content="Eş ve Çocuklar" Tag="escocuk" IsSelected="True"/>
-                            <ComboBoxItem Content="Diğer Mirasçılar" Tag="diger"/>
-                        </ComboBox>
-
-                        <mah:NumericUpDown x:Name="NumInheritanceAmount"
-                                          Minimum="0"
-                                          Maximum="999999999"
-                                          Interval="10000"
-                                          StringFormat="N2"
-                                          mah:TextBoxHelper.Watermark="Miras Tutarı (TL)"
-                                          Margin="0,0,0,15"/>
-
-                        <TextBlock FontSize="11" 
-                                  Foreground="{DynamicResource MahApps.Brushes.Gray2}"
-                                  TextWrapping="Wrap"
-                                  Margin="0,0,0,15">
-                            <Run Text="💡 2026 İstisna Tutarları:"/>
-                            <LineBreak/>
-                            <Run Text="Eş ve Çocuklar: 440.000 TL"/>
-                            <LineBreak/>
-                            <Run Text="Diğer Mirasçılar: 110.000 TL"/>
-                        </TextBlock>
-
-                        <Button Click="BtnCalculateInheritance_Click" Style="{StaticResource AccentButtonStyle}" Height="40" Margin="0,0,0,20">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Calculator" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Hesapla"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Border x:Name="InheritanceResult" 
-                               Visibility="Collapsed"
-                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                               BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
-                               BorderThickness="2"
-                               CornerRadius="8"
-                               Padding="20">
-                            <StackPanel>
-                                <TextBlock Text="Hesaplama Sonucu" 
-                                          FontSize="18" 
-                                          FontWeight="Bold"
-                                          Margin="0,0,0,15"/>
-                                
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Miras Tutarı:" FontSize="14" Margin="0,5"/>
-                                    <TextBlock x:Name="TxtInheritanceAmount" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
-
-                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Vergi Tutarı:" FontSize="14" Margin="0,5"/>
-                                    <TextBlock x:Name="TxtInheritanceTax" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#DC3545" Margin="0,5"/>
-
-                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Net Miras:" FontSize="16" FontWeight="Bold" Margin="0,10,0,5"/>
-                                    <TextBlock x:Name="TxtInheritanceNet" Grid.Row="2" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#28A745" Margin="0,10,0,5"/>
-                                </Grid>
-
-                                <ItemsControl x:Name="InheritanceBrackets" Margin="0,15,0,0">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border Background="{DynamicResource MahApps.Brushes.Gray10}" 
-                                                   Padding="10" 
-                                                   Margin="0,5" 
-                                                   CornerRadius="5">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <TextBlock Text="{Binding Aciklama}" FontSize="12"/>
-                                                    <TextBlock Grid.Column="1" FontSize="12" FontWeight="Bold">
-                                                        <Run Text="{Binding VergiTutari, StringFormat='{}{0:N2} TL'}"/>
-                                                    </TextBlock>
-                                                </Grid>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-
-            <!-- Vergi Gecikme Faizi -->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="TimerSand" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="Gecikme Faizi"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        <ComboBox x:Name="CmbDelayYear" 
-                                 mah:TextBoxHelper.Watermark="Yıl"
-                                 Margin="0,0,0,15">
-                            <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
-                            <ComboBoxItem Content="2025" Tag="2025"/>
-                            <ComboBoxItem Content="2024" Tag="2024"/>
-                        </ComboBox>
-
-                        <mah:NumericUpDown x:Name="NumTaxDebt"
-                                          Minimum="0"
-                                          Maximum="999999999"
-                                          Interval="1000"
-                                          StringFormat="N2"
-                                          mah:TextBoxHelper.Watermark="Vergi Borcu (TL)"
-                                          Margin="0,0,0,15"/>
-
-                        <mah:NumericUpDown x:Name="NumDelayDays"
-                                          Minimum="1"
-                                          Maximum="3650"
-                                          Interval="1"
-                                          mah:TextBoxHelper.Watermark="Gecikme Gün Sayısı"
-                                          Margin="0,0,0,15"/>
-
-                        <Button Click="BtnCalculateDelay_Click" Style="{StaticResource AccentButtonStyle}" Height="40" Margin="0,0,0,20">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Calculator" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Hesapla"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Border x:Name="DelayResult" 
-                               Visibility="Collapsed"
-                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                               BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
-                               BorderThickness="2"
-                               CornerRadius="8"
-                               Padding="20">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Vergi Borcu:" FontSize="14" Margin="0,5"/>
-                                <TextBlock x:Name="TxtDelayDebt" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
-
-                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Gecikme Faizi:" FontSize="14" Margin="0,5"/>
-                                <TextBlock x:Name="TxtDelayInterest" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#DC3545" Margin="0,5"/>
-
-                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Toplam Borç:" FontSize="16" FontWeight="Bold" Margin="0,10,0,5"/>
-                                <TextBlock x:Name="TxtDelayTotal" Grid.Row="2" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#DC3545" Margin="0,10,0,5"/>
-                            </Grid>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-
-            <!-- YIL KARŞILAŞTIRMA -->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="ChartBoxPlusOutline" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="Yıl Karşılaştırma"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        <mah:NumericUpDown x:Name="NumCompareMatrah"
-                                          Minimum="0"
-                                          Maximum="999999999"
-                                          Interval="10000"
-                                          StringFormat="N2"
-                                          mah:TextBoxHelper.Watermark="Vergi Matrahı (TL)"
-                                          Margin="0,0,0,15"/>
-
-                        <CheckBox x:Name="ChkCompareWage" 
-                                 Content="Ücret Geliri"
-                                 IsChecked="True"
-                                 Margin="0,0,0,15"/>
-
-                        <Button Click="BtnCompareYears_Click" Style="{StaticResource AccentButtonStyle}" Height="40" Margin="0,0,0,20">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="ChartBoxPlusOutline" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Yılları Karşılaştır"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Border x:Name="CompareResult" 
-                               Visibility="Collapsed"
-                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                               BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
-                               BorderThickness="2"
-                               CornerRadius="8"
-                               Padding="20">
-                            <StackPanel>
-                                <TextBlock Text="Yıllara Göre Vergi Karşılaştırması" 
-                                          FontSize="18" 
-                                          FontWeight="Bold"
-                                          Margin="0,0,0,15"/>
-                                <DataGrid x:Name="CompareGrid" 
-                                         AutoGenerateColumns="False"
-                                         CanUserAddRows="False"
-                                         IsReadOnly="True"
-                                         MaxHeight="300">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="Yıl" Binding="{Binding Year}" Width="80"/>
-                                        <DataGridTextColumn Header="Matrah" Binding="{Binding Matrah, StringFormat=N0}" Width="120"/>
-                                        <DataGridTextColumn Header="Vergi" Binding="{Binding VergiTutari, StringFormat=N0}" Width="120"/>
-                                        <DataGridTextColumn Header="Net" Binding="{Binding NetTutar, StringFormat=N0}" Width="120"/>
-                                        <DataGridTextColumn Header="Efektif Oran %" Binding="{Binding EfektifVergiOrani, StringFormat=N2}" Width="100"/>
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-
-            <!-- VERGİ PLANLAMA -->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="Lightbulb" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="Vergi Planlama"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        <ComboBox x:Name="CmbPlanYear" 
-                                 mah:TextBoxHelper.Watermark="Vergi Yılı"
-                                 Margin="0,0,0,15">
-                            <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
-                            <ComboBoxItem Content="2025" Tag="2025"/>
-                            <ComboBoxItem Content="2024" Tag="2024"/>
-                        </ComboBox>
-
-                        <mah:NumericUpDown x:Name="NumPlanIncome"
-                                          Minimum="0"
-                                          Maximum="999999999"
-                                          Interval="10000"
-                                          StringFormat="N2"
-                                          mah:TextBoxHelper.Watermark="Yıllık Brüt Gelir (TL)"
-                                          Margin="0,0,0,15"/>
-
-                        <Button Click="BtnPlanTax_Click" Style="{StaticResource AccentButtonStyle}" Height="40" Margin="0,0,0,20">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Lightbulb" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Planlama Analizi Yap"/>
-                            </StackPanel>
-                        </Button>
-
-                        <Border x:Name="PlanResult" 
-                               Visibility="Collapsed"
-                               Background="{DynamicResource MahApps.Brushes.ThemeBackground}"
-                               BorderBrush="{DynamicResource MahApps.Brushes.Accent}"
-                               BorderThickness="2"
-                               CornerRadius="8"
-                               Padding="20">
-                            <StackPanel>
-                                <TextBlock Text="Vergi Planlama Sonuçları" 
-                                          FontSize="18" 
-                                          FontWeight="Bold"
-                                          Margin="0,0,0,15"/>
-                                
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Yıllık Gelir:" FontSize="14" Margin="0,5"/>
-                                    <TextBlock x:Name="TxtPlanIncome" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
-
-                                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Normal Vergi:" FontSize="14" Margin="0,5"/>
-                                    <TextBlock x:Name="TxtPlanNormalTax" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#DC3545" Margin="0,5"/>
-
-                                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Gelir Bölünerek Vergi:" FontSize="14" Margin="0,5"/>
-                                    <TextBlock x:Name="TxtPlanSplitTax" Grid.Row="2" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,5"/>
-
-                                    <TextBlock Grid.Row="3" Grid.Column="0" Text="💰 Potansiyel Tasarruf:" FontSize="16" FontWeight="Bold" Margin="0,10,0,5"/>
-                                    <TextBlock x:Name="TxtPlanSavings" Grid.Row="3" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#28A745" Margin="0,10,0,5"/>
-                                </Grid>
-
-                                <Separator Margin="0,15"/>
-
-                                <TextBlock Text="💡 Öneriler:" FontSize="14" FontWeight="Bold" Margin="0,10,0,10"/>
-                                <ItemsControl x:Name="PlanRecommendations">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock Text="{Binding}" TextWrapping="Wrap" Foreground="{DynamicResource MahApps.Brushes.Gray2}" Margin="0,3"/>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-
-            <!-- VERGİ TAKVİMİ -->
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="CalendarAlert" Width="18" Height="18" Foreground="{StaticResource AccentGoldBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="Vergi Takvimi"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel Margin="20">
-                        <TextBlock Text="📅 Yaklaşan Vergi Tarihleri" FontSize="18" FontWeight="Bold" Margin="0,0,0,15"/>
                         
-                        <ItemsControl x:Name="DeadlineList">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Margin="0,5" Padding="15" CornerRadius="8">
-                                        <Border.Style>
-                                            <Style TargetType="Border">
-                                                <Setter Property="Background" Value="{DynamicResource MahApps.Brushes.Gray10}"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsUrgent}" Value="True">
-                                                        <Setter Property="Background" Value="#FFEBEE"/>
-                                                        <Setter Property="BorderBrush" Value="#DC3545"/>
-                                                        <Setter Property="BorderThickness" Value="2"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Border.Style>
+                        <Border Grid.Column="1" Background="#18FFC107" BorderBrush="#30FFC107" BorderThickness="1" CornerRadius="4" Padding="10,5">
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="AlertCircle" Width="14" Height="14" Foreground="#FFC107" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock Text="Bilgilendirme amaçlıdır." FontSize="11" Foreground="#FFC107" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- Tabs Container -->
+                <Border Style="{StaticResource Card}" Padding="0">
+                    <mah:MetroAnimatedSingleRowTabControl mah:HeaderedControlHelper.HeaderFontSize="14" Background="Transparent" BorderThickness="0">
+                        <TabControl.Resources>
+                            <Style TargetType="TabItem" BasedOn="{StaticResource MahApps.Styles.TabItem}">
+                                <Setter Property="Padding" Value="20,10"/>
+                                <Setter Property="Foreground" Value="{DynamicResource SecondaryText}"/>
+                            </Style>
+                        </TabControl.Resources>
+            
+                        <!-- Gelir Vergisi -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="ChartBar" Width="18" Height="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Gelir Vergisi"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Margin="20">
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBlock Text="Vergi Yılı" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                            <ComboBox x:Name="CmbIncomeYear" Height="45" SelectionChanged="CmbIncomeYear_SelectionChanged"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                            <TextBlock Text="Gelir Türü" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                            <ComboBox x:Name="CmbIncomeType" Height="45">
+                                                <ComboBoxItem Content="Ücret Geliri" Tag="ucret" IsSelected="True"/>
+                                                <ComboBoxItem Content="Ücret Dışı Gelir" Tag="ucretdisi"/>
+                                            </ComboBox>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock Text="Vergi Matrahı (TL)" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <mah:NumericUpDown x:Name="NumIncomeMatrah" Minimum="0" Maximum="999999999" Interval="1000" StringFormat="N2" Height="45" Margin="0,0,0,20"/>
+
+                                    <Button Click="BtnCalculateIncomeTax_Click" Style="{StaticResource AccentButtonStyle}" Height="45" Margin="0,0,0,25">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,10,0"/>
+                                            <TextBlock Text="HESAPLA" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Border x:Name="IncomeTaxResult" Visibility="Collapsed" Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="25">
+                                        <StackPanel>
+                                            <TextBlock Text="Hesaplama Sonucu" FontSize="18" FontWeight="Bold" Margin="0,0,0,20" Foreground="{DynamicResource HeaderText}"/>
+                                            
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Vergi Matrahı:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                                <TextBlock x:Name="TxtIncomeMatrahResult" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,8" Foreground="{DynamicResource HeaderText}"/>
+
+                                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Gelir Vergisi:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                                <TextBlock x:Name="TxtIncomeTaxResult" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#EF5350" Margin="0,8"/>
+
+                                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Net Tutar:" FontSize="16" FontWeight="Bold" Margin="0,15,0,8" Foreground="{DynamicResource HeaderText}"/>
+                                                <TextBlock x:Name="TxtIncomeNetResult" Grid.Row="2" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#66BB6A" Margin="0,15,0,8"/>
+                                            </Grid>
+
+                                            <Separator Margin="0,20" Opacity="0.5"/>
+
+                                            <TextBlock Text="Vergi Dilimleri Detayı" FontSize="14" FontWeight="Bold" Margin="0,0,0,15" Foreground="{DynamicResource HeaderText}"/>
+                                            <ItemsControl x:Name="IncomeTaxBrackets">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" Padding="15" Margin="0,0,0,10" CornerRadius="8">
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <StackPanel Grid.Column="0">
+                                                                    <TextBlock Text="{Binding Aciklama}" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource HeaderText}"/>
+                                                                    <TextBlock FontSize="11" Foreground="{DynamicResource SecondaryText}" Margin="0,4,0,0">
+                                                                        <Run Text="İlgili Matrah:"/>
+                                                                        <Run Text="{Binding Matrah, StringFormat='{}{0:N2} TL'}" FontWeight="SemiBold"/>
+                                                                    </TextBlock>
+                                                                </StackPanel>
+                                                                <TextBlock Grid.Column="1" Text="{Binding VergiTutari, StringFormat='{}{0:N2} TL'}" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TaxAccent}" VerticalAlignment="Center"/>
+                                                            </Grid>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <!-- KDV -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="ReceiptText" Width="18" Height="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="KDV"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Margin="20">
+                                    <TextBlock Text="Hesaplama Türü" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <ComboBox x:Name="CmbKdvOperation" Height="45" SelectionChanged="CmbKdvOperation_SelectionChanged" Margin="0,0,0,15">
+                                        <ComboBoxItem Content="KDV Dahil Hesaplama" Tag="dahil" IsSelected="True"/>
+                                        <ComboBoxItem Content="KDV Hariç Hesaplama" Tag="haric"/>
+                                    </ComboBox>
+
+                                    <TextBlock Text="KDV Oranı" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <ComboBox x:Name="CmbKdvRate" Height="45" Margin="0,0,0,15">
+                                        <ComboBoxItem Content="%1" Tag="1"/>
+                                        <ComboBoxItem Content="%8" Tag="8"/>
+                                        <ComboBoxItem Content="%10" Tag="10"/>
+                                        <ComboBoxItem Content="%18" Tag="18"/>
+                                        <ComboBoxItem Content="%20" Tag="20" IsSelected="True"/>
+                                    </ComboBox>
+
+                                    <TextBlock Text="Tutar (TL)" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <mah:NumericUpDown x:Name="NumKdvAmount" Minimum="0" Maximum="999999999" Interval="100" StringFormat="N2" Height="45" Margin="0,0,0,20"/>
+
+                                    <Button Click="BtnCalculateKdv_Click" Style="{StaticResource AccentButtonStyle}" Height="45" Margin="0,0,0,25">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,10,0"/>
+                                            <TextBlock Text="HESAPLA" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Border x:Name="KdvResult" Visibility="Collapsed" Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="25">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <StackPanel Grid.Column="0">
-                                                <TextBlock Text="{Binding VergiTuru}" FontSize="14" FontWeight="SemiBold"/>
-                                                <TextBlock Text="{Binding Aciklama}" FontSize="12" Foreground="{DynamicResource MahApps.Brushes.Gray2}"/>
-                                                <TextBlock FontSize="11" Foreground="{DynamicResource MahApps.Brushes.Gray4}">
-                                                    <Run Text="Son Tarih: "/>
-                                                    <Run Text="{Binding SonTarih, StringFormat=dd.MM.yyyy}"/>
-                                                </TextBlock>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Net Tutar:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                            <TextBlock x:Name="TxtKdvNetAmount" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,8" Foreground="{DynamicResource HeaderText}"/>
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="KDV Tutarı:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                            <TextBlock x:Name="TxtKdvAmount" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#EF5350" Margin="0,8"/>
+
+                                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Toplam:" FontSize="16" FontWeight="Bold" Margin="0,15,0,8" Foreground="{DynamicResource HeaderText}"/>
+                                            <TextBlock x:Name="TxtKdvTotal" Grid.Row="2" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#66BB6A" Margin="0,15,0,8"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <!-- Kurumlar Vergisi -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="OfficeBuilding" Width="18" Height="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Kurumlar Vergisi"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Margin="20">
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBlock Text="Vergi Yılı" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                            <ComboBox x:Name="CmbCorporateYear" Height="45" SelectionChanged="CmbCorporateYear_SelectionChanged"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Bottom">
+                                            <CheckBox x:Name="ChkFinancial" Content="Finans Kurumu" Height="45" VerticalContentAlignment="Center" Foreground="{DynamicResource HeaderText}"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock Text="Safi Kurum Kazancı (TL)" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <mah:NumericUpDown x:Name="NumCorporateMatrah" Minimum="0" Maximum="999999999" Interval="10000" StringFormat="N2" Height="45" Margin="0,0,0,20"/>
+
+                                    <Button Click="BtnCalculateCorporateTax_Click" Style="{StaticResource AccentButtonStyle}" Height="45" Margin="0,0,0,25">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,10,0"/>
+                                            <TextBlock Text="HESAPLA" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Border x:Name="CorporateTaxResult" Visibility="Collapsed" Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="25">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Safi Kurum Kazancı:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                            <TextBlock x:Name="TxtCorporateMatrah" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,8" Foreground="{DynamicResource HeaderText}"/>
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Vergi Oranı:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                            <TextBlock x:Name="TxtCorporateRate" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TaxAccent}" Margin="0,8"/>
+
+                                            <Separator Grid.Row="2" Grid.ColumnSpan="2" Margin="0,15" Opacity="0.5"/>
+
+                                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Kurumlar Vergisi:" FontSize="16" FontWeight="Bold" Margin="0,8" Foreground="{DynamicResource HeaderText}"/>
+                                            <TextBlock x:Name="TxtCorporateTax" Grid.Row="3" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#EF5350" Margin="0,8"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <!-- Kira Vergisi -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="HomeCity" Width="18" Height="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Kira Vergisi"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Margin="20">
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBlock Text="Gelir Yılı" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                            <ComboBox x:Name="CmbRentYear" Height="45" SelectionChanged="CmbRentYear_SelectionChanged"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
+                                            <CheckBox x:Name="ChkRentExemption" Content="Konut İstisnası" IsChecked="True" Foreground="{DynamicResource HeaderText}"/>
+                                            <TextBlock x:Name="TxtRentExemptionAmount" Text="(2026: 50.000 TL)" FontSize="10" Foreground="{DynamicResource SecondaryText}" Margin="25,2,0,0"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <Grid Margin="0,0,0,20">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBlock Text="Yıllık Kira Geliri" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                            <mah:NumericUpDown x:Name="NumRentIncome" Minimum="0" Maximum="999999999" Interval="1000" StringFormat="N2" Height="45"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                            <TextBlock Text="Diğer Gelirler" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                            <mah:NumericUpDown x:Name="NumOtherIncome" Minimum="0" Maximum="999999999" Interval="1000" StringFormat="N2" Value="0" Height="45"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <Button Click="BtnCalculateRentTax_Click" Style="{StaticResource AccentButtonStyle}" Height="45" Margin="0,0,0,25">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,10,0"/>
+                                            <TextBlock Text="HESAPLA" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Border x:Name="RentTaxResult" Visibility="Collapsed" Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="25">
+                                        <StackPanel>
+                                            <TextBlock Text="Hesaplama Sonucu" FontSize="18" FontWeight="Bold" Margin="0,0,0,20" Foreground="{DynamicResource HeaderText}"/>
+                                            
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Kira Geliri:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                                <TextBlock x:Name="TxtRentIncomeResult" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,8" Foreground="{DynamicResource HeaderText}"/>
+
+                                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Vergilendirilebilir Matrah:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                                <TextBlock x:Name="TxtRentTaxableAmount" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,8" Foreground="{DynamicResource HeaderText}"/>
+
+                                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Gelir Vergisi:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                                <TextBlock x:Name="TxtRentTax" Grid.Row="2" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#EF5350" Margin="0,8"/>
+
+                                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Net Kira Geliri:" FontSize="16" FontWeight="Bold" Margin="0,15,0,8" Foreground="{DynamicResource HeaderText}"/>
+                                                <TextBlock x:Name="TxtRentNet" Grid.Row="3" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#66BB6A" Margin="0,15,0,8"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <!-- Damga Vergisi -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="FileDocumentOutline" Width="18" Height="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Damga Vergisi"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Margin="20">
+                                    <TextBlock Text="İşlem Tutarı (TL)" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <mah:NumericUpDown x:Name="NumStampAmount" Minimum="0" Maximum="999999999" Interval="1000" StringFormat="N2" Height="45" Margin="0,0,0,20"/>
+
+                                    <Button Click="BtnCalculateStampTax_Click" Style="{StaticResource AccentButtonStyle}" Height="45" Margin="0,0,0,25">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,10,0"/>
+                                            <TextBlock Text="HESAPLA" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Border x:Name="StampResult" Visibility="Collapsed" Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="25">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="İşlem Tutarı:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                            <TextBlock x:Name="TxtStampBase" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,8" Foreground="{DynamicResource HeaderText}"/>
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Damga Vergisi (‰0.948):" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                            <TextBlock x:Name="TxtStampTax" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#EF5350" Margin="0,8"/>
+
+                                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Toplam Ödeme:" FontSize="16" FontWeight="Bold" Margin="0,15,0,8" Foreground="{DynamicResource HeaderText}"/>
+                                            <TextBlock x:Name="TxtStampTotal" Grid.Row="2" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#66BB6A" Margin="0,15,0,8"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <!-- MTV -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Car" Width="18" Height="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="MTV"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Margin="20">
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBlock Text="Vergi Yılı" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                            <ComboBox x:Name="CmbMtvYear" Height="45">
+                                                <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
+                                                <ComboBoxItem Content="2025" Tag="2025"/>
+                                            </ComboBox>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                            <TextBlock Text="Araç Türü" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                            <ComboBox x:Name="CmbVehicleType" Height="45" SelectionChanged="CmbVehicleType_SelectionChanged">
+                                                <ComboBoxItem Content="Otomobil" Tag="car" IsSelected="True"/>
+                                                <ComboBoxItem Content="Motosiklet" Tag="motorcycle"/>
+                                            </ComboBox>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <Grid Margin="0,0,0,20">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBlock Text="Motor Hacmi (cc)" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                            <mah:NumericUpDown x:Name="NumEngineSize" Minimum="0" Maximum="10000" Interval="10" Height="45"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" x:Name="PnlCarAge" Margin="10,0,0,0">
+                                            <TextBlock Text="Araç Yaşı" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                            <ComboBox x:Name="CmbCarAge" Height="45">
+                                                <ComboBoxItem Content="1 yaşında" Tag="1" IsSelected="True"/>
+                                                <ComboBoxItem Content="2 yaşında" Tag="2"/>
+                                                <ComboBoxItem Content="3 yaşında" Tag="3"/>
+                                                <ComboBoxItem Content="4 yaşında" Tag="4"/>
+                                                <ComboBoxItem Content="5+ yaşında" Tag="5"/>
+                                            </ComboBox>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <Button Click="BtnCalculateMtv_Click" Style="{StaticResource AccentButtonStyle}" Height="45" Margin="0,0,0,25">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,10,0"/>
+                                            <TextBlock Text="HESAPLA" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Border x:Name="MtvResult" Visibility="Collapsed" Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="25">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Yıllık MTV Tutarı:" FontSize="16" FontWeight="Bold" Foreground="{DynamicResource HeaderText}"/>
+                                            <TextBlock x:Name="TxtMtvAmount" Grid.Row="0" Grid.Column="1" FontSize="18" FontWeight="Bold" Foreground="#66BB6A"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <!-- KDV Tevkifatı -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="ScissorsCutting" Width="18" Height="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="KDV Tevkifatı"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Margin="20">
+                                    <TextBlock Text="Hizmet Kategorisi" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <ComboBox x:Name="CmbWithholdingCategory" Height="45" Margin="0,0,0,15"/>
+
+                                    <TextBlock Text="Hizmet Bedeli (KDV Hariç)" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <mah:NumericUpDown x:Name="NumWithholdingAmount" Minimum="0" Maximum="999999999" Interval="1000" StringFormat="N2" Height="45" Margin="0,0,0,20"/>
+
+                                    <Button Click="BtnCalculateWithholding_Click" Style="{StaticResource AccentButtonStyle}" Height="45" Margin="0,0,0,25">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,10,0"/>
+                                            <TextBlock Text="HESAPLA" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Border x:Name="WithholdingResult" Visibility="Collapsed" Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="25">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Hizmet Bedeli:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                            <TextBlock x:Name="TxtWithholdingBase" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,8" Foreground="{DynamicResource HeaderText}"/>
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="KDV Tutarı:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                            <TextBlock x:Name="TxtWithholdingVat" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,8" Foreground="{DynamicResource HeaderText}"/>
+
+                                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Tevkifat Tutarı:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                            <TextBlock x:Name="TxtWithholdingAmount" Grid.Row="2" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#FFA000" Margin="0,8"/>
+
+                                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Ödenecek KDV:" FontSize="16" FontWeight="Bold" Margin="0,15,0,8" Foreground="{DynamicResource HeaderText}"/>
+                                            <TextBlock x:Name="TxtWithholdingNet" Grid.Row="3" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#66BB6A" Margin="0,15,0,8"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="TrendingUp" Width="18" Height="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Değer Artış Kazancı"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Margin="20">
+                                    <TextBlock Text="Hesaplama Yılı" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <ComboBox x:Name="CmbCapitalGainYear" Height="45" Margin="0,0,0,15">
+                                        <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
+                                        <ComboBoxItem Content="2025" Tag="2025"/>
+                                    </ComboBox>
+
+                                    <TextBlock Text="Varlık Türü" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <ComboBox x:Name="CmbAssetType" Height="45" Margin="0,0,0,15">
+                                        <ComboBoxItem Content="Gayrimenkul" Tag="gayrimenkul" IsSelected="True"/>
+                                        <ComboBoxItem Content="Menkul Kıymet" Tag="menkul"/>
+                                    </ComboBox>
+
+                                    <TextBlock Text="Alış Tutarı (TL)" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <mah:NumericUpDown x:Name="NumPurchasePrice" Minimum="0" Maximum="999999999" Interval="10000" StringFormat="N2" Height="45" Margin="0,0,0,15"/>
+
+                                    <TextBlock Text="Satış Tutarı (TL)" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <mah:NumericUpDown x:Name="NumSalePrice" Minimum="0" Maximum="999999999" Interval="10000" StringFormat="N2" Height="45" Margin="0,0,0,20"/>
+
+                                    <Button Click="BtnCalculateCapitalGain_Click" Style="{StaticResource AccentButtonStyle}" Height="45" Margin="0,0,0,25">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,10,0"/>
+                                            <TextBlock Text="HESAPLA" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Border x:Name="CapitalGainResult" Visibility="Collapsed" Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="25">
+                                        <StackPanel>
+                                            <TextBlock Text="Hesaplama Sonucu" FontSize="18" FontWeight="Bold" Margin="0,0,0,20" Foreground="{DynamicResource HeaderText}"/>
+                                            
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Brüt Kazanç:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                                <TextBlock x:Name="TxtCapitalGain" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,8" Foreground="{DynamicResource HeaderText}"/>
+
+                                                <TextBlock Grid.Row="1" Grid.Column="0" Text="İstisna Tutarı:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                                <TextBlock x:Name="TxtCapitalExemption" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,8" Foreground="{DynamicResource HeaderText}"/>
+
+                                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Ödenecek Vergi:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                                <TextBlock x:Name="TxtCapitalTax" Grid.Row="2" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#EF5350" Margin="0,8"/>
+
+                                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Net Kazanç:" FontSize="16" FontWeight="Bold" Margin="0,15,0,8" Foreground="{DynamicResource HeaderText}"/>
+                                                <TextBlock x:Name="TxtCapitalNet" Grid.Row="3" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#66BB6A" Margin="0,15,0,8"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <!-- Değerli Konut Vergisi -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="HomeGroup" Width="18" Height="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Değerli Konut"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Margin="20">
+                                    <TextBlock Text="Hesaplama Yılı" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <ComboBox x:Name="CmbLuxuryYear" Height="45" Margin="0,0,0,15">
+                                        <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
+                                        <ComboBoxItem Content="2025" Tag="2025"/>
+                                    </ComboBox>
+
+                                    <TextBlock Text="Konut Değeri (TL)" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <mah:NumericUpDown x:Name="NumHouseValue" Minimum="0" Maximum="999999999" Interval="100000" StringFormat="N2" Height="45" Margin="0,0,0,15"/>
+
+                                    <Border Background="{DynamicResource AppBackground}" Padding="15" CornerRadius="8" Margin="0,0,0,20">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="Lightbulb" Width="16" Height="16" Foreground="{StaticResource TaxAccent}" Margin="0,0,10,0"/>
+                                            <TextBlock Text="2026 yılı için eşik değer: 13.000.000 TL" FontSize="12" Foreground="{DynamicResource SecondaryText}" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Button Click="BtnCalculateLuxuryHousing_Click" Style="{StaticResource AccentButtonStyle}" Height="45" Margin="0,0,0,25">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,10,0"/>
+                                            <TextBlock Text="HESAPLA" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Border x:Name="LuxuryResult" Visibility="Collapsed" Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="25">
+                                        <StackPanel>
+                                            <TextBlock Text="Hesaplama Sonucu" FontSize="18" FontWeight="Bold" Margin="0,0,0,20" Foreground="{DynamicResource HeaderText}"/>
+                                            
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Konut Değeri:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                                <TextBlock x:Name="TxtLuxuryValue" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,8" Foreground="{DynamicResource HeaderText}"/>
+
+                                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Vergi Tutarı:" FontSize="16" FontWeight="Bold" Margin="0,15,0,8" Foreground="{DynamicResource HeaderText}"/>
+                                                <TextBlock x:Name="TxtLuxuryTax" Grid.Row="1" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#EF5350" Margin="0,15,0,8"/>
+                                            </Grid>
+
+                                            <ItemsControl x:Name="LuxuryBrackets" Margin="0,10,0,0">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" Padding="12" Margin="0,5" CornerRadius="8">
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Text="{Binding Aciklama}" FontSize="12" Foreground="{DynamicResource HeaderText}"/>
+                                                                <TextBlock Grid.Column="1" Text="{Binding VergiTutari, StringFormat='{}{0:N2} TL'}" FontSize="12" FontWeight="Bold" Foreground="{StaticResource TaxAccent}"/>
+                                                            </Grid>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <!-- Emlak Vergisi -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="HomeModern" Width="18" Height="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Emlak Vergisi"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Margin="20">
+                                    <TextBlock Text="Hesaplama Yılı" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <ComboBox x:Name="CmbPropertyYear" Height="45" Margin="0,0,0,15">
+                                        <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
+                                        <ComboBoxItem Content="2025" Tag="2025"/>
+                                    </ComboBox>
+
+                                    <TextBlock Text="Emlak Türü" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <ComboBox x:Name="CmbPropertyType" Height="45" Margin="0,0,0,15">
+                                        <ComboBoxItem Content="Bina" Tag="bina" IsSelected="True"/>
+                                        <ComboBoxItem Content="Arazi" Tag="arazi"/>
+                                    </ComboBox>
+
+                                    <TextBlock Text="Emlak Değeri (TL)" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <mah:NumericUpDown x:Name="NumPropertyValue" Minimum="0" Maximum="999999999" Interval="10000" StringFormat="N2" Height="45" Margin="0,0,0,15"/>
+
+                                    <Border Background="{DynamicResource AppBackground}" Padding="15" CornerRadius="8" Margin="0,0,0,20">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="Information" Width="16" Height="16" Foreground="{StaticResource TaxAccent}" Margin="0,0,10,0"/>
+                                            <TextBlock Text="Bina: %0.2, Arazi: %0.1" FontSize="12" Foreground="{DynamicResource SecondaryText}" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Button Click="BtnCalculateProperty_Click" Style="{StaticResource AccentButtonStyle}" Height="45" Margin="0,0,0,25">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,10,0"/>
+                                            <TextBlock Text="HESAPLA" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Border x:Name="PropertyResult" Visibility="Collapsed" Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="25">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Emlak Değeri:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                            <TextBlock x:Name="TxtPropertyValue" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,8" Foreground="{DynamicResource HeaderText}"/>
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Yıllık Emlak Vergisi:" FontSize="16" FontWeight="Bold" Margin="0,15,0,8" Foreground="{DynamicResource HeaderText}"/>
+                                            <TextBlock x:Name="TxtPropertyTax" Grid.Row="1" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#EF5350" Margin="0,15,0,8"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <!-- ÖTV (Akaryakıt) -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="GasStation" Width="18" Height="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Akaryakıt ÖTV"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Margin="20">
+                                    <TextBlock Text="Yakıt Türü" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <ComboBox x:Name="CmbFuelType" Height="45" Margin="0,0,0,15">
+                                        <ComboBoxItem Content="Benzin" Tag="Benzin" IsSelected="True"/>
+                                        <ComboBoxItem Content="Motorin" Tag="Motorin"/>
+                                        <ComboBoxItem Content="LPG" Tag="LPG"/>
+                                    </ComboBox>
+
+                                    <TextBlock Text="Litre" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <mah:NumericUpDown x:Name="NumFuelLiters" Minimum="0" Maximum="10000" Interval="1" StringFormat="N2" Height="45" Margin="0,0,0,20"/>
+
+                                    <Border Background="{DynamicResource AppBackground}" Padding="15" CornerRadius="8" Margin="0,0,0,25">
+                                        <StackPanel>
+                                            <TextBlock Text="2026 ÖTV Oranları Tahmini:" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource HeaderText}" Margin="0,0,0,8"/>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <StackPanel Grid.Column="0">
+                                                    <TextBlock Text="Benzin" FontSize="11" Foreground="{DynamicResource SecondaryText}"/>
+                                                    <TextBlock Text="5.17 TL/L" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TaxAccent}"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1">
+                                                    <TextBlock Text="Motorin" FontSize="11" Foreground="{DynamicResource SecondaryText}"/>
+                                                    <TextBlock Text="3.44 TL/L" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TaxAccent}"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="2">
+                                                    <TextBlock Text="LPG" FontSize="11" Foreground="{DynamicResource SecondaryText}"/>
+                                                    <TextBlock Text="2.07 TL/L" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TaxAccent}"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Button Click="BtnCalculateSct_Click" Style="{StaticResource AccentButtonStyle}" Height="45" Margin="0,0,0,25">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,10,0"/>
+                                            <TextBlock Text="HESAPLA" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Border x:Name="SctResult" Visibility="Collapsed" Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="25">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Miktar (Litre):" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                            <TextBlock x:Name="TxtSctLiters" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,8" Foreground="{DynamicResource HeaderText}"/>
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="ÖTV Tutarı:" FontSize="16" FontWeight="Bold" Margin="0,15,0,8" Foreground="{DynamicResource HeaderText}"/>
+                                            <TextBlock x:Name="TxtSctAmount" Grid.Row="1" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#EF5350" Margin="0,15,0,8"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <!-- Veraset ve İntikal -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Gift" Width="18" Height="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Veraset ve İntikal"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Margin="20">
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBlock Text="Miras Yılı" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                            <ComboBox x:Name="CmbInheritanceYear" Height="45">
+                                                <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
+                                                <ComboBoxItem Content="2025" Tag="2025"/>
+                                            </ComboBox>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                            <TextBlock Text="Mirasçı Türü" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                            <ComboBox x:Name="CmbHeirType" Height="45">
+                                                <ComboBoxItem Content="Eş ve Çocuklar" Tag="escocuk" IsSelected="True"/>
+                                                <ComboBoxItem Content="Diğer Mirasçılar" Tag="diger"/>
+                                            </ComboBox>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <TextBlock Text="Miras Tutarı (TL)" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <mah:NumericUpDown x:Name="NumInheritanceAmount" Minimum="0" Maximum="999999999" Interval="10000" StringFormat="N2" Height="45" Margin="0,0,0,20"/>
+
+                                    <Border Background="{DynamicResource AppBackground}" Padding="15" CornerRadius="8" Margin="0,0,0,25">
+                                        <StackPanel>
+                                            <TextBlock Text="2026 İstisna Tutarları:" FontSize="12" FontWeight="Bold" Foreground="{DynamicResource HeaderText}" Margin="0,0,0,8"/>
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                                <iconPacks:PackIconMaterial Kind="CircleSmall" Width="12" Height="12" Foreground="{StaticResource TaxAccent}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                                <TextBlock Text="Eş ve Çocuklar: 440.000 TL" FontSize="12" Foreground="{DynamicResource SecondaryText}"/>
                                             </StackPanel>
-                                            <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right">
-                                                <TextBlock FontSize="24" FontWeight="Bold" HorizontalAlignment="Center">
-                                                    <TextBlock.Style>
-                                                        <Style TargetType="TextBlock">
-                                                            <Setter Property="Text" Value="{Binding KalanGun}"/>
-                                                            <Setter Property="Foreground" Value="{DynamicResource MahApps.Brushes.Gray2}"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Kind="CircleSmall" Width="12" Height="12" Foreground="{StaticResource TaxAccent}" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                                <TextBlock Text="Diğer Mirasçılar: 110.000 TL" FontSize="12" Foreground="{DynamicResource SecondaryText}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Button Click="BtnCalculateInheritance_Click" Style="{StaticResource AccentButtonStyle}" Height="45" Margin="0,0,0,25">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,10,0"/>
+                                            <TextBlock Text="HESAPLA" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Border x:Name="InheritanceResult" Visibility="Collapsed" Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="25">
+                                        <StackPanel>
+                                            <TextBlock Text="Hesaplama Sonucu" FontSize="18" FontWeight="Bold" Margin="0,0,0,20" Foreground="{DynamicResource HeaderText}"/>
+                                            
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Miras Tutarı:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                                <TextBlock x:Name="TxtInheritanceAmount" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,8" Foreground="{DynamicResource HeaderText}"/>
+
+                                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Vergi Tutarı:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                                <TextBlock x:Name="TxtInheritanceTax" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#EF5350" Margin="0,8"/>
+
+                                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Net Miras:" FontSize="16" FontWeight="Bold" Margin="0,15,0,8" Foreground="{DynamicResource HeaderText}"/>
+                                                <TextBlock x:Name="TxtInheritanceNet" Grid.Row="2" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#66BB6A" Margin="0,15,0,8"/>
+                                            </Grid>
+
+                                            <ItemsControl x:Name="InheritanceBrackets" Margin="0,15,0,0">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" Padding="12" Margin="0,5" CornerRadius="8">
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="*"/>
+                                                                    <ColumnDefinition Width="Auto"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Text="{Binding Aciklama}" FontSize="12" Foreground="{DynamicResource HeaderText}"/>
+                                                                <TextBlock Grid.Column="1" Text="{Binding VergiTutari, StringFormat='{}{0:N2} TL'}" FontSize="12" FontWeight="Bold" Foreground="{StaticResource TaxAccent}"/>
+                                                            </Grid>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <!-- Vergi Gecikme Faizi -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="TimerSand" Width="18" Height="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Gecikme Faizi"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Margin="20">
+                                    <TextBlock Text="Hesaplama Yılı" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <ComboBox x:Name="CmbDelayYear" Height="45" Margin="0,0,0,15">
+                                        <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
+                                        <ComboBoxItem Content="2025" Tag="2025"/>
+                                        <ComboBoxItem Content="2024" Tag="2024"/>
+                                    </ComboBox>
+
+                                    <Grid Margin="0,0,0,20">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBlock Text="Vergi Borcu (TL)" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                            <mah:NumericUpDown x:Name="NumTaxDebt" Minimum="0" Maximum="999999999" Interval="1000" StringFormat="N2" Height="45"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                            <TextBlock Text="Gecikme Gün Sayısı" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                            <mah:NumericUpDown x:Name="NumDelayDays" Minimum="1" Maximum="3650" Interval="1" Height="45"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <Button Click="BtnCalculateDelay_Click" Style="{StaticResource AccentButtonStyle}" Height="45" Margin="0,0,0,25">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="Calculator" Width="20" Height="20" Margin="0,0,10,0"/>
+                                            <TextBlock Text="HESAPLA" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Border x:Name="DelayResult" Visibility="Collapsed" Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="25">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Ana Borç:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                            <TextBlock x:Name="TxtDelayDebt" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,8" Foreground="{DynamicResource HeaderText}"/>
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Gecikme Faizi:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                            <TextBlock x:Name="TxtDelayInterest" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#FFA000" Margin="0,8"/>
+
+                                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Toplam Ödenecek:" FontSize="16" FontWeight="Bold" Margin="0,15,0,8" Foreground="{DynamicResource HeaderText}"/>
+                                            <TextBlock x:Name="TxtDelayTotal" Grid.Row="2" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#EF5350" Margin="0,15,0,8"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <!-- YIL KARŞILAŞTIRMA -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="ChartBoxPlusOutline" Width="18" Height="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Yıl Karşılaştırma"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Margin="20">
+                                    <TextBlock Text="Vergi Matrahı (TL)" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                    <mah:NumericUpDown x:Name="NumCompareMatrah" Minimum="0" Maximum="999999999" Interval="10000" StringFormat="N2" Height="45" Margin="0,0,0,15"/>
+
+                                    <CheckBox x:Name="ChkCompareWage" Content="Ücret Geliri (Maaş)" IsChecked="True" Margin="0,0,0,20"/>
+
+                                    <Button Click="BtnCompareYears_Click" Style="{StaticResource AccentButtonStyle}" Height="45" Margin="0,0,0,25">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="ChartBoxPlusOutline" Width="20" Height="20" Margin="0,0,10,0"/>
+                                            <TextBlock Text="YILLARI KARŞILAŞTIR" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Border x:Name="CompareResult" Visibility="Collapsed" Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="20">
+                                        <StackPanel>
+                                            <TextBlock Text="Yıllara Göre Vergi Analizi" FontSize="18" FontWeight="Bold" Margin="0,0,0,20" Foreground="{DynamicResource HeaderText}"/>
+                                            
+                                            <DataGrid x:Name="CompareGrid" 
+                                                     AutoGenerateColumns="False" 
+                                                     CanUserAddRows="False" 
+                                                     IsReadOnly="True" 
+                                                     MaxHeight="400"
+                                                     Background="Transparent"
+                                                     BorderThickness="0"
+                                                     HorizontalGridLinesBrush="{DynamicResource CardBorderBrush}"
+                                                     VerticalGridLinesBrush="{DynamicResource CardBorderBrush}">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Header="Yıl" Binding="{Binding Year}" Width="80"/>
+                                                    <DataGridTextColumn Header="Matrah" Binding="{Binding Matrah, StringFormat=N0}" Width="*"/>
+                                                    <DataGridTextColumn Header="Vergi" Binding="{Binding VergiTutari, StringFormat=N0}" Width="*"/>
+                                                    <DataGridTextColumn Header="Net" Binding="{Binding NetTutar, StringFormat=N0}" Width="*"/>
+                                                    <DataGridTextColumn Header="Oran %" Binding="{Binding EfektifVergiOrani, StringFormat=N2}" Width="100"/>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <!-- VERGİ PLANLAMA -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Lightbulb" Width="18" Height="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Vergi Planlama"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Margin="20">
+                                    <Grid Margin="0,0,0,15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                            <TextBlock Text="Planlama Yılı" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                            <ComboBox x:Name="CmbPlanYear" Height="45">
+                                                <ComboBoxItem Content="2026" Tag="2026" IsSelected="True"/>
+                                                <ComboBoxItem Content="2025" Tag="2025"/>
+                                            </ComboBox>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                            <TextBlock Text="Yıllık Brüt Gelir (TL)" Foreground="{DynamicResource SecondaryText}" FontSize="11" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                            <mah:NumericUpDown x:Name="NumPlanIncome" Minimum="0" Maximum="999999999" Interval="10000" StringFormat="N2" Height="45"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <Button Click="BtnPlanTax_Click" Style="{StaticResource AccentButtonStyle}" Height="45" Margin="0,0,0,25">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="Lightbulb" Width="20" Height="20" Margin="0,0,10,0"/>
+                                            <TextBlock Text="ANALİZ YAP" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Border x:Name="PlanResult" Visibility="Collapsed" Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="25">
+                                        <StackPanel>
+                                            <TextBlock Text="Planlama Analiz Sonuçları" FontSize="18" FontWeight="Bold" Margin="0,0,0,20" Foreground="{DynamicResource HeaderText}"/>
+                                            
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Yıllık Toplam Gelir:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                                <TextBlock x:Name="TxtPlanIncome" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,8" Foreground="{DynamicResource HeaderText}"/>
+
+                                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Mevcut Vergi Yükü:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                                <TextBlock x:Name="TxtPlanNormalTax" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#EF5350" Margin="0,8"/>
+
+                                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Optimize Edilmiş Vergi:" FontSize="14" Margin="0,8" Foreground="{DynamicResource SecondaryText}"/>
+                                                <TextBlock x:Name="TxtPlanSplitTax" Grid.Row="2" Grid.Column="1" FontSize="14" FontWeight="Bold" Margin="0,8" Foreground="{DynamicResource HeaderText}"/>
+
+                                                <TextBlock Grid.Row="3" Grid.Column="0" Text="💰 Potansiyel Vergi Tasarrufu:" FontSize="16" FontWeight="Bold" Margin="0,15,0,8" Foreground="{DynamicResource HeaderText}"/>
+                                                <TextBlock x:Name="TxtPlanSavings" Grid.Row="3" Grid.Column="1" FontSize="16" FontWeight="Bold" Foreground="#66BB6A" Margin="0,15,0,8"/>
+                                            </Grid>
+
+                                            <Separator Background="{DynamicResource CardBorderBrush}" Margin="0,15"/>
+
+                                            <TextBlock Text="💡 Stratejik Öneriler" FontSize="14" FontWeight="Bold" Margin="0,0,0,15" Foreground="{DynamicResource HeaderText}"/>
+                                            <ItemsControl x:Name="PlanRecommendations">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                                                            <iconPacks:PackIconMaterial Kind="CheckCircle" Width="14" Height="14" Foreground="#66BB6A" VerticalAlignment="Top" Margin="0,2,12,0"/>
+                                                            <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="13" Foreground="{DynamicResource SecondaryText}"/>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+
+                        <!-- VERGİ TAKVİMİ -->
+                        <TabItem>
+                            <TabItem.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="CalendarAlert" Width="18" Height="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Vergi Takvimi"/>
+                                </StackPanel>
+                            </TabItem.Header>
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel Margin="20">
+                                    <Grid Margin="0,0,0,25">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="Yaklaşan Vergi Tarihleri" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource HeaderText}"/>
+                                            <TextBlock Text="Önemli beyanname ve ödeme sürelerini takip edin" FontSize="13" Foreground="{DynamicResource SecondaryText}" Margin="0,5,0,0"/>
+                                        </StackPanel>
+                                        <Button Grid.Column="1" Click="BtnExportTaxReport_Click" Style="{StaticResource OutlineButtonStyle}" Height="40" Padding="20,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Kind="FileExcel" Width="18" Height="18" Foreground="#2E7D32" Margin="0,0,10,0"/>
+                                                <TextBlock Text="Raporu Dışa Aktar" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+                                    
+                                    <ItemsControl x:Name="DeadlineList">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Margin="0,0,0,12" Padding="20,15" CornerRadius="12" BorderThickness="1">
+                                                    <Border.Style>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="Background" Value="{DynamicResource CardBackground}"/>
+                                                            <Setter Property="BorderBrush" Value="{DynamicResource CardBorderBrush}"/>
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding IsUrgent}" Value="True">
-                                                                    <Setter Property="Foreground" Value="#DC3545"/>
+                                                                    <Setter Property="Background" Value="#10EF5350"/>
+                                                                    <Setter Property="BorderBrush" Value="#40EF5350"/>
                                                                 </DataTrigger>
                                                             </Style.Triggers>
                                                         </Style>
-                                                    </TextBlock.Style>
-                                                </TextBlock>
-                                                <TextBlock Text="gün" FontSize="11" Foreground="{DynamicResource MahApps.Brushes.Gray4}" HorizontalAlignment="Center"/>
-                                            </StackPanel>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-
-                        <Border Margin="0,20,0,0" Background="#E8F5E9" CornerRadius="8" Padding="15">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="FileExcel" Width="24" Height="24" Foreground="#28A745" Margin="0,0,15,0"/>
-                                <Button Click="BtnExportTaxReport_Click" Style="{StaticResource AccentButtonStyle}" Height="35">
-                                    <TextBlock Text="Vergi Raporunu Excel'e Aktar"/>
-                                </Button>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
-                </ScrollViewer>
-            </TabItem>
-            </TabControl>
-        </Border>
+                                                    </Border.Style>
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Grid.Column="0">
+                                                            <TextBlock Text="{Binding VergiTuru}" FontSize="15" FontWeight="Bold" Foreground="{DynamicResource HeaderText}"/>
+                                                            <TextBlock Text="{Binding Aciklama}" FontSize="13" Foreground="{DynamicResource SecondaryText}" Margin="0,5,0,8" TextWrapping="Wrap"/>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <iconPacks:PackIconMaterial Kind="CalendarAccount" Width="14" Height="14" Foreground="{StaticResource TaxAccent}" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                                                <TextBlock FontSize="12" Foreground="{DynamicResource HeaderText}" VerticalAlignment="Center">
+                                                                    <Run Text="Son Tarih: " Foreground="{DynamicResource SecondaryText}"/>
+                                                                    <Run Text="{Binding SonTarih, StringFormat=dd.MM.yyyy}" FontWeight="SemiBold"/>
+                                                                </TextBlock>
+                                                            </StackPanel>
+                                                        </StackPanel>
+                                                        <Border Grid.Column="1" VerticalAlignment="Center" Padding="15,10" CornerRadius="8" MinWidth="80">
+                                                            <Border.Style>
+                                                                <Style TargetType="Border">
+                                                                    <Setter Property="Background" Value="{DynamicResource AppBackground}"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsUrgent}" Value="True">
+                                                                            <Setter Property="Background" Value="#EF5350"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Border.Style>
+                                                            <StackPanel HorizontalAlignment="Center">
+                                                                <TextBlock FontSize="20" FontWeight="Bold" HorizontalAlignment="Center">
+                                                                    <TextBlock.Style>
+                                                                        <Style TargetType="TextBlock">
+                                                                            <Setter Property="Text" Value="{Binding KalanGun}"/>
+                                                                            <Setter Property="Foreground" Value="{DynamicResource HeaderText}"/>
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding IsUrgent}" Value="True">
+                                                                                    <Setter Property="Foreground" Value="White"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBlock.Style>
+                                                                </TextBlock>
+                                                                <TextBlock Text="GÜN KALDI" FontSize="9" FontWeight="Bold" HorizontalAlignment="Center">
+                                                                    <TextBlock.Style>
+                                                                        <Style TargetType="TextBlock">
+                                                                            <Setter Property="Foreground" Value="{DynamicResource SecondaryText}"/>
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding IsUrgent}" Value="True">
+                                                                                    <Setter Property="Foreground" Value="White"/>
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBlock.Style>
+                                                                </TextBlock>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </TabItem>
+                        </mah:MetroAnimatedSingleRowTabControl>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
 
         <!-- Loading Overlay -->
-        <Grid x:Name="LoadingOverlay" Grid.RowSpan="3" Background="#80000000" Visibility="Collapsed">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <mah:ProgressRing IsActive="True" Foreground="{StaticResource AccentGoldBrush}" Width="60" Height="60"/>
-                <TextBlock Text="Vergi oranları güncelleniyor..." Foreground="White" FontSize="16" Margin="0,20,0,0" HorizontalAlignment="Center"/>
-            </StackPanel>
+        <Grid x:Name="LoadingOverlay" Grid.RowSpan="3" Background="#AA000000" Visibility="Collapsed">
+            <Border Background="{DynamicResource CardBackground}" CornerRadius="15" Padding="40,30" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" Width="300">
+                <StackPanel>
+                    <mah:ProgressRing IsActive="True" Foreground="{StaticResource TaxAccent}" Width="50" Height="50"/>
+                    <TextBlock Text="Vergi Oranları Güncelleniyor" Foreground="{DynamicResource HeaderText}" FontSize="16" FontWeight="Bold" Margin="0,20,0,5" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Lütfen bekleyiniz..." Foreground="{DynamicResource SecondaryText}" FontSize="13" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
         </Grid>
     </Grid>
 </Page>

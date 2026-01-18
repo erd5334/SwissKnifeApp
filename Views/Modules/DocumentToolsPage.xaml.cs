@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Windows.Graphics.Imaging;
 using Windows.Media.Ocr;
 using Windows.Storage;
@@ -37,6 +38,22 @@ namespace SwissKnifeApp.Views.Modules
         private void UpdatePreview()
         {
             if (MarkdownPreview == null || MarkdownEditor == null) return;
+            
+            bool isDark = false;
+            if (Application.Current.Resources["AppBackground"] is SolidColorBrush brush)
+            {
+                // Simple darkness check
+                isDark = brush.Color.R < 128;
+            }
+
+            string bgColor = isDark ? "#1E1E1E" : "#FFFFFF";
+            string textColor = isDark ? "#E0E0E0" : "#333333";
+            string headerColor = isDark ? "#64B5F6" : "#2196F3";
+            string subHeaderColor = isDark ? "#90CAF9" : "#1976D2";
+            string codeBg = isDark ? "#2D2D2D" : "#f8f9fa";
+            string blockquoteBg = isDark ? "#252525" : "#f5fafd";
+            string borderColor = isDark ? "#444444" : "#eeeeee";
+
             string html = ConvertMarkdownToHtml(MarkdownEditor.Text);
             string styledHtml = $@"
                 <html>
@@ -44,15 +61,15 @@ namespace SwissKnifeApp.Views.Modules
                     <meta charset='UTF-8'>
                     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
                     <style>
-                        body {{ font-family: 'Segoe UI', sans-serif; padding: 25px; line-height: 1.7; color: #333; background: #fff; }}
-                        h1 {{ color: #2196f3; border-bottom: 2px solid #e3f2fd; padding-bottom: 10px; }}
-                        h2 {{ color: #1976d2; margin-top: 25px; }}
-                        code {{ background: #f8f9fa; padding: 3px 6px; border-radius: 4px; font-family: 'Consolas', monospace; color: #e83e8c; font-size: 0.9em; }}
+                        body {{ font-family: 'Segoe UI', sans-serif; padding: 25px; line-height: 1.7; color: {textColor}; background: {bgColor}; }}
+                        h1 {{ color: {headerColor}; border-bottom: 2px solid {borderColor}; padding-bottom: 10px; }}
+                        h2 {{ color: {subHeaderColor}; margin-top: 25px; }}
+                        code {{ background: {codeBg}; padding: 3px 6px; border-radius: 4px; font-family: 'Consolas', monospace; color: #e83e8c; font-size: 0.9em; }}
                         pre {{ background: #2c3e50; color: #f8f9fa; padding: 15px; border-radius: 6px; overflow-x: auto; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }}
-                        blockquote {{ border-left: 5px solid #bbdefb; margin: 20px 0; padding: 10px 20px; color: #607d8b; background: #f5fafd; font-style: italic; }}
+                        blockquote {{ border-left: 5px solid {headerColor}; margin: 20px 0; padding: 10px 20px; color: {textColor}; background: {blockquoteBg}; font-style: italic; }}
                         ul, ol {{ padding-left: 25px; }}
                         li {{ margin-bottom: 8px; }}
-                        hr {{ border: 0; border-top: 1px solid #eee; margin: 30px 0; }}
+                        hr {{ border: 0; border-top: 1px solid {borderColor}; margin: 30px 0; }}
                     </style>
                 </head>
                 <body>{html}</body>
@@ -115,6 +132,7 @@ namespace SwissKnifeApp.Views.Modules
                 _selectedImagePath = openFileDialog.FileName;
                 ImgPreview.Source = new System.Windows.Media.Imaging.BitmapImage(new Uri(_selectedImagePath));
                 ImgPreview.Visibility = Visibility.Visible;
+                ImgPreviewBorder.Visibility = Visibility.Visible;
             }
         }
 

@@ -1,4 +1,6 @@
-﻿using MahApps.Metro.Controls;
+﻿using ControlzEx.Theming;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Theming;
 using SwissKnifeApp.Views.Modules;
 using System;
 using System.Collections.Generic;
@@ -23,13 +25,15 @@ namespace SwissKnifeApp
         // All menu buttons for search functionality
         private List<Button> allMenuButtons = new();
 
-        // Favorites
+        // Favorites and Settings
         private HashSet<string> favoriteModules = new();
         private const string FAVORITES_FILE = "favorites.json";
+        private const string SETTINGS_FILE = "settings.json";
 
         public MainWindow()
         {
             InitializeComponent();
+            LoadSettings(); // Load settings (theme)
             Loaded += MainWindow_Loaded;
             SourceInitialized += MainWindow_SourceInitialized;
         }
@@ -388,19 +392,10 @@ namespace SwissKnifeApp
         {
             isDarkMode = true;
 
-            // Update MainWindow resources
-            this.Resources["SidebarBackground"] = new SolidColorBrush(Color.FromRgb(30, 30, 30));
-            this.Resources["SidebarHeaderBackground"] = new SolidColorBrush(Color.FromRgb(20, 20, 20));
-            this.Resources["SidebarHeaderForeground"] = new SolidColorBrush(Colors.White);
-            this.Resources["MenuItemHoverBackground"] = new SolidColorBrush(Color.FromRgb(50, 50, 50));
-            this.Resources["MenuItemActiveBackground"] = new SolidColorBrush(Color.FromRgb(33, 150, 243));
-            this.Resources["MenuItemActiveForeground"] = new SolidColorBrush(Colors.White);
-            this.Resources["MenuItemForeground"] = new SolidColorBrush(Colors.White);
-            this.Resources["CategoryHeaderBackground"] = new SolidColorBrush(Color.FromRgb(40, 40, 40));
-            this.Resources["AccentColor"] = new SolidColorBrush(Color.FromRgb(33, 150, 243));
-            this.Resources["MainBackground"] = new SolidColorBrush(Color.FromRgb(25, 25, 25));
-            
-            // Update Application-wide resources (for all modules)
+            // Apply MahApps Dark Theme
+            ThemeManager.Current.ChangeTheme(Application.Current, "Dark.Blue");
+
+            // Update Application-wide custom resources
             Application.Current.Resources["AppBackground"] = new SolidColorBrush(Color.FromRgb(25, 25, 25));
             Application.Current.Resources["AppForeground"] = new SolidColorBrush(Colors.White);
             Application.Current.Resources["CardBackground"] = new SolidColorBrush(Color.FromRgb(30, 30, 30));
@@ -413,25 +408,26 @@ namespace SwissKnifeApp
             Application.Current.Resources["AccentBrush"] = new SolidColorBrush(Color.FromRgb(33, 150, 243));
             Application.Current.Resources["HeaderText"] = new SolidColorBrush(Colors.White);
             Application.Current.Resources["SecondaryText"] = new SolidColorBrush(Color.FromRgb(189, 195, 199));
+
+            // Update Sidebar specific resources (Local to Window)
+            this.Resources["SidebarBackground"] = new SolidColorBrush(Color.FromRgb(35, 35, 35));
+            this.Resources["MenuItemForeground"] = new SolidColorBrush(Color.FromRgb(224, 224, 224));
+            this.Resources["CategoryHeaderBackground"] = new SolidColorBrush(Color.FromRgb(45, 45, 45));
+            this.Resources["MenuItemHoverBackground"] = new SolidColorBrush(Color.FromRgb(55, 55, 55));
+            this.Resources["SidebarHeaderBackground"] = new SolidColorBrush(Color.FromRgb(40, 40, 40));
+            this.Resources["MainBackground"] = new SolidColorBrush(Color.FromRgb(25, 25, 25));
+
+            SaveSettings();
         }
 
         private void ApplyLightTheme()
         {
             isDarkMode = false;
 
-            // Restore MainWindow light colors
-            this.Resources["SidebarBackground"] = new SolidColorBrush(Color.FromRgb(248, 249, 250));
-            this.Resources["SidebarHeaderBackground"] = new SolidColorBrush(Color.FromRgb(44, 62, 80));
-            this.Resources["SidebarHeaderForeground"] = new SolidColorBrush(Colors.White);
-            this.Resources["MenuItemHoverBackground"] = new SolidColorBrush(Color.FromRgb(227, 242, 253));
-            this.Resources["MenuItemActiveBackground"] = new SolidColorBrush(Color.FromRgb(33, 150, 243));
-            this.Resources["MenuItemActiveForeground"] = new SolidColorBrush(Colors.White);
-            this.Resources["MenuItemForeground"] = new SolidColorBrush(Color.FromRgb(44, 62, 80));
-            this.Resources["CategoryHeaderBackground"] = new SolidColorBrush(Color.FromRgb(236, 239, 241));
-            this.Resources["AccentColor"] = new SolidColorBrush(Color.FromRgb(33, 150, 243));
-            this.Resources["MainBackground"] = new SolidColorBrush(Colors.White);
-            
-            // Restore Application-wide light colors (for all modules)
+            // Apply MahApps Light Theme
+            ThemeManager.Current.ChangeTheme(Application.Current, "Light.Blue");
+
+            // Restore Application-wide custom light colors
             Application.Current.Resources["AppBackground"] = new SolidColorBrush(Colors.White);
             Application.Current.Resources["AppForeground"] = new SolidColorBrush(Color.FromRgb(44, 62, 80));
             Application.Current.Resources["CardBackground"] = new SolidColorBrush(Colors.White);
@@ -444,6 +440,57 @@ namespace SwissKnifeApp
             Application.Current.Resources["AccentBrush"] = new SolidColorBrush(Color.FromRgb(33, 150, 243));
             Application.Current.Resources["HeaderText"] = new SolidColorBrush(Color.FromRgb(44, 62, 80));
             Application.Current.Resources["SecondaryText"] = new SolidColorBrush(Color.FromRgb(127, 140, 141));
+
+            // Restore Sidebar local resources
+            this.Resources["SidebarBackground"] = new SolidColorBrush(Color.FromRgb(248, 249, 250));
+            this.Resources["MenuItemForeground"] = new SolidColorBrush(Color.FromRgb(44, 62, 80));
+            this.Resources["CategoryHeaderBackground"] = new SolidColorBrush(Color.FromRgb(236, 239, 241));
+            this.Resources["MenuItemHoverBackground"] = new SolidColorBrush(Color.FromRgb(227, 242, 253));
+            this.Resources["SidebarHeaderBackground"] = new SolidColorBrush(Color.FromRgb(44, 62, 80));
+            this.Resources["MainBackground"] = new SolidColorBrush(Colors.White);
+
+            SaveSettings();
+        }
+
+        private void LoadSettings()
+        {
+            try
+            {
+                string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SETTINGS_FILE);
+                if (File.Exists(filePath))
+                {
+                    string json = File.ReadAllText(filePath);
+                    var settings = System.Text.Json.JsonSerializer.Deserialize<WindowSettings>(json);
+                    if (settings != null)
+                    {
+                        isDarkMode = settings.IsDarkMode;
+                        if (isDarkMode)
+                        {
+                            ApplyDarkTheme();
+                            // Update toggle button state
+                            Loaded += (s, e) => { btnThemeToggle.IsChecked = true; };
+                        }
+                    }
+                }
+            }
+            catch { }
+        }
+
+        private void SaveSettings()
+        {
+            try
+            {
+                string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SETTINGS_FILE);
+                var settings = new WindowSettings { IsDarkMode = isDarkMode };
+                string json = System.Text.Json.JsonSerializer.Serialize(settings);
+                File.WriteAllText(filePath, json);
+            }
+            catch { }
+        }
+
+        private class WindowSettings
+        {
+            public bool IsDarkMode { get; set; }
         }
 
         #endregion

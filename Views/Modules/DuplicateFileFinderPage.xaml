@@ -5,403 +5,275 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:vm="clr-namespace:SwissKnifeApp.ViewModels"
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       xmlns:h="clr-namespace:SwissKnifeApp.Helpers"
       mc:Ignorable="d" 
-      d:DesignHeight="700" d:DesignWidth="1000"
-      Background="{DynamicResource AppBackground}">
+      d:DesignHeight="850" d:DesignWidth="1100"
+      Background="{DynamicResource AppBackground}"
+      Title="Yinelenen Dosya Bulucu">
 
     <Page.Resources>
         <h:BoolNegationConverter x:Key="BoolNegationConverter"/>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Page.Resources>
 
     <Page.DataContext>
         <vm:DuplicateFileFinderViewModel/>
     </Page.DataContext>
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="20">
-        <StackPanel MaxWidth="1400">
-            <!-- Header -->
-            <TextBlock Text="🔍 Yinelenen Dosya Bulucu" 
-                       FontSize="28" 
-                       FontWeight="Bold" 
-                       Foreground="{DynamicResource HeaderText}"
-                       Margin="0,0,0,10"/>
-            <TextBlock Text="Hash-based duplicate detection, toplu silme ve disk alanı kazancı" 
-                       FontSize="14" 
-                       Foreground="{DynamicResource SecondaryText}"
-                       Margin="0,0,0,30"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-            <!-- Settings Card -->
-            <Border Background="{DynamicResource CardBackground}" 
-                    BorderBrush="{DynamicResource CardBorderBrush}" 
-                    BorderThickness="1" 
-                    CornerRadius="8" 
-                    Padding="20" 
-                    Margin="0,0,0,20">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                        <iconPacks:PackIconMaterial Kind="FolderSearch" 
-                                                    Width="24" Height="24" 
-                                                    Foreground="{DynamicResource AccentBrush}"
-                                                    VerticalAlignment="Center"
-                                                    Margin="0,0,10,0"/>
-                        <TextBlock Text="Tarama Ayarları" 
-                                   FontSize="20" 
-                                   FontWeight="SemiBold" 
-                                   Foreground="{DynamicResource HeaderText}"
-                                   VerticalAlignment="Center"/>
-                    </StackPanel>
+        <!-- Modern Header -->
+        <Border Grid.Row="0" Padding="25,20" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="FileMultiple" Width="30" Height="30" VerticalAlignment="Center" Foreground="{DynamicResource AccentBrush}"/>
+                    <TextBlock Text="Yinelenen Dosya Bulucu" FontSize="24" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource HeaderText}"/>
+                </StackPanel>
+                <TextBlock Text="Hash tabanlı kopya tespiti ile disk alanından tasarruf edin (MD5, SHA1, SHA256)" FontSize="14" Foreground="{DynamicResource SecondaryText}" Margin="45,5,0,0"/>
+            </StackPanel>
+        </Border>
 
-                    <!-- Folder Selection -->
-                    <TextBlock Text="Klasör:" 
-                               FontSize="13" 
-                               Foreground="{DynamicResource AppForeground}"
-                               Margin="0,0,0,5"/>
-                    <Grid Margin="0,0,0,15">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20">
+            <StackPanel MaxWidth="1400">
+                <!-- Main Controls Grid -->
+                <Grid Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="350"/>
+                    </Grid.ColumnDefinitions>
 
-                        <TextBox Grid.Column="0" 
-                                 Text="{Binding SearchPath, UpdateSourceTrigger=PropertyChanged}" 
-                                 IsReadOnly="True"
-                                 FontSize="13"
-                                 Padding="10"
-                                 Background="{DynamicResource InputBackground}"
-                                 Foreground="{DynamicResource InputForeground}"
-                                 BorderBrush="{DynamicResource InputBorderBrush}"
-                                 Margin="0,0,10,0"/>
+                    <!-- Scan Settings Card -->
+                    <Border Grid.Column="0" Style="{StaticResource Card}" Margin="0,0,20,0">
+                        <StackPanel>
+                            <TextBlock Text="Tarama Ayarları" Style="{StaticResource SectionHeader}"/>
+                            
+                            <!-- Folder Selection -->
+                            <TextBlock Text="Hedef Klasör" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,8" FontSize="12"/>
+                            <Grid Margin="0,0,0,20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                        <Button Grid.Column="1" 
-                                Content="📁 Gözat" 
-                                Command="{Binding BrowseFolderCommand}"
-                                FontSize="13"
-                                Padding="15,10"
-                                Background="{DynamicResource ButtonBackground}"
-                                Foreground="{DynamicResource ButtonForeground}"
-                                BorderThickness="0"
-                                Cursor="Hand"/>
-                    </Grid>
+                                <TextBox Text="{Binding SearchPath, UpdateSourceTrigger=PropertyChanged}" 
+                                         IsReadOnly="True" Style="{StaticResource RoundedTextBox}" 
+                                         Padding="12,10" Margin="0,0,10,0"/>
 
-                    <!-- Options -->
-                    <Grid Margin="0,0,0,15">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                                <Button Grid.Column="1" Command="{Binding BrowseFolderCommand}" 
+                                        Style="{StaticResource OutlineButtonStyle}" Padding="20,0" Height="40">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="FolderOpen" Width="16" Height="16" Margin="0,0,8,0"/>
+                                        <TextBlock Text="Gözat"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
 
-                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                            <TextBlock Text="Hash Algoritması:" 
-                                       FontSize="13" 
-                                       Foreground="{DynamicResource AppForeground}"
-                                       Margin="0,0,0,5"/>
-                            <ComboBox ItemsSource="{Binding HashAlgorithms}" 
-                                      SelectedItem="{Binding SelectedHashAlgorithm}"
-                                      Padding="10"
-                                      Background="{DynamicResource InputBackground}"
-                                      Foreground="{DynamicResource AppForeground}"
-                                      BorderBrush="{DynamicResource InputBorderBrush}"/>
+                            <!-- Options Cluster -->
+                            <Grid Margin="0,0,0,25">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0" Margin="0,0,15,0">
+                                    <TextBlock Text="Hash Algoritması" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,8" FontSize="12"/>
+                                    <ComboBox ItemsSource="{Binding HashAlgorithms}" SelectedItem="{Binding SelectedHashAlgorithm}" Height="40"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Margin="15,0,0,0">
+                                    <TextBlock Text="Dosya Filtresi (örn: *.exe)" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,8" FontSize="12"/>
+                                    <TextBox Text="{Binding FilePattern, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource RoundedTextBox}" Height="40" Padding="10,0"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,25">
+                                <CheckBox Content="Alt klasörleri dahil et" IsChecked="{Binding IncludeSubfolders}" VerticalAlignment="Center" Margin="0,0,30,0"/>
+                                <CheckBox Content="Boyut + İsim karşılaştırma" IsChecked="{Binding UseSizeComparison}" VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <!-- Scan Button -->
+                            <Button Command="{Binding ScanForDuplicatesCommand}"
+                                    IsEnabled="{Binding IsScanning, Converter={StaticResource BoolNegationConverter}}"
+                                    Style="{StaticResource AccentButtonStyle}" Height="50">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Magnify" Width="20" Height="20" Margin="0,0,12,0"/>
+                                    <TextBlock Text="Taramayı Başlat" FontSize="16" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Button>
                         </StackPanel>
-
-                        <StackPanel Grid.Column="1" Margin="0,0,10,0">
-                            <TextBlock Text="Dosya Filtresi:" 
-                                       FontSize="13" 
-                                       Foreground="{DynamicResource AppForeground}"
-                                       Margin="0,0,0,5"/>
-                            <TextBox Text="{Binding FilePattern, UpdateSourceTrigger=PropertyChanged}" 
-                                     Padding="10"
-                                     Background="{DynamicResource InputBackground}"
-                                     Foreground="{DynamicResource InputForeground}"
-                                     BorderBrush="{DynamicResource InputBorderBrush}"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Column="2" VerticalAlignment="Bottom">
-                            <CheckBox Content="Alt klasörleri dahil et" 
-                                      IsChecked="{Binding IncludeSubfolders}"
-                                      Foreground="{DynamicResource AppForeground}"
-                                      Margin="0,0,0,5"/>
-                            <CheckBox Content="Boyut + İsim karşılaştırma" 
-                                      IsChecked="{Binding UseSizeComparison}"
-                                      Foreground="{DynamicResource AppForeground}"/>
-                        </StackPanel>
-                    </Grid>
-
-                    <!-- Scan Button -->
-                    <Button Content="🔍 Taramayı Başlat" 
-                            Command="{Binding ScanForDuplicatesCommand}"
-                            IsEnabled="{Binding IsScanning, Converter={StaticResource BoolNegationConverter}}"
-                            FontSize="14"
-                            FontWeight="SemiBold"
-                            Padding="0,12"
-                            Background="{DynamicResource AccentBrush}"
-                            Foreground="White"
-                            BorderThickness="0"
-                            Cursor="Hand"/>
-
-                    <!-- Status -->
-                    <Border Background="{DynamicResource InputBackground}"
-                            BorderBrush="{DynamicResource InputBorderBrush}"
-                            BorderThickness="1"
-                            CornerRadius="4"
-                            Padding="10"
-                            Margin="0,15,0,0">
-                        <TextBlock Text="{Binding StatusMessage}" 
-                                   FontSize="12"
-                                   Foreground="{DynamicResource SecondaryText}"
-                                   TextWrapping="Wrap"/>
                     </Border>
-                </StackPanel>
-            </Border>
 
-            <!-- Stats Card -->
-            <Grid Margin="0,0,0,20">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Border Grid.Column="0" 
-                        Background="{DynamicResource CardBackground}" 
-                        BorderBrush="{DynamicResource CardBorderBrush}" 
-                        BorderThickness="1" 
-                        CornerRadius="8" 
-                        Padding="15"
-                        Margin="0,0,10,0">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                            <iconPacks:PackIconMaterial Kind="FileDocument" 
-                                                        Width="20" Height="20" 
-                                                        Foreground="{DynamicResource AccentBrush}"
-                                                        Margin="0,0,8,0"/>
-                            <TextBlock Text="Taranan Dosya" 
-                                       FontSize="13" 
-                                       Foreground="{DynamicResource SecondaryText}"/>
-                        </StackPanel>
-                        <TextBlock Text="{Binding ScannedFiles}" 
-                                   FontSize="28" 
-                                   FontWeight="Bold" 
-                                   Foreground="{DynamicResource HeaderText}"/>
-                    </StackPanel>
-                </Border>
-
-                <Border Grid.Column="1" 
-                        Background="{DynamicResource CardBackground}" 
-                        BorderBrush="{DynamicResource CardBorderBrush}" 
-                        BorderThickness="1" 
-                        CornerRadius="8" 
-                        Padding="15"
-                        Margin="0,0,10,0">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                            <iconPacks:PackIconMaterial Kind="ContentDuplicate" 
-                                                        Width="20" Height="20" 
-                                                        Foreground="#FF9800"
-                                                        Margin="0,0,8,0"/>
-                            <TextBlock Text="Yinelenen Grup" 
-                                       FontSize="13" 
-                                       Foreground="{DynamicResource SecondaryText}"/>
-                        </StackPanel>
-                        <TextBlock Text="{Binding DuplicateGroups}" 
-                                   FontSize="28" 
-                                   FontWeight="Bold" 
-                                   Foreground="{DynamicResource HeaderText}"/>
-                    </StackPanel>
-                </Border>
-
-                <Border Grid.Column="2" 
-                        Background="{DynamicResource CardBackground}" 
-                        BorderBrush="{DynamicResource CardBorderBrush}" 
-                        BorderThickness="1" 
-                        CornerRadius="8" 
-                        Padding="15">
-                    <StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                            <iconPacks:PackIconMaterial Kind="HarddiskRemove" 
-                                                        Width="20" Height="20" 
-                                                        Foreground="#4CAF50"
-                                                        Margin="0,0,8,0"/>
-                            <TextBlock Text="Alan Kazancı" 
-                                       FontSize="13" 
-                                       Foreground="{DynamicResource SecondaryText}"/>
-                        </StackPanel>
-                        <TextBlock Text="{Binding TotalWastedSpaceFormatted}" 
-                                   FontSize="28" 
-                                   FontWeight="Bold" 
-                                   Foreground="{DynamicResource HeaderText}"/>
-                    </StackPanel>
-                </Border>
-            </Grid>
-
-            <!-- Results -->
-            <Border Background="{DynamicResource CardBackground}" 
-                    BorderBrush="{DynamicResource CardBorderBrush}" 
-                    BorderThickness="1" 
-                    CornerRadius="8" 
-                    Padding="20" 
-                    Margin="0,0,0,20">
-                <StackPanel>
-                    <Grid Margin="0,0,0,15">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-
-                        <StackPanel Grid.Column="0" Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="FileFind" 
-                                                        Width="24" Height="24" 
-                                                        Foreground="{DynamicResource AccentBrush}"
-                                                        VerticalAlignment="Center"
-                                                        Margin="0,0,10,0"/>
-                            <TextBlock Text="Yinelenen Dosyalar" 
-                                       FontSize="20" 
-                                       FontWeight="SemiBold" 
-                                       Foreground="{DynamicResource HeaderText}"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-
-                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                            <Button Content="🗑️ Seçilenleri Sil" 
-                                    Command="{Binding DeleteSelectedCommand}"
-                                    FontSize="13"
-                                    Padding="15,8"
-                                    Background="#F44336"
-                                    Foreground="White"
-                                    BorderThickness="0"
-                                    Cursor="Hand"
-                                    Margin="0,0,10,0"/>
-                            <Button Content="🧹 Temizle" 
-                                    Command="{Binding ClearResultsCommand}"
-                                    FontSize="13"
-                                    Padding="15,8"
-                                    Background="{DynamicResource InputBorderBrush}"
-                                    Foreground="{DynamicResource AppForeground}"
-                                    BorderThickness="0"
-                                    Cursor="Hand"/>
-                        </StackPanel>
-                    </Grid>
-
-                    <ScrollViewer Height="400" VerticalScrollBarVisibility="Auto">
-                        <ItemsControl ItemsSource="{Binding DuplicateGroupsList}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Background="{DynamicResource InputBackground}"
-                                            BorderBrush="{DynamicResource InputBorderBrush}"
-                                            BorderThickness="1"
-                                            CornerRadius="4"
-                                            Padding="15"
-                                            Margin="0,0,0,10">
-                                        <StackPanel>
-                                            <!-- Group Header -->
-                                            <Grid Margin="0,0,0,10">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                </Grid.ColumnDefinitions>
-
-                                                <StackPanel Grid.Column="0">
-                                                    <TextBlock FontSize="14" 
-                                                               FontWeight="SemiBold" 
-                                                               Foreground="{DynamicResource HeaderText}">
-                                                        <Run Text="📄"/>
-                                                        <Run Text="{Binding RepresentativeFile}"/>
-                                                    </TextBlock>
-                                                    <TextBlock FontSize="12" 
-                                                               Foreground="{DynamicResource SecondaryText}"
-                                                               Margin="0,5,0,0">
-                                                        <Run Text="{Binding Count}"/>
-                                                        <Run Text="kopya •"/>
-                                                        <Run Text="{Binding FileSizeFormatted}"/>
-                                                        <Run Text="her biri •"/>
-                                                        <Run Text="{Binding TotalWastedSpaceFormatted}"/>
-                                                        <Run Text="israf"/>
-                                                    </TextBlock>
-                                                </StackPanel>
-
-                                                <TextBlock Grid.Column="1" 
-                                                           FontSize="18" 
-                                                           FontWeight="Bold" 
-                                                           Foreground="#FF9800"
-                                                           VerticalAlignment="Center">
-                                                    <Run Text="{Binding Count}"/>
-                                                    <Run Text="×" FontSize="14"/>
-                                                </TextBlock>
-                                            </Grid>
-
-                                            <!-- Files List -->
-                                            <ItemsControl ItemsSource="{Binding Files}">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Border Background="{DynamicResource CardBackground}"
-                                                                BorderBrush="{DynamicResource CardBorderBrush}"
-                                                                BorderThickness="1"
-                                                                CornerRadius="2"
-                                                                Padding="8"
-                                                                Margin="0,5">
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="Auto"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="Auto"/>
-                                                                </Grid.ColumnDefinitions>
-
-                                                                <CheckBox Grid.Column="0" 
-                                                                          IsChecked="{Binding IsSelected}"
-                                                                          VerticalAlignment="Center"
-                                                                          Margin="0,0,10,0"/>
-
-                                                                <TextBlock Grid.Column="1" 
-                                                                           Text="{Binding FilePath}" 
-                                                                           FontFamily="Consolas"
-                                                                           FontSize="11"
-                                                                           Foreground="{DynamicResource AppForeground}"
-                                                                           TextWrapping="NoWrap"
-                                                                           TextTrimming="CharacterEllipsis"
-                                                                           VerticalAlignment="Center"/>
-
-                                                                <TextBlock Grid.Column="2" 
-                                                                           Text="{Binding FileSizeFormatted}" 
-                                                                           FontSize="11"
-                                                                           Foreground="{DynamicResource SecondaryText}"
-                                                                           VerticalAlignment="Center"
-                                                                           Margin="10,0,0,0"/>
-                                                            </Grid>
-                                                        </Border>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </StackPanel>
+                    <!-- Stats & Status Card -->
+                    <StackPanel Grid.Column="1">
+                        <Border Style="{StaticResource Card}" Margin="0,0,0,20">
+                            <StackPanel>
+                                <TextBlock Text="İstatistikler" Style="{StaticResource SectionHeader}"/>
+                                
+                                <UniformGrid Columns="1">
+                                    <Border Margin="0,5" Padding="15" Background="{DynamicResource AppBackground}" CornerRadius="12" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
+                                        <Grid>
+                                            <StackPanel>
+                                                <TextBlock Text="Taranan Dosya" FontSize="11" Foreground="{DynamicResource SecondaryText}"/>
+                                                <TextBlock Text="{Binding ScannedFiles}" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource HeaderText}"/>
+                                            </StackPanel>
+                                            <iconPacks:PackIconMaterial Kind="FileDocument" Width="24" Height="24" HorizontalAlignment="Right" VerticalAlignment="Center" Opacity="0.3" Foreground="{DynamicResource AccentBrush}"/>
+                                        </Grid>
                                     </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </ScrollViewer>
-                </StackPanel>
-            </Border>
+                                    <Border Margin="0,5" Padding="15" Background="{DynamicResource AppBackground}" CornerRadius="12" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
+                                        <Grid>
+                                            <StackPanel>
+                                                <TextBlock Text="Yinelenen Grup" FontSize="11" Foreground="{DynamicResource SecondaryText}"/>
+                                                <TextBlock Text="{Binding DuplicateGroups}" FontSize="24" FontWeight="Bold" Foreground="#FF9800"/>
+                                            </StackPanel>
+                                            <iconPacks:PackIconMaterial Kind="ContentDuplicate" Width="24" Height="24" HorizontalAlignment="Right" VerticalAlignment="Center" Opacity="0.3" Foreground="#FF9800"/>
+                                        </Grid>
+                                    </Border>
+                                    <Border Margin="0,5" Padding="15" Background="{DynamicResource AppBackground}" CornerRadius="12" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
+                                        <Grid>
+                                            <StackPanel>
+                                                <TextBlock Text="Alan Kazancı" FontSize="11" Foreground="{DynamicResource SecondaryText}"/>
+                                                <TextBlock Text="{Binding TotalWastedSpaceFormatted}" FontSize="24" FontWeight="Bold" Foreground="#4CAF50"/>
+                                            </StackPanel>
+                                            <iconPacks:PackIconMaterial Kind="HarddiskRemove" Width="24" Height="24" HorizontalAlignment="Right" VerticalAlignment="Center" Opacity="0.3" Foreground="#4CAF50"/>
+                                        </Grid>
+                                    </Border>
+                                </UniformGrid>
+                            </StackPanel>
+                        </Border>
 
-            <!-- Info -->
-            <Border Background="{DynamicResource CardBackground}" 
-                    BorderBrush="{DynamicResource CardBorderBrush}" 
-                    BorderThickness="1" 
-                    CornerRadius="8" 
-                    Padding="15">
-                <TextBlock FontSize="12" 
-                           Foreground="{DynamicResource SecondaryText}"
-                           TextWrapping="Wrap">
-                    <Run Text="💡" FontSize="14"/>
-                    <Run Text=" İpuçları:" FontWeight="SemiBold"/>
-                    <LineBreak/>
-                    <Run Text="• MD5: Hızlı ama az güvenli • SHA256: Yavaş ama çok güvenli • SHA1: Orta seviye"/>
-                    <LineBreak/>
-                    <Run Text="• Boyut + İsim: Çok hızlı ama yanlış pozitif olabilir"/>
-                    <LineBreak/>
-                    <Run Text="• Her gruptan en az 1 dosya bırakın, hepsini silmeyin!"/>
-                    <LineBreak/>
-                    <Run Text="• Silme işlemi geri alınamaz, dikkatli olun"/>
-                </TextBlock>
-            </Border>
-        </StackPanel>
-    </ScrollViewer>
+                        <Border Background="{DynamicResource InputBackground}" CornerRadius="12" Padding="15" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Text="Durum" FontWeight="Bold" FontSize="11" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,5"/>
+                                <TextBlock Text="{Binding StatusMessage}" FontSize="12" Foreground="{DynamicResource AppForeground}" TextWrapping="Wrap"/>
+                                <mah:MetroProgressBar IsIndeterminate="{Binding IsScanning}" Margin="0,10,0,0" Height="4" Visibility="{Binding IsScanning, Converter={StaticResource BoolToVis}}"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Results Section -->
+                <Border Style="{StaticResource Card}" Padding="0" ClipToBounds="True">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Results Header -->
+                        <Border Grid.Row="0" Padding="20,15" Background="{DynamicResource AppBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
+                            <Grid>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <iconPacks:PackIconMaterial Kind="ListBoxOutline" Width="20" Height="20" VerticalAlignment="Center" Foreground="{DynamicResource AccentBrush}"/>
+                                    <TextBlock Text="Bulunan Yinelenenler" FontSize="18" FontWeight="SemiBold" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource HeaderText}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Command="{Binding DeleteSelectedCommand}" Style="{StaticResource AccentButtonStyle}" 
+                                            Background="#F44336" Padding="15,0" Height="36" Margin="0,0,10,0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="DeleteSweep" Width="14" Height="14" Margin="0,0,8,0"/>
+                                            <TextBlock Text="Seçilenleri Sil"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Command="{Binding ClearResultsCommand}" Style="{StaticResource OutlineButtonStyle}" Padding="15,0" Height="36">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="FormatClear" Width="14" Height="14" Margin="0,0,8,0"/>
+                                            <TextBlock Text="Listeyi Temizle"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- Items List -->
+                        <ScrollViewer Grid.Row="1" Height="500" VerticalScrollBarVisibility="Auto">
+                            <ItemsControl ItemsSource="{Binding DuplicateGroupsList}" Margin="15">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="0" Margin="0,0,0,15">
+                                            <StackPanel>
+                                                <!-- Group Header -->
+                                                <Border Padding="15,12" Background="{DynamicResource AppBackground}" CornerRadius="12,12,0,0" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <StackPanel>
+                                                            <TextBlock FontSize="15" FontWeight="Bold" Foreground="{DynamicResource HeaderText}" TextTrimming="CharacterEllipsis">
+                                                                <iconPacks:PackIconMaterial Kind="FileLink" Width="14" Height="14" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                                                <Run Text="{Binding RepresentativeFile}"/>
+                                                            </TextBlock>
+                                                            <StackPanel Orientation="Horizontal" Margin="22,4,0,0">
+                                                                <Border Background="{DynamicResource AccentBrush}" CornerRadius="4" Padding="6,2" Margin="0,0,10,0" Opacity="0.8">
+                                                                    <TextBlock Text="{Binding Count, StringFormat='{}{0} Kopya'}" FontSize="11" Foreground="White" FontWeight="Bold"/>
+                                                                </Border>
+                                                                <TextBlock FontSize="12" Foreground="{DynamicResource SecondaryText}">
+                                                                    <Run Text="Boyut:"/> <Run Text="{Binding FileSizeFormatted}"/>
+                                                                    <Run Text=" • İsraf:"/> <Run Text="{Binding TotalWastedSpaceFormatted}" Foreground="#FF9800" FontWeight="SemiBold"/>
+                                                                </TextBlock>
+                                                            </StackPanel>
+                                                        </StackPanel>
+
+                                                        <iconPacks:PackIconMaterial Grid.Column="1" Kind="AlertCircleOutline" Width="24" Height="24" Foreground="#FF9800" VerticalAlignment="Center" Opacity="0.5"/>
+                                                    </Grid>
+                                                </Border>
+
+                                                <!-- Files List -->
+                                                <ItemsControl ItemsSource="{Binding Files}" Margin="10,5">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border Padding="8" Margin="0,2">
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                    </Grid.ColumnDefinitions>
+
+                                                                    <CheckBox IsChecked="{Binding IsSelected}" VerticalAlignment="Center" Margin="5,0,15,0"/>
+
+                                                                    <TextBlock Grid.Column="1" Text="{Binding FilePath}" FontFamily="Consolas" FontSize="11" 
+                                                                               Foreground="{DynamicResource AppForeground}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+
+                                                                    <TextBlock Grid.Column="2" Text="{Binding FileSizeFormatted}" FontSize="11" 
+                                                                               Foreground="{DynamicResource SecondaryText}" VerticalAlignment="Center" Margin="15,0,5,0"/>
+                                                                </Grid>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                            </StackPanel>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+
+                <!-- Information Box -->
+                <Border Style="{StaticResource Card}" Margin="0,20,0,0" Background="{DynamicResource CardBorderBrush}" Opacity="0.8" BorderThickness="0">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <iconPacks:PackIconMaterial Kind="LightbulbOnOutline" Width="18" Height="18" Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Önemli Bilgiler ve İpuçları" FontWeight="Bold" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource HeaderText}"/>
+                        </StackPanel>
+                        <TextBlock FontSize="12" Foreground="{DynamicResource SecondaryText}" LineHeight="20">
+                            • <Run FontWeight="Bold" Foreground="{DynamicResource HeaderText}">MD5:</Run> En hızlı tarama yöntemi, büyük arşivler için idealdir. <LineBreak/>
+                            • <Run FontWeight="Bold" Foreground="{DynamicResource HeaderText}">SHA256:</Run> En güvenli yöntem, yanlış eşleşme ihtimali neredeyse sıfırdır. <LineBreak/>
+                            • <Run FontWeight="Bold" Foreground="{DynamicResource HeaderText}">Boyut + İsim:</Run> İçerik kontrolü yapmaz, sadece dosya bilgisine bakar. Çok hızlıdır. <LineBreak/>
+                            • <Run Foreground="#F44336" FontWeight="Bold">Dikkat:</Run> Her gruptan en az bir orijinal dosya bıraktığınızdan emin olun. Silme işlemi geri alınamaz.
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </Page>

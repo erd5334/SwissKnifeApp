@@ -1,169 +1,196 @@
-﻿<UserControl x:Class="SwissKnifeApp.Views.Modules.TextOperationsPage"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="900"
-             Background="{DynamicResource MahApps.Brushes.ThemeBackground}">
+﻿<Page x:Class="SwissKnifeApp.Views.Modules.TextOperationsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      d:DesignHeight="850" d:DesignWidth="1100"
+      Title="Metin İşlemleri"
+      Background="{DynamicResource AppBackground}">
 
-    <Grid Margin="20">
-        <!-- Accent Color for TextOperations: Purple/Indigo -->
-        <Grid.Resources>
-            <SolidColorBrush x:Key="AccentPurpleBrush" Color="#9C27B0"/>
-        </Grid.Resources>
+    <Page.Resources>
+        <!-- Text specific accent colors (Purple/Indigo) -->
+        <SolidColorBrush x:Key="TextAccent" Color="#9C27B0"/>
+        <!-- Local override to give Text module a consistent Purple theme -->
+        <SolidColorBrush x:Key="AccentBrush" Color="{Binding Source={StaticResource TextAccent}, Path=Color}"/>
+    </Page.Resources>
+
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header Card -->
-        <Border Grid.Row="0" Style="{StaticResource Card}" Background="White" BorderBrush="{StaticResource AccentPurpleBrush}" BorderThickness="2" CornerRadius="12" Padding="24" Margin="0,0,0,15">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <iconPacks:PackIconMaterial Kind="FormatText" Width="32" Height="32" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,10,0"/>
-                    <TextBlock Text="Metin İşlemleri" FontSize="28" FontWeight="Bold" Foreground="{StaticResource AccentPurpleBrush}"/>
-                </StackPanel>
-                <TextBlock Text="Metinlerinizi dönüştürün, analiz edin ve işleyin" FontSize="14" Foreground="{DynamicResource MahApps.Brushes.Gray1}" Margin="0,5,0,0"/>
-            </StackPanel>
-        </Border>
-
-        <!-- Text Input Card -->
-        <Border Grid.Row="1" Style="{StaticResource Card}" Background="White" BorderBrush="{StaticResource AccentPurpleBrush}" BorderThickness="2" CornerRadius="12" Padding="20" Margin="0,0,0,15">
-            <StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
-                    <iconPacks:PackIconMaterial Kind="TextBox" Width="20" Height="20" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,8,0"/>
-                    <TextBlock Text="Metin Girişi" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource AccentPurpleBrush}"/>
-                </StackPanel>
-                <TextBox x:Name="txtInput"
-                         AcceptsReturn="True"
-                         TextWrapping="Wrap"
-                         VerticalScrollBarVisibility="Auto"
-                         FontSize="16"
-                         MinHeight="200"
-                         MaxHeight="300"
-                         BorderBrush="{StaticResource AccentPurpleBrush}"
-                         BorderThickness="1"
-                         Padding="12"
-                         Background="#FAFAFA"
-                         Foreground="#2C3E50"/>
-            </StackPanel>
-        </Border>
-
-        <!-- Operations Card -->
-        <Border Grid.Row="2" Style="{StaticResource Card}" Background="White" BorderBrush="{StaticResource AccentPurpleBrush}" BorderThickness="2" CornerRadius="12" Padding="20" Margin="0,0,0,15">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
-                        <iconPacks:PackIconMaterial Kind="Tools" Width="20" Height="20" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,8,0"/>
-                        <TextBlock Text="İşlemler" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource AccentPurpleBrush}"/>
+        <!-- Modern Header -->
+        <Border Grid.Row="0" Padding="25,20" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="FormatText" Width="30" Height="30" VerticalAlignment="Center" Foreground="{StaticResource TextAccent}"/>
+                        <TextBlock Text="Metin İşlemleri" FontSize="24" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource HeaderText}"/>
                     </StackPanel>
-                    <WrapPanel HorizontalAlignment="Left" VerticalAlignment="Top" ItemWidth="240" ItemHeight="90">
-                        <!-- Büyük Harf Dönüştür -->
-                        <Button Margin="5" Padding="10" Width="230" Height="80" Click="Uppercase_Click" Style="{StaticResource AccentButtonStyle}">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <iconPacks:PackIconMaterial Kind="FormatLetterCase" Width="28" Height="28" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="BÜYÜK HARF" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </Button>
-                        <!-- Küçük Harf Dönüştür -->
-                        <Button Margin="5" Padding="10" Width="230" Height="80" Click="Lowercase_Click" Style="{StaticResource AccentButtonStyle}">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <iconPacks:PackIconMaterial Kind="FormatLetterCaseLower" Width="28" Height="28" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="küçük harf" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </Button>
-                        <!-- Karakter Say -->
-                        <Button Margin="5" Padding="10" Width="230" Height="80" Click="CountChars_Click" Style="{StaticResource AccentButtonStyle}">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <iconPacks:PackIconMaterial Kind="Counter" Width="28" Height="28" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Karakter Say" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </Button>
-                        <!-- Kelime Say -->
-                        <Button Margin="5" Padding="10" Width="230" Height="80" Click="CountWords_Click" Style="{StaticResource AccentButtonStyle}">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <iconPacks:PackIconMaterial Kind="FormatListNumbered" Width="28" Height="28" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Kelime Say" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </Button>
-                        <!-- Cümle/Paragraf Say -->
-                        <Button Margin="5" Padding="10" Width="230" Height="80" Click="CountSentencesParagraphs_Click" Style="{StaticResource AccentButtonStyle}">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <iconPacks:PackIconMaterial Kind="FormatParagraph" Width="28" Height="28" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Cümle/Paragraf" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </Button>
-                        <!-- Baş Harfleri Büyük Yap -->
-                        <Button Margin="5" Padding="10" Width="230" Height="80" Click="TitleCase_Click" Style="{StaticResource AccentButtonStyle}">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <iconPacks:PackIconMaterial Kind="FormatTitle" Width="28" Height="28" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Başlık Format" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </Button>
-                        <!-- Metni Ters Çevir (karakter) -->
-                        <Button Margin="5" Padding="10" Width="230" Height="80" Click="ReverseText_Click" Style="{StaticResource AccentButtonStyle}">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <iconPacks:PackIconMaterial Kind="FormatTextRotationAngleUp" Width="28" Height="28" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Ters Çevir (Kar.)" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </Button>
-                        <!-- Metni Ters Çevir (kelime) -->
-                        <Button Margin="5" Padding="10" Width="230" Height="80" Click="ReverseWords_Click" Style="{StaticResource AccentButtonStyle}">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <iconPacks:PackIconMaterial Kind="SwapHorizontal" Width="28" Height="28" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Ters Çevir (Kel.)" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </Button>
-                        <!-- Boşluk Temizle -->
-                        <Button Margin="5" Padding="10" Width="230" Height="80" Click="TrimSpaces_Click" Style="{StaticResource AccentButtonStyle}">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <iconPacks:PackIconMaterial Kind="FormatClear" Width="28" Height="28" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Boşluk Temizle" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </Button>
-                        <!-- Metni Kopyala -->
-                        <Button Margin="5" Padding="10" Width="230" Height="80" Click="CopyText_Click" Style="{StaticResource AccentButtonStyle}">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <iconPacks:PackIconMaterial Kind="ContentCopy" Width="28" Height="28" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Metni Kopyala" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </Button>
-                        <!-- Base64 Şifrele -->
-                        <Button Margin="5" Padding="10" Width="230" Height="80" Click="EncodeBase64_Click" Style="{StaticResource AccentButtonStyle}">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <iconPacks:PackIconMaterial Kind="Lock" Width="28" Height="28" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Base64 Şifrele" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </Button>
-                        <!-- Base64 Çöz -->
-                        <Button Margin="5" Padding="10" Width="230" Height="80" Click="DecodeBase64_Click" Style="{StaticResource AccentButtonStyle}">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <iconPacks:PackIconMaterial Kind="LockOpenVariant" Width="28" Height="28" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Base64 Çöz" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </Button>
-                        <!-- Lorem Ipsum Üretici -->
-                        <Button Margin="5" Padding="10" Width="230" Height="80" Click="GenerateLoremIpsum_Click" Style="{StaticResource AccentButtonStyle}">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <iconPacks:PackIconMaterial Kind="TextBoxMultiple" Width="28" Height="28" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Lorem Ipsum" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </Button>
-                        <!-- Temizle -->
-                        <Button Margin="5" Padding="10" Width="230" Height="80" Click="Clear_Click" Style="{StaticResource AccentButtonStyle}">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <iconPacks:PackIconMaterial Kind="DeleteForever" Width="28" Height="28" Foreground="{StaticResource AccentPurpleBrush}" Margin="0,0,10,0"/>
-                                <TextBlock Text="Temizle" VerticalAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
-                            </StackPanel>
-                        </Button>
-                    </WrapPanel>
+                    <TextBlock Text="Metinlerinizi dönüştürün, analiz edin ve hızlıca işleyin" FontSize="14" Foreground="{DynamicResource SecondaryText}" Margin="45,5,0,0"/>
                 </StackPanel>
-            </ScrollViewer>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Click="Clear_Click" Style="{StaticResource OutlineButtonStyle}" Width="Auto" Height="40" Padding="20,0" Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconMaterial Kind="DeleteSweep" Width="18" Height="18" Margin="0,0,10,0"/>
+                            <TextBlock Text="Temizle" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Click="CopyText_Click" Style="{StaticResource AccentButtonStyle}" Width="Auto" Height="40" Padding="20,0">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconMaterial Kind="ContentCopy" Width="18" Height="18" Margin="0,0,10,0"/>
+                            <TextBlock Text="Tümünü Kopyala" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
         </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="25">
+            <StackPanel MaxWidth="1200" HorizontalAlignment="Left" Width="1000">
+                
+                <!-- Main Input Section -->
+                <Border Style="{StaticResource Card}" Margin="0,0,0,25">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                            <iconPacks:PackIconMaterial Kind="TextBox" Width="18" Height="18" Foreground="{StaticResource TextAccent}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="Kaynak Metin" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource HeaderText}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        
+                        <TextBox x:Name="txtInput" 
+                                 Style="{StaticResource RoundedTextBox}"
+                                 mah:TextBoxHelper.Watermark="İşlem yapılacak metni buraya yapıştırın..."
+                                 AcceptsReturn="True" 
+                                 TextWrapping="Wrap" 
+                                 MinHeight="250" 
+                                 VerticalScrollBarVisibility="Auto" 
+                                 FontSize="15"
+                                 mah:TextBoxHelper.ClearTextButton="True"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Action Groups -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Case & Format Operations -->
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Dönüştürme ve Format" Style="{StaticResource SectionHeader}" Margin="0,0,0,15"/>
+                        <UniformGrid Columns="2">
+                            <Button Margin="0,0,10,10" Height="60" Click="Uppercase_Click" Style="{StaticResource OutlineButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="FormatLetterCase" Width="22" Height="22" Margin="0,0,12,0"/>
+                                    <TextBlock Text="BÜYÜK HARF" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Margin="0,0,0,10" Height="60" Click="Lowercase_Click" Style="{StaticResource OutlineButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="FormatLetterCaseLower" Width="22" Height="22" Margin="0,0,12,0"/>
+                                    <TextBlock Text="küçük harf" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Margin="0,0,10,10" Height="60" Click="TitleCase_Click" Style="{StaticResource OutlineButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="FormatTitle" Width="22" Height="22" Margin="0,0,12,0"/>
+                                    <TextBlock Text="Başlık Format" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Margin="0,0,0,10" Height="60" Click="TrimSpaces_Click" Style="{StaticResource OutlineButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="FormatClear" Width="22" Height="22" Margin="0,0,12,0"/>
+                                    <TextBlock Text="Boşlukları Sil" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Margin="0,0,10,0" Height="60" Click="ReverseText_Click" Style="{StaticResource OutlineButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="FormatTextRotationAngleUp" Width="22" Height="22" Margin="0,0,12,0"/>
+                                    <TextBlock Text="Ters Çevir" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Margin="0,0,0,0" Height="60" Click="ReverseWords_Click" Style="{StaticResource OutlineButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="SwapHorizontal" Width="22" Height="22" Margin="0,0,12,0"/>
+                                    <TextBlock Text="Kelimeleri Ters Çevir" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Button>
+                        </UniformGrid>
+                    </StackPanel>
+
+                    <!-- Analysis & Tools -->
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Analiz ve Araçlar" Style="{StaticResource SectionHeader}" Margin="0,0,0,15"/>
+                        <UniformGrid Columns="1">
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Height="60" Click="CountChars_Click" Style="{StaticResource AccentButtonStyle}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="Counter" Width="22" Height="22" Margin="0,0,12,0"/>
+                                        <TextBlock Text="Karakter Say" FontWeight="Bold"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="2" Height="60" Click="CountWords_Click" Style="{StaticResource AccentButtonStyle}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="FormatListNumbered" Width="22" Height="22" Margin="0,0,12,0"/>
+                                        <TextBlock Text="Kelime Say" FontWeight="Bold"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                            
+                            <Button Margin="0,0,0,10" Height="60" Click="CountSentencesParagraphs_Click" Style="{StaticResource AccentButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="FormatParagraph" Width="22" Height="22" Margin="0,0,12,0"/>
+                                    <TextBlock Text="Cümle ve Paragraf Analizi" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Grid Margin="0,0,0,10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Button Grid.Column="0" Height="60" Click="EncodeBase64_Click" Style="{StaticResource OutlineButtonStyle}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="Lock" Width="22" Height="22" Margin="0,0,12,0"/>
+                                        <TextBlock Text="Base64 Şifrele" FontWeight="Bold"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Grid.Column="2" Height="60" Click="DecodeBase64_Click" Style="{StaticResource OutlineButtonStyle}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="LockOpenVariant" Width="22" Height="22" Margin="0,0,12,0"/>
+                                        <TextBlock Text="Base64 Çöz" FontWeight="Bold"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+
+                            <Button Height="60" Click="GenerateLoremIpsum_Click" Style="{StaticResource OutlineButtonStyle}">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="TextBoxMultiple" Width="22" Height="22" Margin="0,0,12,0"/>
+                                    <TextBlock Text="Lorem Ipsum Oluştur" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Button>
+                        </UniformGrid>
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
-</UserControl>
+</Page>

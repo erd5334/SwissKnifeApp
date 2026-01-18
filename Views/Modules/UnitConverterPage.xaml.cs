@@ -6,7 +6,7 @@ using System.Windows.Controls;
 
 namespace SwissKnifeApp.Views.Modules
 {
-    public partial class UnitConverterPage : UserControl
+    public partial class UnitConverterPage : Page
     {
         private const string SettingsFile = "UnitConverterSettings.json";
         private readonly SwissKnifeApp.Services.UnitConverterService _converter = new SwissKnifeApp.Services.UnitConverterService();

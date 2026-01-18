@@ -19,6 +19,9 @@ namespace SwissKnifeApp.Views.Modules
             _dbService = dbService;
             _editEntry = entry;
 
+            // Arka planda pencere sürükleme desteği
+            this.MouseDown += (s, e) => { if (e.ChangedButton == System.Windows.Input.MouseButton.Left) DragMove(); };
+
             LoadCategories();
 
             if (_editEntry != null)
@@ -59,6 +62,7 @@ namespace SwissKnifeApp.Views.Modules
                 TxtPasswordVisible.Visibility = Visibility.Collapsed;
                 TxtPassword.Visibility = Visibility.Visible;
                 IconEye.Kind = MahApps.Metro.IconPacks.PackIconMaterialKind.Eye;
+                TxtPassword.Focus();
             }
         }
 

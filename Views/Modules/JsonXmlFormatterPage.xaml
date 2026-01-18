@@ -1,175 +1,168 @@
-﻿<UserControl x:Class="SwissKnifeApp.Views.Modules.JsonXmlFormatterPage"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:SwissKnifeApp.Views.Modules"
-             xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
-             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             
-             Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
+﻿<Page x:Class="SwissKnifeApp.Views.Modules.JsonXmlFormatterPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="clr-namespace:SwissKnifeApp.Views.Modules"
+      xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      Background="{DynamicResource AppBackground}"
+      Title="JSON / XML Formatta">
 
-    <!-- Sayfa özel vurgu renkleri -->
-    <UserControl.Resources>
+    <!-- Page specific accent -->
+    <Page.Resources>
         <SolidColorBrush x:Key="AccentBrush" Color="#00BCD4"/>
         <SolidColorBrush x:Key="AccentBrush2" Color="#0097A7"/>
-    </UserControl.Resources>
+    </Page.Resources>
 
-    <Grid Margin="20" Background="{Binding EditorBackground}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Başlık ve Tema Düğmesi -->
-        <DockPanel Margin="0 0 0 10">
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" VerticalAlignment="Center">
-                <iconPacks:PackIconMaterial Kind="CodeJson" Width="28" Height="28" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
-                <TextBlock Text="JSON / XML Biçimlendirme, Dönüştürme ve Sorgulama"
-                           Foreground="{Binding ForegroundColor}"
-                           FontSize="20"
-                           FontWeight="Bold"/>
-            </StackPanel>
-
-            <ToggleButton x:Name="ThemeToggle"
-                          Width="150"
-                          Height="34"
-                          Margin="10 0 0 0"
-                          HorizontalAlignment="Right"
-                          DockPanel.Dock="Right"
-                          Checked="ThemeToggle_Checked"
-                          Unchecked="ThemeToggle_Unchecked">
-                <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconMaterial Kind="ThemeLightDark" Width="20" Height="20" Margin="5,0,10,0"/>
-                    <TextBlock Text="{Binding ThemeToggleText}"/>
+        <!-- Modern Header -->
+        <Border Grid.Row="0" Padding="25,20" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
+            <Grid>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="CodeJson" Width="30" Height="30" VerticalAlignment="Center" Foreground="{StaticResource AccentBrush}"/>
+                        <TextBlock Text="JSON / XML Formatta" FontSize="24" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource HeaderText}"/>
+                    </StackPanel>
+                    <TextBlock Text="Kod biçimlendirme, sıkıştırma, JSON-XML dönüşümü ve şema sorgulama" FontSize="14" Foreground="{DynamicResource SecondaryText}" Margin="45,5,0,0"/>
                 </StackPanel>
-            </ToggleButton>
-        </DockPanel>
 
-        <!-- Ana Alan -->
-        <Grid Grid.Row="1">
+                <ToggleButton x:Name="ThemeToggle" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                              Width="140" Height="36" Style="{StaticResource MahApps.Styles.ToggleButton}"
+                              Checked="ThemeToggle_Checked" Unchecked="ThemeToggle_Unchecked">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="ThemeLightDark" Width="16" Height="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding ThemeToggleText, RelativeSource={RelativeSource AncestorType=local:JsonXmlFormatterPage}}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </ToggleButton>
+            </Grid>
+        </Border>
+
+        <!-- Main Workspace -->
+        <Grid Grid.Row="1" Margin="20">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*"/>
-                <ColumnDefinition Width="1.2*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="260"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Kod Editörü -->
-            <Border Grid.Column="0" Style="{StaticResource Card}">
+            <!-- Editor Section -->
+            <Border Grid.Column="0" Style="{StaticResource Card}" Padding="0" ClipToBounds="True">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
-                        <iconPacks:PackIconMaterial Kind="PencilBoxOutline" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="Editör" Style="{StaticResource SectionHeader}"/>
-                    </StackPanel>
-                    <avalonedit:TextEditor Grid.Row="1"
-                                           Name="CodeEditor"
+                    
+                    <Border Background="{DynamicResource AppBackground}" Padding="15,8" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconMaterial Kind="Console" Width="16" Height="16" Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Text="Kod Editörü" FontWeight="Bold" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource HeaderText}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <avalonedit:TextEditor Grid.Row="1" Name="CodeEditor"
                                            ShowLineNumbers="True"
                                            FontFamily="Consolas"
-                                           FontSize="14"
+                                           FontSize="13"
+                                           Background="Transparent"
+                                           Padding="10"
                                            TextChanged="CodeEditor_TextChanged"
-                                           VerticalScrollBarVisibility="Visible"/>
+                                           VerticalScrollBarVisibility="Auto"
+                                           HorizontalScrollBarVisibility="Auto"/>
                 </Grid>
             </Border>
 
-            <!-- Araçlar -->
-            <Border Grid.Column="1" Style="{StaticResource Card}" Margin="10,0,0,0">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
-                        <iconPacks:PackIconMaterial Kind="WrenchOutline" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
-                        <TextBlock Text="Araçlar" Style="{StaticResource SectionHeader}"/>
-                    </StackPanel>
-
-                    <StackPanel Grid.Row="1">
-                        <Button Style="{StaticResource OutlineButtonStyle}" Margin="0 5" Click="Format_Click">
+            <!-- Tools Sidebar -->
+            <StackPanel Grid.Column="1" Margin="20,0,0,0">
+                <Border Style="{StaticResource Card}" Padding="15">
+                    <StackPanel>
+                        <TextBlock Text="Temel İşlemler" Style="{StaticResource SectionHeader}"/>
+                        
+                        <Button Style="{StaticResource OutlineButtonStyle}" Margin="0,0,0,10" Click="Format_Click" Height="40">
                             <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="FormatAlignLeft" Width="20" Height="20" Margin="5,0,10,0"/>
+                                <iconPacks:PackIconMaterial Kind="FormatAlignLeft" Width="16" Height="16" Margin="0,0,10,0"/>
                                 <TextBlock Text="Biçimlendir"/>
                             </StackPanel>
                         </Button>
-                        <Button Style="{StaticResource OutlineButtonStyle}" Margin="0 5" Click="Minify_Click">
+                        
+                        <Button Style="{StaticResource OutlineButtonStyle}" Margin="0,0,0,10" Click="Minify_Click" Height="40">
                             <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Publish" Width="20" Height="20" Margin="5,0,10,0"/>
-                                <TextBlock Text="Sıkıştır"/>
+                                <iconPacks:PackIconMaterial Kind="ZipBoxOutline" Width="16" Height="16" Margin="0,0,10,0"/>
+                                <TextBlock Text="Sıkıştır/Minify"/>
                             </StackPanel>
                         </Button>
-                        <Button Style="{StaticResource OutlineButtonStyle}" Margin="0 5" Click="Validate_Click">
+                        
+                        <Button Style="{StaticResource OutlineButtonStyle}" Margin="0,0,0,10" Click="Validate_Click" Height="40">
                             <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="CheckCircleOutline" Width="20" Height="20" Margin="5,0,10,0"/>
-                                <TextBlock Text="Doğrula"/>
+                                <iconPacks:PackIconMaterial Kind="CheckDecagramOutline" Width="16" Height="16" Margin="0,0,10,0"/>
+                                <TextBlock Text="Doğruluğu Denetle"/>
                             </StackPanel>
                         </Button>
 
-                        <Separator Margin="0 10"/>
-
-                        <Button Style="{StaticResource OutlineButtonStyle}" Margin="0 5" Click="JsonToXml_Click">
+                        <Separator Margin="0,10" Background="{DynamicResource CardBorderBrush}"/>
+                        
+                        <TextBlock Text="Dönüştürme" Style="{StaticResource SectionHeader}" Margin="0,10,0,10"/>
+                        
+                        <Button Style="{StaticResource OutlineButtonStyle}" Margin="0,0,0,10" Click="JsonToXml_Click" Height="40">
                             <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="CodeJson" Width="20" Height="20" Margin="5,0,10,0"/>
+                                <iconPacks:PackIconMaterial Kind="FileCodeOutline" Width="16" Height="16" Margin="0,0,10,0"/>
                                 <TextBlock Text="JSON → XML"/>
                             </StackPanel>
                         </Button>
-                        <Button Style="{StaticResource OutlineButtonStyle}" Margin="0 5" Click="XmlToJson_Click">
+                        
+                        <Button Style="{StaticResource OutlineButtonStyle}" Margin="0,0,0,10" Click="XmlToJson_Click" Height="40">
                             <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="CodeTags" Width="20" Height="20" Margin="5,0,10,0"/>
+                                <iconPacks:PackIconMaterial Kind="CodeTags" Width="16" Height="16" Margin="0,0,10,0"/>
                                 <TextBlock Text="XML → JSON"/>
                             </StackPanel>
                         </Button>
 
-                        <Separator Margin="0 10"/>
-
-                        <Button Style="{StaticResource OutlineButtonStyle}" Margin="0 5" Click="Clear_Click">
+                        <Separator Margin="0,10" Background="{DynamicResource CardBorderBrush}"/>
+                        
+                        <Button Style="{StaticResource OutlineButtonStyle}" Click="Clear_Click" Height="40" Background="#FFF5F5" BorderBrush="#FFEBEE">
                             <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Broom" Width="20" Height="20" Margin="5,0,10,0"/>
-                                <TextBlock Text="Temizle"/>
+                                <iconPacks:PackIconMaterial Kind="Broom" Width="16" Height="16" Margin="0,0,10,0" Foreground="#F44336"/>
+                                <TextBlock Text="Tümünü Temizle" Foreground="#F44336"/>
                             </StackPanel>
                         </Button>
                     </StackPanel>
-                </Grid>
-            </Border>
+                </Border>
+            </StackPanel>
         </Grid>
 
-        <!-- Sorgulama Alanı -->
-        <Border Grid.Row="2" Style="{StaticResource Card}" Margin="0,15,0,0">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+        <!-- Search / Query Footer -->
+        <Border Grid.Row="2" Style="{StaticResource Card}" Margin="20,0,20,20">
+            <StackPanel>
+                <Grid Margin="0,0,0,12">
+                    <StackPanel Orientation="Horizontal">
+                        <iconPacks:PackIconMaterial Kind="DatabaseSearchOutline" Width="18" Height="18" Foreground="{StaticResource AccentBrush}" VerticalAlignment="Center"/>
+                        <TextBlock Text="JSONPath / XPath Sorgulama" FontWeight="Bold" Margin="10,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource HeaderText}"/>
+                    </StackPanel>
+                </Grid>
 
-                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
-                    <iconPacks:PackIconMaterial Kind="TextSearch" Width="20" Height="20" Foreground="{StaticResource AccentBrush}" Margin="0,0,10,0"/>
-                    <TextBlock Text="Sorgulama" Style="{StaticResource SectionHeader}"/>
-                </StackPanel>
-
-                <Grid Grid.Row="1">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBox x:Name="QueryBox"
-                             Style="{StaticResource RoundedTextBox}"
-                             mah:TextBoxHelper.Watermark="JSONPath (JSON) veya XPath (XML) sorgusu yazın"
-                             Height="35"
-                             FontSize="14"
-                             VerticalContentAlignment="Center"
-                             Margin="0,0,10,0"/>
+                    <TextBox x:Name="QueryBox" Style="{StaticResource RoundedTextBox}" Height="40" FontSize="14"
+                             mah:TextBoxHelper.Watermark="$.store.book[0].title  veya  /root/item/@id" 
+                             Margin="0,0,15,0" Padding="15,0"/>
 
-                    <Button Grid.Column="1" Style="{StaticResource AccentButtonStyle}" Height="35" Click="Query_Click">
+                    <Button Grid.Column="1" Style="{StaticResource AccentButtonStyle}" Height="40" Padding="30,0" Click="Query_Click">
                         <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="Magnify" Width="20" Height="20" Margin="5,0,10,0"/>
-                            <TextBlock Text="Sorgula" Width="40"/>
+                            <iconPacks:PackIconMaterial Kind="Magnify" Width="18" Height="18" Margin="0,0,10,0"/>
+                            <TextBlock Text="Sorgula" FontWeight="Bold"/>
                         </StackPanel>
                     </Button>
                 </Grid>
-            </Grid>
+            </StackPanel>
         </Border>
     </Grid>
-</UserControl>
+</Page>

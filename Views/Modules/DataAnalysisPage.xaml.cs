@@ -6,6 +6,8 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using SwissKnifeApp.Services;
+using OxyPlot;
+using System.Windows.Media;
 
 namespace SwissKnifeApp.Views.Modules
 {
@@ -114,7 +116,7 @@ namespace SwissKnifeApp.Views.Modules
             string col = cmbColumns.SelectedItem.ToString()!;
             var type = (cmbChartType.SelectedItem as ComboBoxItem)?.Content.ToString() ?? "Bar Grafiği";
 
-            var model = _service.CreateBasicChart(_dataTable, col, type);
+            var model = _service.CreateBasicChart(_dataTable, col, type, GetThemeTextColor());
             oxyChart.Model = model;
         }
 
@@ -150,7 +152,7 @@ namespace SwissKnifeApp.Views.Modules
                 return;
             }
 
-            var model = _service.CreateHistogramChart(col, histogram, histogram.Bins.Length);
+            var model = _service.CreateHistogramChart(col, histogram, histogram.Bins.Length, GetThemeTextColor());
             histogramChart.Model = model;
 
             txtHistogramInfo.Text = $"• Veri sayısı: {histogram.DataCount}\n• Min: {histogram.Min:F2}, Max: {histogram.Max:F2}, Ortalama: {histogram.Average:F2}";
@@ -178,7 +180,7 @@ namespace SwissKnifeApp.Views.Modules
 
             txtRegressionInfo.Text = $"Regresyon Denklemi: Y = {regression.Slope:F3}X + {regression.Intercept:F3}\nR² = {regression.RSquared:F3}";
 
-            var model = _service.CreateRegressionChart(regression);
+            var model = _service.CreateRegressionChart(regression, GetThemeTextColor());
             regressionChart.Model = model;
         }
 
@@ -223,7 +225,7 @@ namespace SwissKnifeApp.Views.Modules
             }
 
             string column = cmbColumns.SelectedItem.ToString()!;
-            var model = _service.CreateBoxPlot(_dataTable, column);
+            var model = _service.CreateBoxPlot(_dataTable, column, GetThemeTextColor());
             oxyChart.Model = model;
             
             txtStatsResult.Text = $"📦 Box Plot oluşturuldu: {column}\nGrafik, veri dağılımını, medyan, çeyrekler ve aykırı değerleri gösterir.";
@@ -431,7 +433,7 @@ namespace SwissKnifeApp.Views.Modules
                 return;
             }
 
-            var model = _service.CreateTimeSeriesChart(result, column);
+            var model = _service.CreateTimeSeriesChart(result, column, GetThemeTextColor());
             timeSeriesChart.Model = model;
             txtTimeSeriesInfo.Text = result.Summary;
         }
@@ -446,7 +448,7 @@ namespace SwissKnifeApp.Views.Modules
                 return;
             }
 
-            var model = _service.CreateCorrelationHeatmap(_dataTable);
+            var model = _service.CreateCorrelationHeatmap(_dataTable, GetThemeTextColor());
             heatmapChart.Model = model;
         }
 
@@ -588,7 +590,7 @@ namespace SwissKnifeApp.Views.Modules
             }
 
             string column = cmbColumns.SelectedItem.ToString()!;
-            var model = _service.CreateViolinPlot(_dataTable, column);
+            var model = _service.CreateViolinPlot(_dataTable, column, GetThemeTextColor());
             oxyChart.Model = model;
 
             txtStatsResult.Text = $"🎻 Violin Plot oluşturuldu: {column}\nGrafik, veri yoğunluğunu ve dağılımı gösterir. Geniş bölgeler daha fazla veriyi temsil eder.";
@@ -685,6 +687,16 @@ namespace SwissKnifeApp.Views.Modules
             {
                 MessageBox.Show("Dashboard oluşturulamadı:\n" + ex.Message);
             }
+        }
+
+        private OxyColor GetThemeTextColor()
+        {
+            if (Application.Current.Resources["AppForeground"] is SolidColorBrush brush)
+            {
+                var c = brush.Color;
+                return OxyColor.FromArgb(c.A, c.R, c.G, c.B);
+            }
+            return OxyColors.Black;
         }
 
     }

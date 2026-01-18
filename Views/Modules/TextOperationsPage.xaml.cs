@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace SwissKnifeApp.Views.Modules
 {
-    public partial class TextOperationsPage : UserControl
+    public partial class TextOperationsPage : Page
     {
         private readonly SwissKnifeApp.Services.TextOperationsService _textService = new SwissKnifeApp.Services.TextOperationsService();
         public TextOperationsPage()

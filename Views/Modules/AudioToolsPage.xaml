@@ -6,224 +6,311 @@
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       mc:Ignorable="d"
+      d:DesignHeight="800" d:DesignWidth="1000"
+      Background="{DynamicResource AppBackground}"
       Title="Ses Araçları">
-    <!-- Page-level accent overrides (Audio = Green) -->
+
     <Page.Resources>
-        <SolidColorBrush x:Key="AccentBrush" Color="#43A047"/>
-        <SolidColorBrush x:Key="AccentBrush2" Color="#2E7D32"/>
+        <!-- Local converters if needed -->
     </Page.Resources>
-    <Grid Margin="20">
+
+    <Grid Background="{DynamicResource AppBackground}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,12" VerticalAlignment="Center">
-            <iconPacks:PackIconMaterial Kind="Music" Width="28" Height="28" Foreground="{StaticResource AccentBrush}"/>
-            <TextBlock Text="Ses Araçları" FontSize="20" FontWeight="Bold" Margin="8,0,0,0"/>
-            <TextBlock Text=" • Dönüştürme ve Trim" Foreground="#607D8B" Margin="6,4,0,0"/>
-        </StackPanel>
-
-        <!-- File & Output Card + Audio Player -->
-        <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,12">
+        <!-- Modern Header -->
+        <Border Grid.Row="0" Padding="25,20" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
             <StackPanel>
-                <TextBlock Text="Girdiler" Style="{StaticResource SectionHeader}"/>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Button Style="{StaticResource AccentButtonStyle}" Click="BtnPickFiles_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="FolderMusic" Width="18" Height="18" Margin="10,0,8,0"/>
-                            <TextBlock Text="Dosyaları Seç" Width="70"/>
-                        </StackPanel>
-                    </Button>
-                    <TextBlock Text="Seçilen:" Margin="12,0,0,0" VerticalAlignment="Center"/>
-                    <TextBlock x:Name="LblSelectedCount" Text="0" FontWeight="Bold" VerticalAlignment="Center" Margin="4,0,0,0"/>
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="MusicCircle" Width="32" Height="32" VerticalAlignment="Center" Foreground="{DynamicResource AccentBrush}"/>
+                    <TextBlock Text="Ses Laboratuvarı" FontSize="24" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource HeaderText}"/>
                 </StackPanel>
-
-                <!-- Audio Player Controls -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,12,0,0">
-                    <Button Width="38" Height="38" Click="BtnPlayAudio_Click" ToolTip="Oynat" Style="{StaticResource AccentButtonStyle}">
-                        <iconPacks:PackIconMaterial Kind="Play" Width="22" Height="22" Foreground="#43A047"/>
-                    </Button>
-                    <Button Width="38" Height="38" Margin="8,0,0,0" Click="BtnPauseAudio_Click" ToolTip="Duraklat" Style="{StaticResource AccentButtonStyle}">
-                        <iconPacks:PackIconMaterial Kind="Pause" Width="22" Height="22" Foreground="#43A047"/>
-                    </Button>
-                    <Button Width="38" Height="38" Margin="8,0,0,0" Click="BtnStopAudio_Click" ToolTip="Durdur" Style="{StaticResource AccentButtonStyle}">
-                        <iconPacks:PackIconMaterial Kind="Stop" Width="22" Height="22" Foreground="#43A047"/>
-                    </Button>
-                    <Button Width="38" Height="38" Margin="16,0,0,0" Click="BtnBackwardAudio_Click" ToolTip="Geri Sar" Style="{StaticResource AccentButtonStyle}">
-                        <iconPacks:PackIconMaterial Kind="Rewind" Width="22" Height="22" Foreground="#43A047"/>
-                    </Button>
-                    <Button Width="38" Height="38" Margin="8,0,0,0" Click="BtnForwardAudio_Click" ToolTip="İleri Sar" Style="{StaticResource AccentButtonStyle}">
-                        <iconPacks:PackIconMaterial Kind="FastForward" Width="22" Height="22" Foreground="#43A047"/>
-                    </Button>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
-                    <TextBlock x:Name="TxtCurrentTime" Text="00:00" FontWeight="Bold" Foreground="#43A047" Margin="0,0,8,0"/>
-                    <Slider x:Name="SliderPosition" Minimum="0" Maximum="100" Value="0" Height="24" Width="220" ToolTip="Zaman Çubuğu"/>
-                    <TextBlock x:Name="TxtTotalTime" Text="00:00" FontWeight="Bold" Foreground="#43A047" Margin="8,0,0,0"/>
-                </StackPanel>
-                <!-- Hidden MediaElement for audio playback -->
-                <MediaElement x:Name="AudioPlayer" LoadedBehavior="Manual" UnloadedBehavior="Manual" Visibility="Collapsed" />
-
-                <Separator Margin="0,10,0,10"/>
-                <TextBlock Text="Çıkış Klasörü" Style="{StaticResource SectionHeader}"/>
-                <DockPanel>
-                    <TextBox x:Name="TxtOutput" Style="{StaticResource RoundedTextBox}" Height="32" MinWidth="360"/>
-                    <Button Style="{StaticResource OutlineButtonStyle}" Margin="8,0,0,0" Click="BtnPickFolder_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="Folder" Width="18" Height="18" Margin="0,0,8,0"/>
-                            <TextBlock Text="Seç"/>
-                        </StackPanel>
-                    </Button>
-                </DockPanel>
+                <TextBlock Text="Profesyonel ses dönüştürme, kesme, birleştirme ve analiz araçları" FontSize="14" Foreground="{DynamicResource SecondaryText}" Margin="47,5,0,0"/>
             </StackPanel>
         </Border>
 
-        <!-- Options TabControl -->
-        <TabControl Grid.Row="2" Margin="0,0,0,12" Background="Transparent" BorderThickness="0">
-            <!-- 1️⃣ DÖNÜŞTÜRMELİ VE TRIM -->
-            <TabItem Header="Dönüştür &amp; Kes">
-                <Border Style="{StaticResource Card}">
-                    <StackPanel>
-                        <WrapPanel ItemWidth="260" ItemHeight="40" Margin="0,4,0,0">
-                            <StackPanel Orientation="Horizontal" Margin="0,4,20,4">
-                                <TextBlock Text="İşlem" VerticalAlignment="Center" Width="80"/>
-                                <ComboBox x:Name="CmbMode" Width="150">
-                                    <ComboBoxItem Content="Dönüştür" IsSelected="True"/>
-                                    <ComboBoxItem Content="Trim (Kes)"/>
-                                </ComboBox>
-                            </StackPanel>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20">
+            <StackPanel MaxWidth="1200">
+                
+                <!-- Main Control Panel -->
+                <Grid Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="350"/>
+                    </Grid.ColumnDefinitions>
 
-                            <StackPanel Orientation="Horizontal" Margin="0,4,20,4">
-                                <TextBlock Text="Format" VerticalAlignment="Center" Width="80"/>
-                                <ComboBox x:Name="CmbFormat" Width="150" SelectedIndex="0">
-                                    <ComboBoxItem Content="MP3"/>
-                                    <ComboBoxItem Content="AAC"/>
-                                    <ComboBoxItem Content="WAV"/>
-                                    <ComboBoxItem Content="FLAC"/>
-                                    <ComboBoxItem Content="OPUS"/>
-                                </ComboBox>
-                            </StackPanel>
-
-                            <StackPanel Orientation="Horizontal" Margin="0,4,20,4">
-                                <TextBlock Text="Kalite" VerticalAlignment="Center" Width="80"/>
-                                <ComboBox x:Name="CmbQuality" Width="150" SelectedIndex="0">
-                                    <ComboBoxItem Content="Highest"/>
-                                    <ComboBoxItem Content="High"/>
-                                    <ComboBoxItem Content="Medium"/>
-                                    <ComboBoxItem Content="Low"/>
-                                    <ComboBoxItem Content="Lossless"/>
-                                </ComboBox>
-                            </StackPanel>
-
-                            <CheckBox x:Name="ChkNormalize" Content="Normalize (loudnorm)" VerticalAlignment="Center" Margin="0,4,20,4"/>
-                        </WrapPanel>
-
-                        <Separator Margin="0,10,0,10"/>
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Başlangıç" VerticalAlignment="Center"/>
-                                <TextBox x:Name="TxtStart" Style="{StaticResource RoundedTextBox}" Width="110" Height="32" Margin="8,0,0,0" mah:TextBoxHelper.Watermark="00:00"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Margin="24,0,0,0">
-                                <TextBlock Text="Bitiş" VerticalAlignment="Center"/>
-                                <TextBox x:Name="TxtEnd" Style="{StaticResource RoundedTextBox}" Width="110" Height="32" Margin="8,0,0,0" mah:TextBoxHelper.Watermark="00:00"/>
-                            </StackPanel>
-                            <Button x:Name="BtnStart" Style="{StaticResource AccentButtonStyle}" Content="İşlemi Başlat" Click="BtnStart_Click" Margin="24,0,0,0" Padding="15,5"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-            </TabItem>
-
-            <!-- 2️⃣ SES BİRLEŞTİRME -->
-            <TabItem Header="Ses Birleştir">
-                <Border Style="{StaticResource Card}">
-                    <StackPanel>
-                        <TextBlock Text="Seçilen tüm dosyalar sırasıyla uç uca eklenecektir." Foreground="#607D8B" Margin="0,0,0,10"/>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Çıkış Formatı:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                            <ComboBox x:Name="CmbMergeFormat" Width="120" SelectedIndex="0">
-                                <ComboBoxItem Content="MP3"/>
-                                <ComboBoxItem Content="WAV"/>
-                                <ComboBoxItem Content="AAC"/>
-                            </ComboBox>
-                            <Button Style="{StaticResource AccentButtonStyle}" Content="Birleştirmeyi Başlat" Click="BtnMerge_Click" Margin="20,0,0,0" Padding="15,5"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-            </TabItem>
-
-            <!-- 3️⃣ GELİŞMİŞ EFEKTLER -->
-            <TabItem Header="Gelişmiş Efektler">
-                <Border Style="{StaticResource Card}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Grid.Column="0" Margin="0,0,10,0">
-                            <TextBlock Text="Perde (Pitch):" FontWeight="SemiBold"/>
-                            <Slider x:Name="SldPitch" Minimum="0.5" Maximum="2.0" Value="1.0" TickFrequency="0.1" IsSnapToTickEnabled="True" Margin="0,5,0,10"/>
-                            <TextBlock Text="{Binding Value, ElementName=SldPitch, StringFormat={}{0:F1}x}" HorizontalAlignment="Right" Foreground="{StaticResource AccentBrush}"/>
+                    <!-- Player & File Selection -->
+                    <Border Grid.Column="0" Margin="0,0,20,0" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
+                        <StackPanel>
+                            <TextBlock Text="Medya Kontrol" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource HeaderText}" Margin="0,0,0,15"/>
                             
-                            <TextBlock Text="Hız (Speed):" FontWeight="SemiBold" Margin="0,10,0,0"/>
-                            <Slider x:Name="SldSpeed" Minimum="0.5" Maximum="2.0" Value="1.0" TickFrequency="0.1" IsSnapToTickEnabled="True" Margin="0,5,0,10"/>
-                            <TextBlock Text="{Binding Value, ElementName=SldSpeed, StringFormat={}{0:F1}x}" HorizontalAlignment="Right" Foreground="{StaticResource AccentBrush}"/>
-                        </StackPanel>
-                        <StackPanel Grid.Column="1" Margin="10,0,0,0" VerticalAlignment="Center">
-                            <CheckBox x:Name="ChkReduceNoise" Content="Arka Plan Gürültüsünü Azalt" Margin="0,0,0,15"/>
-                            <Button Style="{StaticResource OutlineButtonStyle}" Content="Önizlemeyi Dinle" Click="BtnPreviewAdvanced_Click" Margin="0,0,0,8">
-                                <Button.ToolTip>Ayarların ilk 10 saniyesini dinle</Button.ToolTip>
-                            </Button>
-                            <Button Style="{StaticResource AccentButtonStyle}" Content="Tümünü İşle ve Kaydet" Click="BtnApplyAdvanced_Click" Padding="20,10"/>
-                        </StackPanel>
-                    </Grid>
-                </Border>
-            </TabItem>
+                            <!-- File Picker -->
+                            <Border Background="{DynamicResource InputBackground}" BorderBrush="{DynamicResource InputBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="15" Margin="0,0,0,20">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock x:Name="LblSelectedFiles" Text="Henüz dosya seçilmedi" Foreground="{DynamicResource SecondaryText}" FontSize="14" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock x:Name="LblSelectedCount" Text="0 dosya hazır" Foreground="{DynamicResource AccentBrush}" FontSize="12" FontWeight="SemiBold" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                    <Button Grid.Column="1" Click="BtnPickFiles_Click" Style="{StaticResource AccentButtonStyle}" Padding="15,8">
+                                        <StackPanel Orientation="Horizontal">
+                                            <iconPacks:PackIconMaterial Kind="Plus" Width="14" Height="14" Margin="0,0,8,0"/>
+                                            <TextBlock Text="Dosya Ekle"/>
+                                        </StackPanel>
+                                    </Button>
+                                </Grid>
+                            </Border>
 
-            <!-- 4️⃣ ANALİZ ARAÇLARI -->
-            <TabItem Header="Analiz">
-                <Border Style="{StaticResource Card}">
-                    <UniformGrid Columns="2">
-                        <StackPanel Margin="10">
-                            <TextBlock Text="Spektrum Analizi" Style="{StaticResource SectionHeader}"/>
-                            <TextBlock Text="Müziğe göre hareketli görsel bir video oluşturur." TextWrapping="Wrap" Margin="0,0,0,10" FontSize="12"/>
-                            <Button Style="{StaticResource OutlineButtonStyle}" Content="Spektrum Videosu Oluştur" Click="BtnGenerateSpectrum_Click"/>
-                        </StackPanel>
-                        <StackPanel Margin="10">
-                            <TextBlock Text="BPM Tespiti" Style="{StaticResource SectionHeader}"/>
-                            <TextBlock Text="Şarkının temposunu (vuruş sayısını) ölçer." TextWrapping="Wrap" Margin="0,0,0,10" FontSize="12"/>
-                            <Button Style="{StaticResource OutlineButtonStyle}" Content="BPM Ölç" Click="BtnDetectBpm_Click"/>
-                            <TextBlock x:Name="TxtBpmResult" Text="BPM: --" FontWeight="Bold" FontSize="16" Margin="0,10,0,0" HorizontalAlignment="Center"/>
-                        </StackPanel>
-                    </UniformGrid>
-                </Border>
-            </TabItem>
-        </TabControl>
+                            <!-- Modern Audio Player -->
+                            <Border Background="{DynamicResource AppBackground}" CornerRadius="12" Padding="15">
+                                <StackPanel>
+                                    <!-- Waveform / Visualizer Placeholder -->
+                                    <Border Height="80" Margin="0,0,0,15" Background="{DynamicResource InputBackground}" CornerRadius="6" Opacity="0.6">
+                                        <iconPacks:PackIconMaterial Kind="Waveform" HorizontalAlignment="Center" VerticalAlignment="Center" Width="100" Height="40" Foreground="{DynamicResource AccentBrush}" Opacity="0.3"/>
+                                    </Border>
 
-        <!-- Progress & Log Card -->
-        <Border Grid.Row="3" Style="{StaticResource Card}">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="İlerleme" Style="{StaticResource SectionHeader}"/>
-                <DockPanel Grid.Row="1" Margin="0,4,0,0">
-                    <Button x:Name="BtnCancel" Style="{StaticResource OutlineButtonStyle}" Content="İptal" Click="BtnCancel_Click" IsEnabled="False" DockPanel.Dock="Right" Margin="10,0,0,0"/>
-                    <ProgressBar x:Name="PbTotal" Minimum="0" Maximum="100" Style="{StaticResource AccentProgressBar}" Height="20"/>
-                </DockPanel>
-                <StackPanel Grid.Row="2" Margin="0,10,0,0">
-                    <TextBlock Text="Log" Style="{StaticResource SectionHeader}"/>
-                    <ScrollViewer Margin="0,4,0,0" VerticalScrollBarVisibility="Auto">
-                        <TextBox x:Name="TxtLog" IsReadOnly="True" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="160"/>
-                    </ScrollViewer>
-                </StackPanel>
-            </Grid>
-        </Border>
+                                    <!-- Progress -->
+                                    <Grid Margin="0,0,0,10">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock x:Name="TxtCurrentTime" Text="00:00" Foreground="{DynamicResource SecondaryText}" VerticalAlignment="Center" FontSize="12" Width="45"/>
+                                        <Slider x:Name="SliderPosition" Grid.Column="1" Margin="10,0" Minimum="0" Maximum="100" Value="0" VerticalAlignment="Center" Style="{StaticResource MahApps.Styles.Slider}"/>
+                                        <TextBlock x:Name="TxtTotalTime" Grid.Column="2" Text="00:00" Foreground="{DynamicResource SecondaryText}" VerticalAlignment="Center" FontSize="12" Width="45" TextAlignment="Right"/>
+                                    </Grid>
+
+                                    <!-- Controls -->
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Button Style="{StaticResource OutlineButtonStyle}" Width="40" Height="40" Margin="0,0,10,0" Padding="0" Click="BtnStopAudio_Click">
+                                            <iconPacks:PackIconMaterial Kind="Stop" Width="16" Height="16"/>
+                                        </Button>
+                                        <Button Style="{StaticResource OutlineButtonStyle}" Width="45" Height="45" Margin="0,0,10,0" Padding="0" Click="BtnBackwardAudio_Click">
+                                            <iconPacks:PackIconMaterial Kind="Rewind" Width="20" Height="20"/>
+                                        </Button>
+                                        <Button x:Name="BtnPlayPause" Style="{StaticResource AccentButtonStyle}" Width="55" Height="55" mah:ControlsHelper.CornerRadius="27" Padding="0" Click="BtnPlayAudio_Click">
+                                            <iconPacks:PackIconMaterial x:Name="IconPlayPause" Kind="Play" Width="24" Height="24" Margin="3,0,0,0"/>
+                                        </Button>
+                                        <Button Style="{StaticResource OutlineButtonStyle}" Width="45" Height="45" Margin="10,0,10,0" Padding="0" Click="BtnForwardAudio_Click">
+                                            <iconPacks:PackIconMaterial Kind="FastForward" Width="20" Height="20"/>
+                                        </Button>
+                                        <mah:DropDownButton Width="40" Height="40" Padding="0" ArrowVisibility="Collapsed" Background="Transparent" BorderBrush="{DynamicResource AccentBrush}" BorderThickness="1.5">
+                                            <mah:DropDownButton.Icon>
+                                                <iconPacks:PackIconMaterial Kind="VolumeHigh" Width="16" Height="16" Foreground="{DynamicResource AccentBrush}"/>
+                                            </mah:DropDownButton.Icon>
+                                            <mah:DropDownButton.Items>
+                                                <MenuItem Header="Ses Seviyesi">
+                                                    <MenuItem.Icon>
+                                                        <iconPacks:PackIconMaterial Kind="VolumeMedium" Width="14" Height="14"/>
+                                                    </MenuItem.Icon>
+                                                    <Slider Width="100" Minimum="0" Maximum="1" Value="1"/>
+                                                </MenuItem>
+                                            </mah:DropDownButton.Items>
+                                        </mah:DropDownButton>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+                            
+                            <MediaElement x:Name="AudioPlayer" LoadedBehavior="Manual" UnloadedBehavior="Manual" Visibility="Collapsed" />
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Output Settings -->
+                    <Border Grid.Column="1" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
+                        <StackPanel>
+                            <TextBlock Text="Çıkış Ayarları" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource HeaderText}" Margin="0,0,0,15"/>
+                            
+                            <TextBlock Text="Hedef Klasör" Foreground="{DynamicResource SecondaryText}" FontSize="12" Margin="0,0,0,5"/>
+                            <Grid Margin="0,0,0,20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBox x:Name="TxtOutput" IsReadOnly="True" Height="38" Padding="10,0" VerticalContentAlignment="Center" Background="{DynamicResource InputBackground}" Foreground="{DynamicResource InputForeground}" BorderBrush="{DynamicResource InputBorderBrush}" mah:ControlsHelper.CornerRadius="6,0,0,6"/>
+                                <Button Grid.Column="1" Click="BtnPickFolder_Click" Style="{StaticResource OutlineButtonStyle}" Height="38" Padding="10,0" BorderThickness="0,1,1,1" mah:ControlsHelper.CornerRadius="0,6,6,0">
+                                    <iconPacks:PackIconMaterial Kind="FolderOpen" Width="14" Height="14"/>
+                                </Button>
+                            </Grid>
+
+                            <TextBlock Text="Çıkış Formatı" Foreground="{DynamicResource SecondaryText}" FontSize="12" Margin="0,0,0,5"/>
+                            <ComboBox x:Name="CmbFormat" Margin="0,0,0,20" Height="38" SelectedIndex="0">
+                                <ComboBoxItem Content="MP3 (MPEG Layer 3)"/>
+                                <ComboBoxItem Content="WAV (Lossless PCM)"/>
+                                <ComboBoxItem Content="AAC (Advanced Audio)"/>
+                                <ComboBoxItem Content="FLAC (Free Lossless)"/>
+                                <ComboBoxItem Content="OGG (Vorbis)"/>
+                            </ComboBox>
+
+                            <TextBlock Text="Kalite" Foreground="{DynamicResource SecondaryText}" FontSize="12" Margin="0,0,0,5"/>
+                            <ComboBox x:Name="CmbQuality" Margin="0,0,0,20" Height="38" SelectedIndex="1">
+                                <ComboBoxItem Content="320 kbps (En Yüksek)"/>
+                                <ComboBoxItem Content="192 kbps (Yüksek)"/>
+                                <ComboBoxItem Content="128 kbps (Orta)"/>
+                                <ComboBoxItem Content="64 kbps (Düşük)"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <!-- Tools Tabs -->
+                <mah:MetroAnimatedSingleRowTabControl Margin="0,0,0,20" mah:HeaderedControlHelper.HeaderFontSize="15">
+                    
+                    <!-- Convert & Trim -->
+                    <TabItem Header="Dönüştür &amp; Kes">
+                        <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="0,0,12,12" Padding="20">
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <StackPanel Margin="0,0,15,0">
+                                        <TextBlock Text="İşlem Modu" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,5"/>
+                                        <ComboBox x:Name="CmbMode" Height="38" SelectedIndex="0">
+                                            <ComboBoxItem Content="Dönüştür"/>
+                                            <ComboBoxItem Content="Trim (Kes)"/>
+                                        </ComboBox>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="1" Margin="0,0,15,0">
+                                        <TextBlock Text="Başlangıç Zamanı" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,5"/>
+                                        <TextBox x:Name="TxtStart" Text="00:00:00" Height="38" mah:TextBoxHelper.Watermark="ss:dd:ss" VerticalContentAlignment="Center" Padding="10,0"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2" Margin="0,0,15,0">
+                                        <TextBlock Text="Bitiş Zamanı" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,5"/>
+                                        <TextBox x:Name="TxtEnd" Text="00:00:00" Height="38" mah:TextBoxHelper.Watermark="ss:dd:ss" VerticalContentAlignment="Center" Padding="10,0"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="3" VerticalAlignment="Bottom">
+                                        <Button x:Name="BtnStart" Click="BtnStart_Click" Style="{StaticResource AccentButtonStyle}" Height="38" Padding="25,0">
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Kind="Flash" Width="14" Height="14" Margin="0,0,8,0"/>
+                                                <TextBlock Text="İŞLEMİ BAŞLAT" FontWeight="Bold"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                                
+                                <CheckBox x:Name="ChkNormalize" Content="Ses Seviyesini Normalize Et (Loudnorm)" Margin="0,15,0,0" Foreground="{DynamicResource AppForeground}"/>
+                            </StackPanel>
+                        </Border>
+                    </TabItem>
+
+                    <!-- Merge -->
+                    <TabItem Header="Ses Birleştir">
+                        <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="0,0,12,12" Padding="20">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="150"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Listedeki tüm dosyalar seçilen sıraya göre uç uca eklenecektir. Toplu işlem öncesi sıralamayı kontrol edin." TextWrapping="Wrap" Foreground="{DynamicResource SecondaryText}" VerticalAlignment="Center" Margin="0,0,20,0"/>
+                                
+                                <StackPanel Grid.Column="1" Margin="0,0,15,0" VerticalAlignment="Center">
+                                    <TextBlock Text="Çıkış Formatı" Foreground="{DynamicResource SecondaryText}" Margin="0,0,0,5" FontSize="12"/>
+                                    <ComboBox x:Name="CmbMergeFormat" Height="38" SelectedIndex="0">
+                                        <ComboBoxItem Content="MP3"/>
+                                        <ComboBoxItem Content="WAV"/>
+                                        <ComboBoxItem Content="AAC"/>
+                                        <ComboBoxItem Content="FLAC"/>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                <Button Grid.Column="2" Click="BtnMerge_Click" Style="{StaticResource AccentButtonStyle}" Height="45" Padding="30,0" VerticalAlignment="Bottom">
+                                    <StackPanel Orientation="Horizontal">
+                                        <iconPacks:PackIconMaterial Kind="Merge" Width="16" Height="16" Margin="0,0,10,0"/>
+                                        <TextBlock Text="BİRLEŞTİR" FontWeight="Bold"/>
+                                    </StackPanel>                                    
+                                </Button>
+                            </Grid>
+                        </Border>
+                    </TabItem>
+
+                    <!-- Effects -->
+                    <TabItem Header="Gelişmiş Efektler">
+                        <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="0,0,12,12" Padding="20">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <StackPanel Grid.Column="0" Margin="0,0,30,0">
+                                    <Grid Margin="0,0,0,20">
+                                        <TextBlock Text="Perde (Pitch)" Foreground="{DynamicResource HeaderText}" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding Value, ElementName=SldPitch, StringFormat={}{0:F1}x}" HorizontalAlignment="Right" Foreground="{DynamicResource AccentBrush}" FontWeight="Bold"/>
+                                    </Grid>
+                                    <Slider x:Name="SldPitch" Minimum="0.5" Maximum="2.0" Value="1.0" TickFrequency="0.1" IsSnapToTickEnabled="True" Margin="0,0,0,20"/>
+
+                                    <Grid Margin="0,0,0,20">
+                                        <TextBlock Text="Oynatma Hızı (Speed)" Foreground="{DynamicResource HeaderText}" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding Value, ElementName=SldSpeed, StringFormat={}{0:F1}x}" HorizontalAlignment="Right" Foreground="{DynamicResource AccentBrush}" FontWeight="Bold"/>
+                                    </Grid>
+                                    <Slider x:Name="SldSpeed" Minimum="0.5" Maximum="2.0" Value="1.0" TickFrequency="0.1" IsSnapToTickEnabled="True"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <CheckBox x:Name="ChkReduceNoise" Content="Gürültü Azaltma" Margin="0,0,0,15" FontSize="14"/>
+                                    <Button Click="BtnApplyAdvanced_Click" Style="{StaticResource AccentButtonStyle}" Height="45" Padding="20,0" Margin="0,0,0,10">
+                                        <TextBlock Text="EFEKTLERİ UYGULA" FontWeight="Bold"/>
+                                    </Button>
+                                    <Button Click="BtnPreviewAdvanced_Click" Style="{StaticResource OutlineButtonStyle}" Height="35" Content="Kısa Önizleme"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </TabItem>
+
+                    <!-- Analysis -->
+                    <TabItem Header="Analiz &amp; Spektrum">
+                        <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="0,0,12,12" Padding="20">
+                            <UniformGrid Columns="2">
+                                <Border Margin="0,0,10,0" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,1,0" Padding="0,0,10,0">
+                                    <StackPanel>
+                                        <TextBlock Text="Spektrum Videosu" FontWeight="Bold" Foreground="{DynamicResource HeaderText}" Margin="0,0,0,10"/>
+                                        <TextBlock Text="Müzik ritmine duyarlı dinamik görselleştirme videosu oluşturur." Foreground="{DynamicResource SecondaryText}" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,15"/>
+                                        <Button Click="BtnGenerateSpectrum_Click" Style="{StaticResource OutlineButtonStyle}" Content="Görselleştirici Oluştur"/>
+                                    </StackPanel>
+                                </Border>
+                                <Border Padding="10,0,0,0">
+                                    <StackPanel>
+                                        <TextBlock Text="BPM Analizi" FontWeight="Bold" Foreground="{DynamicResource HeaderText}" Margin="0,0,0,10"/>
+                                        <TextBlock Text="Şarkının temposunu (Beats Per Minute) tespit eder." Foreground="{DynamicResource SecondaryText}" FontSize="12" TextWrapping="Wrap" Margin="0,0,0,15"/>
+                                        <Grid>
+                                            <Button Click="BtnDetectBpm_Click" Style="{StaticResource OutlineButtonStyle}" Content="Metronom Ölç" HorizontalAlignment="Left" Width="150"/>
+                                            <TextBlock x:Name="TxtBpmResult" Text="--" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,20,0"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Border>
+                            </UniformGrid>
+                        </Border>
+                    </TabItem>
+                </mah:MetroAnimatedSingleRowTabControl>
+
+                <!-- Status & Logs -->
+                <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="20">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,15">
+                            <TextBlock Text="İşlem Durumu" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource HeaderText}"/>
+                            <Button x:Name="BtnCancel" Click="BtnCancel_Click" Content="İptal Et" Style="{StaticResource OutlineButtonStyle}" HorizontalAlignment="Right" Foreground="#E74C3C" BorderBrush="#E74C3C" Visibility="Collapsed"/>
+                        </Grid>
+                        
+                        <mah:MetroProgressBar x:Name="PbTotal" Height="10" Margin="0,0,0,15" Foreground="{DynamicResource AccentBrush}" Background="{DynamicResource AppBackground}"/>
+                        
+                        <TextBox x:Name="TxtLog" Height="120" IsReadOnly="True" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" FontFamily="Consolas" FontSize="12" Background="{DynamicResource InputBackground}" Foreground="{DynamicResource InputForeground}" BorderBrush="{DynamicResource InputBorderBrush}" Padding="10"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

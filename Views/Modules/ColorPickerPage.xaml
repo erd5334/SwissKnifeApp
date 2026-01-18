@@ -4,69 +4,119 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       mc:Ignorable="d"
+      d:DesignHeight="800" d:DesignWidth="1000"
+      Background="{DynamicResource AppBackground}"
       Title="Renk Seçici">
+
     <Page.Resources>
-        <SolidColorBrush x:Key="AccentBrush" Color="#7C4DFF"/>
-        <SolidColorBrush x:Key="AccentBrush2" Color="#512DA8"/>
+        <!-- Purple/Lavender accent for this module -->
+        <SolidColorBrush x:Key="ModuleAccent" Color="#7C4DFF"/>
     </Page.Resources>
-    <Grid Margin="24">
+
+    <Grid Background="{DynamicResource AppBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <!-- Başlık ve ikon -->
-        <StackPanel Orientation="Horizontal" Margin="0,0,0,18" VerticalAlignment="Center">
-            <iconPacks:PackIconMaterial Kind="Palette" Width="32" Height="32" Foreground="{StaticResource AccentBrush}"/>
-            <TextBlock Text="Renk Seçici" FontSize="24" FontWeight="Bold" Margin="10,0,0,0" Foreground="{StaticResource AccentBrush2}"/>
-        </StackPanel>
-        <!-- Kart: Renk seçici ve örnekler -->
-    <Border Grid.Row="1" Background="#F3E5F5" CornerRadius="14" Padding="24" BorderBrush="{StaticResource AccentBrush}" BorderThickness="1">
+
+        <!-- Modern Header -->
+        <Border Grid.Row="0" Padding="25,20" Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
             <StackPanel>
-                <Button x:Name="BtnEyedropper" Style="{StaticResource AccentButtonStyle}" Margin="0,0,0,10" Click="BtnEyedropper_Click">
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="Eyedropper" Width="20" Height="20" Margin="0,0,8,0"/>
-                        <TextBlock Text="Damlalık ile Renk Seç" FontWeight="SemiBold"/>
-                    </StackPanel>
-                </Button>
-                <TextBlock Text="Bir alana tıklayarak renk seçin veya damlalık ile ekranın herhangi bir yerinden renk alın." FontWeight="SemiBold" Foreground="#512DA8"/>
-                <WrapPanel Margin="0,12,0,12" x:Name="ColorSamplePanel">
-                    <!-- Renk örnekleri dinamik olarak eklenecek -->
-                </WrapPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <TextBlock Text="Seçilen Renk:" FontWeight="SemiBold"/>
-                    <Border Width="36" Height="36" CornerRadius="8" BorderBrush="#512DA8" BorderThickness="2" Margin="10,0,0,0">
-                        <Rectangle x:Name="SelectedColorRect" Width="32" Height="32" Stroke="Black"/>
-                    </Border>
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="Palette" Width="32" Height="32" VerticalAlignment="Center" Foreground="{DynamicResource ModuleAccent}"/>
+                    <TextBlock Text="Renk Seçici" FontSize="24" FontWeight="Bold" Margin="15,0,0,0" VerticalAlignment="Center" Foreground="{DynamicResource HeaderText}"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                    <TextBlock Text="HEX:" FontWeight="SemiBold"/>
-                    <TextBox x:Name="HexCodeBox" Width="100" Margin="5,0,0,0" IsReadOnly="True" Style="{StaticResource RoundedTextBox}"/>
-                    <Button x:Name="BtnCopyHex" Style="{StaticResource OutlineButtonStyle}" Margin="5,0,0,0" Click="BtnCopyHex_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="ContentCopy" Width="16" Height="16" Margin="5,0,4,0"/>
-                            <TextBlock Text="Kopyala" Width="40"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                    <TextBlock Text="RGB:" FontWeight="SemiBold"/>
-                    <TextBox x:Name="RgbCodeBox" Width="120" Margin="5,0,0,0" IsReadOnly="True" Style="{StaticResource RoundedTextBox}"/>
-                    <Button x:Name="BtnCopyRgb" Style="{StaticResource OutlineButtonStyle}" Margin="5,0,0,0" Click="BtnCopyRgb_Click">
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconMaterial Kind="ContentCopy" Width="16" Height="16" Margin="5,0,4,0"/>
-                            <TextBlock Text="Kopyala" Width="40"/>
-                        </StackPanel>
-                    </Button>
-                </StackPanel>
+                <TextBlock Text="Ekrandan veya paletten renk seçin, kod bloklarını kopyalayın" FontSize="14" Foreground="{DynamicResource SecondaryText}" Margin="47,5,0,0"/>
             </StackPanel>
         </Border>
-        <!-- Kod blokları için ayrı kart -->
-    <Border Grid.Row="2" Background="#ede7f6" CornerRadius="12" Padding="18" BorderBrush="{StaticResource AccentBrush2}" BorderThickness="1" Margin="0,20,0,0">
-            <TabControl x:Name="CodeTabControl" Background="Transparent" BorderThickness="0">
-                <!-- Kod blokları dinamik olarak eklenecek -->
-            </TabControl>
-        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="20">
+            <StackPanel MaxWidth="1000">
+                
+                <!-- Main Picker Control -->
+                <Border Style="{StaticResource Card}" Margin="0,0,0,20">
+                    <StackPanel>
+                        <Grid Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="Renk Seçimi" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource HeaderText}" Margin="0,0,0,5"/>
+                                <TextBlock Text="Damlalık ile ekranın herhangi bir yerinden renk alabilirsiniz." Foreground="{DynamicResource SecondaryText}" FontSize="13"/>
+                            </StackPanel>
+                            <Button Grid.Column="1" x:Name="BtnEyedropper" Style="{StaticResource AccentButtonStyle}" Padding="20,10" Click="BtnEyedropper_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="Eyedropper" Width="18" Height="18" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Damlalık ile Seç" FontWeight="Bold"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                        <TextBlock Text="Hızlı Palet" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource HeaderText}" Margin="0,0,0,10"/>
+                        <Border Background="{DynamicResource InputBackground}" BorderBrush="{DynamicResource InputBorderBrush}" BorderThickness="1" CornerRadius="8" Padding="10" Margin="0,0,0,25">
+                            <WrapPanel x:Name="ColorSamplePanel">
+                                <!-- Renk örnekleri dinamik olarak eklenecek -->
+                            </WrapPanel>
+                        </Border>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Color Preview -->
+                            <StackPanel Grid.Column="0" Margin="0,0,30,0">
+                                <TextBlock Text="Seçilen Renk" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource HeaderText}" Margin="0,0,0,10"/>
+                                <Border Width="120" Height="120" CornerRadius="12" BorderBrush="{DynamicResource InputBorderBrush}" BorderThickness="3">
+                                    <Rectangle x:Name="SelectedColorRect" Fill="{DynamicResource ModuleAccent}" RadiusX="9" RadiusY="9"/>
+                                </Border>
+                            </StackPanel>
+
+                            <!-- Color Codes -->
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <Grid Margin="0,0,0,15">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="HEX Kodu" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryText}"/>
+                                    <TextBox Grid.Column="1" x:Name="HexCodeBox" Style="{StaticResource RoundedTextBox}" IsReadOnly="True" Height="40" FontSize="15" FontWeight="Bold"/>
+                                    <Button Grid.Column="2" x:Name="BtnCopyHex" Style="{StaticResource OutlineButtonStyle}" Width="40" Height="40" Margin="10,0,0,0" Click="BtnCopyHex_Click" ToolTip="Kopyala">
+                                        <iconPacks:PackIconMaterial Kind="ContentCopy" Width="14" Height="14"/>
+                                    </Button>
+                                </Grid>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="RGB Kodu" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{DynamicResource SecondaryText}"/>
+                                    <TextBox Grid.Column="1" x:Name="RgbCodeBox" Style="{StaticResource RoundedTextBox}" IsReadOnly="True" Height="40" FontSize="15" FontWeight="Bold"/>
+                                    <Button Grid.Column="2" x:Name="BtnCopyRgb" Style="{StaticResource OutlineButtonStyle}" Width="40" Height="40" Margin="10,0,0,0" Click="BtnCopyRgb_Click" ToolTip="Kopyala">
+                                        <iconPacks:PackIconMaterial Kind="ContentCopy" Width="14" Height="14"/>
+                                    </Button>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Code Generation Section -->
+                <TextBlock Text="Geliştirici Kod Blokları" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource HeaderText}" Margin="0,0,0,15"/>
+                <Border Background="{DynamicResource CardBackground}" BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1" CornerRadius="12" Padding="5">
+                    <TabControl x:Name="CodeTabControl" Background="Transparent" BorderThickness="0" mah:HeaderedControlHelper.HeaderFontSize="14">
+                        <!-- Kod blokları dinamik olarak eklenecek -->
+                    </TabControl>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>
+

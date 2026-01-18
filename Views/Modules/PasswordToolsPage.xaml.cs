@@ -100,6 +100,7 @@ namespace SwissKnifeApp.Views.Modules
             _totpTimer.Stop();
             _autoLockTimer.Stop();
             TxtMasterPassword.Clear();
+            HeaderActions.Visibility = Visibility.Collapsed;
             CheckVaultStatus();
         }
 
@@ -136,6 +137,7 @@ namespace SwissKnifeApp.Views.Modules
                 VaultContent.Visibility = Visibility.Visible;
                 LoadData();
                 _autoLockTimer.Start();
+                HeaderActions.Visibility = Visibility.Visible;
                 UserActivityDetected();
             }
             catch (Exception ex)
@@ -288,8 +290,8 @@ namespace SwissKnifeApp.Views.Modules
                 GridDetails.Visibility = Visibility.Visible;
                 TxtDetailTitle.Text = entry.Title;
                 TxtDetailUsername.Text = entry.Username;
-                TxtDetailPassword.Text = "********";
-                BtnShowPassword.Content = new PackIconMaterial { Kind = PackIconMaterialKind.Eye, Width = 14, Height = 14 };
+                TxtDetailPassword.Text = "••••••••";
+                BtnShowPassword.Content = new PackIconMaterial { Kind = PackIconMaterialKind.Eye, Width = 16, Height = 16, Foreground = (System.Windows.Media.Brush)Application.Current.FindResource("SecondaryText") };
 
                 if (!string.IsNullOrEmpty(entry.TotpSecret))
                 {
@@ -309,15 +311,15 @@ namespace SwissKnifeApp.Views.Modules
             UserActivityDetected();
             if (_selectedEntry != null)
             {
-                if (TxtDetailPassword.Text == "********")
+                if (TxtDetailPassword.Text == "••••••••")
                 {
                     TxtDetailPassword.Text = _dbService.DecryptPassword(_selectedEntry.EncryptedPassword);
-                    BtnShowPassword.Content = new PackIconMaterial { Kind = PackIconMaterialKind.EyeOff, Width = 14, Height = 14 };
+                    BtnShowPassword.Content = new PackIconMaterial { Kind = PackIconMaterialKind.EyeOff, Width = 16, Height = 16, Foreground = (System.Windows.Media.Brush)Application.Current.FindResource("SecondaryText") };
                 }
                 else
                 {
-                    TxtDetailPassword.Text = "********";
-                    BtnShowPassword.Content = new PackIconMaterial { Kind = PackIconMaterialKind.Eye, Width = 14, Height = 14 };
+                    TxtDetailPassword.Text = "••••••••";
+                    BtnShowPassword.Content = new PackIconMaterial { Kind = PackIconMaterialKind.Eye, Width = 16, Height = 16, Foreground = (System.Windows.Media.Brush)Application.Current.FindResource("SecondaryText") };
                 }
             }
         }

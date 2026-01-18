@@ -48,17 +48,24 @@ namespace SwissKnifeApp.Views.Modules
         {
             if (ColorSamplePanel == null) return;
             ColorSamplePanel.Children.Clear();
+            
+            // Get a subtle border color from resources or use a neutral gray
+            var borderColor = (Brush)FindResource("CardBorderBrush") ?? Brushes.Gray;
+
             foreach (var color in _colorSamples)
             {
                 var rect = new Rectangle
                 {
-                    Width = 32,
-                    Height = 32,
+                    Width = 34,
+                    Height = 34,
                     Fill = new SolidColorBrush(color),
-                    Stroke = Brushes.Black,
-                    Margin = new Thickness(5),
+                    Stroke = borderColor,
+                    StrokeThickness = 1,
+                    Margin = new Thickness(4),
                     Cursor = Cursors.Hand,
-                    Tag = color
+                    Tag = color,
+                    RadiusX = 6,
+                    RadiusY = 6
                 };
                 rect.MouseLeftButtonUp += ColorSample_Click;
                 ColorSamplePanel.Children.Add(rect);

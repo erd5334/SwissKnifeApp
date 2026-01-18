@@ -26,12 +26,6 @@
         <SolidColorBrush x:Key="MainBackground" Color="White"/>
         
         <!-- Modern Shadow Effect -->
-        <DropShadowEffect x:Key="CardShadow" 
-                          Color="#40000000" 
-                          Direction="270" 
-                          ShadowDepth="2" 
-                          BlurRadius="8" 
-                          Opacity="0.3"/>
 
         <!-- Category Header Style -->
         <Style x:Key="CategoryHeaderStyle" TargetType="Border">
@@ -174,9 +168,9 @@
 
         <!-- Search Box Style -->
         <Style x:Key="SearchBox" TargetType="TextBox">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="Foreground" Value="#2C3E50"/>
-            <Setter Property="BorderBrush" Value="#BDC3C7"/>
+            <Setter Property="Background" Value="{DynamicResource InputBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource InputForeground}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource InputBorderBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Padding" Value="35,8,10,8"/>
             <Setter Property="FontSize" Value="13"/>
@@ -185,7 +179,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="TextBox">
                         <Border Background="{TemplateBinding Background}" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderBrush="{TemplateBinding Background}" 
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="4">
                             <Grid>
@@ -205,7 +199,7 @@
                                 <!-- Placeholder -->
                                 <TextBlock x:Name="Placeholder" 
                                            Text="Modül ara..." 
-                                           Foreground="#95A5A6"
+                                           Foreground="{DynamicResource SecondaryText}"
                                            IsHitTestVisible="False"
                                            VerticalAlignment="Center"
                                            Margin="35,0,10,0">
@@ -334,7 +328,7 @@
         <!-- ===== SIDEBAR ===== -->
         <Border Grid.Column="0" 
                 Background="{DynamicResource SidebarBackground}" 
-                BorderBrush="#E0E0E0" 
+                BorderBrush="{DynamicResource CardBorderBrush}" 
                 BorderThickness="0,0,1,0"
                 Effect="{DynamicResource CardShadow}">
             <Grid>
@@ -398,29 +392,29 @@
                               HorizontalScrollBarVisibility="Disabled">
                     <StackPanel x:Name="MenuItemsContainer" Margin="0,5,0,10">
                         
-                        <!-- ===== FAVORİLER ===== -->
+                        <!-- ===== MENÜ BAŞLIKLARI (Text Renkleri Dinamik) ===== -->
                         <Expander x:Name="expFavorites" Style="{DynamicResource CategoryExpander}" IsExpanded="False">
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <iconPacks:PackIconMaterial Kind="Star" Width="18" Height="18" Foreground="#FFC107" Margin="0,0,8,0"/>
-                                    <TextBlock Text="Favoriler" FontWeight="SemiBold" FontSize="13" Foreground="#2C3E50"/>
+                                    <TextBlock Text="Favoriler" FontWeight="SemiBold" FontSize="13" Foreground="{DynamicResource MenuItemForeground}"/>
                                 </StackPanel>
                             </Expander.Header>
                             <StackPanel x:Name="FavoritesPanel">
                                 <TextBlock Text="Favori modül yok" 
-                                           Foreground="#95A5A6" 
+                                           Foreground="{DynamicResource SecondaryText}" 
                                            FontSize="11" 
                                            Margin="25,5"
                                            FontStyle="Italic"/>
                             </StackPanel>
                         </Expander>
 
-                        <!-- ===== OFİS ARAÇLARI ===== -->
+                        <!-- Ofis Araçları -->
                         <Expander Style="{DynamicResource CategoryExpander}" IsExpanded="False">
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <iconPacks:PackIconMaterial Kind="Briefcase" Width="18" Height="18" Foreground="#1976D2" Margin="0,0,8,0"/>
-                                    <TextBlock Text="Ofis Araçları" FontWeight="SemiBold" FontSize="13" Foreground="#2C3E50"/>
+                                    <TextBlock Text="Ofis Araçları" FontWeight="SemiBold" FontSize="13" Foreground="{DynamicResource MenuItemForeground}"/>
                                 </StackPanel>
                             </Expander.Header>
                             <StackPanel>
@@ -488,7 +482,7 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <iconPacks:PackIconMaterial Kind="Multimedia" Width="18" Height="18" Foreground="#E91E63" Margin="0,0,8,0"/>
-                                    <TextBlock Text="Medya Araçları" FontWeight="SemiBold" FontSize="13" Foreground="#2C3E50"/>
+                                    <TextBlock Text="Medya Araçları" FontWeight="SemiBold" FontSize="13" Foreground="{DynamicResource MenuItemForeground}"/>
                                 </StackPanel>
                             </Expander.Header>
                             <StackPanel>
@@ -542,7 +536,7 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <iconPacks:PackIconMaterial Kind="ShieldLock" Width="18" Height="18" Foreground="#F44336" Margin="0,0,8,0"/>
-                                    <TextBlock Text="Güvenlik Araçları" FontWeight="SemiBold" FontSize="13" Foreground="#2C3E50"/>
+                                    <TextBlock Text="Güvenlik Araçları" FontWeight="SemiBold" FontSize="13" Foreground="{DynamicResource MenuItemForeground}"/>
                                 </StackPanel>
                             </Expander.Header>
                             <StackPanel>
@@ -563,12 +557,12 @@
                             </StackPanel>
                         </Expander>
 
-                        <!-- ===== NETWORK & İNTERNET ARAÇLARI ===== -->
+                        <!-- Network & İnternet -->
                         <Expander Style="{DynamicResource CategoryExpander}" IsExpanded="False">
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <iconPacks:PackIconMaterial Kind="Web" Width="18" Height="18" Foreground="#4CAF50" Margin="0,0,8,0"/>
-                                    <TextBlock Text="Network &amp; İnternet" FontWeight="SemiBold" FontSize="13" Foreground="#2C3E50"/>
+                                    <TextBlock Text="Network &amp; İnternet" FontWeight="SemiBold" FontSize="13" Foreground="{DynamicResource MenuItemForeground}"/>
                                 </StackPanel>
                             </Expander.Header>
                             <StackPanel>
@@ -594,7 +588,7 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <iconPacks:PackIconMaterial Kind="Tools" Width="18" Height="18" Foreground="#FF9800" Margin="0,0,8,0"/>
-                                    <TextBlock Text="Yardımcı Araçlar" FontWeight="SemiBold" FontSize="13" Foreground="#2C3E50"/>
+                                    <TextBlock Text="Yardımcı Araçlar" FontWeight="SemiBold" FontSize="13" Foreground="{DynamicResource MenuItemForeground}"/>
                                 </StackPanel>
                             </Expander.Header>
                             <StackPanel>
@@ -670,7 +664,7 @@
                 <!-- ===== FOOTER (Version Info) ===== -->
                 <Border Grid.Row="3" 
                         Background="{DynamicResource CategoryHeaderBackground}" 
-                        BorderBrush="#E0E0E0"
+                        BorderBrush="{DynamicResource CardBorderBrush}"
                         BorderThickness="0,1,0,0"
                         Padding="15,10">
                     <StackPanel>
@@ -701,16 +695,16 @@
                     <TextBlock Text="Türk Çakısı" 
                                FontSize="32" 
                                FontWeight="Bold"
-                               Foreground="#2C3E50" 
+                               Foreground="{DynamicResource HeaderText}" 
                                HorizontalAlignment="Center"/>
                     <TextBlock Text="Çok Amaçlı Araç Kutusu" 
                                FontSize="18" 
-                               Foreground="#7F8C8D" 
+                               Foreground="{DynamicResource SecondaryText}" 
                                HorizontalAlignment="Center" 
                                Margin="0,5,0,0"/>
                     <TextBlock Text="Sol menüden bir araç seçin veya arama yapın" 
                                FontSize="14" 
-                               Foreground="#95A5A6" 
+                               Foreground="{DynamicResource SecondaryText}" 
                                HorizontalAlignment="Center" 
                                Margin="0,30,0,0"/>
                 </StackPanel>

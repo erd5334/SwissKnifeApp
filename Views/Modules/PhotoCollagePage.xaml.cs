@@ -71,10 +71,20 @@ namespace SwissKnifeApp.Views.Modules
                 var targetBorder = sender as Border;
                 if (targetBorder?.Tag is int targetIndex && _draggedPhotoIndex >= 0 && _draggedPhotoIndex != targetIndex)
                 {
-                    // Fotoğrafların yerlerini değiştir
-                    var temp = _loadedPhotos[_draggedPhotoIndex];
+                    // Fotoğrafları yer değiştir
+                    var tempPhoto = _loadedPhotos[_draggedPhotoIndex];
                     _loadedPhotos[_draggedPhotoIndex] = _loadedPhotos[targetIndex];
-                    _loadedPhotos[targetIndex] = temp;
+                    _loadedPhotos[targetIndex] = tempPhoto;
+
+                    // Dönüşümleri (Zoom/Pan) de yer değiştir
+                    _photoTransforms.TryGetValue(_draggedPhotoIndex, out var sourceTransform);
+                    _photoTransforms.TryGetValue(targetIndex, out var targetTransform);
+
+                    if (sourceTransform != null) _photoTransforms[targetIndex] = sourceTransform;
+                    else _photoTransforms.Remove(targetIndex);
+
+                    if (targetTransform != null) _photoTransforms[_draggedPhotoIndex] = targetTransform;
+                    else _photoTransforms.Remove(_draggedPhotoIndex);
 
                     _draggedPhotoIndex = -1;
                     UpdatePreview();
@@ -301,10 +311,6 @@ namespace SwissKnifeApp.Views.Modules
             {
                 TxtPhotoCount.Text = $"Yüklenen: {_loadedPhotos.Count} / {_maxPhotos} fotoğraf";
             }
-                if (TxtPhotoCount != null)
-                {
-                    TxtPhotoCount.Text = $"Yüklenen: {_loadedPhotos.Count} / {_maxPhotos} fotoğraf";
-                }
         }
 
         private void CmbBackgroundColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -319,11 +325,6 @@ namespace SwissKnifeApp.Views.Modules
                 TxtBorderWidth.Text = $"{(int)e.NewValue} px";
                 UpdatePreview();
             }
-                if (TxtBorderWidth != null)
-                {
-                    TxtBorderWidth.Text = $"{(int)e.NewValue} px";
-                    UpdatePreview();
-                }
         }
 
         private void CmbBorderColor_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -338,11 +339,6 @@ namespace SwissKnifeApp.Views.Modules
                 TxtCornerRadius.Text = $"{(int)e.NewValue} px";
                 UpdatePreview();
             }
-                if (TxtCornerRadius != null)
-                {
-                    TxtCornerRadius.Text = $"{(int)e.NewValue} px";
-                    UpdatePreview();
-                }
         }
 
         private void TxtOverlayText_TextChanged(object sender, TextChangedEventArgs e)
@@ -840,8 +836,21 @@ namespace SwissKnifeApp.Views.Modules
                     // Arka plan rengi
                     var bgColorHex = ColorPickerBackground.SelectedColor?.ToString() ?? "#FFFFFF";
 
-                    // Kenarlık - export için 600 referansına göre ölçekleyelim
+                    // Kenarlık ve Köşe Yuvarlaklığı - export için 600 referansına göre ölçekleyelim
                     int borderWidthPx = (int)(SliderBorderWidth.Value * outputSize / 600.0);
+                    int cornerRadiusPx = (int)(SliderCornerRadius.Value * outputSize / 600.0);
+
+                    // Dönüşümleri (Zoom/Pan) hazırla
+                    var transformOptions = new Dictionary<int, SwissKnifeApp.Services.PhotoTransformOptions>();
+                    foreach (var kvp in _photoTransforms)
+                    {
+                        transformOptions[kvp.Key] = new SwissKnifeApp.Services.PhotoTransformOptions
+                        {
+                            Zoom = kvp.Value.Zoom,
+                            OffsetX = kvp.Value.OffsetX,
+                            OffsetY = kvp.Value.OffsetY
+                        };
+                    }
 
                     // Metin overlay
                     SwissKnifeApp.Services.TextOverlayOptions? overlay = null;
@@ -874,6 +883,9 @@ namespace SwissKnifeApp.Views.Modules
                         };
                     }
 
+                    // Kenarlık ve Arka Plan rengi
+                    var borderColorHex = ColorPickerBorder.SelectedColor?.ToString() ?? "#FFFFFF";
+
                     _collageService.CreateCollage(
                         saveFileDialog.FileName,
                         outputSize,
@@ -881,7 +893,10 @@ namespace SwissKnifeApp.Views.Modules
                         template,
                         bgColorHex,
                         borderWidthPx,
-                        overlay);
+                        cornerRadiusPx,
+                        transformOptions,
+                        overlay,
+                        borderColorHex);
 
                     MessageBox.Show("Kolaj başarıyla kaydedildi!", "Başarılı", MessageBoxButton.OK, MessageBoxImage.Information);
                 }

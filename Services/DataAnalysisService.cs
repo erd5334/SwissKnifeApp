@@ -325,7 +325,7 @@ namespace SwissKnifeApp.Services
 
         #region Chart Generation
 
-        public PlotModel CreateBasicChart(DataTable dataTable, string columnName, string chartType)
+        public PlotModel CreateBasicChart(DataTable dataTable, string columnName, string chartType, OxyColor? textColor = null)
         {
             var values = dataTable.AsEnumerable()
                 .Select(r => r[columnName])
@@ -334,6 +334,7 @@ namespace SwissKnifeApp.Services
                 .ToList();
 
             var model = new PlotModel { Title = $"{columnName} Analizi" };
+            if (textColor.HasValue) ThemePlotModel(model, textColor.Value);
 
             switch (chartType)
             {
@@ -376,9 +377,10 @@ namespace SwissKnifeApp.Services
             return model;
         }
 
-        public PlotModel CreateHistogramChart(string columnName, HistogramResult histogram, int binCount)
+        public PlotModel CreateHistogramChart(string columnName, HistogramResult histogram, int binCount, OxyColor? textColor = null)
         {
             var model = new PlotModel { Title = $"{columnName} Histogramı" };
+            if (textColor.HasValue) ThemePlotModel(model, textColor.Value);
             
             var categoryAxis = new CategoryAxis { Position = AxisPosition.Left, Title = "Aralıklar" };
             for (int i = 0; i < binCount; i++)
@@ -401,9 +403,10 @@ namespace SwissKnifeApp.Services
             return model;
         }
 
-        public PlotModel CreateRegressionChart(RegressionResult regression)
+        public PlotModel CreateRegressionChart(RegressionResult regression, OxyColor? textColor = null)
         {
             var model = new PlotModel { Title = "Regresyon Analizi" };
+            if (textColor.HasValue) ThemePlotModel(model, textColor.Value);
             
             var scatter = new ScatterSeries { Title = "Veri Noktaları" };
             for (int i = 0; i < regression.XValues.Count; i++)
@@ -622,7 +625,7 @@ namespace SwissKnifeApp.Services
 
         #region Box Plot
 
-        public PlotModel CreateBoxPlot(DataTable dataTable, string columnName)
+        public PlotModel CreateBoxPlot(DataTable dataTable, string columnName, OxyColor? textColor = null)
         {
             var values = dataTable.AsEnumerable()
                 .Select(r => r[columnName])
@@ -635,6 +638,7 @@ namespace SwissKnifeApp.Services
                 return new PlotModel { Title = "Veri bulunamadı" };
 
             var model = new PlotModel { Title = $"{columnName} - Box Plot" };
+            if (textColor.HasValue) ThemePlotModel(model, textColor.Value);
 
             double min = values.Min();
             double max = values.Max();
@@ -804,9 +808,10 @@ namespace SwissKnifeApp.Services
             return result;
         }
 
-        public PlotModel CreateTimeSeriesChart(TimeSeriesResult timeSeriesResult, string columnName)
+        public PlotModel CreateTimeSeriesChart(TimeSeriesResult timeSeriesResult, string columnName, OxyColor? textColor = null)
         {
             var model = new PlotModel { Title = $"{columnName} - Zaman Serisi Analizi" };
+            if (textColor.HasValue) ThemePlotModel(model, textColor.Value);
 
             // Actual values
             var actualSeries = new LineSeries { Title = "Gerçek Değerler", Color = OxyColors.Blue };
@@ -842,7 +847,7 @@ namespace SwissKnifeApp.Services
 
         #region Heatmap (Correlation Matrix)
 
-        public PlotModel CreateCorrelationHeatmap(DataTable dataTable)
+        public PlotModel CreateCorrelationHeatmap(DataTable dataTable, OxyColor? textColor = null)
         {
             var numericCols = dataTable.Columns.Cast<DataColumn>()
                 .Where(c => dataTable.AsEnumerable()
@@ -853,6 +858,7 @@ namespace SwissKnifeApp.Services
                 return new PlotModel { Title = "Yeterli sayısal sütun yok" };
 
             var model = new PlotModel { Title = "Korelasyon Isı Haritası" };
+            if (textColor.HasValue) ThemePlotModel(model, textColor.Value);
 
             var heatMapSeries = new HeatMapSeries
             {
@@ -1254,7 +1260,7 @@ namespace SwissKnifeApp.Services
         /// <summary>
         /// Violin plot simülasyonu - Box plot + yoğunluk çizgisi
         /// </summary>
-        public PlotModel CreateViolinPlot(DataTable dataTable, string columnName)
+        public PlotModel CreateViolinPlot(DataTable dataTable, string columnName, OxyColor? textColor = null)
         {
             var values = dataTable.AsEnumerable()
                 .Select(r => r[columnName])
@@ -1267,6 +1273,7 @@ namespace SwissKnifeApp.Services
                 return new PlotModel { Title = "Veri bulunamadı" };
 
             var model = new PlotModel { Title = $"{columnName} - Violin Plot" };
+            if (textColor.HasValue) ThemePlotModel(model, textColor.Value);
 
             // Box plot kısmı
             double min = values.Min();
@@ -1520,6 +1527,28 @@ namespace SwissKnifeApp.Services
         public int GetTotalPages(DataTable dataTable, int pageSize)
         {
             return (int)Math.Ceiling((double)dataTable.Rows.Count / pageSize);
+        }
+
+        private void ThemePlotModel(PlotModel model, OxyColor textColor)
+        {
+            model.TextColor = textColor;
+            model.TitleColor = textColor;
+            
+            // Set legend colors for OxyPlot 2.1+
+            foreach (var legend in model.Legends)
+            {
+                legend.TextColor = textColor;
+            }
+
+            model.PlotAreaBorderColor = textColor;
+
+            foreach (var axis in model.Axes)
+            {
+                axis.TextColor = textColor;
+                axis.TitleColor = textColor;
+                axis.TicklineColor = textColor;
+                axis.AxislineColor = textColor;
+            }
         }
 
         #endregion

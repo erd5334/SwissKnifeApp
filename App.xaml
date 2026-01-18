@@ -11,6 +11,7 @@
             <h:IntToVisibilityConverter x:Key="IntToVisibilityConverter" />
             <h:ComparisonConverter x:Key="ComparisonConverter" />
             <h:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <h:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
             
             <!-- Global Theme Colors (Dynamic for Dark Mode) -->
             <SolidColorBrush x:Key="AppBackground" Color="White"/>
@@ -25,6 +26,10 @@
             <SolidColorBrush x:Key="AccentBrush" Color="#2196F3"/>
             <SolidColorBrush x:Key="HeaderText" Color="#2C3E50"/>
             <SolidColorBrush x:Key="SecondaryText" Color="#7F8C8D"/>
+            
+            <!-- Tax Specific Accent Colors -->
+            <SolidColorBrush x:Key="TaxAccent" Color="#FFB300"/>
+            <SolidColorBrush x:Key="TaxAccentDark" Color="#FFA000"/>
             
             <ResourceDictionary.MergedDictionaries>
                 <!-- MahApps.Metro temel sözlükleri -->
